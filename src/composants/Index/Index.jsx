@@ -9,17 +9,14 @@ import ImageEcole from '../../static/images/image_ecole.webp';
 const HeroSection = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000, 
-      easing: 'ease-in-out', 
-      once: true, 
+      duration: 1000,
+      easing: 'ease-in-out',
+      once: true
     });
   }, []);
 
   return (
-    <section className="her container-fluid text-center justify-content-center shadow py-3" 
-      // style={{
-      //   borderRadius: '0 0 20px 20px', 
-      // }}
+    <section className="her container-fluid text-center justify-content-center shadow py-3"
     >
       <h1 className="titre" data-aos="fade-up">ecolapp</h1>
       <p className="p" data-aos="fade-right">
@@ -35,26 +32,26 @@ const HeroSection = () => {
           src={ImageEcole}
           alt="ecolapp"
           className="img-fluid-1 img_index"
-          data-aos="zoom-in"
-        />
+          data-aos="zoom-in" />
+        
       </div>
       
-    </section>
-  );
+    </section>);
+
 };
 
 const Card = ({ icon, text, lien }) => {
   return (
-    
-      <div className="card">
+
+    <div className="card">
         <div className="card-body">
-          <h5 className="card-title"> <i className={`${icon}`} style={iconStyle}></i> </h5>
+          <h5 className="card-title"> <i className={`${`${icon}`} style-fr-d3696138`}></i> </h5>
           <p className="card-text">{text}</p>
           <Link to={lien} className="btn btn-custom ms-3">Explorer</Link>
         </div>
-      </div>
-   
-  );
+      </div>);
+
+
 };
 
 const CardsSection = () => {
@@ -63,62 +60,62 @@ const CardsSection = () => {
       <div className="row">
         
         <div className="col-lg-3 col-md-12 col-sm-12 mb-4 b">
-          <div className="" style={titreStyle}>
+          <div className="style-fr-e363f0ae">
            Ecoles
           </div>
           <Card
             icon="bi bi-mortarboard-fill icon"
             text=""
-            lien="/ecoles"
-          />
+            lien="/ecoles" />
+          
         </div>
         <div className="col-lg-3 col-md-6 mb-4 b">
-          <div className="" style={titreStyle}>
+          <div className="style-fr-e363f0ae">
            Parents
           </div>
           <Card
             icon="bi bi-person-fill icon"
             text=""
-            lien="/parent"
-          />
+            lien="/parent" />
+          
         </div>
         <div className="col-lg-3 col-md-12 col-sm-12 mb-4 b">
-          <div className="" style={titreStyle}>
+          <div className="style-fr-e363f0ae">
            A propos
           </div>
           <Card
             icon="bi bi-info-circle-fill icon"
             text=""
-            lien="/apropos"
-          />
+            lien="/apropos" />
+          
         </div>
         <div className="col-lg-3 col-md-6 mb-4 b">
-          <div className="" style={titreStyle}>
+          <div className="style-fr-e363f0ae">
            Services
           </div>
           <Card
             icon="bi bi-flower1 icon"
             text=""
-            lien="/services"
-          />
+            lien="/services" />
+          
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 const Copyright = () => {
-    const currentYear = new Date().getFullYear(); 
-  
-    return (
-      <footer>
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer>
         <p className='text-center'>
             &copy; <span>{currentYear}</span> 
             <strong className="px-1">ecolapp</strong> 
             <span>Tous droits réservés</span>
         </p>
-      </footer>
-    );
+      </footer>);
+
 };
 
 
@@ -131,27 +128,27 @@ const Index = () => {
       <Copyright />
       <NavbarBottom />
      
-    </div>
-  );
-};
-const iconStyle = {
-  fontSize: '30px',
-  color: '#fff',
-  textAlign:'center',
-  backgroundColor:'#1769ff',
-  borderRadius:'15px 15px 0 0',
-  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-  padding:'10px',
+    </div>);
+
 };
 
-const titreStyle = {
-  fontSize: '30px',
-  color: '#fff',
-  textAlign:'center',
-  backgroundColor:'#1769ff',
-  borderRadius:'15px 15px 0 0',
-  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-  padding:'10px',
-};
 
-export default Index; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export default Index;

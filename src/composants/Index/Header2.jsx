@@ -39,19 +39,19 @@ const Header = () => {
             <li><Link to="/ecoles" onClick={closeMobileNav}>Ecoles</Link></li>
            
             {/* <li className="dropdown d-lg-block d-none">
-               <Link to="#">
-                 <span>Etablissements</span> <i className="bi bi-chevron-down toggle-dropdown"></i>
-               </Link>
-               <ul>
-                 <li><Link to="/maternelle" onClick={closeMobileNav}>Maternelle</Link></li>
-                 <li><Link to="/primaire" onClick={closeMobileNav}>Primaire</Link></li>
-                 <li><Link to="/secondaire" onClick={closeMobileNav}>Secondaire</Link></li>
-               </ul>
-              </li> */}
+                <Link to="#">
+                  <span>Etablissements</span> <i className="bi bi-chevron-down toggle-dropdown"></i>
+                </Link>
+                <ul>
+                  <li><Link to="/maternelle" onClick={closeMobileNav}>Maternelle</Link></li>
+                  <li><Link to="/primaire" onClick={closeMobileNav}>Primaire</Link></li>
+                  <li><Link to="/secondaire" onClick={closeMobileNav}>Secondaire</Link></li>
+                </ul>
+               </li> */}
             {/* <li><Link to="/contact" onClick={closeMobileNav}>Contact</Link></li> */}
           </ul>
           <span className="mobile-nav-toggle d-xl-none" onClick={handleMobileNavToggle}>
-            <i style={{ color: '#1769ff' }} className={`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`}></i>
+            <i className={`${`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`} style-fr-8fda81e7`}></i>
           </span>
         </nav>
         

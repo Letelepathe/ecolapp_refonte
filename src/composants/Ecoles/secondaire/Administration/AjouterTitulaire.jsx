@@ -168,9 +168,9 @@ const AjouterTitulaire = () => {
                       </div>
 
                     <div className="d-grid">
-                      <button className={`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} type="submit"
-                      disabled={isLoading}
-                      style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}>
+                      <button className={`${`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} style-fr-2a4339e4`} type="submit"
+                      disabled={isLoading}>
+
                         
                           {isLoading ? "Traitement en cours..." : "Enregistrer"}
                       </button>

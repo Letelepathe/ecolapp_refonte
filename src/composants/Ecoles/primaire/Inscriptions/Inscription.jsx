@@ -286,8 +286,8 @@ const Inscriptionprimaire = () => {
                     </div>
                     <div className="col-12 mt-4">
                       <button
-                        className={`btn btn-white w-100 ${isLoading ? "loading" : ""}`}
-                        style={{ padding: '13px', borderRadius: '30px', background: '#1769ff', color: '#fff' }}
+                        className={`${`btn btn-white w-100 ${isLoading ? "loading" : ""}`} style-fr-44b00424`}
+
                         type="submit"
                         disabled={isLoading}>
                         

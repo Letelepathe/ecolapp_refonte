@@ -1,214 +1,217 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Helmet } from 'react-helmet';
-import { ArrowLeft } from "react-feather";
-import NavbarBottom from '../Index/NavbarBottom';
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Helmet } from "react-helmet";
+import { FiArrowLeft, FiBookOpen, FiChevronLeft, FiChevronRight, FiHome, FiMapPin, FiSearch } from "react-icons/fi";
+import NavbarBottom from "../Index/NavbarBottom";
+
+const NB_ECOLES_PAR_PAGE = 9;
+
+const normaliser = (valeur = "") =>
+  valeur
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+const obtenirNomProvinceEducationnelle = (provincesEducationnelles, idProvinceEducationnelle) => {
+  const province = provincesEducationnelles.find((item) => Number(item.id) === Number(idProvinceEducationnelle));
+  return province?.name || "Province éducationnelle non renseignée";
+};
 
 const Ecoles = () => {
   const [ecoles, setEcoles] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [provincesEducationnelles, setProvincesEducationnelles] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedEcole, setSelectedEcole] = useState(null);
-  const [selectedProvince, setSelectedProvince] = useState('');
-  const [selectedProvinceEducationnelle, setSelectedProvinceEducationnelle] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [recherche, setRecherche] = useState("");
+  const [provinceSelectionnee, setProvinceSelectionnee] = useState("");
+  const [provinceEducationnelleSelectionnee, setProvinceEducationnelleSelectionnee] = useState("");
+  const [pageCourante, setPageCourante] = useState(1);
+  const [chargement, setChargement] = useState(true);
+  const [erreur, setErreur] = useState(null);
+  const naviguer = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const chargerDonnees = async () => {
       try {
-        const [ecolesResponse, provincesResponse, provincesEducationnellesResponse] = await Promise.all([
-        axios.get('https://api.ecolapp.cd/api/ecole'),
-        axios.get('https://api.ecolapp.cd/api/province'),
-        axios.get('https://api.ecolapp.cd/api/provinceEducationnelle')]
-        );
+        const [reponseEcoles, reponseProvinces, reponseProvincesEducationnelles] = await Promise.all([
+          axios.get("https://api.ecolapp.cd/api/ecole"),
+          axios.get("https://api.ecolapp.cd/api/province"),
+          axios.get("https://api.ecolapp.cd/api/provinceEducationnelle"),
+        ]);
 
-        setEcoles(ecolesResponse.data.ecoleAll || []);
-        setProvinces(provincesResponse.data.provinceAll || []);
-        setProvincesEducationnelles(provincesEducationnellesResponse.data.provinceEducationnelleAll || []);
-        setLoading(false);
-      } catch (error) {
-        setError('Erreur de récupération des données');
-        setLoading(false);
+        setEcoles(reponseEcoles.data.ecoleAll || []);
+        setProvinces(reponseProvinces.data.provinceAll || []);
+        setProvincesEducationnelles(reponseProvincesEducationnelles.data.provinceEducationnelleAll || []);
+      } catch {
+        setErreur("Erreur de récupération des écoles.");
+      } finally {
+        setChargement(false);
       }
     };
 
-    fetchData();
+    chargerDonnees();
   }, []);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  useEffect(() => {
+    setPageCourante(1);
+  }, [recherche, provinceSelectionnee, provinceEducationnelleSelectionnee]);
 
-  const handleSelectEcole = (id) => {
-    setSelectedEcole(id);
-  };
-
-  // const handleSubmit = () => {
-  //   if (selectedEcole) {
-  //     navigate(`/ecole/choix_direction/${selectedEcole}`);
-  //   } else {
-  //     alert('Veuillez sélectionner une école');
-  //   }
-  // };
-
-  const filteredProvincesEducationnelles = selectedProvince ?
-  provincesEducationnelles.filter((provinceEducationnelle) =>
-  provinceEducationnelle.province_id === parseInt(selectedProvince, 10)
-  ) :
-  provincesEducationnelles;
-
-  const filteredEcoles = ecoles.filter((ecole) => {
-    const matchesSearch = ecole.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    ecole.adresse.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesProvinceEducationnelle = selectedProvinceEducationnelle ?
-    ecole.province_educationnelle_id === parseInt(selectedProvinceEducationnelle, 10) :
-    true;
-
-    return matchesSearch && matchesProvinceEducationnelle;
-  });
-
-  if (loading) {
-    return <div className="spinner"></div>;
-  }
-
-  if (error) {
-    return (
-      <div className="d-flex justify-content-center align-items-center min-vh-100 mt-0">
-        <p className='text-danger text-center'>{error}</p>
-      </div>);
-
-  }
-
-  const styles = {
-    header: {
-      position: "fixed",
-      top: "0",
-      left: "0",
-      width: "100%",
-      padding: "15px 20px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      backgroundColor: "#fff",
-      zIndex: "10",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-    },
-    container: {
-      paddingTop: "70px",
-      paddingBottom: "30px",
-      minHeight: "100vh",
-      backgroundColor: "#f8f9fa"
+  const provincesEducationnellesFiltrees = useMemo(() => {
+    if (!provinceSelectionnee) {
+      return provincesEducationnelles;
     }
+
+    return provincesEducationnelles.filter((provinceEducationnelle) => Number(provinceEducationnelle.province_id) === Number(provinceSelectionnee));
+  }, [provinceSelectionnee, provincesEducationnelles]);
+
+  const ecolesFiltrees = useMemo(() => {
+    const rechercheNormalisee = normaliser(recherche);
+
+    return ecoles.filter((ecole) => {
+      const nom = normaliser(ecole.name);
+      const adresse = normaliser(ecole.adresse);
+      const provinceEducationnelle = normaliser(obtenirNomProvinceEducationnelle(provincesEducationnelles, ecole.province_educationnelle_id));
+      const correspondRecherche = !rechercheNormalisee || nom.includes(rechercheNormalisee) || adresse.includes(rechercheNormalisee) || provinceEducationnelle.includes(rechercheNormalisee);
+      const correspondProvinceEducationnelle =
+        !provinceEducationnelleSelectionnee || Number(ecole.province_educationnelle_id) === Number(provinceEducationnelleSelectionnee);
+
+      return correspondRecherche && correspondProvinceEducationnelle;
+    });
+  }, [ecoles, provinceEducationnelleSelectionnee, provincesEducationnelles, recherche]);
+
+  const totalPages = Math.max(1, Math.ceil(ecolesFiltrees.length / NB_ECOLES_PAR_PAGE));
+  const debutPage = (pageCourante - 1) * NB_ECOLES_PAR_PAGE;
+  const ecolesPage = ecolesFiltrees.slice(debutPage, debutPage + NB_ECOLES_PAR_PAGE);
+
+  const changerPage = (nouvellePage) => {
+    setPageCourante(Math.min(Math.max(nouvellePage, 1), totalPages));
   };
 
   return (
-    <div style={styles.container}>
+    <div className="page-ecoles-refonte">
       <Helmet>
-        <title>ecolapp | écoles</title>
+        <title>ecolapp | Écoles</title>
       </Helmet>
 
-      <div style={styles.header}>
-        <button
-
-          onClick={() => navigate(-1)} className="u-style-ce53d055">
-          
-          <ArrowLeft size={24} color="#0d66ff" />
+      <header className="page-ecoles-entete">
+        <button type="button" onClick={() => naviguer(-1)} className="page-ecoles-retour" aria-label="Retour">
+          <FiArrowLeft />
         </button>
-          <h5 className="m-0 text-primary fw-semibold">Ecoles</h5>
-        <div className="u-style-97711f5c"></div>
-      </div>
-  
-      <div className="bloc-ecole-3 d-flex justify-content-center align-items-center min-vh-100 mt-0">
-        <div className="card bloc-ecole-1 p-4 w-100 u-style-dc271cfe">
-          <div className="card-body">
-            <h3 className="text-center mb-4">Rechercher une école</h3>
-  
-            <form>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Recherchez par nom"
-                  value={searchQuery}
-                  onChange={handleSearchChange} />
-                
-              </div>
-  
-              <div className="mb-3">
-                <label className="form-label">Province</label>
-                <select
-                  className="form-select"
-                  onChange={(e) => {
-                    setSelectedProvince(e.target.value);
-                    setSelectedProvinceEducationnelle('');
-                  }}
-                  value={selectedProvince}>
-                  
-                  <option value="">Toutes les provinces</option>
-                  {provinces.map((province) =>
-                  <option key={province.id} value={province.id}>
-                      {province.name}
-                    </option>
-                  )}
-                </select>
-              </div>
-  
-              <div className="mb-4">
-                <label className="form-label">Province Éducationnelle</label>
-                <select
-                  className="form-select"
-                  onChange={(e) => setSelectedProvinceEducationnelle(e.target.value)}
-                  value={selectedProvinceEducationnelle}>
-                  
-                  <option value="">Toutes les provinces éducationnelles</option>
-                  {filteredProvincesEducationnelles.map((provinceEducationnelle) =>
-                  <option key={provinceEducationnelle.id} value={provinceEducationnelle.id}>
-                      {provinceEducationnelle.name}
-                    </option>
-                  )}
-                </select>
-              </div>
-            </form>
-  
-            {filteredEcoles.length === 0 ?
-            <div className="text-center text-muted">Aucune école trouvée.</div> :
-
-            <div className="d-flex flex-column gap-3">
-                {filteredEcoles.map((ecole) =>
-              <Link
-                key={ecole.id}
-                to={`/ecole/choix_direction/${ecole.id}/${ecole.name.replace(/ /g, '+')}`}
-                className="text-decoration-none">
-                
-                    <div
-                  className="card p-3 shadow-sm u-style-571cf55a"
-
-
-
-
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                  
-                      <h5 className="mb-1 text-primary">{ecole.name}</h5>
-                      <p className="mb-0 text-muted">{ecole.adresse}</p>
-                    </div>
-                  </Link>
-              )}
-              </div>
-            }
-          </div>
+        <div>
+          <span>Catalogue scolaire</span>
+          <h1>Choisir une école</h1>
         </div>
-      </div>
-  
+        <FiBookOpen className="page-ecoles-entete-icone" />
+      </header>
+
+      <main className="page-ecoles-contenu">
+        <section className="page-ecoles-hero">
+          <div>
+            <span className="page-ecoles-badge">{ecolesFiltrees.length} école(s) disponible(s)</span>
+            <h2>Trouvez rapidement votre école</h2>
+            <p>Recherchez par nom, adresse ou province éducationnelle, puis sélectionnez l’école pour continuer.</p>
+          </div>
+          <div className="page-ecoles-hero-icone">
+            <FiHome />
+          </div>
+        </section>
+
+        <section className="page-ecoles-filtres" aria-label="Filtres des écoles">
+          <label className="page-ecoles-recherche">
+            <FiSearch />
+            <input
+              type="search"
+              placeholder="Rechercher une école, une adresse, une province..."
+              value={recherche}
+              onChange={(evenement) => setRecherche(evenement.target.value)}
+            />
+          </label>
+
+          <select
+            value={provinceSelectionnee}
+            onChange={(evenement) => {
+              setProvinceSelectionnee(evenement.target.value);
+              setProvinceEducationnelleSelectionnee("");
+            }}
+          >
+            <option value="">Toutes les provinces</option>
+            {provinces.map((province) => (
+              <option key={province.id} value={province.id}>
+                {province.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={provinceEducationnelleSelectionnee}
+            onChange={(evenement) => setProvinceEducationnelleSelectionnee(evenement.target.value)}
+          >
+            <option value="">Toutes les provinces éducationnelles</option>
+            {provincesEducationnellesFiltrees.map((provinceEducationnelle) => (
+              <option key={provinceEducationnelle.id} value={provinceEducationnelle.id}>
+                {provinceEducationnelle.name}
+              </option>
+            ))}
+          </select>
+        </section>
+
+        {chargement && <div className="page-ecoles-etat">Chargement des écoles...</div>}
+        {erreur && <div className="page-ecoles-etat erreur">{erreur}</div>}
+
+        {!chargement && !erreur && ecolesPage.length === 0 && (
+          <div className="page-ecoles-etat">Aucune école ne correspond à votre recherche.</div>
+        )}
+
+        {!chargement && !erreur && ecolesPage.length > 0 && (
+          <>
+            <section className="page-ecoles-grille">
+              {ecolesPage.map((ecole) => {
+                const nomEcole = ecole.name || "École sans nom";
+                const provinceEducationnelle = obtenirNomProvinceEducationnelle(provincesEducationnelles, ecole.province_educationnelle_id);
+
+                return (
+                  <Link
+                    key={ecole.id}
+                    to={`/ecole/choix_direction/${ecole.id}/${nomEcole.replace(/ /g, "+")}`}
+                    className="page-ecoles-card"
+                  >
+                    <span className="page-ecoles-card-icone">
+                      <FiHome />
+                    </span>
+                    <span className="page-ecoles-card-contenu">
+                      <strong>{nomEcole}</strong>
+                      <span>
+                        <FiMapPin />
+                        {ecole.adresse || "Adresse non renseignée"}
+                      </span>
+                      <em>{provinceEducationnelle}</em>
+                    </span>
+                  </Link>
+                );
+              })}
+            </section>
+
+            <nav className="page-ecoles-pagination" aria-label="Pagination des écoles">
+              <button type="button" onClick={() => changerPage(pageCourante - 1)} disabled={pageCourante === 1}>
+                <FiChevronLeft />
+                Précédent
+              </button>
+              <span>
+                Page {pageCourante} / {totalPages}
+              </span>
+              <button type="button" onClick={() => changerPage(pageCourante + 1)} disabled={pageCourante === totalPages}>
+                Suivant
+                <FiChevronRight />
+              </button>
+            </nav>
+          </>
+        )}
+      </main>
+
       <NavbarBottom />
-    </div>);
-
-
+    </div>
+  );
 };
 
 export default Ecoles;

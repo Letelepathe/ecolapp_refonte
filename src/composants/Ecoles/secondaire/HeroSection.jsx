@@ -32,48 +32,10 @@ const HeroSection = ({ ecole }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Définition des styles
-  const styles = {
-
-    sectionContent: {
-      borderRadius: "15px",
-      backgroundColor: "#ffffff",
-      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-      padding: "30px",
-      fontFamily: "'Roboto', sans-serif",
-      color: "#333333",
-      lineHeight: "1.8",
-      fontSize: "16px"
-    },
-    heading: {
-      fontWeight: "bold",
-      color: "#0d83fd"
-    },
-    statContent: {
-      fontWeight: "bold",
-      color: "#0d83fd"
-    },
-    imageStyle: {
-      objectFit: "cover",
-      borderRadius: "10px",
-      height: "400px",
-      marginBottom: "10px"
-    },
-    btnPrimary: {
-      padding: "12px 20px",
-      fontSize: "16px",
-      fontWeight: "bold",
-      textDecoration: "none",
-      color: "#fff",
-      backgroundColor: "#0d83fd",
-      transition: "all 0.3s ease-in-out"
-    }
-  };
-
   return (
     <section className="hero section">
       <div className="container">
-        <div className="row justify-content-center text-center align-items-center" style={{ marginTop: windowWidth < 986 ? "-20px" : "80px", marginBottom: '85px' }}>
+        <div className={`row justify-content-center text-center align-items-center hero-cycle-ligne ${windowWidth < 986 ? "hero-cycle-mobile" : "hero-cycle-desktop"}`}>
           {/* Hero Content */}
           <div className="col-lg-6 col-12">
             <div className="hero-content">
@@ -87,7 +49,7 @@ const HeroSection = ({ ecole }) => {
               </div> 
 
               <h1 className="mb-4">
-                <span style={styles.heading}>
+                <span className="style-fr-502a87f6">
                   ecolapp
                 </span><br />
                 <span>{ecole.name}</span>

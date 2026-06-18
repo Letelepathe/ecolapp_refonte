@@ -204,9 +204,9 @@ const InscriptionParent = () => {
                     <div className="col-12 mt-3">
                       <button
                         type="submit"
-                        className={`btn btn-primary w-100 ${isLoading ? 'loading' : ''}`}
-                        disabled={isLoading}
-                        style={{ backgroundColor: '#1769ff', borderColor: '#1769ff' }}>
+                        className={`${`btn btn-primary w-100 ${isLoading ? 'loading' : ''}`} style-fr-062c2c83`}
+                        disabled={isLoading}>
+
                         
                         {isLoading ? 'Inscription en cours...' : 'S\'inscrire'}
                       </button>

@@ -73,30 +73,7 @@ const Abonnement = () => {
         {error && <p id="erreur_abonne" className="text-white py-2 text-center bg-danger">{error}</p>}
         {successMessage && <p className="text-white py-2 text-center bg-success">{successMessage}</p>}
       </div>
-      <style jsx>{`
-        .abonne[disabled] {
-          cursor: not-allowed;
-          opacity: 0.6;
-        }
-
-        .abonne[disabled]::after {
-          content: '';
-          display: inline-block;
-          margin-left: 8px;
-          width: 14px;
-          height: 14px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          border-top-color: #fff;
-          border-radius: 50%;
-          animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
+      
     </form>);
 
 };

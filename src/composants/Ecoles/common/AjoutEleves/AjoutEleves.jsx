@@ -171,10 +171,10 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
                         + Ajouter un autre élève
                       </button>
                       <button
-                        className={`btn btn-primary flex-grow-1 ${charg ? "loading" : ""}`}
+                        className={`${`btn btn-primary flex-grow-1 ${charg ? "loading" : ""}`} style-fr-0b1f4524`}
                         type="submit"
-                        disabled={charg}
-                        style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}>
+                        disabled={charg}>
+
 
                         {charg ? "Traitement en cours..." : `Ajouter ${eleves.length} élève(s)`}
                       </button>

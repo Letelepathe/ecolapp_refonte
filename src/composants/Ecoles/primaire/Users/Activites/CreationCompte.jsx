@@ -323,8 +323,8 @@ const CreationCompte = () => {
 
                     <div className="col-12">
                       <button
-                        className={`btn btn-white w-100 ${isLoading ? "loading" : ""}`}
-                        style={{ background: '#1769ff', color: '#fff' }}
+                        className={`${`btn btn-white w-100 ${isLoading ? "loading" : ""}`} style-fr-dd64956e`}
+
                         type="submit"
                         disabled={isLoading}>
                         

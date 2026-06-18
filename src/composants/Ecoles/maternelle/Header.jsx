@@ -90,7 +90,7 @@ const Header = () => {
             <li><Link to="/maternelle/contact" onClick={closeMobileNav}>Contact</Link></li>
           </ul>
           <span className="mobile-nav-toggle d-xl-none" onClick={handleMobileNavToggle}>
-            <i className={`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`} style={{ color: '#1769ff' }}></i>
+            <i className={`${`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`} style-fr-5c806a78`}></i>
           </span>
         </nav>
         {authenticated ?

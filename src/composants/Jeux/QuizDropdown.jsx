@@ -1,47 +1,45 @@
-import { Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-const QuizDropdown = () => {
-  return (
-    <Dropdown className="nav-item dropdown mt-2 mb-2">
-            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+const quiz = [
+  { chemin: "/jeux/quiz_math", libelle: "Quiz Math", icone: "calculator" },
+  { chemin: "/jeux/culture_generale", libelle: "Culture Générale", icone: "globe" },
+  { chemin: "/jeux/quiz_physique", libelle: "Quiz Physique", icone: "lightning" },
+  { chemin: "/jeux/quiz_biologie", libelle: "Quiz Biologie", icone: "heart-pulse" },
+  { chemin: "/jeux/quiz_chimie", libelle: "Quiz Chimie", icone: "activity" },
+  { chemin: "/jeux/quiz_histoire", libelle: "Quiz Histoire", icone: "book" },
+  { chemin: "/jeux/quiz_geographie", libelle: "Quiz Géographie", icone: "map" },
+  { chemin: "/jeux/quiz_informatique", libelle: "Quiz Informatique", icone: "cpu" },
+  { chemin: "/jeux/quiz_comptabilite", libelle: "Quiz Comptabilité", icone: "cash" },
+  { chemin: "/jeux/quiz_litterature", libelle: "Quiz Littérature", icone: "pen" },
+  { chemin: "/jeux/quiz_geographie_humaine", libelle: "Géographie Humaine", icone: "people" },
+  { chemin: "/jeux/quiz_science_vie_et_terre", libelle: "SVT", icone: "tree" },
+  { chemin: "/jeux/quiz_mathematiques_avancees", libelle: "Maths Avancées", icone: "braces" },
+  { chemin: "/jeux/quiz_education_civique_et_morale", libelle: "Éducation Civique", icone: "globe" },
+  { chemin: "/jeux/quiz_conjugaison", libelle: "Conjugaison", icone: "type" },
+  { chemin: "/jeux/quiz_feminin_noms", libelle: "Féminin des Noms", icone: "gender-female" },
+  { chemin: "/jeux/quiz_pluriel_noms", libelle: "Pluriel des Noms", icone: "grid" },
+  { chemin: "/jeux/quiz_emploi_articles", libelle: "Emploi des Articles", icone: "file-text" },
+  { chemin: "/jeux/quiz_accord_participe_passe", libelle: "Accord Participe Passé", icone: "pencil-square" },
+];
 
-
-
-
-
-
-
-
-
-
-
-        
-                <i className="bi bi-controller text-warning me-2"></i>Jeux Quiz
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Dropdown.Item><Link to="/jeux/quiz_math" className="dropdown-item">📐 Quiz Math</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/culture_generale" className="dropdown-item">🌍 Culture Générale</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_physique" className="dropdown-item">🔬 Quiz Physique</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_biologie" className="dropdown-item">🧬 Quiz Biologie</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_chimie" className="dropdown-item">⚗️ Quiz Chimie</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_histoire" className="dropdown-item">🏛️ Quiz Histoire</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_geographie" className="dropdown-item">🗺️ Quiz Géographie</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_informatique" className="dropdown-item">💻 Quiz Informatique</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_comptabilite" className="dropdown-item">📊 Quiz Comptabilité</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_litterature" className="dropdown-item">📖 Quiz Littérature</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_geographie_humaine" className="dropdown-item">🌎 Géographie Humaine</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_science_vie_et_terre" className="dropdown-item">🌱 SVT</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_mathematiques_avancees" className="dropdown-item">➗ Maths Avancées</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_education_civique_et_morale" className="dropdown-item">⚖️ Éducation Civique</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_conjugaison" className="dropdown-item">✍️ Conjugaison</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_feminin_noms" className="dropdown-item">♀️ Féminin des Noms</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_pluriel_noms" className="dropdown-item">🔢 Pluriel des Noms</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_emploi_articles" className="dropdown-item">📜 Emploi des Articles</Link></Dropdown.Item>
-                <Dropdown.Item><Link to="/jeux/quiz_accord_participe_passe" className="dropdown-item">✅ Accord Participe Passé</Link></Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>);
-
-};
+const QuizDropdown = () => (
+  <Dropdown className="nav-item dropdown mt-2 mb-2">
+    <Dropdown.Toggle className="nav-link quiz-dropdown-toggle">
+      <i className="bi bi-controller me-2" />
+      Jeux Quiz
+    </Dropdown.Toggle>
+    <Dropdown.Menu className="quiz-dropdown-menu">
+      {quiz.map((item) => (
+        <Dropdown.Item key={item.chemin} as="div">
+          <Link to={item.chemin} className="dropdown-item quiz-dropdown-item">
+            <i className={`bi bi-${item.icone}`} />
+            <span>{item.libelle}</span>
+          </Link>
+        </Dropdown.Item>
+      ))}
+    </Dropdown.Menu>
+  </Dropdown>
+);
 
 export default QuizDropdown;

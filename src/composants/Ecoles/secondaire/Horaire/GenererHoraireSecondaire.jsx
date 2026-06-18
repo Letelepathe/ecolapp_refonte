@@ -162,36 +162,36 @@ const GenererHoraireSecondaire = () => {
 
   const handlePrint = () => window.print();
 
-  const styles = {
-    container: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
-      backgroundColor: "#f8f9fa",
-      padding: "10px",
-      boxSizing: "border-box"
-    },
-    header: {
-      position: "fixed",
-      top: "0",
-      left: "0",
-      width: "100%",
-      padding: "5px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      backgroundColor: "#fff",
-      zIndex: "10"
-    },
-    pageTitle: {
-      color: "#1769ff",
-      fontSize: "1.5rem",
-      fontWeight: "bold",
-      textAlign: "center"
-    }
-  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   if (loading) {
     return (
@@ -206,7 +206,7 @@ const GenererHoraireSecondaire = () => {
 
   return (
     <div className="container mt-4">
-      <div style={styles.header} className="no-print">
+      <div className="no-print style-fr-4cfb5508">
         <button
 
           onClick={() => navigate(-1)} className="u-style-ce53d055">

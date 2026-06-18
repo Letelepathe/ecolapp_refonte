@@ -21,26 +21,6 @@ const Admins = () => {
 
   return (
     <section id="trainers" className="section trainers">
-      <style>{`
-        .member-info {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: space-between;
-          height: 100%;
-        }
-
-        .member-info h6 {
-          flex: 1;
-          margin-bottom: 10px;
-          text-align: center;
-        }
-
-        .member-info .btn {
-          margin-top: auto;
-          width: 100%;
-        }
-      `}</style>
       <div className="container">
         <h6 className="text-center">Admins</h6>
         <div className="row gy-5">
@@ -48,7 +28,7 @@ const Admins = () => {
           <div className="col-lg-6 col-md-6 col-12 py-2" key={admin.id}>
               <div className=' shadow bg-white justify-content-center align-items-center py-2'>
                
-                <div className="member-info text-center p-3">
+                <div className="admin-membre-info member-info text-center p-3">
                   <img
                   src={`https://api.ecolapp.cd/public/imgUser/${admin.file}`}
                   className="justify-content-center align-items-center u-style-c01683e6"

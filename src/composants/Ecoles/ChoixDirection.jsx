@@ -1,124 +1,80 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-const ChoixDirection = () => {
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { Helmet } from "react-helmet";
+import { FiArrowRight, FiBookOpen, FiHome, FiUsers } from "react-icons/fi";
 
+const directions = [
+  { chemin: "maternelle", titre: "Maternelle", description: "Espace adapté aux premières classes.", icone: FiHome },
+  { chemin: "primaire", titre: "Primaire", description: "Suivi scolaire et administratif du primaire.", icone: FiBookOpen },
+  { chemin: "secondaire", titre: "Secondaire", description: "Gestion complète des classes secondaires.", icone: FiUsers },
+];
+
+const ChoixDirection = () => {
   const [ecole, setEcole] = useState(null);
+  const [erreur, setErreur] = useState("");
   const { id_ecole, ecole_name } = useParams();
 
   useEffect(() => {
-    const fetchInfoEcole = async () => {
+    localStorage.setItem("ecole_id", id_ecole);
+
+    const chargerInfoEcole = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${id_ecole}`);
-        setEcole(response.data.ecole);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des informations:", error);
+        const reponse = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${id_ecole}`);
+        setEcole(reponse.data.ecole);
+      } catch {
+        setErreur("Impossible de charger les informations de l'école.");
       }
     };
 
-    fetchInfoEcole();
+    chargerInfoEcole();
   }, [id_ecole]);
 
-  if (!ecole) {
-    return (
-      <div className="spinner"></div>);
-
+  if (erreur) {
+    return <div className="page-ecoles-etat erreur">{erreur}</div>;
   }
-  // Stocker id de l''ecole dans le localStorage
-  localStorage.setItem('ecole_id', id_ecole);
+
+  if (!ecole) {
+    return <div className="spinner"></div>;
+  }
 
   return (
-    <div className="u-style-4c53c2ce">
-           <section className="bg-light">
-             
-             <div className="container">
-               <div className="row gy-4 u-style-63b79a97">
-                  <h2 className="u-style-3959a91c">
-                   {ecole.name}
-                  </h2>
-                  <div className="justify-content-center text-center align-items-center">
-                    <img
-                src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`}
-                alt="ecolapp"
-                className="img-fluid-1 img_index" />
-              
-                  </div>
-                 {/* Maternelle */}
-                 <div className="col-xl-4 col-lg-4 col-md-6 d-flex justify-content-center text-center align-items-center">
-                   <div className="feature-box blue" style={cardStyle}>
-                     <div className="icon flex-shrink-0" style={iconStyle}>
-                       <i className="bi bi-eject icon"></i>
-                     </div>
-                     <h4 className="title">Maternelle</h4>
-                    
-                     <Link to={`/maternelle?${ecole_name}`} className="btn" style={btnStyle}>
-                       Explorer
-                     </Link>
-                   </div>
-                 </div>
-     
-                 {/* Primaire */}
-                 <div className="col-xl-4 col-lg-4 col-md-6 d-flex justify-content-center text-center align-items-center">
-                   <div className="feature-box blue" style={cardStyle}>
-                     <div className="icon flex-shrink-0" style={iconStyle}>
-                       <i className="bi bi-eject icon"></i>
-                     </div>
-                     <h4 className="title">Primaire</h4>
-                     
-                     <Link to={`/primaire?${ecole_name}`} className="btn" style={btnStyle}>
-                       Explorer
-                     </Link>
-                   </div>
-                 </div>
-     
-                 {/* Secondaire */}
-                 <div className="col-xl-4 col-lg-4 col-md-6 d-flex justify-content-center text-center align-items-center">
-                   <div className="feature-box blue" style={cardStyle}>
-                     <div className="icon flex-shrink-0" style={iconStyle}>
-                       <i className="bi bi-eject icon"></i>
-                     </div>
-                     <h4 className="title">Secondaire</h4>
-                    
-                     <Link to={`/secondaire?${ecole_name}`} className="btn" style={btnStyle}>
-                       Explorer
-                     </Link>
-                   </div>
-                 </div>
-     
-               </div>
-             </div>
-           </section>
-         </div>);
+    <main className="direction-page">
+      <Helmet>
+        <title>{ecole.name} | Directions</title>
+      </Helmet>
 
+      <section className="direction-hero">
+        <div className="direction-image">
+          <img src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`} alt={ecole.name} />
+        </div>
+        <div className="direction-texte">
+          <span>École sélectionnée</span>
+          <h1>{ecole.name}</h1>
+          <p>{ecole.adresse || "Choisissez la direction scolaire à ouvrir pour continuer dans Ecolapp."}</p>
+        </div>
+      </section>
 
+      <section className="direction-grille">
+        {directions.map((direction) => {
+          const Icone = direction.icone;
+
+          return (
+            <Link key={direction.chemin} to={`/${direction.chemin}?${ecole_name}`} className="direction-card">
+              <span className="direction-card-icone">
+                <Icone />
+              </span>
+              <strong>{direction.titre}</strong>
+              <p>{direction.description}</p>
+              <em>
+                Explorer <FiArrowRight />
+              </em>
+            </Link>
+          );
+        })}
+      </section>
+    </main>
+  );
 };
 
-const cardStyle = {
-  padding: '20px',
-  borderRadius: '10px',
-  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-  background: '#f8f9fa',
-  width: '100%',
-  maxWidth: '350px'
-};
-
-const iconStyle = {
-  fontSize: '30px',
-  color: '#1769ff',
-  marginBottom: '10px'
-};
-
-
-
-const btnStyle = {
-  padding: '12px',
-  borderRadius: '30px',
-  background: '#1769ff',
-  color: '#fff',
-  textDecoration: 'none',
-  display: 'inline-block',
-  width: '100%',
-  marginTop: '10px'
-};
 export default ChoixDirection;

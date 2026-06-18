@@ -132,8 +132,7 @@ const DetailsInfoEleveInscritsecondaire = () => {
           
 
           {/* Footer */}
-          <fieldset className="info-eleve-fieldset">
-            {/* <p className='text-center' style={{fontWeight:'bolder'}}>Code de confirmation :  </p> */}
+          <fieldset className="info-eleve-fieldset">
             <p className="info-eleve-legend">Année scolaire : {eleve.annee.name}</p>
           </fieldset>
         </div>

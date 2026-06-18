@@ -1,47 +1,51 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ListeQuiz = () => {
-  return (
-    <div className="container mt-5">
-      <h2 className="text-center text-primary mb-4">📚 Jeux Quiz</h2>
+const quiz = [
+  { chemin: "/jeux/quiz_math", libelle: "Mathématiques", icone: "calculator" },
+  { chemin: "/jeux/culture_generale", libelle: "Culture Générale", icone: "globe" },
+  { chemin: "/jeux/quiz_physique", libelle: "Physique", icone: "lightning" },
+  { chemin: "/jeux/quiz_biologie", libelle: "Biologie", icone: "heart-pulse" },
+  { chemin: "/jeux/quiz_chimie", libelle: "Chimie", icone: "activity" },
+  { chemin: "/jeux/quiz_histoire", libelle: "Histoire", icone: "book" },
+  { chemin: "/jeux/quiz_geographie", libelle: "Géographie", icone: "map" },
+  { chemin: "/jeux/quiz_informatique", libelle: "Informatique", icone: "cpu" },
+  { chemin: "/jeux/quiz_comptabilite", libelle: "Comptabilité", icone: "cash" },
+  { chemin: "/jeux/quiz_litterature", libelle: "Littérature", icone: "pen" },
+  { chemin: "/jeux/quiz_geographie_humaine", libelle: "Géo Humaine", icone: "people" },
+  { chemin: "/jeux/quiz_science_vie_et_terre", libelle: "Science de la vie et terre", icone: "tree" },
+  { chemin: "/jeux/quiz_mathematiques_avancees", libelle: "Maths Avancées", icone: "braces" },
+  { chemin: "/jeux/quiz_education_civique_et_morale", libelle: "Civique & Morale", icone: "globe" },
+  { chemin: "/jeux/quiz_conjugaison", libelle: "Conjugaison", icone: "type" },
+  { chemin: "/jeux/quiz_feminin_noms", libelle: "Féminin des Noms", icone: "gender-female" },
+  { chemin: "/jeux/quiz_pluriel_noms", libelle: "Pluriel des Noms", icone: "grid" },
+  { chemin: "/jeux/quiz_emploi_articles", libelle: "Articles", icone: "file-text" },
+  { chemin: "/jeux/quiz_accord_participe_passe", libelle: "Participe Passé", icone: "pencil-square" },
+];
 
-      <div className=" row">
-        <QuizCard path="/jeux/quiz_math" label="Mathématiques" icon="calculator" />
-        <QuizCard path="/jeux/culture_generale" label="Culture Générale" icon="globe" />
-        <QuizCard path="/jeux/quiz_physique" label="Physique" icon="lightning" />
-        <QuizCard path="/jeux/quiz_biologie" label="Biologie" icon="heart-pulse" />
-        <QuizCard path="/jeux/quiz_chimie" label="Chimie" icon="activity" />
-        <QuizCard path="/jeux/quiz_histoire" label="Histoire" icon="book" />
-        <QuizCard path="/jeux/quiz_geographie" label="Géographie" icon="map" />
-        <QuizCard path="/jeux/quiz_informatique" label="Informatique" icon="cpu" />
-        <QuizCard path="/jeux/quiz_comptabilite" label="Comptabilité" icon="cash" />
-        <QuizCard path="/jeux/quiz_litterature" label="Littérature" icon="pen" />
-        <QuizCard path="/jeux/quiz_geographie_humaine" label="Géo Humaine" icon="people" />
-        <QuizCard path="/jeux/quiz_science_vie_et_terre" label="Science de la vie et terre" icon="tree" />
-        <QuizCard path="/jeux/quiz_mathematiques_avancees" label="Maths Avancées" icon="braces" />
-        <QuizCard path="/jeux/quiz_education_civique_et_morale" label="Civique & Morale" icon="globe" />
-        <QuizCard path="/jeux/quiz_conjugaison" label="Conjugaison" icon="type" />
-        <QuizCard path="/jeux/quiz_feminin_noms" label="Féminin des Noms" icon="gender-female" />
-        <QuizCard path="/jeux/quiz_pluriel_noms" label="Pluriel des Noms" icon="grid" />
-        <QuizCard path="/jeux/quiz_emploi_articles" label="Articles" icon="file-text" />
-        <QuizCard path="/jeux/quiz_accord_participe_passe" label="Participe Passé" icon="pencil-square" />
-      </div>
-    </div>
-  );
-};
+const ListeQuiz = () => (
+  <main className="quiz-page">
+    <section className="quiz-entete">
+      <span>Jeux éducatifs</span>
+      <h2>Jeux Quiz</h2>
+      <p>Révisez les matières dans une interface claire, cohérente avec le nouveau design Ecolapp.</p>
+    </section>
 
-const QuizCard = ({ path, label, icon }) => {
-  return (
-    <div className="col-lg-4 col-md-6 col-12">
-      <Link to={path} className="text-decoration-none w-100">
-        <div className="quiz-card p-3 mb-3 mx-auto d-flex align-items-center shadow-sm rounded">
-          <i className={`bi bi-${icon} text-primary`} style={{ fontSize: "2rem", minWidth: "50px" }}></i>
-          <h5 className="mb-0 ms-3 text-dark">{label}</h5>
-        </div>
-      </Link>
-    </div>
-  );
-};
+    <section className="quiz-grille">
+      {quiz.map((item) => (
+        <QuizCard key={item.chemin} chemin={item.chemin} libelle={item.libelle} icone={item.icone} />
+      ))}
+    </section>
+  </main>
+);
+
+const QuizCard = ({ chemin, libelle, icone }) => (
+  <Link to={chemin} className="quiz-card">
+    <span className="quiz-card-icone">
+      <i className={`bi bi-${icone}`} />
+    </span>
+    <strong>{libelle}</strong>
+  </Link>
+);
 
 export default ListeQuiz;

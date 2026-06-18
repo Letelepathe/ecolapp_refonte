@@ -19,60 +19,20 @@ const Avantages = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Définition des styles
-  const styles = {
-    hero: {
-      marginTop: windowWidth < 986 ? "-20px" : "30px"
-    },
-    sectionContent: {
-      borderRadius: "15px",
-      backgroundColor: "#ffffff",
-      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-      padding: "30px",
-      fontFamily: "'Roboto', sans-serif",
-      color: "#333333",
-      lineHeight: "1.8",
-      fontSize: "16px"
-    },
-    heading: {
-      fontWeight: "bold",
-      color: "#0d83fd"
-    },
-    statContent: {
-      fontWeight: "bold",
-      color: "#0d83fd"
-    },
-    imageStyle: {
-      objectFit: "cover",
-      borderRadius: "10px",
-      height: "400px",
-      marginBottom: "10px"
-    },
-    btnPrimary: {
-      padding: "12px 20px",
-      fontSize: "16px",
-      fontWeight: "bold",
-      textDecoration: "none",
-      color: "#fff",
-      backgroundColor: "#0d83fd",
-      transition: "all 0.3s ease-in-out"
-    }
-  };
-
   return (
-    <section id="hero" className="hero section " style={styles.hero}>
+    <section id="hero" className={`hero section ${windowWidth < 986 ? "services-hero-compact" : "services-hero-large"}`}>
       <div className="container">
         <h2 data-aos="fade-up" className="u-style-e0462fed">
           Pourquoi choisir ecolapp ?
         </h2>
         <div className="row stats-row gy-4 mt-5">
           <div className="col-lg-3 col-md-6" data-aos="fade-right">
-            <div className="stat-item" style={styles.sectionContent}>
+            <div className="stat-item style-fr-a659ffe5">
               <div className="stat-icon u-style-4a3180e2">
                 <i className="bi bi-clipboard-data u-style-cc26a7ff"></i>
               </div>
               <div className="stat-content">
-                <h4 style={styles.heading}>Solution complète</h4>
+                <h4 className="style-fr-e4b453bf">Solution complète</h4>
                 <p className="mb-0">
                   ecolapp centralise tous les aspects de la gestion scolaire et de l'apprentissage en ligne.
                 </p>
@@ -80,12 +40,12 @@ const Avantages = () => {
             </div>
           </div>
           <div className="col-lg-3 col-md-6" data-aos="fade-right">
-            <div className="stat-item" style={styles.sectionContent}>
+            <div className="stat-item style-fr-a659ffe5">
               <div className="stat-icon u-style-4a3180e2">
                 <i className="bi bi-activity u-style-cc26a7ff"></i>
               </div>
               <div className="stat-content">
-                <h4 style={styles.heading}>Accessibilité</h4>
+                <h4 className="style-fr-e4b453bf">Accessibilité</h4>
                 <p className="mb-0">
                   Utilisez ecolapp sur tous vos appareils, avec ou sans connexion Internet.
                 </p>
@@ -93,23 +53,23 @@ const Avantages = () => {
             </div>
           </div>
           <div className="col-lg-3 col-md-6" data-aos="fade-left">
-            <div className="stat-item" style={styles.sectionContent}>
+            <div className="stat-item style-fr-a659ffe5">
               <div className="stat-icon u-style-4a3180e2">
                 <i className="bi bi-eject u-style-cc26a7ff"></i>
               </div>
               <div className="stat-content">
-                <h4 style={styles.heading}>Facilité d'utilisation</h4>
+                <h4 className="style-fr-e4b453bf">Facilité d'utilisation</h4>
                 <p className="mb-0">Une interface intuitive pour les enseignants, les élèves et les parents.</p>
               </div>
             </div>
           </div>
           <div className="col-lg-3 col-md-6" data-aos="fade-left">
-            <div className="stat-item" style={styles.sectionContent}>
+            <div className="stat-item style-fr-a659ffe5">
               <div className="stat-icon u-style-4a3180e2">
                 <i className="bi bi-award u-style-cc26a7ff"></i>
               </div>
               <div className="stat-content">
-                <h4 style={styles.heading}>Soutien aux écoles</h4>
+                <h4 className="style-fr-e4b453bf">Soutien aux écoles</h4>
                 <p className="mb-0">ecolapp facilite l'adoption de solutions numériques pour les écoles de toutes tailles.</p>
               </div>
             </div>

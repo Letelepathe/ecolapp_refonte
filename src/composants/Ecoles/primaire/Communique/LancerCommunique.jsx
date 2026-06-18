@@ -130,9 +130,9 @@ const LancerCommunique = () => {
                       {errors.file && <p className="text-danger">{errors.file}</p>}
                     </div>
                     <div className="d-grid">
-                      <button className={`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} type="submit"
-                      disabled={isLoading}
-                      style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}>
+                      <button className={`${`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} style-fr-1cda1bca`} type="submit"
+                      disabled={isLoading}>
+
                         
                           {isLoading ? "Lancement en cours..." : "Lancer"}
                       </button>

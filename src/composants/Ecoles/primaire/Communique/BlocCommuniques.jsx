@@ -69,28 +69,28 @@ const BlocCommunique = () => {
   };
 
   return (
-    <section id="recent-blog-posts" className="recent-blog-posts" style={styles.section}>
-      <div className="container" style={styles.container}>
-        <header className="section-header" style={styles.header}>
-          <h2 style={styles.title}>Récents communiqués</h2>
-          <p style={styles.subtitle}>Consultez les derniers communiqués publiés</p>
+    <section id="recent-blog-posts" className="recent-blog-posts style-fr-9154d2f1">
+      <div className="container style-fr-e3be8514">
+        <header className="section-header style-fr-acd9cd3f">
+          <h2 className="style-fr-8220acb0">Récents communiqués</h2>
+          <p className="style-fr-e0f9c1b7">Consultez les derniers communiqués publiés</p>
         </header>
-        <div className="row" style={styles.row}>
+        <div className="row style-fr-d30a787e">
           {communiques.map((communique) =>
-          <div className="col-lg-4" key={communique.id} style={styles.cardContainer}>
-              <div className="post-box" style={styles.card}>
-                <div className="post-img" style={styles.imageContainer}>
+          <div className="col-lg-4 style-fr-30833e3c" key={communique.id}>
+              <div className="post-box style-fr-750a7b6f">
+                <div className="post-img style-fr-57927591">
                   {renderFile(communique.file)}
                 </div>
-                <span className="post-date" style={styles.date}>
+                <span className="post-date style-fr-e3c17ed8">
                   {new Date(communique.created_at).toLocaleDateString("fr-FR", {
                   weekday: "long",
                   month: "long",
                   day: "numeric"
                 })}
                 </span>
-                <h3 className="post-title" style={styles.cardTitle}>{communique.title}</h3>
-                <p style={styles.cardText}>{truncateText(communique.content, 80)}</p>
+                <h3 className="post-title style-fr-904e29ff">{communique.title}</h3>
+                <p className="style-fr-158731af">{truncateText(communique.content, 80)}</p>
                 <div className="text-center">
                   <Link className="btn btn-white text-white w-100 u-style-77fdd8b0" to={`/primaire/details-communique/${communique.id}`}>Lire plus <i className="bi bi-arrow-right"></i> </Link>
                 </div>
@@ -103,75 +103,75 @@ const BlocCommunique = () => {
 
 };
 
-const styles = {
-  section: {
-    padding: "60px 0",
-    background: "#f8f9fa"
-  },
-  container: {
-    maxWidth: "1140px",
-    margin: "0 auto"
-  },
-  header: {
-    textAlign: "center",
-    marginBottom: "40px"
-  },
-  title: {
-    fontSize: "28px",
-    fontWeight: "600",
-    color: "#333"
-  },
-  subtitle: {
-    fontSize: "16px",
-    color: "#777"
-  },
-  row: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "20px"
-  },
-  cardContainer: {
-    flex: "1 1 calc(33.333% - 20px)" // 3 cartes par ligne
-  },
-  card: {
-    background: "#fff",
-    borderRadius: "8px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    padding: "20px",
-    transition: "transform 0.2s, box-shadow 0.2s"
-  },
-  cardHover: {
-    transform: "translateY(-10px)",
-    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)"
-  },
-  imageContainer: {
-    marginBottom: "15px",
-    overflow: "hidden",
-    borderRadius: "8px"
-  },
-  date: {
-    fontSize: "14px",
-    color: "#666",
-    marginBottom: "10px",
-    display: "block"
-  },
-  cardTitle: {
-    fontSize: "20px",
-    fontWeight: "600",
-    color: "#1769ff",
-    marginBottom: "10px"
-  },
-  cardText: {
-    fontSize: "14px",
-    color: "#555",
-    marginBottom: "20px"
-  },
-  readMoreLink: {
-    fontSize: "14px",
-    color: "#1769ff",
-    textDecoration: "none",
-    fontWeight: "600"
-  }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default BlocCommunique;

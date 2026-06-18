@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 
-const FormContact = ({ecole}) => {
+const FormContact = ({ ecole }) => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
   const [isLoading, setIsLoading] = useState(false);
@@ -12,8 +12,8 @@ const FormContact = ({ecole}) => {
     mail: '',
     sujet: '',
     message: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
 
   const [errors, setErrors] = useState({});
@@ -25,7 +25,7 @@ const FormContact = ({ecole}) => {
       ...formData,
       [name]: value
     });
-  }; 
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -42,10 +42,10 @@ const FormContact = ({ecole}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage('');
-    setIsLoading(true); 
+    setIsLoading(true);
 
     if (!validateForm()) {
-      setIsLoading(false); 
+      setIsLoading(false);
       return;
     }
 
@@ -58,16 +58,16 @@ const FormContact = ({ecole}) => {
 
       if (response.data.status === 200) {
         setSuccessMessage("Votre message a été envoyé avec succès !");
-        setFormData({ nom: '', prenom: '', mail: '', sujet: '', message: '', ecole_id: ecole_id, direction : direction });
+        setFormData({ nom: '', prenom: '', mail: '', sujet: '', message: '', ecole_id: ecole_id, direction: direction });
         setErrors({});
       } else {
         setErrors({ form: "Une erreur s'est produite lors de l'envoi du message." });
       }
     } catch (error) {
-      setFormData({ nom: '', prenom: '', mail: '', sujet: '', message: '', ecole_id : ecole_id, direction : direction });
+      setFormData({ nom: '', prenom: '', mail: '', sujet: '', message: '', ecole_id: ecole_id, direction: direction });
       setErrors({ form: "Impossible d'envoyer le message pour le moment." });
-    }finally{
-      setIsLoading(false); 
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -123,8 +123,8 @@ const FormContact = ({ecole}) => {
                     <a
                       href={`mailto:${ecole.email}`}
                       target="_blank"
-                      rel="noreferrer"
-                    >
+                      rel="noreferrer">
+                      
                       {ecole.email}
                     </a>
                   </p>
@@ -152,20 +152,20 @@ const FormContact = ({ecole}) => {
                       className="form-control"
                       value={formData.nom}
                       onChange={handleChange}
-                      required
-                    />
+                      required />
+                    
                     {errors.name && <p className="text-danger">{errors.name}</p>}
                   </div>
                   <div className="col-md-6 col-6">
-                    <input 
+                    <input
                       type="text"
                       name="prenom"
                       placeholder="Prénom"
                       className="form-control"
                       value={formData.prenom}
                       onChange={handleChange}
-                      required
-                    />
+                      required />
+                    
                     {errors.prenom && <p className="text-danger">{errors.prenom}</p>}
                   </div>
                   <div className="col-md-12">
@@ -176,8 +176,8 @@ const FormContact = ({ecole}) => {
                       className="form-control"
                       value={formData.mail}
                       onChange={handleChange}
-                      required
-                    />
+                      required />
+                    
                     {errors.mail && <p className="text-danger">{errors.mail}</p>}
                   </div>
                   <div className="col-md-12">
@@ -188,8 +188,8 @@ const FormContact = ({ecole}) => {
                       className="form-control"
                       value={formData.sujet}
                       onChange={handleChange}
-                      required
-                    />
+                      required />
+                    
                     {errors.sujet && <p className="text-danger">{errors.sujet}</p>}
                   </div>
                   <div className="col-md-12">
@@ -199,27 +199,27 @@ const FormContact = ({ecole}) => {
                       rows="4"
                       className="form-control"
                       value={formData.message}
-                      onChange={handleChange}    
-                      required
-                    ></textarea>
+                      onChange={handleChange}
+                      required>
+                    </textarea>
                     {errors.message && <p className="text-danger">{errors.message}</p>}
                   </div>
                   <div className="text-center">
-                    <button 
-                      disabled={isLoading} 
-                      type="submit" 
-                      className={`btn btn-white w-100 ${isLoading ? "loading" : ""}`} 
-                      style={{
-                        padding: '13px',
-                        borderRadius: '30px',
-                        background: '#1769ff',
-                        color: '#fff',
-                        textAlign: 'center', 
-                        display: 'flex', 
-                        justifyContent: 'center', 
-                        alignItems: 'center',
-                      }}
-                    >
+                    <button
+                      disabled={isLoading}
+                      type="submit"
+                      className={`${`btn btn-white w-100 ${isLoading ? "loading" : ""}`} style-fr-375519ee`}>
+
+
+
+
+
+
+
+
+
+
+                      
                       {isLoading ? "Envoi en cours..." : "Envoyer message"}
                     </button>
 
@@ -237,41 +237,10 @@ const FormContact = ({ecole}) => {
           </div>
         </div>
       </div>
-      <style jsx>
-        {`
-        .loading {
-          position: relative;
-          pointer-events: none;
-          cursor: not-allowed;
-        }
-
-        .loading::after {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 20px;
-          height: 20px;
-          border: 2px solid transparent;
-          border-top-color: white;
-          border-radius: 50%;
-          animation: spin 0.6s linear infinite;
-          transform: translate(-50%, -50%);
-        }
-
-        @keyframes spin {
-          from {
-              transform: translate(-50%, -50%) rotate(0deg);
-          }
-          to {
-              transform: translate(-50%, -50%) rotate(360deg);
-          }
-        }
-        `}
-      </style>
+      
   
-    </section>
-  );
+    </section>);
+
 };
 
 export default FormContact;
