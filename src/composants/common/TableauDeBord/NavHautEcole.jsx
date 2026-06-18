@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import NavHautDashboard from "../common/TableauDeBord/NavHautDashboard";
+import NavHautDashboard from "./NavHautDashboard";
 
-const NavbarTop = () => {
+const NavHautEcole = ({ cycle }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -34,12 +34,12 @@ const NavbarTop = () => {
   return (
     <NavHautDashboard
       user={user}
-      accueil="/admin-general/bureau_admin"
-      profil={`/admin-general/profil_admin/${user.id || ""}`}
-      deconnexion="/admin-general/deconnexion"
+      accueil={`/${cycle}/bureau_admin`}
+      profil={`/${cycle}/mon_profil/${user.id || ""}`}
+      deconnexion={`/${cycle}/deconnexion`}
       titreCourt="GLearn"
     />
   );
 };
 
-export default NavbarTop;
+export default NavHautEcole;

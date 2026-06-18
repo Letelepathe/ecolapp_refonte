@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import LogoEcolapp from "../../static/images/logo_ecolapp.jpg";
-import BarreLaterale from "../common/TableauDeBord/BarreLaterale";
-import { menusAdminGeneral } from "../common/TableauDeBord/menusTableauBord";
+import LogoEcolapp from "../../../static/images/logo_ecolapp.jpg";
+import BarreLaterale from "./BarreLaterale";
+import { menusEcole } from "./menusTableauBord";
 
 const rolesAdmin = [
   "Administrateur",
@@ -12,7 +12,7 @@ const rolesAdmin = [
   "Super Administratrice",
 ];
 
-const SidebarLeft = () => {
+const SidebarEcole = ({ cycle, titreCycle }) => {
   const [user, setUser] = useState(null);
   const id = localStorage.getItem("userId");
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const SidebarLeft = () => {
           setUser(userApi);
 
           if (!rolesAdmin.includes(userApi.fonction?.name) && !rolesAdmin.includes(userApi.role)) {
-            navigate("/admin-general/login");
+            navigate(`/${cycle}/login`);
           }
         }
       } catch (erreur) {
@@ -36,27 +36,25 @@ const SidebarLeft = () => {
     };
 
     if (!id) {
-      navigate("/admin-general/login");
+      navigate(`/${cycle}/login`);
       return;
     }
 
     chargerUser();
-  }, [id, navigate]);
+  }, [cycle, id, navigate]);
 
   if (!user) return <div className="spinner"></div>;
 
-  const peutGererAdmins = rolesAdmin.includes(user.fonction?.name) || rolesAdmin.includes(user.role);
-
   return (
     <BarreLaterale
-      accueil="/admin-general/bureau_admin"
+      accueil={`/${cycle}/bureau_admin`}
       titre="GLearn"
-      sousTitre="Admin Général"
-      menus={menusAdminGeneral(peutGererAdmins)}
+      sousTitre={titreCycle}
+      menus={menusEcole(cycle)}
       user={user}
       logo={LogoEcolapp}
     />
   );
 };
 
-export default SidebarLeft;
+export default SidebarEcole;

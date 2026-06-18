@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Helmet } from "react-helmet";
-import { FiHome, FiLayers, FiMap, FiShield } from "react-icons/fi";
-import SidebarLeft from "./SidebarLeft";
-import NavbarTop from "./NavbarTop";
-import Footer from "./Footer";
-import Statistique from "./Statistique";
-import CarteStat from "../common/TableauDeBord/CarteStat";
-import PanneauDroit from "../common/TableauDeBord/PanneauDroit";
+import { FiBookOpen, FiMessageSquare, FiUserPlus, FiUsers } from "react-icons/fi";
+import CarteStat from "./CarteStat";
+import PanneauDroit from "./PanneauDroit";
 
 const rolesAdmin = [
   "Administrateur",
@@ -17,17 +13,17 @@ const rolesAdmin = [
   "Super Administratrice",
 ];
 
-const BureauAdminGeneral = () => {
+const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admins, ListeAbonne, Statistique }) => {
   const ecoleId = localStorage.getItem("ecole_id");
   const direction = localStorage.getItem("direction");
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const id = localStorage.getItem("userId");
   const [counts, setCounts] = useState({
-    nombre_admins_generaux: 0,
-    nombre_provinces: 0,
-    nombre_provinces_educationnelles: 0,
-    nombre_ecoles: 0,
+    nombre_utilisateurs: 0,
+    nombre_enseignants: 0,
+    nombre_eleves: 0,
+    nombre_communiques: 0,
   });
 
   useEffect(() => {
@@ -40,7 +36,7 @@ const BureauAdminGeneral = () => {
           setUser(userApi);
 
           if (!rolesAdmin.includes(userApi.fonction?.name) && !rolesAdmin.includes(userApi.role)) {
-            navigate("/admin-general/profil_admin");
+            navigate(`/${cycle}/profil_user`);
           }
         }
       } catch (erreur) {
@@ -49,18 +45,18 @@ const BureauAdminGeneral = () => {
     };
 
     if (!id) {
-      navigate("/admin-general/login");
+      navigate(`/${cycle}/login`);
       return;
     }
 
     chargerUser();
-  }, [id, navigate]);
+  }, [cycle, id, navigate]);
 
   useEffect(() => {
     const chargerStats = async () => {
       try {
         const response = await axios.get(
-          `https://api.ecolapp.cd/api/user/countAdminGeneral/ecole/${ecoleId}/direction/${direction}`
+          `https://api.ecolapp.cd/api/user/countAdmin/ecole/${ecoleId}/direction/${direction}`
         );
         setCounts(response.data);
       } catch (erreur) {
@@ -76,7 +72,7 @@ const BureauAdminGeneral = () => {
   return (
     <div className="refonte-shell">
       <Helmet>
-        <title>Administration générale</title>
+        <title>{titre} | Admin</title>
       </Helmet>
       <div className="container-fluid position-relative d-flex p-0 refonte-shell">
         <SidebarLeft />
@@ -85,31 +81,46 @@ const BureauAdminGeneral = () => {
           <main className="dashboard-page">
             <div className="dashboard-hero">
               <div>
-                <h1>Administration générale</h1>
-                <p>Bienvenue, voici le résumé global de la plateforme.</p>
+                <h1>Administration {titre}</h1>
+                <p>Bienvenue, voici ce qui se passe aujourd’hui dans votre école.</p>
               </div>
-              <span className="dashboard-pill">Vue générale</span>
+              <span className="dashboard-pill">Cycle {titre}</span>
             </div>
 
             <div className="dashboard-main-grid">
               <div>
                 <div className="dashboard-stat-grid">
-                  <CarteStat titre="Admins" valeur={counts.nombre_admins_generaux} lien="/admin-general/liste_admins_generaux" icone={FiShield} />
-                  <CarteStat titre="Provinces" valeur={counts.nombre_provinces} lien="/admin-general/liste_province" icone={FiMap} ton="bleu" />
-                  <CarteStat titre="Prov. éducationnelles" valeur={counts.nombre_provinces_educationnelles} lien="/admin-general/liste_province_educationnelle" icone={FiLayers} ton="jaune" />
-                  <CarteStat titre="Écoles" valeur={counts.nombre_ecoles} lien="/admin-general/liste_ecole" icone={FiHome} ton="rouge" />
+                  <CarteStat titre="Utilisateurs" valeur={counts.nombre_utilisateurs} lien={`/${cycle}/membres_inscrits`} icone={FiUsers} />
+                  <CarteStat titre="Enseignants" valeur={counts.nombre_enseignants} lien={`/${cycle}/liste_enseignant`} icone={FiUserPlus} ton="bleu" />
+                  <CarteStat titre="Élèves" valeur={counts.nombre_eleves} lien={`/${cycle}/liste_eleve`} icone={FiBookOpen} ton="jaune" />
+                  <CarteStat titre="Communiqués" valeur={counts.nombre_communiques} lien={`/${cycle}/liste_communique`} icone={FiMessageSquare} ton="rouge" />
                 </div>
 
                 <section className="dashboard-card">
                   <Statistique />
                 </section>
+
+                <Infos />
+
+                <div className="row">
+                  <div className="col-lg-6 col-12">
+                    <section className="dashboard-card">
+                      <Admins />
+                    </section>
+                  </div>
+                  <div className="col-lg-6 col-12">
+                    <section className="dashboard-card">
+                      <ListeAbonne />
+                    </section>
+                  </div>
+                </div>
               </div>
 
               <PanneauDroit
                 actions={[
-                  { titre: "Créer une école", detail: "Ajouter une école et son super admin" },
-                  { titre: "Suivre les provinces", detail: "Organisation administrative" },
-                  { titre: "Contrôler les admins", detail: "Rôles et suspensions" },
+                  { titre: "Ajouter des élèves", detail: "Inscription rapide et cartes" },
+                  { titre: "Suivre la présence", detail: "Classes, horaires et cotes" },
+                  { titre: "Encaisser les frais", detail: "Paiements et reçus" },
                 ]}
               />
             </div>
@@ -121,4 +132,4 @@ const BureauAdminGeneral = () => {
   );
 };
 
-export default BureauAdminGeneral;
+export default BureauEcole;
