@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import SidebarLeft from './SidebarLeft';
-import NavbarTop from  './NavbarTop';
+import NavbarTop from './NavbarTop';
 
 const AjouterCote = () => {
   const navigate = useNavigate();
@@ -39,13 +39,13 @@ const AjouterCote = () => {
     const fetchData = async () => {
       try {
         const [eleveRes, periodeRes, coursRes, TypeEpreuve] = await Promise.all([
-          axios.get(`https://api.ecolapp.cd/api/classes/eleves/${classeId}`),
-          axios.get('https://api.ecolapp.cd/api/periode'),
-          axios.get(`http://localhost/ecole-app/apis/getCours`, {
-            withCredentials: true, 
-          }),
-          axios.get('https://api.ecolapp.cd/api/typeTravail'),
-        ]);
+        axios.get(`https://api.ecolapp.cd/api/classes/eleves/${classeId}`),
+        axios.get('https://api.ecolapp.cd/api/periode'),
+        axios.get(`http://localhost/ecole-app/apis/getCours`, {
+          withCredentials: true
+        }),
+        axios.get('https://api.ecolapp.cd/api/typeTravail')]
+        );
 
         if (eleveRes.data.status === 200) {
           setEleves(eleveRes.data.eleves || []);
@@ -106,12 +106,12 @@ const AjouterCote = () => {
       periode_id: e.target.periode.value,
       cours_id: e.target.cours.value,
       type_epreuve: e.target.type_epreuve.value,
-      total_general: totalGeneral,
+      total_general: totalGeneral
     }));
 
     try {
       const response = await axios.post('http://localhost/ecole-app/apis/insertCote', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 'success') {
@@ -130,9 +130,9 @@ const AjouterCote = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container mt-5">
           <h2 className="text-center text-primary">Ajouter des Cotes</h2>
           <form onSubmit={handleSubmit}>
@@ -148,35 +148,35 @@ const AjouterCote = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {eleves.map((eleve) => (
-                      <tr key={eleve.id}>
+                    {eleves.map((eleve) =>
+                    <tr key={eleve.id}>
                         <td>{eleve.name} {eleve.first_name}</td>
                         <td>
                           <input
-                            type="number"
-                            className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
-                            min="0"
-                            onChange={(e) => handleNoteChange(eleve.id, e.target.value)}
-                          />
+                          type="number"
+                          className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
+                          min="0"
+                          onChange={(e) => handleNoteChange(eleve.id, e.target.value)} />
+                        
                         </td>
                         <td>
                           {eleveErrors[eleve.id] && <span className="text-danger">{eleveErrors[eleve.id]}</span>}
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
 
               {/* Formulaire des métadonnées */}
-              <div className="col-lg-4 order-1 order-lg-2" style={{ marginTop: '42px' }}>
+              <div className="col-lg-4 order-1 order-lg-2 u-style-9e2237d1">
                 <div className="mb-3">
                   <label htmlFor="type_epreuve">Type épreuve</label>
                   <select id="type_epreuve" name="type_epreuve" className="form-control">
                     <option value="">Sélectionnez type épreuve</option>
-                    {typeEpreuve.map((epreuve) => (
-                      <option key={epreuve.id} value={epreuve.typeTravail}>{epreuve.name}</option>
-                    ))}
+                    {typeEpreuve.map((epreuve) =>
+                    <option key={epreuve.id} value={epreuve.typeTravail}>{epreuve.name}</option>
+                    )}
                   </select>
                 </div>
                 <div className="mb-3">
@@ -187,25 +187,25 @@ const AjouterCote = () => {
                     id="total_general"
                     name="total_general"
                     value={totalGeneral}
-                    onChange={(e) => setTotalGeneral(e.target.value)}
-                  />
+                    onChange={(e) => setTotalGeneral(e.target.value)} />
+                  
                 </div>
                 <div className="mb-3">
                   <label htmlFor="periode">Période</label>
                   <select id="periode" name="periode" className="form-control">
                     <option value="">Sélectionnez une période</option>
-                    {periodes.map((periode) => (
-                      <option key={periode.id} value={periode.id}>{periode.name}</option>
-                    ))}
+                    {periodes.map((periode) =>
+                    <option key={periode.id} value={periode.id}>{periode.name}</option>
+                    )}
                   </select>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="cours">Cours</label>
                   <select id="cours" name="cours" className="form-control">
                     <option value="">Sélectionnez un cours</option>
-                    {cours.map((cour) => (
-                      <option key={cour.id} value={cour.id}>{cour.name}</option>
-                    ))}
+                    {cours.map((cour) =>
+                    <option key={cour.id} value={cour.id}>{cour.name}</option>
+                    )}
                   </select>
                 </div>
               </div>
@@ -223,8 +223,8 @@ const AjouterCote = () => {
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterCote;

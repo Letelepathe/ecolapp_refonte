@@ -7,7 +7,7 @@ import NavbarTop from "../Users/Profil/NavbarTop";
 import Footer from "../Users/Profil/Footer";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation} from "swiper/modules";
+import { Navigation } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -19,7 +19,7 @@ const MaClasse = () => {
 
   const navigate = useNavigate();
   const [cours_fichier, setCoursFichier] = useState([]);
-  
+
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
   const { id_classe, id_option } = useParams();
@@ -34,7 +34,7 @@ const MaClasse = () => {
   const [selectedCours, setSelectedCours] = useState('');
   const [cotes, setCotes] = useState([]);
   const id = localStorage.getItem("userId");
-  const [selectedCoursVideo, setSelectedCoursVideo] = useState(''); 
+  const [selectedCoursVideo, setSelectedCoursVideo] = useState('');
 
   const [isCoursVideoModalOpen, setIsCoursVideoModalOpen] = useState(false);
 
@@ -49,18 +49,18 @@ const MaClasse = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-          const response = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
+        const response = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
 
-          if (response.status === 200) {
-              setUser(response.data.user);
-          } else {
-              setError(response.data.message);
-          }
+        if (response.status === 200) {
+          setUser(response.data.user);
+        } else {
+          setError(response.data.message);
+        }
       } catch (error) {
-          setError("Erreur lors de la récupération des informations.");
+        setError("Erreur lors de la récupération des informations.");
       }
     };
-    
+
 
     const fetchData = async () => {
       try {
@@ -78,7 +78,7 @@ const MaClasse = () => {
 
         const travailResponse = await axios.get(`https://api.ecolapp.cd/api/travail/classes/classe/${id_classe}/option/${id_option}`);
         setTravaux(travailResponse.data.travaux);
-        console.log(travailResponse.data.travaux);   
+        console.log(travailResponse.data.travaux);
 
         const coursFichierResponse = await axios.get(`https://api.ecolapp.cd/api/coursFichier/classes/classe/${id_classe}/option/${id_option}`);
         setCoursFichier(coursFichierResponse.data.cours);
@@ -102,11 +102,11 @@ const MaClasse = () => {
       }
     };
 
-   
+
     fetchPeriodes();
 
     fetchUser();
-    
+
     fetchData();
   }, [id, id_classe, id_option, ecole_id, direction]);
 
@@ -122,10 +122,10 @@ const MaClasse = () => {
           classe_id: id_classe,
           periode_id: selectedPeriode,
           cours_id: selectedCours,
-          option_id : id_option,
-          ecole_id : ecole_id,
-          direction : direction,
-        },
+          option_id: id_option,
+          ecole_id: ecole_id,
+          direction: direction
+        }
       });
 
       if (response.data.error) {
@@ -151,11 +151,11 @@ const MaClasse = () => {
         <a
           href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${file}`}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
+          
           Voir PDF
-        </a>
-      );
+        </a>);
+
     }
 
     return <div>Aucun fichier trouvé</div>;
@@ -170,14 +170,14 @@ const MaClasse = () => {
 
     if (['mp4', 'avi', 'mkv', 'mov', 'wmv', 'flv'].includes(fileExtension)) {
       return (
-        <video src={`https://api.ecolapp.cd/public/Cours/${file}`} controls style={{height: '200px', width: '200px', objectFit:'cover'}}></video>
-      );
+        <video src={`https://api.ecolapp.cd/public/Cours/${file}`} controls className="u-style-5e4c2cf9"></video>);
+
     }
 
     if (['mp3'].includes(fileExtension)) {
       return (
-        <audio src={`https://api.ecolapp.cd/public/Cours/${file}`} controls style={{height: '200px', width: '200px', objectFit:'cover'}}></audio>
-      );
+        <audio src={`https://api.ecolapp.cd/public/Cours/${file}`} controls className="u-style-5e4c2cf9"></audio>);
+
     }
 
     if (['dox', 'doc', 'pdf'].includes(fileExtension)) {
@@ -185,17 +185,17 @@ const MaClasse = () => {
         <a
           href={`https://api.ecolapp.cd/public/Cours/${file}`}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
+          
           Voir PDF
-        </a>
-      );
+        </a>);
+
     }
 
 
     return (
-      <div>Aucun fichier trouvé</div>
-    );
+      <div>Aucun fichier trouvé</div>);
+
   };
 
   if (error) {
@@ -213,34 +213,34 @@ const MaClasse = () => {
           <NavbarTop />
           <div className="container-fluid ">
             <div>
-              {user && (
-                <h4 className="text-center">Salut {user.first_name} {user.name} </h4>
-              )}
+              {user &&
+              <h4 className="text-center">Salut {user.first_name} {user.name} </h4>
+              }
             </div>
-            <div className="bg-white py-3 shadow mt-2" style={{borderRadius:'20px'}}>
-              {classe && (
-                <h1 className="text-center text-primary">Classe : {classe.name}</h1>
-              )}
+            <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+              {classe &&
+              <h1 className="text-center text-primary">Classe : {classe.name}</h1>
+              }
               
             
               <h3 className="mb-4 text-primary text-center">Informations de la Classe</h3>
               
-              {titulaire && (
-                <h3 className="mb-4 text-primary text-center">
+              {titulaire &&
+              <h3 className="mb-4 text-primary text-center">
                   Titulaire : {titulaire.user.name} {titulaire.user.last_name} {titulaire.user.first_name} ({titulaire.user.sexe})
                 </h3>
-              )}
-              {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                <div className="bg-white py-3 shadow mt-2 mb-2" style={{borderRadius:'20px'}}>
+              }
+              {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+              <div className="bg-white py-3 shadow mt-2 mb-2 u-style-59f7bcd2">
                   <div className="container">
                     <h3 className="text-center">Gestion Présence élèves</h3>
                     <div className="justify-content-center aling-items-center d-flex">
-                      <Link to={`/secondaire/ajouter_presence_eleve/${id_classe}/${id_option}`} className="btn btn-primary w-50" style={{marginRight : '5px'}}>Ajouter</Link>
+                      <Link to={`/secondaire/ajouter_presence_eleve/${id_classe}/${id_option}`} className="btn btn-primary w-50 u-style-9761b3f7">Ajouter</Link>
                       <Link to={`/secondaire/historique_presence_eleve/${id_classe}/${id_option}`} className="btn btn-warning text-white w-50">Historique</Link>
                     </div>
                   </div>
                 </div>
-              )}
+              }
             </div>
 
             <Swiper
@@ -251,13 +251,13 @@ const MaClasse = () => {
               breakpoints={{
                 640: { slidesPerView: 3, spaceBetween: 15 }, //  Plus d'espace sur mobile
                 768: { slidesPerView: 4, spaceBetween: 20 },
-                1024: { slidesPerView: 4, spaceBetween: 25 },
+                1024: { slidesPerView: 4, spaceBetween: 25 }
               }}
-              className="nav nav-pills mb-3 mt-3"
+              className="nav nav-pills mb-3 mt-3 u-style-b1670753"
               id="pills-tab"
-              role="tablist"
-              style={{ padding: '0 15px' }} //  Marge gauche/droite
-            >
+              role="tablist">
+
+              
               <div className="container">
                 <SwiperSlide key="1" className="nav-item" role="presentation">
                   <button className="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#cours_classe" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Cours de la classe</button>
@@ -275,16 +275,16 @@ const MaClasse = () => {
                 <SwiperSlide key="5" className="nav-item" role="presentation">
                   <button className="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#eleves_classe" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Elèves</button>
                 </SwiperSlide>
-                {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
+                {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
                 <SwiperSlide key="6" className="nav-item" role="presentation">
                   <button className="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#cotes_eleves" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Notes élèves </button>
                 </SwiperSlide>
-                )}
+                }
               </div>
             </Swiper>
             <div className="tab-content" id="pills-tabContent">        
               <div className="tab-pane fade show active" id="cours_classe" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2" style={{borderRadius:'20px'}}>
+                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
                   <div className="table-responsive container">
                     <h3 className="mb-4 text-primary">Cours de la Classe ({cours.length}) </h3>
                     <table className="table table-striped">
@@ -297,8 +297,8 @@ const MaClasse = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {cours.map((cour, index) => (
-                          <tr key={index}>
+                        {cours.map((cour, index) =>
+                        <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{cour.name}</td>
                             <td>{cour.ponderation}</td>
@@ -306,33 +306,33 @@ const MaClasse = () => {
                               <Link to={`/quiz/cours/${cour.id}/${cour.name.replace(/ /g, '+')}`} target='_blank' rel='noopener noreferrer' className="btn btn-primary btn-sm me-2">Liste Quiz</Link>
                             </td>
                           </tr>
-                        ))}
+                        )}
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
               <div className="tab-pane fade show" id="horaires_classe" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2" style={{borderRadius:'20px'}}>
+                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
                     <div id="recent-blog-posts" className="recent-blog-posts container">
                       <h3 className="mb-4 text-primary">Horaires</h3>
                       <div className="row">
-                          {horaires.map((horaire) => (
-                              <div className="col-lg-4 col-md-6 col-12" key={horaire.id}>
+                          {horaires.map((horaire) =>
+                      <div className="col-lg-4 col-md-6 col-12" key={horaire.id}>
                                   <div className="post-box"> 
                                       <div className="post-img">
-                                          <img src={`https://api.ecolapp.cd/public/imgHoraire/${horaire.image}`}  className="img-fluid w-100" style={{height:'200px', objectFit: 'cover'}} alt=""/>
+                                          <img src={`https://api.ecolapp.cd/public/imgHoraire/${horaire.image}`} className="img-fluid w-100 u-style-a38c38cd" alt="" />
                                       </div>
                                           <span className="post-date">{horaire.title}</span>
                                   </div>
                               </div>
-                          ))}
+                      )}
                       </div>
                     </div>
                 </div> 
               </div>
               <div className="tab-pane fade show" id="cours_fichier" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2" style={{borderRadius:'20px'}}>
+                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
                   <div className="justify-content-between align-items-center d-flex">
                     <h6 className="text-center mb-4 text-primary">Cours en fichier ({cours_fichier.length}) </h6>
                     <button
@@ -340,8 +340,8 @@ const MaClasse = () => {
                       onClick={() => {
                         setIsCoursVideoModalOpen(true);
                         setError(null);
-                      }}
-                    >
+                      }}>
+                      
                       <i className='bi bi-camera-video'></i> Cours vidéos
                     </button>
                   </div>
@@ -362,14 +362,14 @@ const MaClasse = () => {
                         </tr>
                       </thead>
                       <tbody>
-                       {cours_fichier.length > 0 ? (
-                          cours_fichier
-                            .filter((cf) => {
-                              const fileExtension = cf.fichier.split('.').pop().toLowerCase();
-                              return !['mp4', 'avi', 'mkv', 'mov', 'wmv', 'flv'].includes(fileExtension);
-                            })
-                            .map((cf, index) => (
-                              <tr key={cf.id}>
+                       {cours_fichier.length > 0 ?
+                        cours_fichier.
+                        filter((cf) => {
+                          const fileExtension = cf.fichier.split('.').pop().toLowerCase();
+                          return !['mp4', 'avi', 'mkv', 'mov', 'wmv', 'flv'].includes(fileExtension);
+                        }).
+                        map((cf, index) =>
+                        <tr key={cf.id}>
                                 <td>{index + 1}</td>
                                 <td>{renderFileCours(cf.fichier)}</td>
                                 <td>{cf.titre}</td>
@@ -380,19 +380,19 @@ const MaClasse = () => {
                                 <td>{cf.annee.name}</td>
                                 <td>
                                   <a
-                                    className="btn btn-primary"
-                                    href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}
-                                  >
+                              className="btn btn-primary"
+                              href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}>
+                              
                                     <i className="bi bi-download"></i> Télécharger
                                   </a>
                                 </td>
                               </tr>
-                            ))
-                        ) : (
-                          <tr>
+                        ) :
+
+                        <tr>
                             <td colSpan="6" className="text-center">Aucun cours en fichier trouvé</td>
                           </tr>
-                        )}
+                        }
 
                       </tbody>
                     </table>
@@ -400,7 +400,7 @@ const MaClasse = () => {
                 </div>
               </div>
               <div className="tab-pane fade show" id="travaux_eleve" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2" style={{borderRadius:'20px'}}>
+                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
                   <div className="table-responsive container">
                     <h2 className="mb-4 text-primary">Liste des Travaux ({travaux.length})</h2>
                     <table className="table table-bordered table-hover">
@@ -415,15 +415,15 @@ const MaClasse = () => {
                           <th className='text-white'>Enseignant</th>
                           <th className='text-white'>Type</th>
                           <th className='text-white'>Année</th>
-                          {user && (user.fonction.name === 'Elève') && ( 
+                          {user && user.fonction.name === 'Elève' &&
                           <th className="text-white">Action</th>
-                          )}
+                          }
                         </tr>
                       </thead>
                       <tbody>
-                        {travaux.length > 0 ? (
-                          travaux.map((travail, index) => (
-                            <tr key={travail.id}>
+                        {travaux.length > 0 ?
+                        travaux.map((travail, index) =>
+                        <tr key={travail.id}>
                               <td>{index + 1}</td>
                               <td>{renderFile(travail.fichier)}</td>
                               <td>{travail.titre}</td>
@@ -434,8 +434,8 @@ const MaClasse = () => {
                               <td>{travail.enseignant.name} {travail.enseignant.last_name} {travail.enseignant.first_name}</td>
                               <td>{travail.type_travail.name}</td>
                               <td>{travail.annee.name}</td>
-                              {user && (user.fonction.name === 'Elève') && ( 
-                              <td>
+                              {user && user.fonction.name === 'Elève' &&
+                          <td>
                               <a href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail.fichier}`} className="btn btn-primary w-100 mb-2 mt-2">
                                 <i className="bi bi-downolad"></i> Télécharger
                               </a>
@@ -443,20 +443,63 @@ const MaClasse = () => {
                                 Déposer mon travail
                               </Link>
                               </td>
-                              )}
-                              {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                                <td>
+                          }
+                              {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+                          <td>
                                   <Link to={`/secondaire/liste_travaux_deposes/${travail.id}`} target="_blank" rel="noopener noreferrer" className="btn btn-warning text-white">
                                     Voir travaux déposés
                                   </Link>
                                 </td>
-                              )}
+                          }
 
                             </tr>
-                          ))
-                        ) : (
-                          <tr>
+                        ) :
+
+                        <tr>
                             <td colSpan="6" className="text-center">Aucun travail trouvé</td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-pane fade show" id="eleves_classe" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div className="bg-white py-3 shadow mt-2 mb-2 u-style-59f7bcd2">
+                  <div className="table-responsive container">
+                    <h3 className="mb-4 text-primary">Liste des Élèves ({eleves.length})</h3>
+                    <table className="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Id</th>
+                          {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+                          <th>Matricule</th>
+                          }
+                          <th>Nom</th>
+                          <th>Postnom</th>
+                          <th>Prénom</th>
+                          <th>Sexe</th>
+                          {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+                          <th>Action</th>
+                          }
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {eleves.map((eleve, index) =>
+                        <tr key={eleve.id}>
+                          <td>{index + 1}</td>
+                            {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+                          <td>{eleve.matricule}</td>
+                          }
+                            <td>{eleve.name}</td>
+                            <td>{eleve.last_name}</td>
+                            <td>{eleve.first_name}</td>
+                            <td>{eleve.sexe}</td>
+                            {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+                          <td>
+                                <Link target="_blank" rel="noopener noreferrer" to={`/secondaire/consulter_resultat/${eleve.id}`} className="btn btn-primary">Résultats</Link>
+                              </td>
+                          }
                           </tr>
                         )}
                       </tbody>
@@ -464,87 +507,44 @@ const MaClasse = () => {
                   </div>
                 </div>
               </div>
-              <div className="tab-pane fade show" id="eleves_classe" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2 mb-2" style={{borderRadius:'20px'}}>
-                  <div className="table-responsive container">
-                    <h3 className="mb-4 text-primary">Liste des Élèves ({eleves.length})</h3>
-                    <table className="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Id</th>
-                          {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                            <th>Matricule</th>
-                          )}
-                          <th>Nom</th>
-                          <th>Postnom</th>
-                          <th>Prénom</th>
-                          <th>Sexe</th>
-                          {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                           <th>Action</th>
-                          )}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {eleves.map((eleve, index) => (
-                          <tr key={eleve.id}>
-                          <td>{index + 1}</td>
-                            {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                              <td>{eleve.matricule}</td>
-                            )}
-                            <td>{eleve.name}</td>
-                            <td>{eleve.last_name}</td>
-                            <td>{eleve.first_name}</td>
-                            <td>{eleve.sexe}</td>
-                            {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                              <td>
-                                <Link target="_blank" rel="noopener noreferrer" to={`/secondaire/consulter_resultat/${eleve.id}`} className="btn btn-primary">Résultats</Link>
-                              </td>
-                            )}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
               <div className="tab-pane fade show" id="cotes_eleves" role="tabpanel" aria-labelledby="pills-home-tab">
-              {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                  <div className="bg-white py-3 shadow mt-2 mb-2" style={{borderRadius:'20px'}}>
+              {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+                <div className="bg-white py-3 shadow mt-2 mb-2 u-style-59f7bcd2">
                     <div className="container">
-                    {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') && (
-                      <div className="mb-4">
+                    {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
+                    <div className="mb-4">
                           <h3 className="mb-4 text-primary">Afficher les cotes des élèves</h3>
                           <div className="row">
                             <div className="col-md-4">
                               <label htmlFor="periode">Période :</label>
                               <select
-                                id="periode"
-                                className="form-control"
-                                value={selectedPeriode}
-                                onChange={(e) => setSelectedPeriode(e.target.value)}
-                              >
+                            id="periode"
+                            className="form-control"
+                            value={selectedPeriode}
+                            onChange={(e) => setSelectedPeriode(e.target.value)}>
+                            
                                 <option value="">-- Sélectionner une période --</option>
-                                {periodes.map((periode) => (
-                                  <option key={periode.id} value={periode.id}>
+                                {periodes.map((periode) =>
+                            <option key={periode.id} value={periode.id}>
                                     {periode.name}
                                   </option>
-                                ))}
+                            )}
                               </select>
                             </div>
                             <div className="col-md-4">
                               <label htmlFor="cours">Cours :</label>
                               <select
-                                id="cours"
-                                className="form-control"
-                                value={selectedCours}
-                                onChange={(e) => setSelectedCours(e.target.value)}
-                              >
+                            id="cours"
+                            className="form-control"
+                            value={selectedCours}
+                            onChange={(e) => setSelectedCours(e.target.value)}>
+                            
                                 <option value="">-- Sélectionner un cours --</option>
-                                {cours.map((cour) => (
-                                  <option key={cour.id} value={cour.id}>
+                                {cours.map((cour) =>
+                            <option key={cour.id} value={cour.id}>
                                     {cour.name}
                                   </option>
-                                ))}
+                            )}
                               </select>
                             </div>
                             <div className="col-md-4">
@@ -554,10 +554,10 @@ const MaClasse = () => {
                             </div>
                           </div>
                       </div>
-                      )}
+                    }
 
-                      {cotes.length > 0 && cotes[0].total_general && (
-                        <div className="mb-3 text-center">
+                      {cotes.length > 0 && cotes[0].total_general &&
+                    <div className="mb-3 text-center">
 
                           <p><strong>Cotes des élèves de : </strong>{cotes[0].classe.name || 'Non précisée'}</p>
                           <p><strong>Cours : </strong>{cotes[0].cour.name}</p>
@@ -565,10 +565,10 @@ const MaClasse = () => {
                           <p><strong>Année scolaire : </strong>{cotes[0].annee.name}</p>
                           <p><strong>Total général : </strong>{cotes[0].total_general}</p>
                         </div>
-                      )}
+                    }
 
-                    {cotes.length >0 && (
-                      <div className="table-responsive mb-4">
+                    {cotes.length > 0 &&
+                    <div className="table-responsive mb-4">
                         <h3 className="text-primary">Cotes des élèves</h3>
                         <table className="table table-bordered">
                           <thead>
@@ -580,27 +580,27 @@ const MaClasse = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {cotes.length > 0 ? (
-                              cotes.map((cote, index) => (
-                                <tr key={cote.id}>
+                            {cotes.length > 0 ?
+                          cotes.map((cote, index) =>
+                          <tr key={cote.id}>
                                   <td>{index + 1}</td>
                                   <td>{cote.eleve.name} {cote.eleve.last_name} {cote.eleve.first_name}</td>
                                   <td>{cote.total_obtenu}</td>
                                 
                                 </tr>
-                              )) 
-                            ) : (
-                              <tr>
+                          ) :
+
+                          <tr>
                                 <td colSpan="4" className="text-center">Aucune cote disponible</td>
                               </tr>
-                            )}
+                          }
                           </tbody>
                         </table>
                       </div>
-                    )} 
+                    } 
                     </div>
                   </div>
-                )}
+                }
               </div>
             </div>
             
@@ -610,44 +610,44 @@ const MaClasse = () => {
           </div>
         </div>
       </div>
-      <Footer/>
-      {isCoursVideoModalOpen && (
-        <div className="custom-modal">
+      <Footer />
+      {isCoursVideoModalOpen &&
+      <div className="custom-modal">
           <div className="modal-content">
             <h5 className="modal-title">Cours en vidéo</h5>
             <div className="mb-3">
               <label className="form-label">Sélectionnez un cours</label>
               <select
-                className="form-control"
-                value={selectedCoursVideo}
-                onChange={(e) => setSelectedCoursVideo(e.target.value)}
-              >
+              className="form-control"
+              value={selectedCoursVideo}
+              onChange={(e) => setSelectedCoursVideo(e.target.value)}>
+              
                 <option value="">-- Choisir un cours --</option>
-                {cours.map((c) => (
-                  <option key={c.id} value={c.id}>
+                {cours.map((c) =>
+              <option key={c.id} value={c.id}>
                     {c.name}
                   </option>
-                ))}
+              )}
               </select>
             </div>
             <div className="modal-footer justify-content-between align-items-center d-flex">
               <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setIsCoursVideoModalOpen(false)}
-              >
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setIsCoursVideoModalOpen(false)}>
+              
                 Annuler
               </button>
               <button
-                className="btn btn-primary"
-                onClick={handleCoursVideoSubmit}
-              >
+              className="btn btn-primary"
+              onClick={handleCoursVideoSubmit}>
+              
                 Valider
               </button>
             </div>
           </div>
         </div>
-      )}
+      }
       <style jsx>{`
         .custom-modal {
           position: fixed;
@@ -674,8 +674,8 @@ const MaClasse = () => {
           margin-bottom: 10px;
         }
       `}</style>
-    </div>
-  );
+    </div>);
+
 };
 
 export default MaClasse;

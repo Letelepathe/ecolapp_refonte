@@ -7,7 +7,7 @@ import NavbarTop from "./NavbarTop";
 const AjouterProvinceEducationnelle = () => {
   const [formData, setFormData] = useState({
     name: '',
-    province_id: '',
+    province_id: ''
   });
 
   const [provinces, setProvinces] = useState([]);
@@ -16,7 +16,7 @@ const AjouterProvinceEducationnelle = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
- 
+
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
@@ -33,7 +33,7 @@ const AjouterProvinceEducationnelle = () => {
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -92,7 +92,7 @@ const AjouterProvinceEducationnelle = () => {
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className='container d-flex align-items-center justify-content-between py-2'>
-                  <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Province Éducationnelle</h6>
+                  <h6 className="text-center u-style-951c0e5f">Ajouter Province Éducationnelle</h6>
                   <Link to='/admin-general/liste_province_educationnelle' className='btn btn-warning text-white'>Liste Provinces Éducationnelles</Link>
                 </div>
                 <div className="card-body">
@@ -107,8 +107,8 @@ const AjouterProvinceEducationnelle = () => {
                         className="form-control"
                         value={formData.name}
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.name && <p className="text-danger">{errors.name}</p>}
                     </div>
 
@@ -119,12 +119,12 @@ const AjouterProvinceEducationnelle = () => {
                         className="form-control"
                         value={formData.province_id}
                         onChange={handleInputChange}
-                        required
-                      >
+                        required>
+                        
                         <option value="">Sélectionner une province</option>
-                        {provinces.map(province => (
-                          <option key={province.id} value={province.id}>{province.name}</option>
-                        ))}
+                        {provinces.map((province) =>
+                        <option key={province.id} value={province.id}>{province.name}</option>
+                        )}
                       </select>
                       {errors.province_id && <p className="text-danger">{errors.province_id}</p>}
                     </div>
@@ -144,8 +144,8 @@ const AjouterProvinceEducationnelle = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterProvinceEducationnelle;

@@ -16,7 +16,7 @@ const NavbarBottom = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: 'smooth'
     });
   };
 
@@ -30,7 +30,7 @@ const NavbarBottom = () => {
   return (
     <div>
      
-      <div className="navbarbot" style={{position:"absolute"}}>
+      <div className="navbarbot u-style-9eb582cb">
         <div className="ico">
           <Link to="/">
             <i className="bi bi-house-fill"></i>
@@ -57,19 +57,19 @@ const NavbarBottom = () => {
         </div>
       </div>
 
-      <Link 
-        to="#" 
-        id="scroll-top" 
+      <Link
+        to="#"
+        id="scroll-top"
         className={`scroll-top d-flex align-items-center justify-content-center ${isScrollTopActive ? 'active' : ''}`}
         onClick={(e) => {
           e.preventDefault();
           scrollToTop();
-        }}
-      >
+        }}>
+        
         <i className="bi bi-arrow-up-short"></i>
       </Link>
-    </div>
-  );
+    </div>);
+
 };
 
 export default NavbarBottom;

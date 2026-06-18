@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './style.css';
-
 const SelectionOption = () => {
   const [selectedOption, setSelectedOption] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setResponseMessage(''); 
+    setResponseMessage('');
 
     try {
       const response = await axios.post('http://localhost/ecole-app/apis/traitementSelection.php', {
-        choix: selectedOption,
+        choix: selectedOption
       }, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        withCredentials: true, 
+        withCredentials: true
       });
 
       setResponseMessage(response.data.message);
@@ -39,8 +37,8 @@ const SelectionOption = () => {
             navigate('/secondaire/notes');
             break;
           case 'emploi':
-                navigate('/secondaire/emploi');
-                break;
+            navigate('/secondaire/emploi');
+            break;
           default:
             navigate('/secondaire');
             break;
@@ -56,8 +54,8 @@ const SelectionOption = () => {
     <div className="code-admin-container">
       <div className="container">
         <div className="row justify-content-center align-items-center min-vh-100">
-          <div className="col-lg-6 text-center" style={{ marginTop: '150px' }}>
-            <h2 className="mb-4" style={{color: '#1769ff'}}>
+          <div className="col-lg-6 text-center u-style-469e96e5">
+            <h2 className="mb-4 u-style-43ef163a">
               <i className="bi bi-ui-checks me-2"></i>Choix de l'Action
             </h2>
             <hr />
@@ -69,8 +67,8 @@ const SelectionOption = () => {
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
                 className="form-select mb-3"
-                required
-              >
+                required>
+                
                 <option value="" disabled>Choisissez une option...</option>
                 <option value="resultats">Consulter les résultats</option>
                 <option value="frais">Voir les frais de scolarité</option>
@@ -78,14 +76,14 @@ const SelectionOption = () => {
                 <option value="notes">Consulter les notes</option>
                 <option value="emploi">Consulter l'emploi du temps</option>
               </select>
-              <button className="btn btn-white" style={{background:'#1769ff', color:'#fff', padding:'10px', borderRadius:'25px'}} type="submit">Valider</button>
+              <button className="btn btn-white u-style-eae60df9" type="submit">Valider</button>
               {responseMessage && <p className="mt-3 text-info">{responseMessage}</p>}
             </form>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectionOption;

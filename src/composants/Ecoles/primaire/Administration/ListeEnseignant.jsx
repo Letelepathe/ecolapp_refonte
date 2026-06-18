@@ -12,7 +12,7 @@ const ListeEnseignant = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  
+
 
   useEffect(() => {
     const fetchEnseignants = async () => {
@@ -43,19 +43,19 @@ const ListeEnseignant = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container mt-4">
           <Link className="btn btn-primary mb-2" to='/primaire/creationcompte'>Ajouter enseignant</Link>
           <h3 className="mb-0 text-primary text-center">Enseigants du primaire</h3>
       
           <div className="table-responsive">
-            {error ? (
-              <p className="text-danger">{error}</p>
-            ) : successMessage ? (
-              <p className="text-success">{successMessage}</p>
-            ) : null}
+            {error ?
+            <p className="text-danger">{error}</p> :
+            successMessage ?
+            <p className="text-success">{successMessage}</p> :
+            null}
             
             <table className="table text-start align-middle table-bordered table-hover mb-0">
               <thead>
@@ -70,16 +70,16 @@ const ListeEnseignant = () => {
                 </tr>
               </thead>
               <tbody>
-                {enseignants.map((enseignant, index) => (
-                  <tr key={enseignant.id}>
+                {enseignants.map((enseignant, index) =>
+                <tr key={enseignant.id}>
                     <td>{index + 1}</td>
                     <td>
-                       <img 
-                        src={`https://api.ecolapp.cd/public/imgUser/${enseignant.file}`} 
-                          className="rounded-circle flex-shrink-0" 
-                          alt="Profil" 
-                          style={{ width: '60px', height: '60px', objectFit : 'cover' }} 
-                        />
+                       <img
+                      src={`https://api.ecolapp.cd/public/imgUser/${enseignant.file}`}
+                      className="rounded-circle flex-shrink-0 u-style-31bd8151"
+                      alt="Profil" />
+
+                    
                     </td>
                     <td>{enseignant.name}</td>
                     <td>{enseignant.last_name}</td>
@@ -87,21 +87,21 @@ const ListeEnseignant = () => {
                     <td>{enseignant.sexe}</td>
                     <td>
                       <button
-                        className="btn btn-danger"
-                        onClick={() => handleDelete(enseignant.id)}
-                      >
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(enseignant.id)}>
+                      
                         Supprimer
                       </button>
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ListeEnseignant;

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 const QuizChimie = () => {
   const [question, setQuestion] = useState(genererQuestion());
   const [selectedOption, setSelectedOption] = useState('');

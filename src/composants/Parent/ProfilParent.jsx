@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
-import './ProfilParent.css';
-
 const ProfilParent = () => {
   const [parent, setParent] = useState(null);
   const parent_id = localStorage.getItem('parentId');
@@ -60,9 +58,9 @@ const ProfilParent = () => {
                   <img
                     src={`https://api.ecolapp.cd/public/imgParent/${parent.photo}`}
                     alt={`${parent.prenom}`}
-                    className="profile-img"
-                  />
-                  <div className="text-center" style={{ color: '#1769ff', fontWeight: 'bold', fontSize: '20px' }}>
+                    className="profile-img" />
+                  
+                  <div className="text-center u-style-2e910695">
                     {parent.nom} {parent.postnom} {parent.prenom}
                   </div>
                 </div>
@@ -85,20 +83,20 @@ const ProfilParent = () => {
 
           {/* Bloc Enfants à droite */}
           <div className="col-md-12 mt-2">
-            <div className="shadow bg-white" style={{borderRadius:'15px'}}>
+            <div className="shadow bg-white u-style-e00d2ae6">
             
               <div className="row py-2">
-                <h4 className="mb-4 mt-4 text-center" style={{color:'#1769ff'}}>Enfants ({parent.eleves.length})</h4>
-                {parent.eleves && parent.eleves.length > 0 ? (
-                  parent.eleves.map((eleve, index) => (
-                    <div key={index} className="col-md-4 mb-4">
+                <h4 className="mb-4 mt-4 text-center u-style-43ef163a">Enfants ({parent.eleves.length})</h4>
+                {parent.eleves && parent.eleves.length > 0 ?
+                parent.eleves.map((eleve, index) =>
+                <div key={index} className="col-md-4 mb-4">
                       <div className="bloc-profil-parent">
                         <div className="profile-container">
                           <div className="profile-block text-center">
                             <div className="profile-img-placeholder">
-                              <i className="bi bi-person-circle" style={{ fontSize: '60px', color: '#1769ff' }}></i>
+                              <i className="bi bi-person-circle u-style-4004c0f5"></i>
                             </div>
-                            <div style={{ color: '#1769ff', fontWeight: 'bold', fontSize: '18px' }}>
+                            <div className="u-style-a9f174d1">
                               {eleve.name} {eleve.last_name} {eleve.first_name}
                             </div>
                           </div>
@@ -114,12 +112,12 @@ const ProfilParent = () => {
                           <div className="profile-block btn-block">
                         
                             <Link
-                              to={`/${getNiveau(eleve.direction)}/panel_eleve/${eleve.id}/${eleve.ecole_id}/${eleve.direction}`}
-                              className="btn btn-white btn-custom"
-                              style={{ background: '#1769ff', color: '#fff', borderRadius: '25px' }}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                            >
+                          to={`/${getNiveau(eleve.direction)}/panel_eleve/${eleve.id}/${eleve.ecole_id}/${eleve.direction}`}
+                          className="btn btn-white btn-custom u-style-20eca920"
+
+                          target='_blank'
+                          rel='noopener noreferrer'>
+                          
                               <i className="bi bi-eye"></i> Suivi
                             </Link>
 
@@ -127,18 +125,18 @@ const ProfilParent = () => {
                         </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="col-12 text-center text-muted">Aucun enfant trouvé.</div>
-                )}
+                ) :
+
+                <div className="col-12 text-center text-muted">Aucun enfant trouvé.</div>
+                }
               </div>
             </div>
           </div>
 
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProfilParent;

@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import SidebarLeft from '../Users/Profil/SidebarLeft';
-import NavbarTop from  '../Users/Profil/NavbarTop';
+import NavbarTop from '../Users/Profil/NavbarTop';
 
 const SelectSemestreConsulteCote = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const classeId = searchParams.get("classe_id");
@@ -22,7 +22,7 @@ const SelectSemestreConsulteCote = () => {
 
 
   useEffect(() => {
-    
+
 
     const fetchSemestres = async () => {
       try {
@@ -49,31 +49,31 @@ const SelectSemestreConsulteCote = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className='container'>
           <section className='section d-flex flex-column align-items-center justify-content-center py-4 min-vh-100'>
             <div className='col-lg-6 col-md-8 col-12'>
               <div className="card mb-3">
                 <div className="card-body">
-                  <h4 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                  <h4 className="text-center u-style-951c0e5f">
                     Notes
                   </h4>
                   <form onSubmit={handleSubmit}>
                     
                     <div className="mb-3">
                       <label htmlFor="semestre">Semestre</label>
-                      <select 
-                        id="semestre" 
-                        className="form-control" 
-                        value={selectedsemestre} 
-                        onChange={(e) => setSelectedsemestre(e.target.value)}
-                      >
+                      <select
+                        id="semestre"
+                        className="form-control"
+                        value={selectedsemestre}
+                        onChange={(e) => setSelectedsemestre(e.target.value)}>
+                        
                         <option value="">-- Sélectionner un semestre --</option>
-                        {semestres.map(p => (
-                          <option key={p.id} value={p.id}>{p.name}</option>
-                        ))}
+                        {semestres.map((p) =>
+                        <option key={p.id} value={p.id}>{p.name}</option>
+                        )}
                       </select>
                     </div>
                     {errors && <p className="text-danger">{errors}</p>}
@@ -87,8 +87,8 @@ const SelectSemestreConsulteCote = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectSemestreConsulteCote;

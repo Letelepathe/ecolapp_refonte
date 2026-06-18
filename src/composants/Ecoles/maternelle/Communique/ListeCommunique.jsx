@@ -12,7 +12,7 @@ const ListeCommuniques = () => {
   const [communiques, setCommuniques] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedCommunique, setSelectedCommunique] = useState(null);
-  
+
   // Récupérer la liste des communiqués
   useEffect(() => {
     const fetchCommuniques = async () => {
@@ -75,7 +75,7 @@ const ListeCommuniques = () => {
         <div className="container mt-2">
           <div className='d-flex justify-content-between align-items-center'>
            <Link to='/maternelle/lancer_communique' className='btn btn-primary mb-2 mt-2'>Lancer communiqué</Link>
-           <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Liste des Communiqués</h6>
+           <h6 className="text-center u-style-951c0e5f">Liste des Communiqués</h6>
           </div>
           <div classname='table-responsive'>
             <table className="table table-bordered">
@@ -91,8 +91,8 @@ const ListeCommuniques = () => {
                 </tr>
               </thead>
               <tbody>
-                {communiques.map((communique, index) => (
-                  <tr key={communique.id}>
+                {communiques.map((communique, index) =>
+                <tr key={communique.id}>
                     <td>{index + 1}</td>
                     <td>{communique.title}</td>
                     <td>{communique.content}</td>
@@ -100,12 +100,12 @@ const ListeCommuniques = () => {
                     <td>{communique.user ? `${communique.user.name} ${communique.user.first_name}` : 'Utilisateur inconnu'}</td>
                     <td>
                     {new Date(communique.created_at).toLocaleString('fr-FR', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit'
-                              })}
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
                     </td>
                     <td>
                   
@@ -114,14 +114,14 @@ const ListeCommuniques = () => {
                       </button>
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
 
           {/* Modal de confirmation de suppression */}
-          {showModal && (
-            <div className="modal fade show d-block" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+          {showModal &&
+          <div className="modal fade show d-block u-style-b3b7dcda">
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
                   <div className="modal-header">
@@ -142,13 +142,13 @@ const ListeCommuniques = () => {
                 </div>
               </div>
             </div>
-          )}
+          }
 
          
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ListeCommuniques;

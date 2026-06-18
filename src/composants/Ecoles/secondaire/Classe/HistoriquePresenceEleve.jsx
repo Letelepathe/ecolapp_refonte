@@ -6,48 +6,48 @@ import SidebarLeft from "../Users/Profil/SidebarLeft";
 import NavbarTop from "../Users/Profil/NavbarTop";
 
 const HistoriquePresenceEleve = () => {
-    const ecole_id = localStorage.getItem('ecole_id');
-    const direction = localStorage.getItem('direction');
-    
-    const { id_classe, id_option } = useParams();
+  const ecole_id = localStorage.getItem('ecole_id');
+  const direction = localStorage.getItem('direction');
 
-    const [historique, setHistorique] = useState([]);
-    const [stats, setStats] = useState([]);
-    const [filter, setFilter] = useState({ type: "mois", value: "" });
-    const [error, setError] = useState(null);
+  const { id_classe, id_option } = useParams();
 
-    // Fonction pour récupérer l'historique des présences
-    const fetchHistorique = useCallback(async () => {
-        try {
-            const response = await axios.get(`https://api.ecolapp.cd/api/presences/ecole/${ecole_id}/direction/${direction}/classe/${id_classe}/option/${id_option}?filter=${JSON.stringify(filter)}`);
+  const [historique, setHistorique] = useState([]);
+  const [stats, setStats] = useState([]);
+  const [filter, setFilter] = useState({ type: "mois", value: "" });
+  const [error, setError] = useState(null);
 
-            if (response.data.status === 200) {
-                setHistorique(response.data.data);
-                setStats(response.data.stats);
-            } else {
-                setError(response.data.error_msg);
-            }
-            console.log(response.data.data);
+  // Fonction pour récupérer l'historique des présences
+  const fetchHistorique = useCallback(async () => {
+    try {
+      const response = await axios.get(`https://api.ecolapp.cd/api/presences/ecole/${ecole_id}/direction/${direction}/classe/${id_classe}/option/${id_option}?filter=${JSON.stringify(filter)}`);
 
-        } catch (error) {
-            setError("Erreur lors de la récupération de l'historique des présences.");
-        }
-    }, [filter, ecole_id, direction, id_classe, id_option]);
+      if (response.data.status === 200) {
+        setHistorique(response.data.data);
+        setStats(response.data.stats);
+      } else {
+        setError(response.data.error_msg);
+      }
+      console.log(response.data.data);
 
-    useEffect(() => {
-        fetchHistorique();
-    }, [fetchHistorique]); // Ajout de fetchHistorique dans les dépendances de useEffect
+    } catch (error) {
+      setError("Erreur lors de la récupération de l'historique des présences.");
+    }
+  }, [filter, ecole_id, direction, id_classe, id_option]);
 
-    // Fonction pour gérer les changements de filtre
-    const handleFilterChange = (e) => {
-        setFilter({
-            ...filter,
-            [e.target.name]: e.target.value
-        });
-    };
+  useEffect(() => {
+    fetchHistorique();
+  }, [fetchHistorique]); // Ajout de fetchHistorique dans les dépendances de useEffect
 
-    return (
-        <div>
+  // Fonction pour gérer les changements de filtre
+  const handleFilterChange = (e) => {
+    setFilter({
+      ...filter,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  return (
+    <div>
             <Helmet>
                 <title>ecolapp | Historique des Présences</title>
             </Helmet>
@@ -58,28 +58,28 @@ const HistoriquePresenceEleve = () => {
                     <div className="justify-content-between align-items-center d-flex">
                        <h5>Historique des Présences</h5>
                         <Link
-                            to={`/secondaire/ajouter_presence_eleve/${id_classe}/${id_option}`}
-                            className="btn btn-primary w-50"
-                            style={{ marginRight: '5px' }}
-                        >
+              to={`/secondaire/ajouter_presence_eleve/${id_classe}/${id_option}`}
+              className="btn btn-primary w-50 u-style-9761b3f7">
+
+              
                             Ajouter présence
                         </Link>                    
                     </div>
-                    {error && (
-                        <div className="alert alert-danger" role="alert">
+                    {error &&
+          <div className="alert alert-danger" role="alert">
                             {error}
                         </div>
-                    )}
+          }
 
                     <div className="row mb-3">
                         <div className="col-md-6">
                             <label>Filtrer par :</label>
                             <select
-                                className="form-control"
-                                name="type"
-                                value={filter.type}
-                                onChange={handleFilterChange}
-                            >
+                className="form-control"
+                name="type"
+                value={filter.type}
+                onChange={handleFilterChange}>
+                
                                 <option value="mois">Mois</option>
                                 <option value="semaine">Semaine</option>
                             </select>
@@ -87,13 +87,13 @@ const HistoriquePresenceEleve = () => {
                         <div className="col-md-6">
                             <label>{filter.type === "mois" ? "Sélectionnez le mois" : "Sélectionnez la semaine"} :</label>
                             <input
-                                type="text"
-                                className="form-control"
-                                name="value"
-                                value={filter.value}
-                                onChange={handleFilterChange}
-                                placeholder={`Entrez ${filter.type === "mois" ? "le mois (YYYY-MM)" : "les dates (YYYY-MM-DD à YYYY-MM-DD)"}`}
-                            />
+                type="text"
+                className="form-control"
+                name="value"
+                value={filter.value}
+                onChange={handleFilterChange}
+                placeholder={`Entrez ${filter.type === "mois" ? "le mois (YYYY-MM)" : "les dates (YYYY-MM-DD à YYYY-MM-DD)"}`} />
+              
                         </div>
                     </div>
 
@@ -111,8 +111,8 @@ const HistoriquePresenceEleve = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {stats.map((stat, index) => (
-                                    <tr key={index}>
+                                {stats.map((stat, index) =>
+                <tr key={index}>
                                         <td>{stat.eleve?.last_name}</td>
                                         <td>{stat.eleve?.last_name}</td>
                                         <td>{stat.eleve?.first_name || ""}</td>
@@ -120,21 +120,21 @@ const HistoriquePresenceEleve = () => {
                                         <td>{stat.absences}</td>
                                         <td>
                                             <Link
-                                                to={`/secondaire/eleve/presence/${id_classe}/${stat.eleve_id}`}
-                                                className="btn btn-info btn-sm text-white w-50"
-                                            >
+                      to={`/secondaire/eleve/presence/${id_classe}/${stat.eleve_id}`}
+                      className="btn btn-info btn-sm text-white w-50">
+                      
                                                 Détails
                                             </Link>
                                         </td>
                                     </tr>
-                                ))}
+                )}
                             </tbody>
                         </table>
                     </div>
 
                     <h3>Historique :</h3>
-                    {historique.map((group, index) => (
-                        <div key={index} className="table-responsive">
+                    {historique.map((group, index) =>
+          <div key={index} className="table-responsive">
                             <h5 className="mt-4">Date : {group.date}</h5>
                             <table className="table table-bordered">
                                 <thead>
@@ -149,8 +149,8 @@ const HistoriquePresenceEleve = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {group.eleves.map((entry, i) => (
-                                        <tr key={i}>
+                                    {group.eleves.map((entry, i) =>
+                <tr key={i}>
                                             <td>{entry.eleve?.last_name || ""}</td>
                                             <td>{entry.eleve?.last_name || ""}</td>
                                             <td>{entry.eleve?.first_name || ""}</td>
@@ -159,17 +159,17 @@ const HistoriquePresenceEleve = () => {
                                             <td>{entry.eleve?.classe?.name || ""}</td>
                                             <td>{entry.annee?.name || ""}</td>
                                         </tr>
-                                    ))}
+                )}
                                 </tbody>
 
                             </table>
                         </div>
-                    ))}
+          )}
                 </div>
             </div>
 
-        </div>
-    );
+        </div>);
+
 };
 
 export default HistoriquePresenceEleve;

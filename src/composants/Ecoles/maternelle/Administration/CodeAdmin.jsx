@@ -9,24 +9,24 @@ const CodeAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); 
+    setErrorMessage('');
 
     try {
-        const response = await axios.post('http://localhost/ecole-app/apis/verifyCodeAdmin', { code }, {withCredentials : true}, {
-            headers: {
-                'Content-Type': 'application/json'
-            }, 
-        });
-        
-        if (response.data.success) {
-            navigate('/maternelle/bureau_admin');
-        } else {
-            setErrorMessage(response.data.message); 
-            setCode('');
+      const response = await axios.post('http://localhost/ecole-app/apis/verifyCodeAdmin', { code }, { withCredentials: true }, {
+        headers: {
+          'Content-Type': 'application/json'
         }
+      });
+
+      if (response.data.success) {
+        navigate('/maternelle/bureau_admin');
+      } else {
+        setErrorMessage(response.data.message);
+        setCode('');
+      }
     } catch (error) {
-        setErrorMessage("Une erreur s'est produite. Veuillez réessayer plus tard.");
-        setCode(''); 
+      setErrorMessage("Une erreur s'est produite. Veuillez réessayer plus tard.");
+      setCode('');
     }
   };
 
@@ -35,8 +35,8 @@ const CodeAdmin = () => {
     <div className="code-admin-container">
       <div className="container">
         <div className="row justify-content-center align-items-center min-vh-100">
-          <div style={{ marginTop: '150px' }} className="col-lg-6 text-center">
-            <h2 className="mb-4" style={{color: '#1769ff'}}>Administration</h2><hr/>
+          <div className="col-lg-6 text-center u-style-469e96e5">
+            <h2 className="mb-4 u-style-43ef163a">Administration</h2><hr />
             <form onSubmit={handleSubmit} className="code-form mt-4 p-4">
               <input
                 type="text"
@@ -44,8 +44,8 @@ const CodeAdmin = () => {
                 className="form-control mb-3 code-input"
                 placeholder="Code de validation"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
-              />
+                onChange={(e) => setCode(e.target.value)} />
+              
               <button type="submit" className="btn btn-primary w-100 submit-button">
                 Valider le code
               </button>
@@ -54,8 +54,8 @@ const CodeAdmin = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CodeAdmin;

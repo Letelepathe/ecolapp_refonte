@@ -13,18 +13,18 @@ const ListeCoursEnseigne = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
-      const fetchDevises = async () => {
-        try {
-          const response = await axios.get(`https://api.ecolapp.cd/api/coursens/ecole/${ecole_id}/direction/${direction}`);
+    const fetchDevises = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/coursens/ecole/${ecole_id}/direction/${direction}`);
         setTitulaires(response.data.courEns);
         console.log(response.data.courEns);
         setError('');
-        } catch (error) {
-          setError("Erreur lors de la récupération des tranches");
-        }
-      };
-  
-      fetchDevises();
+      } catch (error) {
+        setError("Erreur lors de la récupération des tranches");
+      }
+    };
+
+    fetchDevises();
   }, [ecole_id, direction]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const ListeCoursEnseigne = () => {
         setError("Erreur lors de la récupération des données");
         setTitulaires([]);
       }
-    };  
+    };
     fetchTitulaires();
   }, [ecole_id, direction]);
 
@@ -55,7 +55,7 @@ const ListeCoursEnseigne = () => {
       }
     } catch (error) {
       setError("Erreur lors de la suppression du titulaire");
-    } 
+    }
   };
 
   return (
@@ -88,17 +88,17 @@ const ListeCoursEnseigne = () => {
                 </tr>
               </thead>
               <tbody>
-                {titulaires.map((titulaire, index) => (
-                  <tr key={titulaire.id}>
+                {titulaires.map((titulaire, index) =>
+                <tr key={titulaire.id}>
                     <td>{titulaire.id}</td>
                     <td>{titulaire.cour.name}</td>
                     <td>
-                      <img 
-                        src={`https://api.ecolapp.cd/public/imgUser/${titulaire.user.file}`} 
-                          className="rounded-circle flex-shrink-0" 
-                          alt="Profil" 
-                          style={{ width: '60px', height: '60px', objectFit : 'cover' }} 
-                        />
+                      <img
+                      src={`https://api.ecolapp.cd/public/imgUser/${titulaire.user.file}`}
+                      className="rounded-circle flex-shrink-0 u-style-31bd8151"
+                      alt="Profil" />
+
+                    
                     </td>
                     <td>{titulaire.user.name} {titulaire.user.last_name} {titulaire.user.first_name}</td>
                     <td>{titulaire.user.sexe}</td>
@@ -107,22 +107,22 @@ const ListeCoursEnseigne = () => {
                     <td>{titulaire.annee.name}</td>
                     <td>
                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={(e) => handleDelete(titulaire.id, e)}
-                      >
+                      className="btn btn-danger btn-sm"
+                      onClick={(e) => handleDelete(titulaire.id, e)}>
+                      
                         Supprimer
                       </button>
                     </td>
                     
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ListeCoursEnseigne;

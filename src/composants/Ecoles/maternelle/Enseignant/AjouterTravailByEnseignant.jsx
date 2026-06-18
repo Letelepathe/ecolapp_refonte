@@ -1,27 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import SidebarLeft from '../Users/Profil/SidebarLeft';
-import NavbarTop from  '../Users/Profil/NavbarTop';
+import NavbarTop from '../Users/Profil/NavbarTop';
 
 const AjouterTravailByEnseignant = () => {
   const fileInputRef = useRef(null);
 
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [formData, setFormData] = useState({
     titre: '',
     description: '',
     date_remise: '',
     id_cours: '',
-    id_classe : '',
-    id_option : '',
+    id_classe: '',
+    id_option: '',
     id_type_travail: '',
     file: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
   const [cours, setCours] = useState([]);
   const [typesTravail, setTypesTravail] = useState([]);
@@ -32,7 +32,7 @@ const AjouterTravailByEnseignant = () => {
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const userId = localStorage.getItem("userId"); // Récupérer l'userId depuis le localStorage
-  
+
   useEffect(() => {
     const fetchCours = async () => {
       try {
@@ -44,7 +44,7 @@ const AjouterTravailByEnseignant = () => {
         throw error;
       }
     };
-    
+
     const fetchClasses = async () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`);
@@ -55,18 +55,18 @@ const AjouterTravailByEnseignant = () => {
         throw error;
       }
     };
-    
+
     const fetchOptions = async () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`);
-         setOptions(response.data.optionAll);
-         console.log(response.data.optionAll);
+        setOptions(response.data.optionAll);
+        console.log(response.data.optionAll);
       } catch (error) {
         console.error("Erreur lors de la récupération des options:", error);
         throw error;
       }
     };
-    
+
     const fetchTypesTravail = async () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/typeTravail/ecole/${ecole_id}/direction/${direction}`);
@@ -107,10 +107,10 @@ const AjouterTravailByEnseignant = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage('');
-    setIsSubmitting(true); 
+    setIsSubmitting(true);
 
-    if (!validateForm()){
-      setIsSubmitting(false); 
+    if (!validateForm()) {
+      setIsSubmitting(false);
       return;
     }
     const data = new FormData();
@@ -132,7 +132,7 @@ const AjouterTravailByEnseignant = () => {
         data,
         { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
       );
- 
+
 
       if (response.data.status === 200) {
         setSuccessMessage(response.data.success_msg);
@@ -142,11 +142,11 @@ const AjouterTravailByEnseignant = () => {
           description: '',
           date_remise: '',
           id_cours: '',
-          id_classe : '',
+          id_classe: '',
           id_type_travail: '',
           file: '',
-          ecole_id : ecole_id,
-          direction : direction,
+          ecole_id: ecole_id,
+          direction: direction
         });
 
         if (fileInputRef.current) {
@@ -161,22 +161,22 @@ const AjouterTravailByEnseignant = () => {
       console.log(response.data);
     } catch (error) {
       setErrors({ form: "Erreur de connexion au serveur" });
-    }finally{
-      setIsSubmitting(false); 
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
        <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <section className='section d-flex flex-column align-items-center justify-content-center py-4'>
           <div className='col-lg-6 col-md-8 col-12'>
             <div className='card mb-3'>
               <div className="card-body">
                      <Link className="btn btn-primary" to='/maternelle/liste_travail_by_enseignant'>Liste des travaux</Link>
-                    <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter travail</h3>
+                    <h3 className="text-center u-style-951c0e5f">Ajouter travail</h3>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
                       <div className="mb-3"> 
                         <label htmlFor="titre" className="form-label">Titre</label>
@@ -197,9 +197,9 @@ const AjouterTravailByEnseignant = () => {
                         <label htmlFor="id_cours">Cours</label>
                         <select id="id_cours" name="id_cours" className="form-control" value={formData.id_cours} onChange={handleInputChange}>
                           <option value="">Sélectionnez un cours</option>
-                          {cours.map((c) => (
-                            <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
-                          ))}
+                          {cours.map((c) =>
+                      <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
+                      )}
                         </select>
                         {errors.id_cours && <p className="text-danger">{errors.id_cours}</p>}
                       </div>
@@ -208,7 +208,7 @@ const AjouterTravailByEnseignant = () => {
                         <label htmlFor="id_classe" className="form-label">Classe</label>
                         <select name="id_classe" className="form-control" value={formData.id_classe} onChange={handleInputChange}>
                           <option value="">Sélectionner une classe</option>
-                          {classes.map(classe => <option key={classe.id} value={classe.id}>{classe.name}</option>)}
+                          {classes.map((classe) => <option key={classe.id} value={classe.id}>{classe.name}</option>)}
                         </select>
                         {errors.id_classe && <p className="text-danger">{errors.id_classe}</p>}
                       </div>
@@ -216,7 +216,7 @@ const AjouterTravailByEnseignant = () => {
                         <label htmlFor="id_option" className="form-label">Option</label>
                         <select name="id_option" className="form-control" value={formData.id_option} onChange={handleInputChange}>
                           <option value="">Sélectionner une option</option>
-                          {options.map(option => <option key={option.id} value={option.id}>{option.name}</option>)}
+                          {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
                         </select>
                         {errors.id_option && <p className="text-danger">{errors.id_opton}</p>}
                       </div>
@@ -225,34 +225,34 @@ const AjouterTravailByEnseignant = () => {
                         <label htmlFor="id_type_travail" className="form-label">Type de travail</label>
                         <select name="id_type_travail" className="form-control" value={formData.id_type_travail} onChange={handleInputChange}>
                           <option value="">Sélectionner un type</option>
-                          {typesTravail.map(type => <option key={type.id} value={type.id}>{type.name}</option>)}
+                          {typesTravail.map((type) => <option key={type.id} value={type.id}>{type.name}</option>)}
                         </select>
                         {errors.id_type_travail && <p className="text-danger">{errors.id_type_travail}</p>}
                       </div>
                       <div className="mb-3">
                         <label htmlFor="file">Fichier</label>
                         <input
-                          type="file"
-                          name="file"
-                          className="form-control"
-                          onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
-                          ref={fileInputRef}
-                          required
-                        />
+                      type="file"
+                      name="file"
+                      className="form-control"
+                      onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
+                      ref={fileInputRef}
+                      required />
+                    
                         {errors.file && <p className="text-danger">{errors.file}</p>}
                       </div>
                       
                       <button
-                        className="btn btn-primary w-100"
-                        type="submit"
-                        disabled={isSubmitting}
-                        style={{
-                          backgroundColor: '#1769ff',
-                          border: 'none',
-                          padding: '10px',
-                          borderRadius: '5px',
-                        }}
-                      >
+                    className="btn btn-primary w-100 u-style-2167c5af"
+                    type="submit"
+                    disabled={isSubmitting}>
+
+
+
+
+
+
+                    
                         {isSubmitting ? 'Enregistrement en cours...' : 'Ajouter'}
                       </button>
                       {successMessage && <p className="text-success text-center mt-3">{successMessage}</p>}
@@ -264,8 +264,8 @@ const AjouterTravailByEnseignant = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterTravailByEnseignant;

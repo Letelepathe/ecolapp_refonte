@@ -9,79 +9,79 @@ import Logo_ecolapp from "../../../../static/images/logo_ecolapp.jpg";
 
 const SidebarLeft = () => {
 
-      const [openMenus, setOpenMenus] = useState({});
-            
-              const toggleMenu = (menu) => {
-                setOpenMenus((prevState) => ({
-                  ...prevState,
-                  [menu]: !prevState[menu],
-                }));
-              };
-            
-              
-    const [user, setUser] = useState(null);
-    const id = localStorage.getItem("userId");
-    const navigate = useNavigate();
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const response = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
-                if (response.data.status === 200) {
-                    setUser(response.data.user);
-    
-                    // Vérifie la fonction et le rôle après la mise à jour de l'état
-                    const allowedFunctions = [
-                        "Administrateur",
-                        "Administratrice",
-                        "Super Administrateur",
-                        "Super Administratrice"
-                    ];
-    
-                    if (
-                        !allowedFunctions.includes(response.data.user.fonction?.name) &&
-                        !allowedFunctions.includes(response.data.user.role)
-                    ) {
-                        navigate('/secondaire/profil_user');
-                    }
-                } else {
-                    console.error("Statut inattendu :", response.data.status);
-                }
-            } catch (error) {
-                console.error("Erreur lors de la récupération des informations utilisateur :", error);
-            }
-        };
+  const [openMenus, setOpenMenus] = useState({});
 
-        const checkSession = () => {
-            const id = localStorage.getItem("userId");
-            if (!id) {
-                navigate('/secondaire/login');
-            }
-      };
-    
-        fetchUserInfo();
-        checkSession();
-    }, [id, navigate]); 
+  const toggleMenu = (menu) => {
+    setOpenMenus((prevState) => ({
+      ...prevState,
+      [menu]: !prevState[menu]
+    }));
+  };
 
-    if (!user) return <div className="spinner"></div>;
-    
-    return (
-        <div>
+
+  const [user, setUser] = useState(null);
+  const id = localStorage.getItem("userId");
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
+        if (response.data.status === 200) {
+          setUser(response.data.user);
+
+          // Vérifie la fonction et le rôle après la mise à jour de l'état
+          const allowedFunctions = [
+          "Administrateur",
+          "Administratrice",
+          "Super Administrateur",
+          "Super Administratrice"];
+
+
+          if (
+          !allowedFunctions.includes(response.data.user.fonction?.name) &&
+          !allowedFunctions.includes(response.data.user.role))
+          {
+            navigate('/secondaire/profil_user');
+          }
+        } else {
+          console.error("Statut inattendu :", response.data.status);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des informations utilisateur :", error);
+      }
+    };
+
+    const checkSession = () => {
+      const id = localStorage.getItem("userId");
+      if (!id) {
+        navigate('/secondaire/login');
+      }
+    };
+
+    fetchUserInfo();
+    checkSession();
+  }, [id, navigate]);
+
+  if (!user) return <div className="spinner"></div>;
+
+  return (
+    <div>
             <div className="sidebar pe-0 pb-0">
-                <nav className="navbar navbar-white" style={{background: '#1769ff'}}>
+                <nav className="navbar navbar-white u-style-77fdd8b0">
                     <Link to="#" className="navbar-brand mx-4 mb-3">
-                        <h3 className="" style={{ fontWeight: 900, color: '#fff' }}>
+                        <h3 className="u-style-b3e00e00">
                             <i className="bi bi-mortarboard-fill me-2"></i>ecolapp
                         </h3>
                     </Link>
                     <div className="d-flex align-items-center ms-4 mb-4 w-100">
                         <div className="position-relative">
                             <Link to='/secondaire/bureau_admin'>
-                                <img 
-                                    src={Logo_ecolapp} 
-                                    alt="Profil" 
-                                    className="rounded-circle me-lg-2" 
-                                    style={{ width: '40px', height: '40px' }} 
-                                />
+                                <img
+                  src={Logo_ecolapp}
+                  alt="Profil"
+                  className="rounded-circle me-lg-2 u-style-8dfb6bb0" />
+
+                
                                 <div className="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                             </Link>
                         </div>
@@ -93,21 +93,21 @@ const SidebarLeft = () => {
                         </Link> 
                     </div>
                     <div className="navbar-nav w-100">
-                        {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) && (
-                            <Dropdown className="nav-item dropdown mb-2 mt-2">
-                                <Dropdown.Toggle className="nav-link"
-                                    style={{
-                                        fontSize: '15px',
-                                        fontWeight: 900,
-                                        backgroundColor: 'transparent',
-                                        border: 'none',
-                                        textDecoration: 'none',
-                                        cursor: 'pointer',
-                                        padding: 0,
-                                        display: 'inline-block',
-                                        color:'#fff'
-                                    }}
-                                    >
+                        {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+            <Dropdown className="nav-item dropdown mb-2 mt-2">
+                                <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                     <i className="bi bi-wallet-fill text-primary me-2 icon-blue"></i>Gestion Admin
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
@@ -122,23 +122,23 @@ const SidebarLeft = () => {
                                     </Link>
                                 </Dropdown.Menu>
                             </Dropdown>
-                        )}
+            }
                      
                         {/* Années scolaires */}
                         <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-wallet-fill me-2 text-primary icon-blue"></i>Cycle scolaire
                             </Dropdown.Toggle>
                             <Dropdown.Menu className="text-white">
@@ -166,19 +166,19 @@ const SidebarLeft = () => {
 
                         {/* Gestion Communiqués */}
                         <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-megaphone-fill text-primary me-2 icon-blue"></i>Communications
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -199,19 +199,19 @@ const SidebarLeft = () => {
 
                         {/* Enseignangts */}
                         <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-person-badge-fill text-primary me-2 icon-blue"></i>Enseignants
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -240,19 +240,19 @@ const SidebarLeft = () => {
 
                         {/* Elèves */}
                         <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-person-fill text-primary me-2 icon-blue"></i>Elèves
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -278,19 +278,19 @@ const SidebarLeft = () => {
                         </Dropdown>
                          {/* Cours */}
                          <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-eject-fill me-2 text-primary icon-blue"></i>Cours
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -322,19 +322,19 @@ const SidebarLeft = () => {
                        
                         {/* Paiement */}
                         <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-wallet-fill text-primary me-2 icon-blue"></i>Paiement
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -373,19 +373,19 @@ const SidebarLeft = () => {
 
                        
                         <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-check2-square me-2 text-primary icon-blue"></i>Structure scolaire
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -415,19 +415,19 @@ const SidebarLeft = () => {
 
                         {/* Gestion des Membres */}
                         <Dropdown className="nav-item dropdown mb-2 mt-2">
-                            <Dropdown.Toggle className="nav-link"
-                                 style={{
-                                    fontSize: '15px',
-                                    fontWeight: 900,
-                                    backgroundColor: 'transparent',
-                                    border: 'none',
-                                    textDecoration: 'none',
-                                    cursor: 'pointer',
-                                    padding: 0,
-                                    display: 'inline-block',
-                                    color:'#fff'
-                                  }}
-                                >
+                            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+                
                                 <i className="bi bi-people-fill me-2 text-primary icon-blue"></i>Utilisateurs
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -456,10 +456,10 @@ const SidebarLeft = () => {
                    
                 </nav>
             </div>
-        </div>
-   
-);
-}; 
+        </div>);
+
+
+};
 
 
 export default SidebarLeft;

@@ -7,90 +7,90 @@ import { useParams, Link } from "react-router-dom";
 import ImgDrapeau from "../../static/images/drapeau.png";
 import ImgSymbole from "../../static/images/symb.png";
 
- 
+
 const Bulletin = () => {
-     const [ecole, setEcole] = useState(null);
-       const {eleve_id, annee_id, ecole_id, direction} = useParams();
-        useEffect(() => {
-          const fetchInfoEcole = async () => {
-            try {
-              const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${ecole_id}`);
-              setEcole(response.data.ecole);
-            } catch (error) {
-              console.error("Erreur lors de la récupération des informations:", error);
-            }
-          };
-      
-          fetchInfoEcole();
-        }, [ecole_id]);
-      
-       
-    const [eleveInfo, setEleveInfo] = useState(null);
-    const [dataSemestres, setDataSemestres] = useState([]);
-    const [coursGroupes, setCoursGroupes] = useState({});
-    const [totalAnnuel, setTotalAnnuel] = useState({});
-    const [anneeScolaire, setAnneeScolaire] = useState('');
-    const [pourcentageAnnuel, setPourcentageAnnuel] = useState(0);
-    const [errors, setErrors] = useState('');
-   
-
-    let bareme = 2;
-    if (Number(direction) === 1 || Number(direction) === 2) {
-        bareme = 3;
-    }
-
-    useEffect(() => {
-        const fetchResultats = async () => {
-            try {
-                const response = await axios.get(
-                    `https://api.ecolapp.cd/api/cotegenerale/eleve/resultat/annee/${annee_id}/eleve/${eleve_id}/bareme/${bareme}/ecole/${ecole_id}/direction/${direction}`
-                );
-
-                if (response.data.status === 200) {
-                    setEleveInfo(response.data.eleve);
-                    setDataSemestres(response.data.data_semestres);
-                    setCoursGroupes(response.data.cours_groupes);
-                    setTotalAnnuel(response.data.total_annuel);
-                    setPourcentageAnnuel(response.data.pourcentage_annuel);
-                    setAnneeScolaire(response.data.annee_scolaire);
-                    setErrors('');
-                } else {
-                    setErrors("Les données récupérées ne sont pas valides.");
-                }
-            } catch (error) {
-                setErrors("Erreur lors de la récupération des résultats.");
-            }
-        };
-
-       
-
-        if (eleve_id && annee_id) {
-            fetchResultats();
-        } else {
-            setErrors("Paramètres manquants.");
-        }
-    }, [eleve_id, annee_id, ecole_id, direction]);
-
-    if (errors) {
-        return <div className="text-danger text-center">{errors}</div>;
-    }
-
-    if (!eleveInfo || !dataSemestres) {
-        return <div className="spinner"></div>;
-    }
-
-    const printBulletin = () => {
-        window.print();
+  const [ecole, setEcole] = useState(null);
+  const { eleve_id, annee_id, ecole_id, direction } = useParams();
+  useEffect(() => {
+    const fetchInfoEcole = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${ecole_id}`);
+        setEcole(response.data.ecole);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des informations:", error);
+      }
     };
-    
-    if(!ecole){
-        return (
-         <div className="spinner"></div>
-        );
-    }
 
+    fetchInfoEcole();
+  }, [ecole_id]);
+
+
+  const [eleveInfo, setEleveInfo] = useState(null);
+  const [dataSemestres, setDataSemestres] = useState([]);
+  const [coursGroupes, setCoursGroupes] = useState({});
+  const [totalAnnuel, setTotalAnnuel] = useState({});
+  const [anneeScolaire, setAnneeScolaire] = useState('');
+  const [pourcentageAnnuel, setPourcentageAnnuel] = useState(0);
+  const [errors, setErrors] = useState('');
+
+
+  let bareme = 2;
+  if (Number(direction) === 1 || Number(direction) === 2) {
+    bareme = 3;
+  }
+
+  useEffect(() => {
+    const fetchResultats = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.ecolapp.cd/api/cotegenerale/eleve/resultat/annee/${annee_id}/eleve/${eleve_id}/bareme/${bareme}/ecole/${ecole_id}/direction/${direction}`
+        );
+
+        if (response.data.status === 200) {
+          setEleveInfo(response.data.eleve);
+          setDataSemestres(response.data.data_semestres);
+          setCoursGroupes(response.data.cours_groupes);
+          setTotalAnnuel(response.data.total_annuel);
+          setPourcentageAnnuel(response.data.pourcentage_annuel);
+          setAnneeScolaire(response.data.annee_scolaire);
+          setErrors('');
+        } else {
+          setErrors("Les données récupérées ne sont pas valides.");
+        }
+      } catch (error) {
+        setErrors("Erreur lors de la récupération des résultats.");
+      }
+    };
+
+
+
+    if (eleve_id && annee_id) {
+      fetchResultats();
+    } else {
+      setErrors("Paramètres manquants.");
+    }
+  }, [eleve_id, annee_id, ecole_id, direction]);
+
+  if (errors) {
+    return <div className="text-danger text-center">{errors}</div>;
+  }
+
+  if (!eleveInfo || !dataSemestres) {
+    return <div className="spinner"></div>;
+  }
+
+  const printBulletin = () => {
+    window.print();
+  };
+
+  if (!ecole) {
     return (
-        <div>
+      <div className="spinner"></div>);
+
+  }
+
+  return (
+    <div>
             <Helmet>
                 <title>Bulletin Annuel</title>
             </Helmet>
@@ -135,99 +135,99 @@ const Bulletin = () => {
                             <thead>
                                 <tr>
                                     <th rowSpan="2">Branches</th>
-                                    {Object.keys(dataSemestres).map((semestre_id) => (
-                                        <th key={semestre_id} colSpan={dataSemestres[semestre_id].periodes.length + 2}>
+                                    {Object.keys(dataSemestres).map((semestre_id) =>
+                  <th key={semestre_id} colSpan={dataSemestres[semestre_id].periodes.length + 2}>
                                             {dataSemestres[semestre_id].nom_semestre}
                                         </th>
-                                    ))}
+                  )}
                                     <th rowSpan="2">Total Année</th>
                                 </tr>
                                 <tr>
-                                    {Object.keys(dataSemestres).map((semestre_id) => (
-                                        <React.Fragment key={semestre_id}>
-                                            {dataSemestres[semestre_id].periodes.map((periode) => (
-                                                <th key={periode.id}>{periode.name}</th>
-                                            ))}
+                                    {Object.keys(dataSemestres).map((semestre_id) =>
+                  <React.Fragment key={semestre_id}>
+                                            {dataSemestres[semestre_id].periodes.map((periode) =>
+                    <th key={periode.id}>{periode.name}</th>
+                    )}
                                             <th>Examen</th>
                                             <th>Total</th>
                                         </React.Fragment>
-                                    ))}
+                  )}
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.entries(coursGroupes).map(([ponderation, groupe]) => (
-                                    <React.Fragment key={ponderation}>
+                                {Object.entries(coursGroupes).map(([ponderation, groupe]) =>
+                <React.Fragment key={ponderation}>
                                         <tr className='bg-secondary text-white'>
                                             <td>Maxima</td>
-                                            {Object.keys(dataSemestres).map((semestre_id) => (
-                                                <React.Fragment key={semestre_id}>
-                                                    {dataSemestres[semestre_id].periodes.map((periode) => (
-                                                        <td key={periode.id}>{Math.floor(groupe.max / dataSemestres[semestre_id].periodes.length)}</td>
-                                                    ))}
+                                            {Object.keys(dataSemestres).map((semestre_id) =>
+                    <React.Fragment key={semestre_id}>
+                                                    {dataSemestres[semestre_id].periodes.map((periode) =>
+                      <td key={periode.id}>{Math.floor(groupe.max / dataSemestres[semestre_id].periodes.length)}</td>
+                      )}
                                                     <td>{groupe.max}</td>
                                                     <td>{groupe.max * dataSemestres[semestre_id].periodes.length}</td>
                                                 </React.Fragment>
-                                            ))}
+                    )}
                                             <td>{groupe.max * Object.keys(dataSemestres).length * 2}</td>
                                         </tr>
-                                        {groupe.cours.map((cours) => (
-                                            <tr key={cours.id_cours}>
+                                        {groupe.cours.map((cours) =>
+                  <tr key={cours.id_cours}>
                                                 <td>{cours.nom_cours}</td>
-                                                {Object.keys(dataSemestres).map((semestre_id) => (
-                                                    <React.Fragment key={semestre_id}>
-                                                        {dataSemestres[semestre_id].periodes.map((periode) => (
-                                                            <td key={periode.id}>
+                                                {Object.keys(dataSemestres).map((semestre_id) =>
+                    <React.Fragment key={semestre_id}>
+                                                        {dataSemestres[semestre_id].periodes.map((periode) =>
+                      <td key={periode.id}>
                                                                 {cours.notes[periode.id]?.note ?? 0}
                                                             </td>
-                                                        ))}
+                      )}
                                                         <td>{Math.floor(cours.total_obtenu - Object.values(cours.notes).reduce((sum, note) => sum + (note?.note ?? 0), 0))}</td>
                                                         <td>{Math.floor(cours.total_obtenu)}</td>
                                                     </React.Fragment>
-                                                ))}
+                    )}
                                                 <td>{Math.floor(cours.total_obtenu * Object.keys(dataSemestres).length)}</td>
                                             </tr>
-                                        ))}
+                  )}
                                     </React.Fragment>
-                                ))}
+                )}
                             </tbody>
                             <tfoot>
                                 <tr className="total-row">
                                     <td>Total Général</td>
-                                    {Object.keys(dataSemestres).map((semestre_id) => (
-                                        <React.Fragment key={semestre_id}>
-                                            {dataSemestres[semestre_id].periodes.map((periode) => (
-                                                <td key={periode.id}>{Math.floor(dataSemestres[semestre_id].totaux_periode[periode.id]?.obtenu ?? 0)}</td>
-                                            ))}
+                                    {Object.keys(dataSemestres).map((semestre_id) =>
+                  <React.Fragment key={semestre_id}>
+                                            {dataSemestres[semestre_id].periodes.map((periode) =>
+                    <td key={periode.id}>{Math.floor(dataSemestres[semestre_id].totaux_periode[periode.id]?.obtenu ?? 0)}</td>
+                    )}
                                             <td>{Math.floor(dataSemestres[semestre_id].total_semestre.exam_obtenu)}</td>
                                             <td>{Math.floor(dataSemestres[semestre_id].total_semestre.obtenu + dataSemestres[semestre_id].total_semestre.exam_obtenu)}</td>
                                         </React.Fragment>
-                                    ))}
+                  )}
                                     <td>{Math.floor(totalAnnuel.obtenu + totalAnnuel.exam_obtenu)}</td>
                                 </tr>
                                 <tr className="total-row">
                                     <td>Pourcentage</td>
-                                    {Object.keys(dataSemestres).map((semestre_id) => (
-                                        <React.Fragment key={semestre_id}>
-                                            {dataSemestres[semestre_id].periodes.map((periode) => (
-                                                <td key={periode.id}>
-                                                    {dataSemestres[semestre_id].totaux_periode[periode.id]?.max > 0
-                                                        ? ((dataSemestres[semestre_id].totaux_periode[periode.id]?.obtenu / dataSemestres[semestre_id].totaux_periode[periode.id]?.max) * 100).toFixed(2) + "%"
-                                                        : "-"}
+                                    {Object.keys(dataSemestres).map((semestre_id) =>
+                  <React.Fragment key={semestre_id}>
+                                            {dataSemestres[semestre_id].periodes.map((periode) =>
+                    <td key={periode.id}>
+                                                    {dataSemestres[semestre_id].totaux_periode[periode.id]?.max > 0 ?
+                      (dataSemestres[semestre_id].totaux_periode[periode.id]?.obtenu / dataSemestres[semestre_id].totaux_periode[periode.id]?.max * 100).toFixed(2) + "%" :
+                      "-"}
                                                 </td>
-                                            ))}
+                    )}
                                             <td>
-                                                {dataSemestres[semestre_id].total_semestre.exam_max > 0
-                                                    ? ((dataSemestres[semestre_id].total_semestre.exam_obtenu / dataSemestres[semestre_id].total_semestre.exam_max) * 100).toFixed(2) + "%"
-                                                    : "-"}
+                                                {dataSemestres[semestre_id].total_semestre.exam_max > 0 ?
+                      (dataSemestres[semestre_id].total_semestre.exam_obtenu / dataSemestres[semestre_id].total_semestre.exam_max * 100).toFixed(2) + "%" :
+                      "-"}
                                             </td>
                                             <td>
-                                                {(dataSemestres[semestre_id].total_semestre.max + dataSemestres[semestre_id].total_semestre.exam_max) > 0
-                                                    ? ((dataSemestres[semestre_id].total_semestre.obtenu + dataSemestres[semestre_id].total_semestre.exam_obtenu) /
-                                                    (dataSemestres[semestre_id].total_semestre.max + dataSemestres[semestre_id].total_semestre.exam_max) * 100).toFixed(2) + "%"
-                                                    : "-"}
+                                                {dataSemestres[semestre_id].total_semestre.max + dataSemestres[semestre_id].total_semestre.exam_max > 0 ?
+                      ((dataSemestres[semestre_id].total_semestre.obtenu + dataSemestres[semestre_id].total_semestre.exam_obtenu) / (
+                      dataSemestres[semestre_id].total_semestre.max + dataSemestres[semestre_id].total_semestre.exam_max) * 100).toFixed(2) + "%" :
+                      "-"}
                                             </td>
                                         </React.Fragment>
-                                    ))}
+                  )}
                                     <td>{pourcentageAnnuel.toFixed(2)}%</td>
                                 </tr>
                             </tfoot>
@@ -235,17 +235,17 @@ const Bulletin = () => {
                     </div>
                 </div>
                 <div className="text-center py-2 mb-2 mt-2">
-                    <button className="btn btn-primary hide-on-print" style={{background:'#1769ff', color:'#fff', padding:'10px', borderRadius:'25px'}} onClick={printBulletin}>
+                    <button className="btn btn-primary hide-on-print u-style-eae60df9" onClick={printBulletin}>
                         Imprimer
                     </button>
                 </div>
                 <div className="text-center mt-2 mb-2">
-                    <Link to='/' className='btn btn-warning hide-on-print' style={{color:'#fff', padding:'10px', borderRadius:'25px'}}>Quitter</Link>
+                    <Link to='/' className="btn btn-warning hide-on-print u-style-4d080e7b">Quitter</Link>
                 </div>
                
             </div>
-        </div>
-    );
+        </div>);
+
 };
 
 export default Bulletin;

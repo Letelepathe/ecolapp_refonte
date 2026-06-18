@@ -7,14 +7,14 @@ import NavbarTop from "./NavbarTop";
 const AjouterCours = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [formData, setFormData] = useState({
     name: '',
     ponderation: '',
     classes_id: '',
     options_id: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
 
   const [classes, setClasses] = useState([]);
@@ -50,7 +50,7 @@ const AjouterCours = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -70,13 +70,13 @@ const AjouterCours = () => {
     setSuccessMessage('');
     setIsSubmitting(true);
 
-    if (!validateForm()){
-      setIsSubmitting(false); 
+    if (!validateForm()) {
+      setIsSubmitting(false);
       return;
     }
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/cours/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 200) {
@@ -87,16 +87,16 @@ const AjouterCours = () => {
           ponderation: '',
           classes_id: '',
           options_id: '',
-          ecole_id : ecole_id,
-          direction : direction,
+          ecole_id: ecole_id,
+          direction: direction
         });
       } else {
         setErrors({ form: "Une erreur s'est produite" });
       }
     } catch (error) {
       setErrors({ form: "Erreur de connexion au serveur" });
-    }finally {
-      setIsSubmitting(false); 
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -111,7 +111,7 @@ const AjouterCours = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <Link to='/maternelle/liste_cours' className='btn btn-primary mt-2 mb-2'>Liste cours</Link>
-                  <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Cours</h3>
+                  <h3 className="text-center u-style-951c0e5f">Ajouter Cours</h3>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
 
                   <form onSubmit={handleSubmit} noValidate>
@@ -130,9 +130,9 @@ const AjouterCours = () => {
                       <label htmlFor="classes_id">Classe</label>
                       <select name="classes_id" className="form-control" value={formData.classes_id} onChange={handleInputChange} required>
                         <option value="">Sélectionner une classe</option>
-                        {classes.map(classe => (
-                          <option key={classe.id} value={classe.id}>{classe.name}</option>
-                        ))}
+                        {classes.map((classe) =>
+                        <option key={classe.id} value={classe.id}>{classe.name}</option>
+                        )}
                       </select>
                       {errors.classes_id && <p className="text-danger">{errors.classes_id}</p>}
                     </div>
@@ -140,9 +140,9 @@ const AjouterCours = () => {
                       <label htmlFor="options_id">Option</label>
                       <select name="options_id" className="form-control" value={formData.options_id} onChange={handleInputChange} required>
                         <option value="">Sélectionner une option</option>
-                        {options.map(option => (
-                          <option key={option.id} value={option.id}>{option.name}</option>
-                        ))}
+                        {options.map((option) =>
+                        <option key={option.id} value={option.id}>{option.name}</option>
+                        )}
                       </select>
                       {errors.options_id && <p className="text-danger">{errors.options_id}</p>}
                     </div>
@@ -160,8 +160,8 @@ const AjouterCours = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterCours;

@@ -10,7 +10,7 @@ const AjouterMembreEffectif = () => {
     postnom: '',
     prenom: '',
     sexe: '',
-    fonction: '',
+    fonction: ''
   });
   const [fonctions, setFonctions] = useState([]);
   const [errors, setErrors] = useState({});
@@ -33,7 +33,7 @@ const AjouterMembreEffectif = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -70,7 +70,7 @@ const AjouterMembreEffectif = () => {
           postnom: '',
           prenom: '',
           sexe: '',
-          fonction: '',
+          fonction: ''
         });
         setTimeout(() => navigate('/secondaire/liste_membre_effectif'), 1500);
       } else {
@@ -89,7 +89,7 @@ const AjouterMembreEffectif = () => {
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className="card-body">
-                  <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Membre Effectif</h3>
+                  <h3 className="text-center u-style-951c0e5f">Ajouter Membre Effectif</h3>
                   <form onSubmit={handleSubmit} noValidate>
                     <div className="mb-3">
                       <label htmlFor="nom">Nom</label>
@@ -119,11 +119,11 @@ const AjouterMembreEffectif = () => {
                       <label htmlFor="fonction">Fonction</label>
                       <select name="fonction" className="form-control" value={formData.fonction} onChange={handleInputChange}>
                         <option value="">Sélectionner une fonction</option>
-                        {fonctions.map((fonction) => (
-                          <option key={fonction.id} value={fonction.fonction}>
+                        {fonctions.map((fonction) =>
+                        <option key={fonction.id} value={fonction.fonction}>
                             {fonction.fonction}
                           </option>
-                        ))}
+                        )}
                       </select>
                       {errors.fonction && <p className="text-danger">{errors.fonction}</p>}
                     </div>
@@ -138,8 +138,8 @@ const AjouterMembreEffectif = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterMembreEffectif;

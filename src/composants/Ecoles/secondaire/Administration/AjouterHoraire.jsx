@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
@@ -8,7 +8,7 @@ import NavbarTop from "./NavbarTop";
 const AjouterHoraire = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   // Form data
   const [formData, setFormData] = useState({
     title: '',
@@ -16,8 +16,8 @@ const AjouterHoraire = () => {
     classe_id: '',
     option_id: '',
     annee_id: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
 
   // Liste des classes, options et années
@@ -59,7 +59,7 @@ const AjouterHoraire = () => {
       }
     };
 
-    
+
     fetchAnnees();
     fetchClasses();
     fetchOptions();
@@ -70,7 +70,7 @@ const AjouterHoraire = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -82,7 +82,7 @@ const AjouterHoraire = () => {
     if (!formData.option_id) newErrors.option_id = "Option requise";
     if (!formData.annee_id) newErrors.annee_id = "Année requise";
 
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -91,10 +91,10 @@ const AjouterHoraire = () => {
     e.preventDefault();
     setSuccessMessage('');
     setErrorMessage('');
-    setIsSubmitting(true); 
+    setIsSubmitting(true);
 
-    if (!validateForm()){
-      setIsSubmitting(false); 
+    if (!validateForm()) {
+      setIsSubmitting(false);
       return;
     }
 
@@ -107,14 +107,14 @@ const AjouterHoraire = () => {
     data.append("annee_id", formData.annee_id);
     data.append("ecole_id", formData.ecole_id);
     data.append("direction", formData.direction);
-  
+
     try {
       const response = await axios.post(
         'https://api.ecolapp.cd/api/horaire/create',
-        data,  
+        data,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
-  
+
       if (response.data.statut === 200) {
         setSuccessMessage("Horaire ajouté avec succès !");
         setFormData({
@@ -123,11 +123,11 @@ const AjouterHoraire = () => {
           classe_id: '',
           option_id: '',
           annee_id: '',
-          ecole_id : ecole_id,
-          direction : direction,
+          ecole_id: ecole_id,
+          direction: direction
         });
         setErrors({});
- 
+
       } else {
         console.log("Erreur reçue:", response.data);
         setErrorMessage(response.data.msg || "Une erreur s'est produite.");
@@ -135,23 +135,23 @@ const AjouterHoraire = () => {
     } catch (error) {
       console.log("Erreur de requête:", error);
       setErrorMessage("Erreur de connexion au serveur.");
-    }finally {
-      setIsSubmitting(false); 
+    } finally {
+      setIsSubmitting(false);
     }
   };
-  
+
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <main className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container mt-2">
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <Link to='/secondaire/liste_horaire' className='text-center btn btn-warning text-white'>Liste horaires</Link>
                 <div className="card-body">
-                  <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Horaire</h3>
+                  <h3 className="text-center u-style-951c0e5f">Ajouter Horaire</h3>
                   <p className="text-center">Veuillez remplir les informations de l'horaire ci-dessous.</p>
                   <form onSubmit={handleSubmit} encType='multipart/form-data'>
                     <div className="mb-3">
@@ -162,8 +162,8 @@ const AjouterHoraire = () => {
                         className="form-control"
                         value={formData.title}
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.title && <p className="text-danger">{errors.title}</p>}
                     </div>
 
@@ -174,8 +174,8 @@ const AjouterHoraire = () => {
                         name="image"
                         className="form-control"
                         onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
-                        required
-                      />
+                        required />
+                      
                       {errors.image && <p className="text-danger">{errors.image}</p>}
                     </div>
 
@@ -186,14 +186,14 @@ const AjouterHoraire = () => {
                         className="form-control"
                         value={formData.classe_id}
                         onChange={handleInputChange}
-                        required
-                      >
+                        required>
+                        
                         <option value="">Sélectionner une classe</option>
-                        {classes.map((classe) => (
-                          <option key={classe.id} value={classe.id}>
+                        {classes.map((classe) =>
+                        <option key={classe.id} value={classe.id}>
                             {classe.name}
                           </option>
-                        ))}
+                        )}
                       </select>
                       {errors.classe_id && <p className="text-danger">{errors.classe_id}</p>}
                     </div>
@@ -205,14 +205,14 @@ const AjouterHoraire = () => {
                         className="form-control"
                         value={formData.option_id}
                         onChange={handleInputChange}
-                        required
-                      >
+                        required>
+                        
                         <option value="">Sélectionner une option</option>
-                        {options.map((option) => (
-                          <option key={option.id} value={option.id}>
+                        {options.map((option) =>
+                        <option key={option.id} value={option.id}>
                             {option.name}
                           </option>
-                        ))}
+                        )}
                       </select>
                       {errors.option_id && <p className="text-danger">{errors.option_id}</p>}
                     </div>
@@ -224,14 +224,14 @@ const AjouterHoraire = () => {
                         className="form-control"
                         value={formData.annee_id}
                         onChange={handleInputChange}
-                        required
-                      >
+                        required>
+                        
                         <option value="">Sélectionner une année</option>
-                        {annees.map((annee) => (
-                          <option key={annee.id} value={annee.id}>
+                        {annees.map((annee) =>
+                        <option key={annee.id} value={annee.id}>
                             {annee.name}
                           </option>
-                        ))}
+                        )}
                       </select>
                       {errors.annee_id && <p className="text-danger">{errors.annee_id}</p>}
                     </div>
@@ -239,16 +239,16 @@ const AjouterHoraire = () => {
                    
                     <div className="d-grid">
                      <button
-                        className="btn btn-primary"
+                        className="btn btn-primary u-style-2167c5af"
                         type="submit"
-                        disabled={isSubmitting}
-                        style={{
-                          backgroundColor: '#1769ff',
-                          border: 'none',
-                          padding: '10px',
-                          borderRadius: '5px',
-                        }}
-                      >
+                        disabled={isSubmitting}>
+
+
+
+
+
+
+                        
                         {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>
@@ -262,8 +262,8 @@ const AjouterHoraire = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterHoraire;

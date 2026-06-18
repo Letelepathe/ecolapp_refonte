@@ -13,7 +13,7 @@ const EditionProfil = () => {
     email: '',
     address: '',
     phone: '',
-    image: '',
+    image: ''
   });
   const [previewUrl, setPreviewUrl] = useState(null);
   const [errors, setErrors] = useState({});
@@ -25,8 +25,8 @@ const EditionProfil = () => {
       try {
         const response = await axios.get('https://api.ecolapp.cd/api/user', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+          }
         });
 
         if (response.status === 200 && response.data.id) {
@@ -49,7 +49,7 @@ const EditionProfil = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -57,7 +57,7 @@ const EditionProfil = () => {
     const file = e.target.files[0];
     setFormData({
       ...formData,
-      image: file,
+      image: file
     });
 
     if (file) {
@@ -91,13 +91,13 @@ const EditionProfil = () => {
 
     try {
       const response = await axios.put(
-        `https://api.ecolapp.cd/api/user/edit/${userId}`, 
+        `https://api.ecolapp.cd/api/user/edit/${userId}`,
         data,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-            'Content-Type': 'multipart/form-data',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         }
       );
 
@@ -126,8 +126,8 @@ const EditionProfil = () => {
             name="name"
             className="form-control"
             value={formData.name}
-            onChange={handleInputChange}
-          />
+            onChange={handleInputChange} />
+          
           {errors.name && <p className="text-danger">{errors.name}</p>}
         </div>
         <div className="mb-3">
@@ -137,8 +137,8 @@ const EditionProfil = () => {
             name="first_name"
             className="form-control"
             value={formData.first_name}
-            onChange={handleInputChange}
-          />
+            onChange={handleInputChange} />
+          
         </div>
         <div className="mb-3">
           <label>Email</label>
@@ -147,8 +147,8 @@ const EditionProfil = () => {
             name="email"
             className="form-control"
             value={formData.email}
-            onChange={handleInputChange}
-          />
+            onChange={handleInputChange} />
+          
           {errors.email && <p className="text-danger">{errors.email}</p>}
         </div>
         <div className="mb-3">
@@ -158,8 +158,8 @@ const EditionProfil = () => {
             name="phone"
             className="form-control"
             value={formData.phone}
-            onChange={handleInputChange}
-          />
+            onChange={handleInputChange} />
+          
           {errors.phone && <p className="text-danger">{errors.phone}</p>}
         </div>
         <div className="mb-3">
@@ -169,8 +169,8 @@ const EditionProfil = () => {
             name="address"
             className="form-control"
             value={formData.address}
-            onChange={handleInputChange}
-          />
+            onChange={handleInputChange} />
+          
         </div>
         <div className="mb-3">
           <label>Photo de profil</label>
@@ -178,22 +178,22 @@ const EditionProfil = () => {
             type="file"
             name="image"
             className="form-control"
-            onChange={handleFileChange}
-          />
-          {previewUrl && (
-            <img
-              src={previewUrl}
-              alt="Aperçu"
-              style={{ maxWidth: '100px', maxHeight: '100px', borderRadius: '5px' }}
-            />
-          )}
+            onChange={handleFileChange} />
+          
+          {previewUrl &&
+          <img
+            src={previewUrl}
+            alt="Aperçu" className="u-style-d0ffede2" />
+
+
+          }
         </div>
         <button type="submit" className="btn btn-primary">Mettre à jour</button>
       </form>
       {successMessage && <p className="text-success">{successMessage}</p>}
       {errorMessage && <p className="text-danger">{errorMessage}</p>}
-    </div>
-  );
+    </div>);
+
 };
 
 export default EditionProfil;

@@ -1,7 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './PolitiqueConfidentialite.css';
-
 import Header2 from './Header2';
 import Footer from './Footer';
 

@@ -43,19 +43,19 @@ const ListeHoraire = () => {
   };
 
   return (
-   <div className="container-fluid position-relative bg-white d-flex p-0">
-    <SidebarLeft/>
+    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <SidebarLeft />
     <div className='content'>
-      <NavbarTop/>
+      <NavbarTop />
       <div className="container mt-4">
         <Link to='/primaire/ajouter_horaire'>Ajouter horaire</Link>
-        <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Liste des Horaires</h3>
-        {successMessage && ( 
-                <p> {successMessage} </p>
-        )}
-        {error && ( 
-                <p> {error} </p>
-        )}
+        <h3 className="text-center u-style-951c0e5f">Liste des Horaires</h3>
+        {successMessage &&
+          <p> {successMessage} </p>
+          }
+        {error &&
+          <p> {error} </p>
+          }
         <table className="table table-bordered">
           <thead>
             <tr>
@@ -69,16 +69,16 @@ const ListeHoraire = () => {
           </thead>
           <tbody>
             {horaires.map((horaire) => {
-              return (
-                <tr key={horaire.id}>
+                return (
+                  <tr key={horaire.id}>
                   <td>{horaire.title}</td>
                   <td>
-                    <img 
-                      src={`https://api.ecolapp.cd/public/imgHoraire/${horaire.image}`} 
-                      alt={horaire.title} 
-                      width={50} 
-                      onError={(e) => e.target.style.display = 'none'} 
-                    />
+                    <img
+                        src={`https://api.ecolapp.cd/public/imgHoraire/${horaire.image}`}
+                        alt={horaire.title}
+                        width={50}
+                        onError={(e) => e.target.style.display = 'none'} />
+                      
                   </td>
                   <td>{horaire.classe.name}</td>
                   <td>{horaire.option.name}</td>
@@ -86,15 +86,15 @@ const ListeHoraire = () => {
                   <td>
                     <Link onClick={() => handleDelete(horaire.id)} className='btn btn-danger'>Supprimer</Link>
                   </td>
-                </tr>
-              );
-            })}
+                </tr>);
+
+              })}
           </tbody>
         </table>
       </div>
     </div>
-   </div>
-  );
+   </div>);
+
 };
 
 export default ListeHoraire;

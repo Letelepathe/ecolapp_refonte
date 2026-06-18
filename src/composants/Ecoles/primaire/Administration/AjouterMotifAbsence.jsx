@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 const AjouterMotifAbsence = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [formData, setFormData] = useState({
     name: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
@@ -21,7 +21,7 @@ const AjouterMotifAbsence = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -37,30 +37,30 @@ const AjouterMotifAbsence = () => {
     setSuccessMessage('');
     setErrorMessage('');
     setIsSubmitting(true);
-    
-     if (!validateForm()){
-      setIsSubmitting(false); 
+
+    if (!validateForm()) {
+      setIsSubmitting(false);
       return;
     }
 
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/motif_absence/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 200) {
         setSuccessMessage("Motif ajouté avec succès !");
         setErrors({});
-        setFormData({ name: '', ecole_id : ecole_id, direction : direction });
-        
+        setFormData({ name: '', ecole_id: ecole_id, direction: direction });
+
       } else {
         setErrorMessage(response.data.erroList);
         console.log(response.data);
       }
     } catch (error) {
       setErrorMessage("Erreur de connexion au serveur.");
-    }finally {
-      setIsSubmitting(false); 
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -76,7 +76,7 @@ const AjouterMotifAbsence = () => {
                 <div className="card-body">
                   <div className='align-items-center justify-content-between d-flex'>
                    <Link to='/primaire/liste_motif_absence' className='btn btn-primary'>Liste motifs</Link>
-                   <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Motif absence</h6>
+                   <h6 className="text-center u-style-951c0e5f">Ajouter Motif absence</h6>
                   </div>
                   <form onSubmit={handleSubmit}>
                     <div className="mb-3">
@@ -87,13 +87,13 @@ const AjouterMotifAbsence = () => {
                         className="form-control"
                         value={formData.name}
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.name && <p className="text-danger">{errors.name}</p>}
                     </div>
 
                     <div className="d-grid">
-                      <button className="btn btn-primary" disabled={isSubmitting} type="submit" style={{ backgroundColor: '#1769ff', border: 'none', padding: '10px', borderRadius: '5px' }}>
+                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
                       {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>
@@ -107,8 +107,8 @@ const AjouterMotifAbsence = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterMotifAbsence;

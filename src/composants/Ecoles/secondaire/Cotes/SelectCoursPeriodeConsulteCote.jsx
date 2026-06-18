@@ -58,36 +58,36 @@ const SelectCoursPeriodeConsulteCote = () => {
             <div className='col-lg-6 col-md-8 col-12'>
               <div className="card mb-3">
                 <div className="card-body">
-                  <h4 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                  <h4 className="text-center u-style-951c0e5f">
                     Sélectionnez un cours et une période
                   </h4>
                   <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                       <label htmlFor="cours">Cours</label>
-                      <select 
-                        id="cours" 
-                        className="form-control" 
-                        value={selectedCours} 
-                        onChange={(e) => setSelectedCours(e.target.value)}
-                      >
+                      <select
+                        id="cours"
+                        className="form-control"
+                        value={selectedCours}
+                        onChange={(e) => setSelectedCours(e.target.value)}>
+                        
                         <option value="">-- Sélectionner un cours --</option>
-                        {cours.map(c => (
-                          <option key={c.id} value={c.id}>{c.nom}</option>
-                        ))}
+                        {cours.map((c) =>
+                        <option key={c.id} value={c.id}>{c.nom}</option>
+                        )}
                       </select>
                     </div>
                     <div className="mb-3">
                       <label htmlFor="periode">Période</label>
-                      <select 
-                        id="periode" 
-                        className="form-control" 
-                        value={selectedPeriode} 
-                        onChange={(e) => setSelectedPeriode(e.target.value)}
-                      >
+                      <select
+                        id="periode"
+                        className="form-control"
+                        value={selectedPeriode}
+                        onChange={(e) => setSelectedPeriode(e.target.value)}>
+                        
                         <option value="">-- Sélectionner une période --</option>
-                        {periodes.map(p => (
-                          <option key={p.id} value={p.id}>{p.periode}</option>
-                        ))}
+                        {periodes.map((p) =>
+                        <option key={p.id} value={p.id}>{p.periode}</option>
+                        )}
                       </select>
                     </div>
                     {errors && <p className="text-danger">{errors}</p>}
@@ -101,8 +101,8 @@ const SelectCoursPeriodeConsulteCote = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectCoursPeriodeConsulteCote;

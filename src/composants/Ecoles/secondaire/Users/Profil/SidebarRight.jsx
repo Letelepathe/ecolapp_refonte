@@ -3,40 +3,40 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const SidebarRight = () => {
-    const [admins, setAdmins] = useState([]);
-    const [horaires, setHoraires] = useState([]);
+  const [admins, setAdmins] = useState([]);
+  const [horaires, setHoraires] = useState([]);
 
-    useEffect(() => {
-        // Appel API pour récupérer les horaires
-        const fetchHoraires = async () => {
-            try {
-                const response = await axios.get('http://localhost/ecole-app/apis/getHoraire.php');
-                setHoraires(response.data);
-            } catch (error) {
-                console.error("Erreur lors de la récupération des horaires", error);
-            }
-        };
+  useEffect(() => {
+    // Appel API pour récupérer les horaires
+    const fetchHoraires = async () => {
+      try {
+        const response = await axios.get('http://localhost/ecole-app/apis/getHoraire.php');
+        setHoraires(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des horaires", error);
+      }
+    };
 
-        // Appel API pour récupérer les administrateurs
-        const fetchAdmins = async () => {
-            try {
-                const response = await axios.get('http://localhost/ecole-app/apis/getAdmins.php');
-                setAdmins(response.data);
-            } catch (error) {
-                console.error("Erreur lors de la récupération des administrateurs", error);
-            }
-        };
+    // Appel API pour récupérer les administrateurs
+    const fetchAdmins = async () => {
+      try {
+        const response = await axios.get('http://localhost/ecole-app/apis/getAdmins.php');
+        setAdmins(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des administrateurs", error);
+      }
+    };
 
-        fetchHoraires();
-        fetchAdmins();
-    }, []);
+    fetchHoraires();
+    fetchAdmins();
+  }, []);
 
-    return (
-        <div>
+  return (
+    <div>
             <div className="sidebar-right pe-0 pb-0">
                 <nav className="navbar bg-white navbar-white">
                     <Link to='#' className="navbar-brand mx-4 mb-3">
-                        <h3 style={{ fontWeight: 900, color: '#1769ff' }}>
+                        <h3 className="u-style-951c0e5f">
                             <i className="icon me-2"></i>Ecole-App
                         </h3>
                     </Link>
@@ -49,15 +49,15 @@ const SidebarRight = () => {
                                     </div>
 
                                     {/* Liste des administrateurs */}
-                                    {admins && admins.length > 0 ? (
-                                        admins.map((admin, index) => (
-                                            <div className="d-flex align-items-center border-bottom py-3" key={index}>
-                                                <img 
-                                                    src={`http://localhost/ecole-app/membres/avatars/${admin.avatar || 'default.jpg'}`} 
-                                                    className="rounded-circle flex-shrink-0" 
-                                                    alt="Profil" 
-                                                    style={{ width: '60px', height: '60px' }} 
-                                                />
+                                    {admins && admins.length > 0 ?
+                  admins.map((admin, index) =>
+                  <div className="d-flex align-items-center border-bottom py-3" key={index}>
+                                                <img
+                      src={`http://localhost/ecole-app/membres/avatars/${admin.avatar || 'default.jpg'}`}
+                      className="rounded-circle flex-shrink-0 u-style-94f8a038"
+                      alt="Profil" />
+
+                    
                                                 <div className="w-100 ms-3">
                                                     <div className="d-flex w-100 justify-content-between">
                                                         <h6 className="mb-0">{admin.prenom} {admin.nom}</h6>
@@ -67,10 +67,10 @@ const SidebarRight = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                        ))
-                                    ) : (
-                                        <p>Aucun administrateur disponible.</p>
-                                    )}
+                  ) :
+
+                  <p>Aucun administrateur disponible.</p>
+                  }
                                 </div>
 
                                 {/* Section des horaires */}
@@ -79,16 +79,16 @@ const SidebarRight = () => {
                                         <h2>Horaires</h2>
                                     </header>
                                     <div className="row">
-                                        {horaires.map((horaire) => (
-                                            <div className="col-lg-12" key={horaire.id}>
+                                        {horaires.map((horaire) =>
+                    <div className="col-lg-12" key={horaire.id}>
                                                 <div className="post-box">
                                                     <div className="post-img">
-                                                        <img src={`http://localhost/ecole-app/Horaires/${horaire.image}`} className="img-fluid" alt=""/>
+                                                        <img src={`http://localhost/ecole-app/Horaires/${horaire.image}`} className="img-fluid" alt="" />
                                                     </div>
                                                     <span className="post-date">{horaire.titre}</span>
                                                 </div>
                                             </div>
-                                        ))}
+                    )}
                                     </div>
                                 </section>
                             </div>
@@ -96,8 +96,8 @@ const SidebarRight = () => {
                     </div>
                 </nav>
             </div>
-        </div>
-    );
-}
+        </div>);
+
+};
 
 export default SidebarRight;

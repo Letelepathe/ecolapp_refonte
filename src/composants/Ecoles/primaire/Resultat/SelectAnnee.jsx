@@ -54,7 +54,7 @@ const SelectAnnee = () => {
           <div className='col-lg-6 col-md-8 col-12'>
             <div className="card mb-3">
               <div className="card-body">
-                <p className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                <p className="text-center u-style-951c0e5f">
                   Sélectionnez une année
                 </p>
                 <form onSubmit={handleSubmit}>
@@ -64,17 +64,17 @@ const SelectAnnee = () => {
                       id="annee"
                       className="form-control"
                       value={selectedAnnee}
-                      onChange={(e) => setSelectedAnnee(e.target.value)}
-                    >
+                      onChange={(e) => setSelectedAnnee(e.target.value)}>
+                      
                       <option value="">-- Sélectionner une année --</option>
-                      {annees.map(a => (
-                        <option key={a.id} value={a.id}>{a.name}</option>
-                      ))}
+                      {annees.map((a) =>
+                      <option key={a.id} value={a.id}>{a.name}</option>
+                      )}
                     </select>
                   </div>
                   {errors && <p className="text-danger">{errors}</p>}
                   <div className="d-grid">
-                   <button className="btn btn-white" style={{background:'#1769ff', color:'#fff', padding:'10px', borderRadius:'25px'}} type="submit">Valider</button>
+                   <button className="btn btn-white u-style-eae60df9" type="submit">Valider</button>
                   </div>
                 </form>
               </div>
@@ -82,8 +82,8 @@ const SelectAnnee = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectAnnee;

@@ -1,49 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './ProfilAdmin.css';
-
 const ProfilAdmin = () => {
-     const [user, setUser] = useState(null);
-     
-        useEffect(() => {
-            const fetchUser = async () => {
-                try {
-                    const response = await axios.get('https://api.ecolapp.cd/api/user', {
-                        headers: {
-                          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`, 
-                        },
-                    });
-                    if (response.status === 200) {
-                        setUser(response.data); 
-                    } else {
-                        console.log(response.data); 
-                    }
-                } catch (error) {
-                    console.log("Erreur lors de la récupération des informations.");
-                }
-            };
-    
-            
-          
-              
-            fetchUser();
-           
-        }, []); 
+  const [user, setUser] = useState(null);
 
-    if(!user){
-        return(
-        <div className='spinner'></div>
-    );
-    }
-    return(
-        <div>
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('https://api.ecolapp.cd/api/user', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+          }
+        });
+        if (response.status === 200) {
+          setUser(response.data);
+        } else {
+          console.log(response.data);
+        }
+      } catch (error) {
+        console.log("Erreur lors de la récupération des informations.");
+      }
+    };
+
+
+
+
+    fetchUser();
+
+  }, []);
+
+  if (!user) {
+    return (
+      <div className='spinner'></div>);
+
+  }
+  return (
+    <div>
             <div className="bloc-profil-admin">
                 <div className="profile-container">
             
                     <div className="profile-block">
-                        <img src={`https://api.ecolapp.cd/public/imgUser/${user.file}`} alt={`${user.name}`} className="profile-img"/>
-                        <div className="text-center" style={{ color: '#1769ff', fontWeight: 'bold', fontSize: '20px' }}>
+                        <img src={`https://api.ecolapp.cd/public/imgUser/${user.file}`} alt={`${user.name}`} className="profile-img" />
+                        <div className="text-center u-style-2e910695">
                             {user.first_name} {user.name} 
                         </div>
                     </div>
@@ -62,7 +60,7 @@ const ProfilAdmin = () => {
                     </div>
                 </div>
             </div>
-        </div>
-    );
-}
+        </div>);
+
+};
 export default ProfilAdmin;

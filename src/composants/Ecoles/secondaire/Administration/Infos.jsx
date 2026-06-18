@@ -3,20 +3,20 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 
-const Table = ({ title, data, error }) => (
-  <div>
+const Table = ({ title, data, error }) =>
+<div>
     <div className="bg-white shadow text-center rounded p-4">
       <div className="d-flex align-items-center justify-content-between mb-4">
         <h6 className="mb-0">{title}</h6>
           <Link className="text-center btn btn-success" to='/secondaire/creationcompte'><i className="bi bi-plus"></i> Créer un utilisateur</Link>
       </div>
       <div className="table-responsive">
-        {error ? (
-          <p className="text-danger">{error}</p>
-        ) : (
-          <div>
-            {data && data.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+        {error ?
+      <p className="text-danger">{error}</p> :
+
+      <div>
+            {data && data.length > 0 ?
+        <table className="table text-start align-middle table-bordered table-hover mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Id</th>
@@ -28,40 +28,40 @@ const Table = ({ title, data, error }) => (
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((item) => (
-                    <tr key={item.id}>
+                  {data.map((item) =>
+            <tr key={item.id}>
                       <td>{item.id}</td>
                       <td>
-                       <img 
-                        src={`https://api.ecolapp.cd/public/imgUser/${item.file}`} 
-                          className="rounded-circle flex-shrink-0" 
-                          alt="Profil" 
-                          style={{ width: '60px', height: '60px', objectFit : 'cover' }} 
-                        />
+                       <img
+                  src={`https://api.ecolapp.cd/public/imgUser/${item.file}`}
+                  className="rounded-circle flex-shrink-0 u-style-31bd8151"
+                  alt="Profil" />
+
+                
                       </td>
                       <td>{item.first_name} {item.name}</td>
                       <td><a href={`mailto:${item.email}`}>{item.email}</a></td>
                       <td><a href={`tel:${item.phone}`}>{item.phone}</a></td>
                       <td>{item.role}</td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-             ) : (
-              <p>Aucun membre disponible.</p>
             )}
+                </tbody>
+              </table> :
+
+        <p>Aucun membre disponible.</p>
+        }
           </div>
-        )}
+      }
       </div>
     </div>
-  </div>
-);
+  </div>;
+
 
 const Infos = () => {
 
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [members, setMembers] = useState([]);
   const [error, setError] = useState('');
 
@@ -92,8 +92,8 @@ const Infos = () => {
           
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Infos;

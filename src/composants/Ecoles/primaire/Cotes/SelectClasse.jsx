@@ -41,22 +41,22 @@ const SelectClasse = () => {
             <div className='col-lg-6 col-md-8 col-12'>
               <div className="card mb-3">
                 <div className="card-body">
-                  <h4 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                  <h4 className="text-center u-style-951c0e5f">
                     Gestion notes/Ajouter notes
                   </h4>
                   <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                       <label htmlFor="classe">Classe</label>
-                      <select 
-                        id="classe" 
-                        className="form-control" 
-                        value={selectedClasse} 
-                        onChange={(e) => setSelectedClasse(e.target.value)}
-                      >
+                      <select
+                        id="classe"
+                        className="form-control"
+                        value={selectedClasse}
+                        onChange={(e) => setSelectedClasse(e.target.value)}>
+                        
                         <option value="">-- Sélectionner une classe --</option>
-                        {classes.map(classe => (
-                          <option key={classe.id} value={classe.id}>{classe.nom_classe}</option>
-                        ))}
+                        {classes.map((classe) =>
+                        <option key={classe.id} value={classe.id}>{classe.nom_classe}</option>
+                        )}
                       </select>
                       {errors && <p className="text-danger">{errors}</p>}
                     </div>
@@ -70,8 +70,8 @@ const SelectClasse = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectClasse;

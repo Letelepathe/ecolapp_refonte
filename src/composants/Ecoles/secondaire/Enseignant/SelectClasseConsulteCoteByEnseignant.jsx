@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import SidebarLeft from '../Users/Profil/SidebarLeft';
-import NavbarTop from  '../Users/Profil/NavbarTop';
+import NavbarTop from '../Users/Profil/NavbarTop';
 
 const SelectClasseConsulteCoteByEnseignant = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const navigate = useNavigate();
   const [cours, setCours] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -77,51 +77,51 @@ const SelectClasseConsulteCoteByEnseignant = () => {
             <div className='col-lg-6 col-md-8 col-12'>
               <div className="card mb-3">
                 <div className="card-body">
-                  <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                  <h6 className="text-center u-style-951c0e5f">
                     Notes
                   </h6>
                   <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                       <label htmlFor="cours">Cours</label>
-                      <select 
-                        id="cours" 
-                        className="form-control" 
-                        value={selectedCours} 
-                        onChange={(e) => setSelectedCours(e.target.value)}
-                      >
+                      <select
+                        id="cours"
+                        className="form-control"
+                        value={selectedCours}
+                        onChange={(e) => setSelectedCours(e.target.value)}>
+                        
                         <option value="">-- Sélectionner un cours --</option>
-                        {cours.map(c => (
-                          <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
-                        ))}
+                        {cours.map((c) =>
+                        <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
+                        )}
                       </select>
                     </div>
                     <div className="mb-3">
                       <label htmlFor="classe">Classe</label>
-                      <select 
-                        id="classe" 
-                        className="form-control" 
-                        value={selectedClasse} 
-                        onChange={(e) => setSelectedClasse(e.target.value)}
-                      >
+                      <select
+                        id="classe"
+                        className="form-control"
+                        value={selectedClasse}
+                        onChange={(e) => setSelectedClasse(e.target.value)}>
+                        
                         <option value="">-- Sélectionner une classe --</option>
-                        {classes.map(classe => (
-                          <option key={classe.id} value={classe.id}>{classe.name}</option>
-                        ))}
+                        {classes.map((classe) =>
+                        <option key={classe.id} value={classe.id}>{classe.name}</option>
+                        )}
                       </select>
                       {errors && <p className="text-danger">{errors}</p>}
                     </div>
                     <div className="mb-3">
                       <label htmlFor="option">Option</label>
-                      <select 
-                        id="option" 
-                        className="form-control" 
-                        value={selectedOption} 
-                        onChange={(e) => setSelectedOption(e.target.value)}
-                      >
+                      <select
+                        id="option"
+                        className="form-control"
+                        value={selectedOption}
+                        onChange={(e) => setSelectedOption(e.target.value)}>
+                        
                         <option value="">-- Sélectionner une option --</option>
-                        {options.map(option => (
-                          <option key={option.id} value={option.id}>{option.name}</option>
-                        ))}
+                        {options.map((option) =>
+                        <option key={option.id} value={option.id}>{option.name}</option>
+                        )}
                       </select>
                       {errors && <p className="text-danger">{errors}</p>}
                     </div>
@@ -135,8 +135,8 @@ const SelectClasseConsulteCoteByEnseignant = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectClasseConsulteCoteByEnseignant;

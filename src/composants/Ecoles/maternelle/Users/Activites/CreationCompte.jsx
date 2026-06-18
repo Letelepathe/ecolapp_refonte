@@ -3,8 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import './styleUserActivity.css';
-
 const CreationCompte = () => {
   const ecole_id = parseInt(localStorage.getItem('ecole_id') || 0, 10);
   const direction = parseInt(localStorage.getItem('direction') || 0, 10);
@@ -24,9 +22,9 @@ const CreationCompte = () => {
     password_confirmation: '',
     fonction_id: '',
     file: null,
-    role : 'Membre',
-    ecole_id : ecole_id,
-    direction : direction,
+    role: 'Membre',
+    ecole_id: ecole_id,
+    direction: direction
   });
 
   const [errors, setErrors] = useState({});
@@ -51,14 +49,14 @@ const CreationCompte = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
   const handleFileChange = (e) => {
     setFormData({
       ...formData,
-      file: e.target.files[0],
+      file: e.target.files[0]
     });
   };
 
@@ -71,10 +69,10 @@ const CreationCompte = () => {
     if (!formData.phone) newErrors.phone = 'Téléphone est requis.';
     if (!formData.email) newErrors.email = 'Email est requis.';
     if (formData.email !== formData.email_confirmation)
-      newErrors.email_confirmation = 'Les emails ne correspondent pas.';
+    newErrors.email_confirmation = 'Les emails ne correspondent pas.';
     if (!formData.password) newErrors.password = 'Mot de passe est requis.';
     if (formData.password !== formData.password_confirmation)
-      newErrors.password_confirmation = 'Les mots de passe ne correspondent pas.';
+    newErrors.password_confirmation = 'Les mots de passe ne correspondent pas.';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -83,11 +81,11 @@ const CreationCompte = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage('');
-    
-    setIsLoading(true); 
+
+    setIsLoading(true);
 
     if (!validateForm()) {
-      setIsLoading(false); 
+      setIsLoading(false);
       return;
     }
 
@@ -99,7 +97,7 @@ const CreationCompte = () => {
 
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/register', form, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       if (response.data.status === 200) {
@@ -117,9 +115,9 @@ const CreationCompte = () => {
           password_confirmation: '',
           fonction_id: '',
           file: null,
-          role : 'Membre',
-          ecole_id : ecole_id,
-          direction : direction,
+          role: 'Membre',
+          ecole_id: ecole_id,
+          direction: direction
         });
         setErrors({});
         navigate(`/maternelle/pre_connexion/${response.data.last_id}`);
@@ -131,14 +129,14 @@ const CreationCompte = () => {
       console.error('Erreur API:', error.response?.data || error);
       let errorMsg = 'Impossible de créer le compte pour le moment.';
       if (
-        error.response &&
-        error.response.data &&
-        typeof error.response.data.error_msg === 'string'
-      ) {
+      error.response &&
+      error.response.data &&
+      typeof error.response.data.error_msg === 'string')
+      {
         errorMsg = error.response.data.error_msg;
       }
       setErrors({ form: errorMsg });
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -154,7 +152,7 @@ const CreationCompte = () => {
           <section className="row section register d-flex flex-column align-items-center justify-content-center">
             <div className="col-lg-8 col-12 card mb-3">
               <div className="card-body">
-                <h2 className="text-center fs-4" style={{ color: '#1769ff', fontWeight: '900' }}>
+                <h2 className="text-center fs-4 u-style-951c0e5f">
                   Réjoindre ecolapp
                 </h2>
                 <p className="text-center small">
@@ -162,11 +160,11 @@ const CreationCompte = () => {
                 </p>
                 <form onSubmit={handleSubmit} className="user_activity" encType="multipart/form-data">
                   <div className="row g-3">
-                  {errors.form && (
+                  {errors.form &&
                     <div className="bg-danger text-white text-center py-2">
                       {typeof errors.form === 'object' ? JSON.stringify(errors.form, null, 2) : errors.form}
                     </div>
-                  )}
+                    }
 
                     <div className="col-6">
                       <input
@@ -175,8 +173,8 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Nom"
                         value={formData.name}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.name && <p className="text-danger">{errors.name}</p>}
                     </div>
                     <div className="col-6">
@@ -186,8 +184,8 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Postnom"
                         value={formData.last_name}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.last_name && <p className="text-danger">{errors.last_name}</p>}
                     </div>
 
@@ -198,8 +196,8 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Prénom"
                         value={formData.first_name}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.first_name && <p className="text-danger">{errors.first_name}</p>}
                     </div>
                     <div className="col-12">
@@ -208,8 +206,8 @@ const CreationCompte = () => {
                         name="sexe"
                         className="form-control"
                         value={formData.sexe}
-                        onChange={handleChange}
-                      >
+                        onChange={handleChange}>
+                        
                         <option value="Homme">Homme</option>
                         <option value="Femme">Femme</option>
                       </select>
@@ -221,8 +219,8 @@ const CreationCompte = () => {
                         name="role"
                         className="form-control"
                         value={formData.role}
-                        onChange={handleChange}
-                      >
+                        onChange={handleChange}>
+                        
                         <option value="Membre">Membre</option>
                         <option value="Administrateur">Administrateur</option>
                         <option value="Super Administrateur">Super Administrateur</option>
@@ -233,9 +231,9 @@ const CreationCompte = () => {
                         <label htmlFor="fonction_id">Fonction</label>
                         <select name="fonction_id" className="form-control" value={formData.fonction_id} onChange={handleChange} required>
                           <option value="">Sélectionner une fonction</option>
-                          {fonctions.map((fonction) => (
-                            <option key={fonction.id} value={fonction.id}>{fonction.name}</option>
-                          ))}
+                          {fonctions.map((fonction) =>
+                        <option key={fonction.id} value={fonction.id}>{fonction.name}</option>
+                        )}
                         </select>
                         {errors.fonction_id && <p className="text-danger">{errors.fonction_id}</p>}
                       </div>
@@ -247,8 +245,8 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Adresse"
                         value={formData.address}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.address && <p className="text-danger">{errors.address}</p>}
                     </div>
 
@@ -259,8 +257,8 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Téléphone"
                         value={formData.phone}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.phone && <p className="text-danger">{errors.phone}</p>}
                     </div>
 
@@ -271,8 +269,8 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Email"
                         value={formData.email}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.email && <p className="text-danger">{errors.email}</p>}
                     </div>
                     <div className="col-6">
@@ -282,11 +280,11 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Confirmez Email"
                         value={formData.email_confirmation}
-                        onChange={handleChange}
-                      />
-                      {errors.email_confirmation && (
-                        <p className="text-danger">{errors.email_confirmation}</p>
-                      )}
+                        onChange={handleChange} />
+                      
+                      {errors.email_confirmation &&
+                      <p className="text-danger">{errors.email_confirmation}</p>
+                      }
                     </div>
 
                     <div className="col-6">
@@ -296,8 +294,8 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Mot de passe"
                         value={formData.password}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.password && <p className="text-danger">{errors.password}</p>}
                     </div>
                     <div className="col-6">
@@ -307,11 +305,11 @@ const CreationCompte = () => {
                         className="form-control"
                         placeholder="Confirmez Mot de passe"
                         value={formData.password_confirmation}
-                        onChange={handleChange}
-                      />
-                      {errors.password_confirmation && (
-                        <p className="text-danger">{errors.password_confirmation}</p>
-                      )}
+                        onChange={handleChange} />
+                      
+                      {errors.password_confirmation &&
+                      <p className="text-danger">{errors.password_confirmation}</p>
+                      }
                     </div>
 
                     <div className="col-12">
@@ -319,8 +317,8 @@ const CreationCompte = () => {
                         type="file"
                         name="file"
                         className="form-control"
-                        onChange={handleFileChange}
-                      />
+                        onChange={handleFileChange} />
+                      
                     </div>
 
                     <div className="col-12">
@@ -328,15 +326,15 @@ const CreationCompte = () => {
                         className={`btn btn-white w-100 ${isLoading ? "loading" : ""}`}
                         style={{ background: '#1769ff', color: '#fff' }}
                         type="submit"
-                        disabled={isLoading}
-                      >
+                        disabled={isLoading}>
+                        
                         {isLoading ? "Inscription en cours..." : "S'inscire"}
                       </button>
                     </div>
 
-                    {successMessage && (
-                      <p className="text-success text-center mt-2">{successMessage}</p>
-                    )}
+                    {successMessage &&
+                    <p className="text-success text-center mt-2">{successMessage}</p>
+                    }
 
                     <div className="col-12 text-center">
                       
@@ -348,8 +346,8 @@ const CreationCompte = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CreationCompte;

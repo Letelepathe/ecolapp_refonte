@@ -4,7 +4,7 @@ const ConfirmModal = ({ show, onClose, onConfirm, message }) => {
   if (!show) return null;
 
   return (
-    <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div className="modal fade show u-style-048b9a2b" tabIndex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -22,8 +22,8 @@ const ConfirmModal = ({ show, onClose, onConfirm, message }) => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ConfirmModal;

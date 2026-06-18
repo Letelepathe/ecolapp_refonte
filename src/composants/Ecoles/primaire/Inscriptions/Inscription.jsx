@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
-import './style_inscription.css';
+import { useNavigate } from 'react-router-dom';
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
 
@@ -10,23 +9,23 @@ const Inscriptionprimaire = () => {
   const [ecole, setEcole] = useState(null);
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-      
-        useEffect(() => {
-          const fetchInfoEcole = async () => {
-            try {
-              const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${ecole_id}`);
-              setEcole(response.data.ecole);
-            } catch (error) {
-              console.error("Erreur lors de la récupération des informations:", error);
-            }
-          };
-      
-          fetchInfoEcole();
-        }, [ecole_id]);
-      
-        
 
-  const navigate = useNavigate(); 
+  useEffect(() => {
+    const fetchInfoEcole = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${ecole_id}`);
+        setEcole(response.data.ecole);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des informations:", error);
+      }
+    };
+
+    fetchInfoEcole();
+  }, [ecole_id]);
+
+
+
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -40,11 +39,11 @@ const Inscriptionprimaire = () => {
     date_naissance: '',
     lieu_de_naissance: '',
     nationalite: '',
-    adresse : '',
-    code_parent : '',
+    adresse: '',
+    code_parent: '',
     terms: false,
     ecole_id: ecole_id,
-    direction : direction,
+    direction: direction
   });
 
   const [errors, setErrors] = useState({});
@@ -81,7 +80,7 @@ const Inscriptionprimaire = () => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : value
     });
   };
 
@@ -94,11 +93,11 @@ const Inscriptionprimaire = () => {
     if (!formData.percent) newErrors.percent = "Pourcentage requis";
 
     if (!formData.classes_id) newErrors.classes_id = "Classe d'inscription requise";
-    
+
     if (!formData.date_naissance) newErrors.date_naissance = "Date de naissance requise";
     if (!formData.lieu_de_naissance) newErrors.lieu_de_naissance = "Lieu de naissance requis";
     if (!formData.nationalite) newErrors.nationalite = "Nationalité requise";
-    
+
     if (!formData.adresse) newErrors.adresse = "Adresse requise";
     if (!formData.code_parent) newErrors.code_parent = "Code requis";
 
@@ -111,19 +110,19 @@ const Inscriptionprimaire = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage('');
-    setIsLoading(true); 
+    setIsLoading(true);
 
     if (!validateForm()) {
-      setIsLoading(false); 
+      setIsLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post("https://api.ecolapp.cd/api/inscription/create", 
-        formData, 
-        { headers: { 'Content-Type': 'application/json' } }
+      const response = await axios.post("https://api.ecolapp.cd/api/inscription/create",
+      formData,
+      { headers: { 'Content-Type': 'application/json' } }
       );
-    
+
       if (response.data.status === 200) {
         setSuccessMessage("Inscription réussie !");
         setErrors({});
@@ -140,14 +139,14 @@ const Inscriptionprimaire = () => {
           date_naissance: '',
           lieu_de_naissance: '',
           nationalite: '',
-          adresse : '',
-          code_parent : '',
+          adresse: '',
+          code_parent: '',
           terms: false,
-          ecole_id : ecole_id,
-          direction : direction,
+          ecole_id: ecole_id,
+          direction: direction
         });
 
-        navigate(`/primaire/accueil_inscription_primaire/${response.data.last_id}`); 
+        navigate(`/primaire/accueil_inscription_primaire/${response.data.last_id}`);
       } else {
         setErrors({ form: response.data.errorList || "Une erreur est survenue lors de l'inscription." });
         console.log(response.data.error_msg);
@@ -158,15 +157,15 @@ const Inscriptionprimaire = () => {
       } else {
         setErrors({ form: "Erreur de connexion au serveur" });
       }
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
 
-  if(!ecole){
+  if (!ecole) {
     return (
-        <div className="spinner"></div>
-    );
+      <div className="spinner"></div>);
+
   }
 
   return (
@@ -181,13 +180,13 @@ const Inscriptionprimaire = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className="justify-content-between d-flex">
-                    <img src={ImgDrapeau} alt="logo" style={{ height: 50, width: 50, borderRadius: '50%', objectFit:'cover' }} />
+                    <img src={ImgDrapeau} alt="logo" className="u-style-4335d984" />
                     <div className="text-center">
-                      <h3 className="text-center" style={{fontWeight:900, color: '#1769ff'}}>ecolapp</h3>
-                      <h4 className="text-center" style={{fontWeight:'bold', color: '#1769ff'}}>{ecole.name}</h4>
-                      <h6 className="text-center" style={{fontWeight:'bold', color: '#1769ff'}}>Bulletin de demande d'inscription</h6><hr/>
+                      <h3 className="text-center u-style-951c0e5f">ecolapp</h3>
+                      <h4 className="text-center u-style-4789709b">{ecole.name}</h4>
+                      <h6 className="text-center u-style-4789709b">Bulletin de demande d'inscription</h6><hr />
                     </div>                
-                    <img src={ImgSymbole} alt="logo" style={{ height: 50, width: 50, borderRadius: '50%', objectFit:'cover' }} />
+                    <img src={ImgSymbole} alt="logo" className="u-style-4335d984" />
                   </div>
                   <p className="text-center">Veuillez remplir le formulaire ci-dessous attentivement.</p>
 
@@ -253,9 +252,9 @@ const Inscriptionprimaire = () => {
                         <label htmlFor="classes_id">Classe d'inscription</label>
                         <select name="classes_id" className="form-control" onChange={handleInputChange} value={formData.classes_id} required>
                           <option value="">Sélectionner une classe</option>
-                          {classes.map(classe => (
-                            <option key={classe.id} value={classe.id}>{classe.name}</option>
-                          ))}
+                          {classes.map((classe) =>
+                          <option key={classe.id} value={classe.id}>{classe.name}</option>
+                          )}
                         </select>
                         {errors.classes_id && <p className="text-danger">{errors.classes_id}</p>}
                       </div>
@@ -278,7 +277,7 @@ const Inscriptionprimaire = () => {
                         <div className="form-check">
                           <input className="form-check-input" name="terms" type="checkbox" checked={formData.terms} onChange={handleInputChange} />
                           <label className="form-check-label">
-                            Je certifie sur mon honneur que tous les renseignements fournis ci-haut sont exacts <br/>
+                            Je certifie sur mon honneur que tous les renseignements fournis ci-haut sont exacts <br />
                             et que je m'engage à respecter les règlements et statuts du Collège.
                           </label>
                           {errors.terms && <p className="text-danger">{errors.terms}</p>}
@@ -286,12 +285,12 @@ const Inscriptionprimaire = () => {
                       </div>
                     </div>
                     <div className="col-12 mt-4">
-                      <button 
+                      <button
                         className={`btn btn-white w-100 ${isLoading ? "loading" : ""}`}
-                        style={{ padding: '13px', borderRadius: '30px', background: '#1769ff', color: '#fff' }} 
+                        style={{ padding: '13px', borderRadius: '30px', background: '#1769ff', color: '#fff' }}
                         type="submit"
-                        disabled={isLoading}
-                      >
+                        disabled={isLoading}>
+                        
                         
                         {isLoading ? "Inscription en cours..." : "Soumettre ma demande"}
                       </button>
@@ -305,8 +304,8 @@ const Inscriptionprimaire = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Inscriptionprimaire;

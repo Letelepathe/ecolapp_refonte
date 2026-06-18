@@ -5,7 +5,7 @@ import axios from "axios";
 const DetailsCommunique = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const { id } = useParams();
   const [communique, setCommunique] = useState(null);
   const [otherCommuniques, setOtherCommuniques] = useState([]);
@@ -46,9 +46,9 @@ const DetailsCommunique = () => {
         <img
           src={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
           alt="Communiqué visuel"
-          className="img-fluid rounded mt-3"
-        />
-      );
+          className="img-fluid rounded mt-3" />);
+
+
     }
     if (fileExtension === 'pdf') {
       return (
@@ -56,22 +56,22 @@ const DetailsCommunique = () => {
           href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn btn-primary mt-3"
-        >
+          className="btn btn-primary mt-3">
+          
           Voir PDF
-        </a>
-      );
+        </a>);
+
     }
     return (
       <a
         href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn btn-secondary mt-3"
-      >
+        className="btn btn-secondary mt-3">
+        
         Télécharger le fichier
-      </a>
-    );
+      </a>);
+
   };
 
   return (
@@ -93,7 +93,7 @@ const DetailsCommunique = () => {
                 {new Date(communique.created_at).toLocaleDateString("fr-FR", {
                   weekday: "long",
                   month: "long",
-                  day: "numeric",
+                  day: "numeric"
                 })}
               </p>
               <p className="card-text">{communique.content}</p>
@@ -107,23 +107,23 @@ const DetailsCommunique = () => {
           <div className="card shadow-sm">
             <div className="card-body">
               <h4 className="card-title mb-4">Autres Communiqués</h4>
-              {otherCommuniques.map((item) => (
-                <div key={item.id} className="d-flex align-items-start mb-3">
+              {otherCommuniques.map((item) =>
+              <div key={item.id} className="d-flex align-items-start mb-3">
                   <Link
-                    to={`/primaire/details-communique/${item.id}`}
-                    className="text-decoration-none text-dark"
-                  >
+                  to={`/primaire/details-communique/${item.id}`}
+                  className="text-decoration-none text-dark">
+                  
                     <img
-                      src={`https://api.ecolapp.cd/public/imgCommunique/${item.file}`}
-                      alt={item.title}
-                      className="img-thumbnail me-3"
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                      }}
-                    />
+                    src={`https://api.ecolapp.cd/public/imgCommunique/${item.file}`}
+                    alt={item.title}
+                    className="img-thumbnail me-3 u-style-e67b3996" />
+
+
+
+
+
+
+                  
                     <div>
                     <h6 className="mb-1">                  
                         {item.title}                    
@@ -132,24 +132,24 @@ const DetailsCommunique = () => {
                       {new Date(item.created_at).toLocaleDateString("fr-FR", {
                         weekday: "long",
                         month: "long",
-                        day: "numeric",
+                        day: "numeric"
                       })}
                     </p>
                     <p className="small mb-0">
-                      {item.content.length > 50
-                        ? `${item.content.substring(0, 50)}...`
-                        : item.content}
+                      {item.content.length > 50 ?
+                      `${item.content.substring(0, 50)}...` :
+                      item.content}
                     </p>
                   </div>
                   </Link>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default DetailsCommunique;

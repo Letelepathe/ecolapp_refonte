@@ -7,93 +7,93 @@ import ImageFind from '../../../../../static/images/find-friends.png';
 
 const SidebarLeft = () => {
 
-    const [openMenus, setOpenMenus] = useState({});
-    const toggleMenu = (menu) => {
-        setOpenMenus((prevState) => ({
-            ...prevState,
-            [menu]: !prevState[menu],
-        }));
-    };
+  const [openMenus, setOpenMenus] = useState({});
+  const toggleMenu = (menu) => {
+    setOpenMenus((prevState) => ({
+      ...prevState,
+      [menu]: !prevState[menu]
+    }));
+  };
 
-    const [user, setUser] = useState(null);
-    const [eleveInfo, setEleveInfo] = useState(null);
-    const [infoClasseUser, setInfoClasseUser] = useState([]);
-    const [isLoadingEleveInfo, setIsLoadingEleveInfo] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
+  const [eleveInfo, setEleveInfo] = useState(null);
+  const [infoClasseUser, setInfoClasseUser] = useState([]);
+  const [isLoadingEleveInfo, setIsLoadingEleveInfo] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    const id = localStorage.getItem("userId");
+  const id = localStorage.getItem("userId");
 
-    const ROLES_ADMIN = [
-        "Administrateur", "Administratrice",
-        "Super Administrateur", "Super Administratrice"
-    ];
+  const ROLES_ADMIN = [
+  "Administrateur", "Administratrice",
+  "Super Administrateur", "Super Administratrice"];
 
-    const ROLES_TEACHER = [
-        ...ROLES_ADMIN,
-        "Enseignant", "Enseignante"
-    ];
 
-    useEffect(() => {
-        if (!id) {
-            setError("Aucun ID utilisateur trouvé.");
-            setIsLoading(false);
-            return;
+  const ROLES_TEACHER = [
+  ...ROLES_ADMIN,
+  "Enseignant", "Enseignante"];
+
+
+  useEffect(() => {
+    if (!id) {
+      setError("Aucun ID utilisateur trouvé.");
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      try {
+        const userResponse = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
+        const userData = userResponse.data.user;
+        setUser(userData);
+
+        const fonctionName = userData?.fonction?.name || null;
+
+        if (fonctionName === "Elève") {
+          setIsLoadingEleveInfo(true);
+          try {
+            const eleveResponse = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${id}`);
+            setEleveInfo(eleveResponse.data.eleve_info);
+          } catch {
+            setError("");
+          } finally {
+            setIsLoadingEleveInfo(false);
+          }
         }
 
-        const fetchData = async () => {
-            setIsLoading(true);
+        if (ROLES_TEACHER.includes(fonctionName)) {
+          try {
+            const classeResponse = await axios.get(`https://api.ecolapp.cd/api/titulaire/classe/${id}`);
+            setInfoClasseUser(classeResponse.data?.classe || []);
+          } catch {
+            setError("Impossible de récupérer les informations des classes.");
+          }
+        }
 
-            try {
-                const userResponse = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
-                const userData = userResponse.data.user;
-                setUser(userData);
+      } catch {
+        setError("");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-                const fonctionName = userData?.fonction?.name || null;
+    fetchData();
 
-                if (fonctionName === "Elève") {
-                    setIsLoadingEleveInfo(true);
-                    try {
-                        const eleveResponse = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${id}`);
-                        setEleveInfo(eleveResponse.data.eleve_info);
-                    } catch {
-                        setError("");
-                    } finally {
-                        setIsLoadingEleveInfo(false);
-                    }
-                }
-
-                if (ROLES_TEACHER.includes(fonctionName)) {
-                    try {
-                        const classeResponse = await axios.get(`https://api.ecolapp.cd/api/titulaire/classe/${id}`);
-                        setInfoClasseUser(classeResponse.data?.classe || []);
-                    } catch {
-                        setError("Impossible de récupérer les informations des classes.");
-                    }
-                }
-
-            } catch {
-                setError("");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-
-    }, [id]);
+  }, [id]);
 
 
-    if (error) return <div style={{ color: 'red' }}>{error}</div>;
-    if (!user) return <div className="spinner"></div>;
+  if (error) return <div className="u-style-31981a7d">{error}</div>;
+  if (!user) return <div className="spinner"></div>;
 
 
-    return (
-        <div className="sidebar pe-0 pb-0">
-            <nav className="navbar navbar-white" style={{ background: '#1769ff', color: '#fff' }}>
+  return (
+    <div className="sidebar pe-0 pb-0">
+            <nav className="navbar navbar-white u-style-92f685a5">
 
                 <Link to="#" className="navbar-brand mx-4 mb-3">
-                    <h3 style={{ fontWeight: 900, color: '#fff' }}>
+                    <h3 className="u-style-b3e00e00">
                         <i className="bi bi-mortarboard-fill me-2"></i>ecolapp
                     </h3>
                 </Link>
@@ -102,11 +102,11 @@ const SidebarLeft = () => {
                     <div className="position-relative">
                         <Link to={`/maternelle/mon_profil/${user.id}`}>
                             <img
-                                src={`https://api.ecolapp.cd/public/imgUser/${user.file}`}
-                                alt="Profil"
-                                className="rounded-circle me-lg-2"
-                                style={{ width: '40px', height: '40px', objectFit: 'cover' }}
-                            />
+                src={`https://api.ecolapp.cd/public/imgUser/${user.file}`}
+                alt="Profil"
+                className="rounded-circle me-lg-2 u-style-582d54f9" />
+
+              
                             <div className="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                         </Link>
                     </div>
@@ -117,54 +117,54 @@ const SidebarLeft = () => {
                     </div>
                 </div>
 
-                {isLoading ? (
-                    <div className="spinner"></div>
-                ) : (
-                    <>
+                {isLoading ?
+        <div className="spinner"></div> :
+
+        <>
                         <div className="navbar-nav w-100">
 
                             <Link to="/maternelle/profil_user" className="nav-item nav-link active text-white">
-                                <img src={ImageFind} style={{ height: '30px', width: '30px', marginRight: '10px' }} alt="Mon compte" />
+                                <img src={ImageFind} alt="Mon compte" className="u-style-cd6e2805" />
                                 Mon compte
                             </Link>
 
                             {/* ADMIN AREA */}
-                            {(ROLES_ADMIN.includes(user?.fonction?.name) || ROLES_ADMIN.includes(user?.role)) && (
-                                <Link to="/maternelle/bureau_admin" className="nav-item nav-link text-white">
+                            {(ROLES_ADMIN.includes(user?.fonction?.name) || ROLES_ADMIN.includes(user?.role)) &&
+            <Link to="/maternelle/bureau_admin" className="nav-item nav-link text-white">
                                     <img src={ImageEvent}
-                                        style={{ height: '30px', width: '30px', marginRight: '10px' }}
-                                        alt="Bureau Admin"
-                                    />
+
+              alt="Bureau Admin" className="u-style-cd6e2805" />
+              
                                     Bureau Admin
                                 </Link>
-                            )}
+            }
 
                             {/* TITULAIRE CLASSE */}
-                            {infoClasseUser?.length > 0 && (
-                                <div className="menu">
+                            {infoClasseUser?.length > 0 &&
+            <div className="menu">
                                     <div className="menu-header" onClick={() => toggleMenu('menu1')}>
                                         <i className="bi bi-journal-text text-white me-2"></i>Titularisation classe
                                         <span className={`arrow ${openMenus['menu1'] ? 'open' : ''}`}>▼</span>
                                     </div>
 
                                     <div className={`dropdown-content ${openMenus['menu1'] ? 'open' : ''}`}>
-                                        {infoClasseUser?.map(classe => (
-                                            <Link
-                                                to={`/maternelle/ma_classe/${classe?.classe?.id}/${classe?.option?.id}`}
-                                                className="dropdown-item"
-                                                key={classe?.id}
-                                            >
+                                        {infoClasseUser?.map((classe) =>
+                <Link
+                  to={`/maternelle/ma_classe/${classe?.classe?.id}/${classe?.option?.id}`}
+                  className="dropdown-item"
+                  key={classe?.id}>
+                  
                                                 <i className="bi bi-table"></i>
                                                 {classe?.classe?.name} {classe?.option?.name}
                                             </Link>
-                                        ))}
+                )}
                                     </div>
                                 </div>
-                            )}
+            }
 
                             {/* MENUS ENSEIGNANTS & ADMIN */}
-                            {ROLES_TEACHER.includes(user?.fonction?.name) && (
-                                <>
+                            {ROLES_TEACHER.includes(user?.fonction?.name) &&
+            <>
                                     {/* Cours */}
                                     <div className="menu">
                                         <div className="menu-header" onClick={() => toggleMenu('menu2')}>
@@ -200,7 +200,7 @@ const SidebarLeft = () => {
                                         </div>
                                     </div>
                                 </>
-                            )}
+            }
 
                             {/* TRAVAUX */}
                             <div className="menu">
@@ -212,30 +212,30 @@ const SidebarLeft = () => {
                                 <div className={`dropdown-content ${openMenus['menu4'] ? 'open' : ''}`}>
 
 
-                                    {ROLES_TEACHER.includes(user?.fonction?.name) && (
-                                        <Link to="/maternelle/ajouter_travail_by_enseignant" className="dropdown-item">
+                                    {ROLES_TEACHER.includes(user?.fonction?.name) &&
+                <Link to="/maternelle/ajouter_travail_by_enseignant" className="dropdown-item">
                                             <i className="bi bi-plus-circle me-2"></i>Ajouter travail
                                         </Link>
-                                    )}
+                }
 
-                                    {(user?.fonction?.name === "Elève" || user?.role === "Elève") && (
-                                        <Link to="/maternelle/liste_travail_by_eleve" className="dropdown-item">
+                                    {(user?.fonction?.name === "Elève" || user?.role === "Elève") &&
+                <Link to="/maternelle/liste_travail_by_eleve" className="dropdown-item">
                                             <i className="bi bi-folder me-2"></i>Mes travaux
                                         </Link>
-                                    )}
+                }
 
-                                    {ROLES_TEACHER.includes(user?.fonction?.name) && (
-                                        <Link to="/maternelle/liste_travail_by_enseignant" className="dropdown-item">
+                                    {ROLES_TEACHER.includes(user?.fonction?.name) &&
+                <Link to="/maternelle/liste_travail_by_enseignant" className="dropdown-item">
                                             <i className="bi bi-folder me-2"></i>Mes travaux
                                         </Link>
-                                    )}
+                }
 
                                 </div>
                             </div>
 
                             {/* Activités Elèves */}
-                            {(user?.fonction?.name === "Elève" || user?.role === "Elève") && (
-                                <div className="menu">
+                            {(user?.fonction?.name === "Elève" || user?.role === "Elève") &&
+            <div className="menu">
                                     <div className="menu-header" onClick={() => toggleMenu('menu5')}>
                                         <i className="bi bi-card-checklist me-2"></i>Mes activités
                                         <span className={`arrow ${openMenus['menu5'] ? 'open' : ''}`}>▼</span>
@@ -246,8 +246,8 @@ const SidebarLeft = () => {
                                             <i className="bi bi-folder me-2"></i>Mes travaux
                                         </Link>
 
-                                        {!isLoadingEleveInfo && eleveInfo && (
-                                            <>
+                                        {!isLoadingEleveInfo && eleveInfo &&
+                <>
                                                 <Link to={`/maternelle/ma_classe/${eleveInfo?.classes_id}/${eleveInfo?.options_id}`} className="dropdown-item">
                                                     <i className="bi bi-folder me-2"></i>Ma classe
                                                 </Link>
@@ -256,10 +256,10 @@ const SidebarLeft = () => {
                                                     <i className="bi bi-folder me-2"></i>Mon parcours scolaire
                                                 </Link>
                                             </>
-                                        )}
+                }
                                     </div>
                                 </div>
-                            )}
+            }
 
                             <Link to="/jeux/quiz" className="nav-item nav-link text-white">
                                 <i className="bi bi-controller text-warning me-2"></i>Jeux quiz
@@ -271,11 +271,11 @@ const SidebarLeft = () => {
 
                         </div>
                     </>
-                )}
+        }
 
             </nav>
-        </div>
-    );
+        </div>);
+
 };
 
 export default SidebarLeft;

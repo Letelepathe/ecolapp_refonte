@@ -18,7 +18,7 @@ const SelectInfo = () => {
       navigate(`/secondaire/consulter_resultat_periodique?eleve_id=${id_eleve}`);
     } else if (selectedOption === 'semestriel') {
       navigate(`/secondaire/consulter_resultat_semestriel?eleve_id=${id_eleve}`);
-    }else if (selectedOption === 'annuel') {
+    } else if (selectedOption === 'annuel') {
       navigate(`/secondaire/consulter_resultat_annuel?eleve_id=${id_eleve}`);
     }
   };
@@ -30,7 +30,7 @@ const SelectInfo = () => {
           <div className="col-lg-6 col-md-8 col-12 bg-white shadow">
             <div className="card mb-3">
               <div className="card-body">
-                <p className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                <p className="text-center u-style-951c0e5f">
                   Sélectionnez une option de consultation
                 </p>
                 <form onSubmit={handleSubmit}>
@@ -40,8 +40,8 @@ const SelectInfo = () => {
                       id="option"
                       className="form-control"
                       value={selectedOption}
-                      onChange={(e) => setSelectedOption(e.target.value)}
-                    >
+                      onChange={(e) => setSelectedOption(e.target.value)}>
+                      
                       <option value="">-- Sélectionner une option --</option>
                       <option value="periodique">Résultats périodiques</option>
                       <option value="semestriel">Résultats semestriels</option>
@@ -50,7 +50,7 @@ const SelectInfo = () => {
                   </div>
                   {errors && <p className="text-danger">{errors}</p>}
                   <div className="d-grid">
-                   <button className="btn btn-white" style={{background:'#1769ff', color:'#fff', padding:'10px', borderRadius:'25px'}} type="submit">Valider</button>
+                   <button className="btn btn-white u-style-eae60df9" type="submit">Valider</button>
                   </div>
                 </form>
               </div>
@@ -58,8 +58,8 @@ const SelectInfo = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectInfo;

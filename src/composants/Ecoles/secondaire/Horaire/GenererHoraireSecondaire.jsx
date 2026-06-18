@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Repeat, BookOpen } from "react-feather";
 import { ArrowLeft } from "react-feather";
 import { useNavigate } from "react-router-dom";
 
 const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 const hours = [
-  "07h30-08h15",
-  "08h15-09h00",
-  "09h00-09h45",
-  "10h00-10h45",
-  "10h45-11h30",
-  "11h30-12h15",
-  "12h15-13h00",
-];
+"07h30-08h15",
+"08h15-09h00",
+"09h00-09h45",
+"10h00-10h45",
+"10h45-11h30",
+"11h30-12h15",
+"12h15-13h00"];
+
 
 const GenererHoraireSecondaire = () => {
   const navigate = useNavigate();
@@ -50,17 +49,17 @@ const GenererHoraireSecondaire = () => {
     const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
     const newSchedule = {};
     const teacherSlots = {};
-    teachers.forEach((t) => (teacherSlots[t.name] = new Set()));
+    teachers.forEach((t) => teacherSlots[t.name] = new Set());
 
     // Création des classes uniques (nom + option)
     const classes = Array.from(
       new Set(
         teachers.flatMap((t) =>
-          t.subjects.flatMap((s) =>
-            s.classes.map((cl) =>
-              cl.option ? `${cl.name} (${cl.option})` : cl.name
-            )
-          )
+        t.subjects.flatMap((s) =>
+        s.classes.map((cl) =>
+        cl.option ? `${cl.name} (${cl.option})` : cl.name
+        )
+        )
         )
       )
     );
@@ -70,7 +69,7 @@ const GenererHoraireSecondaire = () => {
       newSchedule[c] = {};
       days.forEach((d) => {
         newSchedule[c][d] = {};
-        hours.forEach((h) => (newSchedule[c][d][h] = null));
+        hours.forEach((h) => newSchedule[c][d][h] = null);
       });
     });
 
@@ -87,7 +86,7 @@ const GenererHoraireSecondaire = () => {
                 subject: s.name,
                 teacher: t.name,
                 weight: s.weight,
-                assignedCount: 0,
+                assignedCount: 0
               });
             }
           });
@@ -102,7 +101,7 @@ const GenererHoraireSecondaire = () => {
       if (!teacherSlots[course.teacher].has(key) && !newSchedule[className][day][hour]) {
         newSchedule[className][day][hour] = {
           subject: course.subject,
-          teacher: course.teacher,
+          teacher: course.teacher
         };
         teacherSlots[course.teacher].add(key);
         course.assignedCount++;
@@ -145,7 +144,7 @@ const GenererHoraireSecondaire = () => {
                 if (!teacherSlots[co.teacher].has(nextKey) && !newSchedule[c][day][nextHour]) {
                   newSchedule[c][day][nextHour] = {
                     subject: co.subject,
-                    teacher: co.teacher,
+                    teacher: co.teacher
                   };
                   teacherSlots[co.teacher].add(nextKey);
                   co.assignedCount++;
@@ -172,7 +171,7 @@ const GenererHoraireSecondaire = () => {
       minHeight: "100vh",
       backgroundColor: "#f8f9fa",
       padding: "10px",
-      boxSizing: "border-box",
+      boxSizing: "border-box"
     },
     header: {
       position: "fixed",
@@ -184,14 +183,14 @@ const GenererHoraireSecondaire = () => {
       alignItems: "center",
       justifyContent: "space-between",
       backgroundColor: "#fff",
-      zIndex: "10",
+      zIndex: "10"
     },
     pageTitle: {
       color: "#1769ff",
       fontSize: "1.5rem",
       fontWeight: "bold",
-      textAlign: "center",
-    },
+      textAlign: "center"
+    }
   };
 
   if (loading) {
@@ -201,17 +200,17 @@ const GenererHoraireSecondaire = () => {
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Chargement...</span>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
     <div className="container mt-4">
       <div style={styles.header} className="no-print">
         <button
-          style={{ background: "transparent", border: "none" }}
-          onClick={() => navigate(-1)}
-        >
+
+          onClick={() => navigate(-1)} className="u-style-ce53d055">
+          
           <ArrowLeft size={34} color="#0d66ff" />
         </button>
         <div></div>
@@ -233,16 +232,16 @@ const GenererHoraireSecondaire = () => {
           </thead>
           <tbody>
             {teachers.flatMap((t) =>
-              t.subjects.flatMap((s) =>
-                s.classes.map((cl, i) => (
-                  <tr key={`${t.name}-${s.name}-${i}`}>
+            t.subjects.flatMap((s) =>
+            s.classes.map((cl, i) =>
+            <tr key={`${t.name}-${s.name}-${i}`}>
                     <td>{t.name}</td>
                     <td>{s.name}</td>
                     <td>{cl.name} {cl.option ? `(${cl.option})` : ''}</td>
                     <td>{s.weight}</td>
                   </tr>
-                ))
-              )
+            )
+            )
             )}
           </tbody>
         </table>
@@ -254,56 +253,56 @@ const GenererHoraireSecondaire = () => {
         </button>
       </div>
 
-      {Object.keys(schedule).length > 0 && (
-        <>
+      {Object.keys(schedule).length > 0 &&
+      <>
           <div className="mb-3">
             <button className="btn btn-primary no-print" onClick={handlePrint}>
               Imprimer
             </button>
           </div>
-          {Object.keys(schedule).map((cls) => (
-            <div key={cls} className="mb-5 horaire-print-content">
+          {Object.keys(schedule).map((cls) =>
+        <div key={cls} className="mb-5 horaire-print-content">
               <h4 className="text-primary mb-2">Classe {cls}</h4>
               <div className="table-responsive">
                 <table className="table table-bordered table-hover table-sm">
                   <thead className="table-dark">
                     <tr>
                       <th>Jour</th>
-                      {hours.map((h) => (
-                        <th key={h}>{h}</th>
-                      ))}
+                      {hours.map((h) =>
+                  <th key={h}>{h}</th>
+                  )}
                     </tr>
                   </thead>
                   <tbody>
-                    {days.map((d) => (
-                      <tr key={d}>
+                    {days.map((d) =>
+                <tr key={d}>
                         <td><b>{d}</b></td>
                         {hours.map((h) => {
-                          const cell = schedule[cls][d][h];
-                          return (
-                            <td key={h}>
-                              {cell ? (
-                                <>
+                    const cell = schedule[cls][d][h];
+                    return (
+                      <td key={h}>
+                              {cell ?
+                        <>
                                   <div><strong>{cell.subject}</strong></div>
-                                  <div style={{ fontSize: 12 }}>{cell.teacher}</div>
-                                </>
-                              ) : (
-                                <span style={{ color: "#aaa" }}>-</span>
-                              )}
-                            </td>
-                          );
-                        })}
+                                  <div className="u-style-7a459431">{cell.teacher}</div>
+                                </> :
+
+                        <span className="u-style-677f6294">-</span>
+                        }
+                            </td>);
+
+                  })}
                       </tr>
-                    ))}
+                )}
                   </tbody>
                 </table>
               </div>
             </div>
-          ))}
+        )}
         </>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default GenererHoraireSecondaire;

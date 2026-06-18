@@ -1,16 +1,16 @@
 import React from "react";
 
-const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer }) => (
-  <div className="border rounded p-3 mb-3 bg-light">
+const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer }) =>
+<div className="border rounded p-3 mb-3 bg-light">
     <div className="d-flex justify-content-between align-items-center mb-2">
-      <h6 className="mb-0" style={{ color: "#1769ff", fontWeight: 800 }}>
+      <h6 className="mb-0 u-style-04aba780">
         Élève {index + 1}
       </h6>
-      {peutRetirer && (
-        <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => retirer(index)}>
+      {peutRetirer &&
+    <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => retirer(index)}>
           Retirer
         </button>
-      )}
+    }
     </div>
 
     {err.form && <div className="alert alert-danger py-2 mb-3">{err.form}</div>}
@@ -63,9 +63,9 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         <label>Année scolaire</label>
         <select name="annee_id" className="form-control" value={eleve.annee_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une année</option>
-          {annees.map((annee) => (
-            <option key={annee.id} value={annee.id}>{annee.name}</option>
-          ))}
+          {annees.map((annee) =>
+        <option key={annee.id} value={annee.id}>{annee.name}</option>
+        )}
         </select>
         {err.annee_id && <p className="text-danger">{err.annee_id}</p>}
       </div>
@@ -73,9 +73,9 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         <label>Classe</label>
         <select name="classes_id" className="form-control" value={eleve.classes_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une classe</option>
-          {classes.map((classe) => (
-            <option key={classe.id} value={classe.id}>{classe.name}</option>
-          ))}
+          {classes.map((classe) =>
+        <option key={classe.id} value={classe.id}>{classe.name}</option>
+        )}
         </select>
         {err.classes_id && <p className="text-danger">{err.classes_id}</p>}
       </div>
@@ -83,9 +83,9 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         <label>Option</label>
         <select name="options_id" className="form-control" value={eleve.options_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une option</option>
-          {options.map((option) => (
-            <option key={option.id} value={option.id}>{option.name}</option>
-          ))}
+          {options.map((option) =>
+        <option key={option.id} value={option.id}>{option.name}</option>
+        )}
         </select>
         {err.options_id && <p className="text-danger">{err.options_id}</p>}
       </div>
@@ -94,7 +94,7 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         <textarea name="description" className="form-control" value={eleve.description} onChange={(event) => majChamp(index, event)} />
       </div>
     </div>
-  </div>
-);
+  </div>;
+
 
 export default LigneEleve;

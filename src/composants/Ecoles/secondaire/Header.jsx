@@ -15,8 +15,8 @@ const Header = () => {
       try {
         const response = await axios.get('https://api.ecolapp.cd/api/user', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-          },
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+          }
         });
 
         if (response.status === 200) {
@@ -62,13 +62,13 @@ const Header = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [user]); 
+  }, [user]);
 
   return (
     <header id="header" className={`header align-items-center fixed-top ${scrolled ? 'scrolled' : ''}`}>
       <div className="container-fl d-flex align-items-center justify-content-between">
         <Link to='/' className="logo d-flex align-items-center">
-          <h1 className="sitename" style={{ fontWeight: 900, color: '#1769ff' }}>ecolapp</h1>
+          <h1 className="sitename u-style-951c0e5f">ecolapp</h1>
         </Link>
         <nav id="navmenu" className={`navmenu ${mobileNavActive ? 'mobile-nav-active' : ''}`}>
           <ul>
@@ -90,24 +90,24 @@ const Header = () => {
             <li><Link to="/secondaire/contact" onClick={closeMobileNav}>Contact</Link></li>
           </ul>
           <span className="mobile-nav-toggle d-xl-none" onClick={handleMobileNavToggle}>
-            <i className={`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`} style={{color:'#1769ff'}}></i>
+            <i className={`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`} style={{ color: '#1769ff' }}></i>
           </span>
         </nav>
-        {authenticated ? (
-          <>
+        {authenticated ?
+        <>
             <Link className="btn-getstarted" to="/secondaire/profil_user" onClick={closeMobileNav}>
               <i className='bi bi-person-circle'></i>
             </Link>
             <Link className="btn-getstarted" to="/secondaire/deconnexion" onClick={closeMobileNav}>
               <i className='bi bi-box-arrow-right'></i>
             </Link>
-          </>
-        ) : (
-          <Link className="btn-getstarted" to="/secondaire/login" onClick={closeMobileNav}>Se connecter</Link>
-        )}
+          </> :
+
+        <Link className="btn-getstarted" to="/secondaire/login" onClick={closeMobileNav}>Se connecter</Link>
+        }
       </div>
 
-      <div className="container-fluid py-2 mt-1 d-none d-lg-block" style={{ background: '#1769ff' }}>
+      <div className="container-fluid py-2 mt-1 d-none d-lg-block u-style-77fdd8b0">
         <div className="card-body d-flex align-items-center justify-content-between text-center">
           <Link to="/apropos" target="_blank" className="fw-700 mb-0 font-xssss text-white">
             <i className="bi bi-person-circle"></i> <span>Assistance</span>
@@ -128,8 +128,8 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </header>
-  );
+    </header>);
+
 };
 
 export default Header;

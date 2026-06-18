@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Copyright from '../../Index/Copyright';
 import Abonnement from './Abonnement';
- 
-const Footer = ({ecole}) => {
+
+const Footer = ({ ecole }) => {
   const [isScrollTopActive, setIsScrollTopActive] = useState(false);
 
   const toggleScrollTopVisibility = () => {
@@ -17,7 +17,7 @@ const Footer = ({ecole}) => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: 'smooth'
     });
   };
 
@@ -37,15 +37,15 @@ const Footer = ({ecole}) => {
                         <Link to="#" className="justify-content-center align-itesm-center">
                             <span className="">
                               <img
-                               src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`}
-                               alt={`${ecole.name}`}
-                               style={{
-                                width:'55px',
-                                height:'55px',
-                                objectFit:'cover',
-                                borderRadius:'10px',
-                               }}
-                              />
+                    src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`}
+                    alt={`${ecole.name}`} className="u-style-a62ea828" />
+
+
+
+
+
+
+                  
                             </span>
                         </Link>
                         <div className="footer-contact pt-3">
@@ -57,9 +57,9 @@ const Footer = ({ecole}) => {
                         </div>
                         <div class="social-links d-flex mt-4">
                             {/* <Link to="#"><i className="bi bi-twitter-x"></i></Link>
-                            <Link to="#"><i className="bi bi-facebook"></i></Link>
-                            <Link to="#"><i className="bi bi-instagram"></i></Link>
-                            <Link to="#"><i className="bi bi-linkedin"></i></Link> */}
+                  <Link to="#"><i className="bi bi-facebook"></i></Link>
+                  <Link to="#"><i className="bi bi-instagram"></i></Link>
+                  <Link to="#"><i className="bi bi-linkedin"></i></Link> */}
                         </div>
                     </div>
 
@@ -130,18 +130,18 @@ const Footer = ({ecole}) => {
 
 
       <Link
-        to="#" 
-        id="scroll-top" 
+        to="#"
+        id="scroll-top"
         className={`scroll-top d-flex align-items-center justify-content-center ${isScrollTopActive ? 'active' : ''}`}
         onClick={(e) => {
           e.preventDefault();
           scrollToTop();
-        }}
-      >
+        }}>
+        
         <i className="bi bi-arrow-up-short"></i>
       </Link>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Footer;

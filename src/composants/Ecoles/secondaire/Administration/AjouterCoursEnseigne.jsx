@@ -9,12 +9,12 @@ import NavbarTop from "./NavbarTop";
 const AjouterCoursEnseigne = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [formData, setFormData] = useState({
     users_id: '',
     cours_id: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
 
   const [enseignants, setEnseignants] = useState([]);
@@ -53,7 +53,7 @@ const AjouterCoursEnseigne = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -70,29 +70,29 @@ const AjouterCoursEnseigne = () => {
     setSuccessMessage('');
     setErrors({});
 
-     if (!validateForm()) {
-      setIsLoading(false); 
+    if (!validateForm()) {
+      setIsLoading(false);
       return;
     }
 
     try {
-      setIsLoading(true); 
+      setIsLoading(true);
       const response = await axios.post('https://api.ecolapp.cd/api/coursens/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 200) {
         setSuccessMessage(response.data.status_msg || "Cours ajouté avec succès !");
-        setFormData({ users_id: '', cours_id: '', ecole_id :ecole_id, direction : direction });
-       
+        setFormData({ users_id: '', cours_id: '', ecole_id: ecole_id, direction: direction });
+
       } else {
         setErrors({ form: response.data.error_msg || "Erreur inconnue." });
       }
     } catch (error) {
       setErrors({ form: "Erreur de connexion au serveur." });
       console.error(error);
-    }finally{
-      setIsLoading(false); 
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,23 +108,23 @@ const AjouterCoursEnseigne = () => {
                 <div className="card-body">
                   
                   <div className='d-flex align-items-center justify-content-between'>
-                   <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter cours et titulaire</h6>
+                   <h6 className="text-center u-style-951c0e5f">Ajouter cours et titulaire</h6>
                    <Link to='/secondaire/liste_cours_enseigne' className='btn btn-primary mt-2 mb-2'>Liste titulaires</Link>
                   </div>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
                   <form className="needs-validation" onSubmit={handleSubmit} noValidate>
                     <div className="mb-3">
                       <label htmlFor="enseignant">Enseignants</label>
-                      {error ? (
-                        <p className="text-danger">{error}</p>
-                      ) : (
-                        <select name="users_id" className="form-control" value={formData.users_id} onChange={handleInputChange} required>
+                      {error ?
+                      <p className="text-danger">{error}</p> :
+
+                      <select name="users_id" className="form-control" value={formData.users_id} onChange={handleInputChange} required>
                           <option value="">Sélectionner un enseignant</option>
-                          {enseignants.map(enseignant => (
-                            <option key={enseignant.id} value={enseignant.id}>{enseignant.first_name} {enseignant.name}</option>
-                          ))}
+                          {enseignants.map((enseignant) =>
+                        <option key={enseignant.id} value={enseignant.id}>{enseignant.first_name} {enseignant.name}</option>
+                        )}
                         </select>
-                      )}
+                      }
                       {errors.users_id && <p className="text-danger">{errors.users_id}</p>}
                     </div>
 
@@ -132,9 +132,9 @@ const AjouterCoursEnseigne = () => {
                       <label htmlFor="cours_id">Cours</label>
                       <select name="cours_id" className="form-control" value={formData.cours_id} onChange={handleInputChange} required>
                         <option value="">Sélectionner un cours</option>
-                        {cours.map(cour => (
-                          <option key={cour.id} value={cour.id}>Cours : Classe : {cour.classe.name} {cour.name} Option : {cour.option.name}</option>
-                        ))}
+                        {cours.map((cour) =>
+                        <option key={cour.id} value={cour.id}>Cours : Classe : {cour.classe.name} {cour.name} Option : {cour.option.name}</option>
+                        )}
                       </select>
                       {errors.cours_id && <p className="text-danger">{errors.cours_id}</p>}
                     </div>
@@ -142,9 +142,9 @@ const AjouterCoursEnseigne = () => {
 
                     <div className="d-grid">
                       <button className={`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} type="submit"
-                          disabled={isLoading}
-                          style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}
-                        >
+                      disabled={isLoading}
+                      style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}>
+                        
                           {isLoading ? "Traitement en cours..." : "Enregistrer"}
                       </button>
                     </div>
@@ -158,8 +158,8 @@ const AjouterCoursEnseigne = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterCoursEnseigne;

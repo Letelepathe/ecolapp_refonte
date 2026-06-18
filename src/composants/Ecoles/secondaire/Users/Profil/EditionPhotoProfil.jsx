@@ -6,7 +6,7 @@ const EditionPhotoProfil = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    image: '',
+    image: ''
   });
   const [previewUrl, setPreviewUrl] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -19,11 +19,11 @@ const EditionPhotoProfil = () => {
       try {
         const response = await axios.get('https://api.ecolapp.cd/api/user', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+          }
         });
 
-        if (response.data.status === 200 ) {
+        if (response.data.status === 200) {
           setUserId(response.data.id); // Récupérer l'ID de l'utilisateur
         } else {
           navigate('/secondaire/login');
@@ -41,7 +41,7 @@ const EditionPhotoProfil = () => {
     const file = e.target.files[0];
     setFormData({
       ...formData,
-      image: file,
+      image: file
     });
 
     if (file) {
@@ -71,20 +71,20 @@ const EditionPhotoProfil = () => {
 
     try {
       const response = await axios.put(
-        `https://api.ecolapp.cd/api/user/edit/${userId}`, 
+        `https://api.ecolapp.cd/api/user/edit/${userId}`,
         data,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-            'Content-Type': 'multipart/form-data',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         }
       );
 
       if (response.status === 200) {
         setSuccessMessage(response.data.status_msg || 'Photo de profil mise à jour avec succès !');
         setFormData({
-          image: '',
+          image: ''
         });
         setErrors({});
         setPreviewUrl(null);
@@ -108,9 +108,9 @@ const EditionPhotoProfil = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <h3
-                    className="text-center"
-                    style={{ fontWeight: 900, color: '#1769ff' }}
-                  >
+                    className="text-center u-style-951c0e5f">
+
+                    
                     Modifier photo profil
                   </h3>
 
@@ -122,47 +122,47 @@ const EditionPhotoProfil = () => {
                         name="image"
                         className="form-control"
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.image && <p className="text-danger">{errors.image}</p>}
                     </div>
 
-                    {previewUrl && (
-                      <div className="mb-3 text-center">
+                    {previewUrl &&
+                    <div className="mb-3 text-center">
                         <img
-                          src={previewUrl}
-                          alt="Aperçu de l'image choisie"
-                          style={{
-                            maxWidth: '100%',
-                            maxHeight: '300px',
-                            borderRadius: '5px',
-                            objectFit: 'cover',
-                          }}
-                        />
+                        src={previewUrl}
+                        alt="Aperçu de l'image choisie" className="u-style-a6973fcd" />
+
+
+
+
+
+
+                      
                       </div>
-                    )}
+                    }
 
                     <div className="d-grid">
                       <button
-                        className="btn btn-primary"
-                        type="submit"
-                        style={{
-                          backgroundColor: '#1769ff',
-                          border: 'none',
-                          padding: '10px',
-                          borderRadius: '5px',
-                        }}
-                      >
+                        className="btn btn-primary u-style-2167c5af"
+                        type="submit">
+
+
+
+
+
+
+                        
                         Mettre à jour
                       </button>
                     </div>
 
-                    {successMessage && (
-                      <p className="text-success text-center mt-2">{successMessage}</p>
-                    )}
-                    {errorMessage && (
-                      <p className="text-danger text-center mt-2">{errorMessage}</p>
-                    )}
+                    {successMessage &&
+                    <p className="text-success text-center mt-2">{successMessage}</p>
+                    }
+                    {errorMessage &&
+                    <p className="text-danger text-center mt-2">{errorMessage}</p>
+                    }
                   </form>
                 </div>
               </div>
@@ -170,8 +170,8 @@ const EditionPhotoProfil = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default EditionPhotoProfil;

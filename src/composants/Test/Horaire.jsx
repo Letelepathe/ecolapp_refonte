@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Repeat, BookOpen } from "react-feather";
-import "./Horaire.css";
-
 const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 const hours = [
-  "07h30-08h15",
-  "08h15-09h00",
-  "09h00-09h45",
-  "10h00-10h45",
-  "10h45-11h30",
-  "11h30-12h15",
-  "12h15-13h00",
-];
+"07h30-08h15",
+"08h15-09h00",
+"09h00-09h45",
+"10h00-10h45",
+"10h45-11h30",
+"11h30-12h15",
+"12h15-13h00"];
+
 
 export default function Horaire() {
   const ecole_id = 1;
@@ -48,17 +45,17 @@ export default function Horaire() {
     const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
     const newSchedule = {};
     const teacherSlots = {};
-    teachers.forEach((t) => (teacherSlots[t.name] = new Set()));
+    teachers.forEach((t) => teacherSlots[t.name] = new Set());
 
     // Création des classes uniques (nom + option)
     const classes = Array.from(
       new Set(
         teachers.flatMap((t) =>
-          t.subjects.flatMap((s) =>
-            s.classes.map((cl) =>
-              cl.option ? `${cl.name} (${cl.option})` : cl.name
-            )
-          )
+        t.subjects.flatMap((s) =>
+        s.classes.map((cl) =>
+        cl.option ? `${cl.name} (${cl.option})` : cl.name
+        )
+        )
         )
       )
     );
@@ -68,7 +65,7 @@ export default function Horaire() {
       newSchedule[c] = {};
       days.forEach((d) => {
         newSchedule[c][d] = {};
-        hours.forEach((h) => (newSchedule[c][d][h] = null));
+        hours.forEach((h) => newSchedule[c][d][h] = null);
       });
     });
 
@@ -85,7 +82,7 @@ export default function Horaire() {
                 subject: s.name,
                 teacher: t.name,
                 weight: s.weight,
-                assignedCount: 0,
+                assignedCount: 0
               });
             }
           });
@@ -100,7 +97,7 @@ export default function Horaire() {
       if (!teacherSlots[course.teacher].has(key) && !newSchedule[className][day][hour]) {
         newSchedule[className][day][hour] = {
           subject: course.subject,
-          teacher: course.teacher,
+          teacher: course.teacher
         };
         teacherSlots[course.teacher].add(key);
         course.assignedCount++;
@@ -143,7 +140,7 @@ export default function Horaire() {
                 if (!teacherSlots[co.teacher].has(nextKey) && !newSchedule[c][day][nextHour]) {
                   newSchedule[c][day][nextHour] = {
                     subject: co.subject,
-                    teacher: co.teacher,
+                    teacher: co.teacher
                   };
                   teacherSlots[co.teacher].add(nextKey);
                   co.assignedCount++;
@@ -168,8 +165,8 @@ export default function Horaire() {
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Chargement...</span>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -191,16 +188,16 @@ export default function Horaire() {
           </thead>
           <tbody>
             {teachers.flatMap((t) =>
-              t.subjects.flatMap((s) =>
-                s.classes.map((cl, i) => (
-                  <tr key={`${t.name}-${s.name}-${i}`}>
+            t.subjects.flatMap((s) =>
+            s.classes.map((cl, i) =>
+            <tr key={`${t.name}-${s.name}-${i}`}>
                     <td>{t.name}</td>
                     <td>{s.name}</td>
                     <td>{cl.name} {cl.option ? `(${cl.option})` : ''}</td>
                     <td>{s.weight}</td>
                   </tr>
-                ))
-              )
+            )
+            )
             )}
           </tbody>
         </table>
@@ -212,54 +209,54 @@ export default function Horaire() {
         </button>
       </div>
 
-      {Object.keys(schedule).length > 0 && (
-        <>
+      {Object.keys(schedule).length > 0 &&
+      <>
           <div className="mb-3">
             <button className="btn btn-primary no-print" onClick={handlePrint}>
               Imprimer
             </button>
           </div>
-          {Object.keys(schedule).map((cls) => (
-            <div key={cls} className="mb-5 horaire-print-content">
+          {Object.keys(schedule).map((cls) =>
+        <div key={cls} className="mb-5 horaire-print-content">
               <h4 className="text-primary mb-2">Classe {cls}</h4>
               <div className="table-responsive">
                 <table className="table table-bordered table-hover table-sm">
                   <thead className="table-dark">
                     <tr>
                       <th>Jour</th>
-                      {hours.map((h) => (
-                        <th key={h}>{h}</th>
-                      ))}
+                      {hours.map((h) =>
+                  <th key={h}>{h}</th>
+                  )}
                     </tr>
                   </thead>
                   <tbody>
-                    {days.map((d) => (
-                      <tr key={d}>
+                    {days.map((d) =>
+                <tr key={d}>
                         <td><b>{d}</b></td>
                         {hours.map((h) => {
-                          const cell = schedule[cls][d][h];
-                          return (
-                            <td key={h}>
-                              {cell ? (
-                                <>
+                    const cell = schedule[cls][d][h];
+                    return (
+                      <td key={h}>
+                              {cell ?
+                        <>
                                   <div><strong>{cell.subject}</strong></div>
-                                  <div style={{ fontSize: 12 }}>{cell.teacher}</div>
-                                </>
-                              ) : (
-                                <span style={{ color: "#aaa" }}>-</span>
-                              )}
-                            </td>
-                          );
-                        })}
+                                  <div className="u-style-7a459431">{cell.teacher}</div>
+                                </> :
+
+                        <span className="u-style-677f6294">-</span>
+                        }
+                            </td>);
+
+                  })}
                       </tr>
-                    ))}
+                )}
                   </tbody>
                 </table>
               </div>
             </div>
-          ))}
+        )}
         </>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

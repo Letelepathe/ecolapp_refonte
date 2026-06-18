@@ -3,25 +3,23 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import SidebarLeft from "../Administration/SidebarLeft";
 import NavbarTop from "../Administration/NavbarTop";
-import './style_communique.css';
-
 const LancerCommunique = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const fileInputRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId"); 
+  const userId = localStorage.getItem("userId");
 
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     file: null,
     users_id: "",
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
 
   const [errors, setErrors] = useState({});
@@ -31,14 +29,14 @@ const LancerCommunique = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
   const handleFileChange = (e) => {
     setFormData({
       ...formData,
-      file: e.target.files[0],
+      file: e.target.files[0]
     });
   };
 
@@ -56,7 +54,7 @@ const LancerCommunique = () => {
     setSuccessMessage("");
 
     if (!validateForm()) {
-      setIsLoading(false); 
+      setIsLoading(false);
       return;
     }
 
@@ -71,7 +69,7 @@ const LancerCommunique = () => {
     try {
       setIsLoading(true);
       const response = await axios.post("https://api.ecolapp.cd/api/communique/create", data, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": "multipart/form-data" }
       });
 
       if (response.data.status === 200) {
@@ -81,9 +79,9 @@ const LancerCommunique = () => {
           title: "",
           content: "",
           file: null,
-          users_id : userId,
-          ecole_id : ecole_id,
-          direction : direction,
+          users_id: userId,
+          ecole_id: ecole_id,
+          direction: direction
         });
 
         if (fileInputRef.current) {
@@ -97,8 +95,8 @@ const LancerCommunique = () => {
       }
     } catch (error) {
       setErrors({ form: "Erreur de connexion au serveur" });
-    }finally {
-      setIsLoading(false); 
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -113,7 +111,7 @@ const LancerCommunique = () => {
               <div className="card mb-3">
                 <Link to='/secondaire/liste_communique' className="btn btn-primary mb-2 mt-2">Liste communiqués</Link>
                 <div className="card-body">
-                  <h3 className="text-center" style={{ fontWeight: 900, color: "#1769ff" }}>Lancer un Communiqué</h3>
+                  <h3 className="text-center u-style-951c0e5f">Lancer un Communiqué</h3>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
                   <form className="needs-validation" onSubmit={handleSubmit} noValidate>
                     <div className="mb-3">
@@ -133,9 +131,9 @@ const LancerCommunique = () => {
                     </div>
                     <div className="d-grid">
                       <button className={`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} type="submit"
-                          disabled={isLoading}
-                          style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}
-                        >
+                      disabled={isLoading}
+                      style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}>
+                        
                           {isLoading ? "Lancement en cours..." : "Lancer"}
                       </button>
                     </div>
@@ -148,8 +146,8 @@ const LancerCommunique = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default LancerCommunique;

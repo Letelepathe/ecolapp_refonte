@@ -47,7 +47,7 @@ const QuizByEnseignant = () => {
   };
 
   const filterQuizzes = () => {
-    const filtered = quizzes.filter(quiz => {
+    const filtered = quizzes.filter((quiz) => {
       const matchSearch = quiz.titre.toLowerCase().includes(searchTerm.toLowerCase());
       const matchCours = selectedCoursId ? quiz.cours_id === parseInt(selectedCoursId) : true;
       return matchSearch && matchCours;
@@ -60,7 +60,7 @@ const QuizByEnseignant = () => {
       try {
         await axios.delete(`https://api.ecolapp.cd/api/quizzes/delete/${quizId}`);
         setSuccessMsg("Quiz supprimé avec succès.");
-        setQuizzes(prev => prev.filter(quiz => quiz.id !== quizId));
+        setQuizzes((prev) => prev.filter((quiz) => quiz.id !== quizId));
       } catch (error) {
         console.error("Erreur lors de la suppression du quiz :", error);
         setError("Impossible de supprimer le quiz.");
@@ -74,7 +74,7 @@ const QuizByEnseignant = () => {
         <div className="col-lg-10 col-12">
           <div className="card shadow-sm">
             <div className="card-body">
-              <h4 className="text-center mb-4" style={{ color: '#1769ff', fontWeight: '900' }}>Mes Quiz</h4>
+              <h4 className="text-center mb-4 u-style-951c0e5f">Mes Quiz</h4>
 
               {loading && <div className='spinner'></div>}
               {error && <div className="alert alert-danger">{error}</div>}
@@ -88,32 +88,32 @@ const QuizByEnseignant = () => {
                     placeholder="Rechercher un quiz par titre..."
                     className="form-control"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
+                    onChange={(e) => setSearchTerm(e.target.value)} />
+                  
                 </div>
                 <div className="col-md-6">
                   <select
                     className="form-select"
                     value={selectedCoursId}
-                    onChange={(e) => setSelectedCoursId(e.target.value)}
-                  >
+                    onChange={(e) => setSelectedCoursId(e.target.value)}>
+                    
                     <option value="">-- Filtrer par cours --</option>
                     <option value="">Tous les cours</option>
-                    {cours.map(c => (
-                      <option key={c.id} value={c.cour.id}>{c.cour.name}</option>
-                    ))}
+                    {cours.map((c) =>
+                    <option key={c.id} value={c.cour.id}>{c.cour.name}</option>
+                    )}
                   </select>
                 </div>
               </div>
 
-              {!loading && !error && filteredQuizzes.length === 0 && (
-                <div className="alert alert-warning">Aucun quiz trouvé.</div>
-              )}
+              {!loading && !error && filteredQuizzes.length === 0 &&
+              <div className="alert alert-warning">Aucun quiz trouvé.</div>
+              }
 
-              {!loading && !error && filteredQuizzes.length > 0 && (
-                <div className="table-responsive">
+              {!loading && !error && filteredQuizzes.length > 0 &&
+              <div className="table-responsive">
                   <table className="table table-bordered table-hover">
-                    <thead style={{ backgroundColor: '#1769ff', color: '#fff' }}>
+                    <thead className="u-style-4845b56d">
                       <tr>
                         <th className="text-white">Id</th>
                         <th className="text-white">Titre</th>
@@ -123,8 +123,8 @@ const QuizByEnseignant = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredQuizzes.map((quiz, index) => (
-                        <tr key={quiz.id}>
+                      {filteredQuizzes.map((quiz, index) =>
+                    <tr key={quiz.id}>
                           <td>{index + 1}</td>
                           <td>{quiz.titre}</td>
                           <td>{quiz.cours.name}</td>
@@ -134,24 +134,24 @@ const QuizByEnseignant = () => {
                               Faire ce quiz
                             </Link>
                             <button
-                              className="btn btn-danger btn-sm"
-                              onClick={() => handleDelete(quiz.id)}
-                            >
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleDelete(quiz.id)}>
+                          
                               Supprimer
                             </button>
                           </td>
                         </tr>
-                      ))}
+                    )}
                     </tbody>
                   </table>
                 </div>
-              )}
+              }
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default QuizByEnseignant;

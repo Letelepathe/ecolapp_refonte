@@ -1,6 +1,4 @@
 import React, { useRef } from "react";
-import "./CartesEleves.css";
-
 import BarreActions from "./BarreActions";
 import FiltresCartes from "./FiltresCartes";
 import ModalApercuCartes from "./ModalApercuCartes";

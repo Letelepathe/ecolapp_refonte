@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 const ChoixDirection = () => {
- 
+
   const [ecole, setEcole] = useState(null);
-  const { id_ecole, ecole_name } = useParams(); 
+  const { id_ecole, ecole_name } = useParams();
 
   useEffect(() => {
     const fetchInfoEcole = async () => {
@@ -20,29 +20,29 @@ const ChoixDirection = () => {
     fetchInfoEcole();
   }, [id_ecole]);
 
-  if(!ecole){
+  if (!ecole) {
     return (
-        <div className="spinner"></div>
-    );
+      <div className="spinner"></div>);
+
   }
   // Stocker id de l''ecole dans le localStorage
   localStorage.setItem('ecole_id', id_ecole);
-  
+
   return (
-        <div style={{ marginTop: '5px', display: 'flex', justifyContent: 'center' }}>
+    <div className="u-style-4c53c2ce">
            <section className="bg-light">
              
              <div className="container">
-               <div className="row gy-4" style={{ display: 'flex', justifyContent: 'center' }}>
-                  <h2 style={{textAlign: 'center', fontWeight:900, color:'#1769ff'}}>
+               <div className="row gy-4 u-style-63b79a97">
+                  <h2 className="u-style-3959a91c">
                    {ecole.name}
                   </h2>
                   <div className="justify-content-center text-center align-items-center">
                     <img
-                      src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`}
-                      alt="ecolapp"
-                      className="img-fluid-1 img_index"
-                    />
+                src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`}
+                alt="ecolapp"
+                className="img-fluid-1 img_index" />
+              
                   </div>
                  {/* Maternelle */}
                  <div className="col-xl-4 col-lg-4 col-md-6 d-flex justify-content-center text-center align-items-center">
@@ -89,36 +89,36 @@ const ChoixDirection = () => {
                </div>
              </div>
            </section>
-         </div>
-  );
-  
+         </div>);
+
+
 };
 
 const cardStyle = {
-    padding: '20px',
-    borderRadius: '10px',
-    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-    background: '#f8f9fa',
-    width: '100%',
-    maxWidth: '350px'
-  };
-  
-  const iconStyle = {
-    fontSize: '30px',
-    color: '#1769ff',
-    marginBottom: '10px'
-  };
-  
- 
-  
-  const btnStyle = {
-    padding: '12px',
-    borderRadius: '30px',
-    background: '#1769ff',
-    color: '#fff',
-    textDecoration: 'none',
-    display: 'inline-block',
-    width: '100%',
-    marginTop: '10px'
-  };
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+  background: '#f8f9fa',
+  width: '100%',
+  maxWidth: '350px'
+};
+
+const iconStyle = {
+  fontSize: '30px',
+  color: '#1769ff',
+  marginBottom: '10px'
+};
+
+
+
+const btnStyle = {
+  padding: '12px',
+  borderRadius: '30px',
+  background: '#1769ff',
+  color: '#fff',
+  textDecoration: 'none',
+  display: 'inline-block',
+  width: '100%',
+  marginTop: '10px'
+};
 export default ChoixDirection;

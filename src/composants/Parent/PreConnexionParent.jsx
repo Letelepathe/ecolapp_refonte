@@ -26,8 +26,8 @@ const PreConnexionParent = () => {
 
   if (!parent) {
     return (
-      <div className="spinner"></div>
-    );
+      <div className="spinner"></div>);
+
   }
 
   return (
@@ -41,30 +41,30 @@ const PreConnexionParent = () => {
                   <img
                     src={`https://api.ecolapp.cd/public/imgParent/${parent.photo}`}
                     alt={`${parent.prenom}`}
-                    className="profile-img rounded-circle"
-                    style={{
-                      width: '100px',
-                      height: '100px',
-                      objectFit: 'cover',
-                      border: '5px solid #1769ff'
-                    }}
-                  />
+                    className="profile-img rounded-circle u-style-b2414eff" />
+
+
+
+
+
+
+                  
                 </div>
                 <div className="pt-4 pb-2">
-                  <h5 className="text-center text-primary fw-bold" style={{ fontSize: '30px' }}>ecolapp</h5>
+                  <h5 className="text-center text-primary fw-bold u-style-630faec2">ecolapp</h5>
                 </div>
 
-                <p className="text-center text-primary fw-bold" style={{ fontSize: '20px' }}>
+                <p className="text-center text-primary fw-bold u-style-4ef9d2a6">
                   Bienvenue, {parent.prenom} {parent.nom} !
                 </p>
                 <div
-                  className="code-container rounded p-3 my-4"
-                  style={{
-                    border: '2px dashed #ff5733', // Bordure en pointillés
-                  }}
-                >
-                  <p className="text-warning fw-bold" style={{ fontSize: '24px' }}>
-                    🔑 Votre Code : <span style={{ fontSize: '28px' }}>{parent.code}</span>
+                  className="code-container rounded p-3 my-4 u-style-73309d34">
+
+
+
+                  
+                  <p className="text-warning fw-bold u-style-7f09016c">
+                    🔑 Votre Code : <span className="u-style-264028a9">{parent.code}</span>
                   </p>
                   <p className="text-muted fst-italic">
                     Veuillez noter ce code. Vous en aurez besoin pour vous connecter.
@@ -73,8 +73,8 @@ const PreConnexionParent = () => {
                 <p className="text-muted">Votre compte a été créé avec succès. Nous sommes ravis de vous avoir parmi nous !</p>
                 <Link
                   to="/parent/login"
-                  className="btn btn-primary rounded-pill px-4 py-2"
-                >
+                  className="btn btn-primary rounded-pill px-4 py-2">
+                  
                   Connectez-vous ici
                 </Link>
               </div>
@@ -82,8 +82,8 @@ const PreConnexionParent = () => {
           </div>
         </div>
       </div>
-    </main>
-  );
+    </main>);
+
 };
 
 export default PreConnexionParent;

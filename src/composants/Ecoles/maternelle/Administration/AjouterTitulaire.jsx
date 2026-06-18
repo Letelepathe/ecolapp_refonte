@@ -9,13 +9,13 @@ import NavbarTop from "./NavbarTop";
 const AjouterTitulaire = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [formData, setFormData] = useState({
     id_us: '',
     id_classe: '',
     id_option: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
 
   const [enseignants, setEnseignants] = useState([]);
@@ -66,7 +66,7 @@ const AjouterTitulaire = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -84,29 +84,29 @@ const AjouterTitulaire = () => {
     setSuccessMessage('');
     setErrors({});
 
-     if (!validateForm()) {
-      setIsLoading(false); 
+    if (!validateForm()) {
+      setIsLoading(false);
       return;
     }
 
     try {
-      setIsLoading(true); 
+      setIsLoading(true);
       const response = await axios.post('https://api.ecolapp.cd/api/titulaire/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 200) {
         setSuccessMessage(response.data.status_msg || "Titulaire ajouté avec succès !");
-        setFormData({ id_us: '', id_classe: '', id_option : '', ecole_id : ecole_id, direction : direction});
-     
+        setFormData({ id_us: '', id_classe: '', id_option: '', ecole_id: ecole_id, direction: direction });
+
       } else {
         setErrors({ form: response.data.error_msg || "Erreur inconnue." });
       }
     } catch (error) {
       setErrors({ form: "Erreur de connexion au serveur." });
       console.error(error);
-    }finally{
-      setIsLoading(false); 
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -122,26 +122,26 @@ const AjouterTitulaire = () => {
                 <div className="card-body">
                   <div className='d-flex align-items-center justify-content-between'>
                    <Link to='/maternelle/liste_titulaire' className='btn btn-primary mt-2 mb-2'>Liste titulaires</Link>
-                   <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Titulaire</h6>
+                   <h6 className="text-center u-style-951c0e5f">Ajouter Titulaire</h6>
                   </div>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
 
                   <form className="needs-validation" onSubmit={handleSubmit} noValidate>
                     <div className="mb-3">
                       <label htmlFor="enseignant">Enseignants</label>
-                      {error ? (
-                        <p className="text-danger">{error}</p>
-                      ) : (
-                        <select name="id_us" className="form-control" 
-                          value={formData.id_us} onChange={handleInputChange} required>
+                      {error ?
+                      <p className="text-danger">{error}</p> :
+
+                      <select name="id_us" className="form-control"
+                      value={formData.id_us} onChange={handleInputChange} required>
                           <option value="">Sélectionner un enseignant</option>
-                          {enseignants.map(enseignant => (
-                            <option key={enseignant.id} value={enseignant.id}>
+                          {enseignants.map((enseignant) =>
+                        <option key={enseignant.id} value={enseignant.id}>
                               {enseignant.first_name} {enseignant.name}
                             </option>
-                          ))}
+                        )}
                         </select>
-                      )}
+                      }
                       {errors.id_us && <p className="text-danger">{errors.id_us}</p>}
                     </div>
 
@@ -149,29 +149,29 @@ const AjouterTitulaire = () => {
                       <label htmlFor="id_classe">Classe</label>
                       <select name="id_classe" className="form-control" value={formData.id_classe} onChange={handleInputChange} required>
                         <option value="">Sélectionner une classe</option>
-                        {classes.map(classe => (
-                          <option key={classe.id} value={classe.id}>{classe.name}</option>
-                        ))}
+                        {classes.map((classe) =>
+                        <option key={classe.id} value={classe.id}>{classe.name}</option>
+                        )}
                       </select>
                       {errors.id_classe && <p className="text-danger">{errors.id_classe}</p>}
                     </div>
                     <div className="mb-3">
                         <label htmlFor="id_option">Option</label>
-                        <select name="id_option" className="form-control" 
-                          value={formData.id_option} onChange={handleInputChange} required>
+                        <select name="id_option" className="form-control"
+                      value={formData.id_option} onChange={handleInputChange} required>
                           <option value="">Sélectionner une option</option>
-                          {options.map((option) => (
-                            <option key={option.id} value={option.id}>{option.name}</option>
-                          ))}
+                          {options.map((option) =>
+                        <option key={option.id} value={option.id}>{option.name}</option>
+                        )}
                         </select>
                         {errors.id_option && <p className="text-danger">{errors.id_option}</p>}
                       </div>
 
                     <div className="d-grid">
                       <button className={`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} type="submit"
-                          disabled={isLoading}
-                          style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}
-                        >
+                      disabled={isLoading}
+                      style={{ backgroundColor: "#1769ff", border: "none", padding: "10px", borderRadius: "5px" }}>
+                        
                           {isLoading ? "Traitement en cours..." : "Enregistrer"}
                       </button>
                     </div>
@@ -185,8 +185,8 @@ const AjouterTitulaire = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterTitulaire;

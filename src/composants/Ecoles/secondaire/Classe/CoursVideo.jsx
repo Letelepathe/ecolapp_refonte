@@ -4,10 +4,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import SidebarLeft from "../Users/Profil/SidebarLeft";
 import NavbarTop from "../Users/Profil/NavbarTop";
-import "plyr-react/plyr.css";
 import PlyrComponent from "plyr-react";
-import './styleVideo.css';
-
 const CoursVideo = () => {
   const [cours, setCours] = useState([]);
   const { id_classe, id_option, id_cours } = useParams();

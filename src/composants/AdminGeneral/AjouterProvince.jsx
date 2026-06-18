@@ -76,7 +76,7 @@ const AjouterProvince = () => {
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className='container d-flex align-items-center justify-content-between py-2'>
-                  <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Province</h6>
+                  <h6 className="text-center u-style-951c0e5f">Ajouter Province</h6>
                   <Link to='/admin-general/liste_province' className='btn btn-warning text-white'>Liste Provinces</Link>
                 </div>
                 <div className="card-body">
@@ -91,8 +91,8 @@ const AjouterProvince = () => {
                         className="form-control"
                         value={formData.name}
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.name && <p className="text-danger">{errors.name}</p>}
                     </div>
 
@@ -111,8 +111,8 @@ const AjouterProvince = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterProvince;

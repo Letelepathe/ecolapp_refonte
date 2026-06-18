@@ -25,9 +25,9 @@ const SelectSemestreAnnee = () => {
     const fetchData = async () => {
       try {
         const [anneeResponse, semestreResponse] = await Promise.all([
-          axios.get(`https://api.ecolapp.cd/api/annee/ecole/${ecole_id}/direction/${direction}`),
-          axios.get(`https://api.ecolapp.cd/api/semestre/ecole/${ecole_id}/direction/${direction}`)
-        ]);
+        axios.get(`https://api.ecolapp.cd/api/annee/ecole/${ecole_id}/direction/${direction}`),
+        axios.get(`https://api.ecolapp.cd/api/semestre/ecole/${ecole_id}/direction/${direction}`)]
+        );
 
         setAnnees(anneeResponse.data.anneeAll || []);
         setSemestres(semestreResponse.data.semestreAll || []);
@@ -63,7 +63,7 @@ const SelectSemestreAnnee = () => {
           <div className='col-lg-6 col-md-8 col-12'>
             <div className="card mb-3">
               <div className="card-body">
-                <p className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                <p className="text-center u-style-951c0e5f">
                   Sélectionnez une année et un semestre
                 </p>
                 <form onSubmit={handleSubmit}>
@@ -73,12 +73,12 @@ const SelectSemestreAnnee = () => {
                       id="annee"
                       className="form-control"
                       value={selectedAnnee}
-                      onChange={(e) => setSelectedAnnee(e.target.value)}
-                    >
+                      onChange={(e) => setSelectedAnnee(e.target.value)}>
+                      
                       <option value="">-- Sélectionner une année --</option>
-                      {annees.map(a => (
-                        <option key={a.id} value={a.id}>{a.name}</option>
-                      ))}
+                      {annees.map((a) =>
+                      <option key={a.id} value={a.id}>{a.name}</option>
+                      )}
                     </select>
                   </div>
                   <div className="mb-3">
@@ -87,17 +87,17 @@ const SelectSemestreAnnee = () => {
                       id="semestre"
                       className="form-control"
                       value={selectedSemestre}
-                      onChange={(e) => setSelectedSemestre(e.target.value)}
-                    >
+                      onChange={(e) => setSelectedSemestre(e.target.value)}>
+                      
                       <option value="">-- Sélectionner un semestre --</option>
-                      {semestres.map(p => (
-                        <option key={p.id} value={p.id}>{p.name}</option>
-                      ))}
+                      {semestres.map((p) =>
+                      <option key={p.id} value={p.id}>{p.name}</option>
+                      )}
                     </select>
                   </div>
                   {errors && <p className="text-danger">{errors}</p>}
                   <div className="d-grid">
-                   <button className="btn btn-white" style={{background:'#1769ff', color:'#fff', padding:'10px', borderRadius:'25px'}} type="submit">Valider</button>
+                   <button className="btn btn-white u-style-eae60df9" type="submit">Valider</button>
                   </div>
                 </form>
               </div>
@@ -105,8 +105,8 @@ const SelectSemestreAnnee = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectSemestreAnnee;

@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 
 const AjouterTravail = () => {
-  
+
   const [formData, setFormData] = useState({
     titre: '',
     description: '',
     date_remise: '',
     id_cours: '',
-    id_classe : '',
+    id_classe: '',
     id_type_travail: '',
     file: '',
-    direction : 3,
+    direction: 3
   });
   const [cours, setCours] = useState([]);
   const [typesTravail, setTypesTravail] = useState([]);
@@ -28,10 +28,10 @@ const AjouterTravail = () => {
     const fetchData = async () => {
       try {
         const [coursRes, typesTravailRes, classes] = await Promise.all([
-          axios.get('http://localhost/ecole-app/apis/getCours'),
-          axios.get('http://localhost/ecole-app/apis/getTypeTravail'),
-          axios.get('http://localhost/ecole-app/apis/getClasses'),
-        ]);
+        axios.get('http://localhost/ecole-app/apis/getCours'),
+        axios.get('http://localhost/ecole-app/apis/getTypeTravail'),
+        axios.get('http://localhost/ecole-app/apis/getClasses')]
+        );
         setCours(coursRes.data);
         setTypesTravail(typesTravailRes.data);
         setClasses(classes.data);
@@ -82,7 +82,7 @@ const AjouterTravail = () => {
         data,
         { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
       );
- 
+
 
       if (response.data.success) {
         setSuccessMessage("Travail ajouté avec succès !");
@@ -92,9 +92,9 @@ const AjouterTravail = () => {
           description: '',
           date_remise: '',
           id_cours: '',
-          id_classe : '',
+          id_classe: '',
           id_type_travail: '',
-          file: '',
+          file: ''
         });
         console.log(response.data);
       } else {
@@ -108,15 +108,15 @@ const AjouterTravail = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
        <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <section className='section d-flex flex-column align-items-center justify-content-center py-4'>
           <div className='col-lg-6 col-md-8 col-12'>
             <div className='card mb-3'>
               <div className="card-body">
                      <Link className="btn btn-primary" to='/secondaire/liste_travail'>Liste des travaux</Link>
-                    <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter travail</h3>
+                    <h3 className="text-center u-style-951c0e5f">Ajouter travail</h3>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
                       <div className="mb-3">
                         <label htmlFor="titre" className="form-label">Titre</label>
@@ -137,7 +137,7 @@ const AjouterTravail = () => {
                         <label htmlFor="id_cours" className="form-label">Cours</label>
                         <select name="id_cours" className="form-control" value={formData.id_cours} onChange={handleInputChange}>
                           <option value="">Sélectionner un cours</option>
-                          {cours.map(c => <option key={c.id} value={c.id}>{c.nom}</option>)}
+                          {cours.map((c) => <option key={c.id} value={c.id}>{c.nom}</option>)}
                         </select>
                         {errors.id_cours && <p className="text-danger">{errors.id_cours}</p>}
                       </div>
@@ -146,7 +146,7 @@ const AjouterTravail = () => {
                         <label htmlFor="id_classe" className="form-label">Classe</label>
                         <select name="id_classe" className="form-control" value={formData.id_classe} onChange={handleInputChange}>
                           <option value="">Sélectionner un cours</option>
-                          {classes.map(classe => <option key={classe.id} value={classe.id}>{classe.nom_classe}</option>)}
+                          {classes.map((classe) => <option key={classe.id} value={classe.id}>{classe.nom_classe}</option>)}
                         </select>
                         {errors.id_classe && <p className="text-danger">{errors.id_classe}</p>}
                       </div>
@@ -155,19 +155,19 @@ const AjouterTravail = () => {
                         <label htmlFor="id_type_travail" className="form-label">Type de travail</label>
                         <select name="id_type_travail" className="form-control" value={formData.id_type_travail} onChange={handleInputChange}>
                           <option value="">Sélectionner un type</option>
-                          {typesTravail.map(type => <option key={type.id} value={type.id}>{type.typeTravail}</option>)}
+                          {typesTravail.map((type) => <option key={type.id} value={type.id}>{type.typeTravail}</option>)}
                         </select>
                         {errors.id_type_travail && <p className="text-danger">{errors.id_type_travail}</p>}
                       </div>
                       <div className="mb-3">
                         <label htmlFor="file">Fichier</label>
                         <input
-                          type="file"
-                          name="file"
-                          className="form-control"
-                          onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
-                          required
-                        />
+                      type="file"
+                      name="file"
+                      className="form-control"
+                      onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
+                      required />
+                    
                         {errors.file && <p className="text-danger">{errors.file}</p>}
                       </div>
                       
@@ -181,8 +181,8 @@ const AjouterTravail = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterTravail;

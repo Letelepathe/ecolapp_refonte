@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import SidebarLeft from "../Administration/SidebarLeft";
 import NavbarTop from "../Administration/NavbarTop";
-import './style_paiement.css';
 import LogoEcoleApp from '../../../../static/images/logo_ecolapp.jpg';
 
 const AjouterPaiement = () => {

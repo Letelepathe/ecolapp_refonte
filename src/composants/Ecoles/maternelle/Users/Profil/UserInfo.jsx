@@ -1,58 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import './spinner.css';
-
 const UserInfo = () => {
-    const { id } = useParams(); 
-    const [user, setUserInfo] = useState(null);
-    const [error, setError] = useState("");
+  const { id } = useParams();
+  const [user, setUserInfo] = useState(null);
+  const [error, setError] = useState("");
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await axios.get('https://api.ecolapp.cd/api/user', {
-                    headers: {
-                      'Authorization': `Bearer ${localStorage.getItem('auth_token')}`, 
-                    },
-                });
-                console.log(response.data);  
-        
-                if (response.status === 200) {
-                    setUserInfo(response.data);
-                } else {
-                    setError(response.data.status_msg);
-                }
-            } catch (err) {
-                setError("Erreur lors de la récupération des informations de l'utilisateur.");
-            }
-        };
-        
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('https://api.ecolapp.cd/api/user', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+          }
+        });
+        console.log(response.data);
 
-        fetchUser();
-    }, [id]);
+        if (response.status === 200) {
+          setUserInfo(response.data);
+        } else {
+          setError(response.data.status_msg);
+        }
+      } catch (err) {
+        setError("Erreur lors de la récupération des informations de l'utilisateur.");
+      }
+    };
 
-    if (error) {
-        return <div>{error}</div>;
-    }
 
-    if (!user) {
-        return <div className="spinner"></div>;
-    }
+    fetchUser();
+  }, [id]);
 
-    return (
-        <div>
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!user) {
+    return <div className="spinner"></div>;
+  }
+
+  return (
+    <div>
             <div className="profile">
                 <div className="profile-cover">
                     
                 </div>
                 <div className="profile-details">
                     <div className="profile-image">
-                        <img src={`https://api.ecolapp.cd/public/imgUser/${user.file}`} style={{objectFit:'cover'}} alt="Profil" />
+                        <img src={`https://api.ecolapp.cd/public/imgUser/${user.file}`} alt="Profil" className="u-style-2f8d99ec" />
                        
                     </div>
                     <div className="profile-details-info">
-                        <h2 style={{ fontWeight: 900 }}>{user.first_name} {user.name}</h2>
+                        <h2 className="u-style-1b959d56">{user.first_name} {user.name}</h2>
                       
                     </div>
                 </div>
@@ -104,8 +102,8 @@ const UserInfo = () => {
                    
                 </div>
             </div>
-        </div>
-    );
+        </div>);
+
 };
 
 export default UserInfo;

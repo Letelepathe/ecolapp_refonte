@@ -12,7 +12,7 @@ const ListeTitulaire = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  
+
   useEffect(() => {
     const fetchTitulaires = async () => {
       try {
@@ -25,7 +25,7 @@ const ListeTitulaire = () => {
         setTitulaires([]);
       }
     };
-  
+
     fetchTitulaires();
   }, [ecole_id, direction]);
 
@@ -74,16 +74,16 @@ const ListeTitulaire = () => {
                 </tr>
               </thead>
               <tbody>
-                {titulaires.map((titulaire, index) => (
-                  <tr key={titulaire.id}>
+                {titulaires.map((titulaire, index) =>
+                <tr key={titulaire.id}>
                     <td>{titulaire.id}</td>
                     <td>
-                      <img 
-                        src={`https://api.ecolapp.cd/public/imgUser/${titulaire.user.file}`} 
-                          className="rounded-circle flex-shrink-0" 
-                          alt="Profil" 
-                          style={{ width: '60px', height: '60px', objectFit : 'cover' }} 
-                        />
+                      <img
+                      src={`https://api.ecolapp.cd/public/imgUser/${titulaire.user.file}`}
+                      className="rounded-circle flex-shrink-0 u-style-31bd8151"
+                      alt="Profil" />
+
+                    
                     </td>
                     <td>{titulaire.user.name}</td>
                     <td>{titulaire.user.last_name}</td>
@@ -94,21 +94,21 @@ const ListeTitulaire = () => {
                     <td>{titulaire.annee.name}</td>
                     <td>
                       <button
-                        className="btn btn-danger btn-sm"
-                        onClick={(e) => handleDelete(titulaire.id, e)}
-                      >
+                      className="btn btn-danger btn-sm"
+                      onClick={(e) => handleDelete(titulaire.id, e)}>
+                      
                         Supprimer
                       </button>
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ListeTitulaire;

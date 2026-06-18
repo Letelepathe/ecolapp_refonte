@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 const QuizMath = () => {
   const [question, setQuestion] = useState(générerQuestion());
   const [réponse, setRéponse] = useState('');

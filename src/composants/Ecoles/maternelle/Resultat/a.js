@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import "./Bulletin.css";
-
 import ImgDrapeau from "../../../static/images/drapeau.png";
 import ImgSymbole from "../../../static/images/symb.png";
 

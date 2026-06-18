@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 const StartDiscussion = () => {
   const direction = localStorage.getItem('direction');
   const [title, setTitle] = useState('');
@@ -14,13 +12,13 @@ const StartDiscussion = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true); 
+    setIsSubmitting(true);
 
     try {
-      const response = await axios.post('https://api.ecolapp.cd/api/topics/create', 
-      { users_id, title, description, direction : direction }, 
+      const response = await axios.post('https://api.ecolapp.cd/api/topics/create',
+      { users_id, title, description, direction: direction },
       { withCredentials: true });
-       
+
       if (response.data.success) {
         navigate(`/secondaire/forum/discussion/${response.data.topic_id}`);
       } else {
@@ -30,8 +28,8 @@ const StartDiscussion = () => {
     } catch (err) {
       console.error('Erreur lors de la création du sujet:', err);
       setError('Erreur lors de la création du sujet');
-    }finally{
-      setIsSubmitting(false); 
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -46,36 +44,36 @@ const StartDiscussion = () => {
               <form onSubmit={handleSubmit}>
                 <div className="form-group mb-3">
                   <label htmlFor="title">Titre</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    id="title" 
-                    value={title} 
-                    onChange={(e) => setTitle(e.target.value)} 
-                    required 
-                  />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required />
+                  
                 </div>
                 <div className="form-group mb-3">
                   <label htmlFor="description">Description</label>
-                  <textarea 
-                    className="form-control" 
-                    id="description" 
-                    value={description} 
-                    onChange={(e) => setDescription(e.target.value)} 
-                    required 
-                  />
+                  <textarea
+                    className="form-control"
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required />
+                  
                 </div>
                 <button
-                  className="btn btn-primary w-100"
+                  className="btn btn-primary w-100 u-style-2167c5af"
                   type="submit"
-                  disabled={isSubmitting}
-                  style={{
-                    backgroundColor: '#1769ff',
-                    border: 'none',
-                    padding: '10px',
-                    borderRadius: '5px',
-                  }}
-                >
+                  disabled={isSubmitting}>
+
+
+
+
+
+
+                  
                   {isSubmitting ? 'Création en cours...' : 'Créer'}
                 </button>
               </form>
@@ -83,8 +81,8 @@ const StartDiscussion = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default StartDiscussion;

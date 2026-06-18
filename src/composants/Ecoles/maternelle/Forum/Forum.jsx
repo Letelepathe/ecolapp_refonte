@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Forum.css';  
-
 const Forum = () => {
   const direction = localStorage.getItem('direction');
   const [topics, setTopics] = useState([]);
@@ -37,12 +34,12 @@ const Forum = () => {
   // Filtrer les sujets en fonction de la recherche
   useEffect(() => {
     const lowerSearchTerm = searchTerm.toLowerCase();
-    const filtered = topics.filter(topic =>
-      topic.title.toLowerCase().includes(lowerSearchTerm) ||
-      topic.description.toLowerCase().includes(lowerSearchTerm) ||
-      topic.user.name.toLowerCase().includes(lowerSearchTerm) ||
-      topic.user.last_name.toLowerCase().includes(lowerSearchTerm) ||
-      topic.user.first_name.toLowerCase().includes(lowerSearchTerm)
+    const filtered = topics.filter((topic) =>
+    topic.title.toLowerCase().includes(lowerSearchTerm) ||
+    topic.description.toLowerCase().includes(lowerSearchTerm) ||
+    topic.user.name.toLowerCase().includes(lowerSearchTerm) ||
+    topic.user.last_name.toLowerCase().includes(lowerSearchTerm) ||
+    topic.user.first_name.toLowerCase().includes(lowerSearchTerm)
     );
     setFilteredTopics(filtered);
   }, [searchTerm, topics]);
@@ -71,24 +68,24 @@ const Forum = () => {
               className="form-control"
               placeholder="Rechercher par sujet, description, nom ou prénom..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+              onChange={(e) => setSearchTerm(e.target.value)} />
+            
           </div>
           <div className="list-group">
-            {filteredTopics.length > 0 ? (
-              filteredTopics.map(topic => (
-                <Link 
-                  key={topic.id} 
-                  to={`/maternelle/forum/discussion/${topic.id}`} 
-                  className="list-group-item list-group-item-action"
-                >
+            {filteredTopics.length > 0 ?
+            filteredTopics.map((topic) =>
+            <Link
+              key={topic.id}
+              to={`/maternelle/forum/discussion/${topic.id}`}
+              className="list-group-item list-group-item-action">
+              
                   <div className="d-flex align-items-center">
-                    <img 
-                      src={`https://api.ecolapp.cd/public/imgUser/${topic.user.file}`} 
-                      alt={`${topic.user.first_name} ${topic.user.name}`} 
-                      className="rounded-circle me-3" 
-                      style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                    />
+                    <img
+                  src={`https://api.ecolapp.cd/public/imgUser/${topic.user.file}`}
+                  alt={`${topic.user.first_name} ${topic.user.name}`}
+                  className="rounded-circle me-3 u-style-d6fe9e17" />
+
+                
                     <div>
                       <h5 className="mb-1">{topic.title}</h5>
                       <p className="mb-1">{topic.description}</p>
@@ -98,15 +95,15 @@ const Forum = () => {
                     </div>
                   </div>
                 </Link>
-              ))
-            ) : (
-              <p className="text-center">Aucun sujet trouvé</p>
-            )}
+            ) :
+
+            <p className="text-center">Aucun sujet trouvé</p>
+            }
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Forum;

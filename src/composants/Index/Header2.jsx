@@ -29,7 +29,7 @@ const Header = () => {
     <header id="header" className={`d-xl-block d-md-block d-none header align-items-center fixed-top ${scrolled ? 'scrolled' : ''}`}>
       <div className="container-lg d-flex align-items-center justify-content-between">
         <a href="index" className="logo d-flex align-items-center">
-          <h1 className="sitename" style={{ fontWeight: 900, color: '#1769ff' }}>ecolapp</h1>
+          <h1 className="sitename u-style-951c0e5f">ecolapp</h1>
         </a>
         <nav id="navmenu" className={`navmenu ${mobileNavActive ? 'mobile-nav-active' : ''}`}>
           <ul>
@@ -39,27 +39,27 @@ const Header = () => {
             <li><Link to="/ecoles" onClick={closeMobileNav}>Ecoles</Link></li>
            
             {/* <li className="dropdown d-lg-block d-none">
-              <Link to="#">
-                <span>Etablissements</span> <i className="bi bi-chevron-down toggle-dropdown"></i>
-              </Link>
-              <ul>
-                <li><Link to="/maternelle" onClick={closeMobileNav}>Maternelle</Link></li>
-                <li><Link to="/primaire" onClick={closeMobileNav}>Primaire</Link></li>
-                <li><Link to="/secondaire" onClick={closeMobileNav}>Secondaire</Link></li>
-              </ul>
-            </li> */}
+               <Link to="#">
+                 <span>Etablissements</span> <i className="bi bi-chevron-down toggle-dropdown"></i>
+               </Link>
+               <ul>
+                 <li><Link to="/maternelle" onClick={closeMobileNav}>Maternelle</Link></li>
+                 <li><Link to="/primaire" onClick={closeMobileNav}>Primaire</Link></li>
+                 <li><Link to="/secondaire" onClick={closeMobileNav}>Secondaire</Link></li>
+               </ul>
+              </li> */}
             {/* <li><Link to="/contact" onClick={closeMobileNav}>Contact</Link></li> */}
           </ul>
           <span className="mobile-nav-toggle d-xl-none" onClick={handleMobileNavToggle}>
-            <i style={{color:'#1769ff'}} className={`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`}></i>
+            <i style={{ color: '#1769ff' }} className={`bi ${mobileNavActive ? 'bi-x' : 'bi-list'}`}></i>
           </span>
         </nav>
         
       </div>
       
       
-    </header>
-  );
+    </header>);
+
 };
 
 export default Header;

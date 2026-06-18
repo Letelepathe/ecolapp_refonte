@@ -57,9 +57,9 @@ const ListeEcole = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container">
           <div className="d-flex justify-content-between align-items-center mt-3 mb-3">
             <h6>Liste des Écoles</h6>
@@ -68,8 +68,8 @@ const ListeEcole = () => {
           <div className="table-responsive">
             {successMessage && <p className="text-success">{successMessage}</p>}
             {error && <p className="text-danger">{error}</p>}
-            {ecoles.length > 0 ? (
-              <>
+            {ecoles.length > 0 ?
+            <>
                 <table className="table text-start align-middle table-bordered table-hover mb-0">
                   <thead>
                     <tr className="text-dark">
@@ -82,22 +82,22 @@ const ListeEcole = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {ecoles.map((ecole, index) => (
-                      <tr key={ecole.id}>
+                    {ecoles.map((ecole, index) =>
+                  <tr key={ecole.id}>
                         <td>{index + 1}</td>
                         <td>
                           <div className="photo-container w-100">
                             <img
-                              src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`}
-                              alt={`${ecole.name}`}
-                              className=""
-                              style={{
-                                objectFit: 'cover',
-                                height:'80px',
-                                width:'80px',
-                                borderRadius:'50%',
-                              }}
-                            />
+                          src={`https://api.ecolapp.cd/public/Ecoles/${ecole.photo_profil}`}
+                          alt={`${ecole.name}`}
+                          className="u-style-c01683e6" />
+
+
+
+
+
+
+                        
                           </div>
                         </td>
                         <td>{ecole.name}</td>
@@ -109,7 +109,7 @@ const ListeEcole = () => {
                           <button onClick={() => handleDelete(ecole.id)} className='btn btn-danger mt-1 mb-1'>Supprimer</button>
                         </td>
                       </tr>
-                    ))}
+                  )}
                   </tbody>
                 </table>
                 <div className="d-flex justify-content-between align-items-center mt-3">
@@ -121,15 +121,15 @@ const ListeEcole = () => {
                     Suivant
                   </button>
                 </div>
-              </>
-            ) : (
-              <p>Aucune école trouvée.</p>
-            )}
+              </> :
+
+            <p>Aucune école trouvée.</p>
+            }
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ListeEcole;

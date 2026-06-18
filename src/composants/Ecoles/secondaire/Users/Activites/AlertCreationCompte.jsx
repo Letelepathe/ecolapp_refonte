@@ -1,16 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-
 const AlertCreationCompte = () => {
-    return (
-        <div className="alert-creation-compte bg-light">
+  return (
+    <div className="alert-creation-compte bg-light">
             <div className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                 <div className="col-lg-5 col-md-8 d-flex flex-column align-items-center justify-content-center">
                     <div className="card shadow p-4">
                         <div className="text-center py-3">
                             <div className="alert-icon mb-3 text-warning">
-                                <i className="bi bi-exclamation-triangle-fill" style={{ fontSize: '2.5rem' }}></i>
+                                <i className="bi bi-exclamation-triangle-fill u-style-8c22ea69"></i>
                             </div>
                             <h2 className="text-danger fw-bold mb-3">Alerte</h2>
                             <p className="mb-4 text-muted">
@@ -26,8 +24,8 @@ const AlertCreationCompte = () => {
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        </div>);
+
 };
 
 export default AlertCreationCompte;

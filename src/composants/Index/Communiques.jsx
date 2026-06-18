@@ -13,11 +13,11 @@ const Communiques = () => {
       <Helmet>
         <title>Ecole-App | Communiqués</title>
         <meta name="description" content="Bienvenue sur notre plateforme de gestion scolaire." />
-        <link rel="icon" href='https://rudless.com/img/logorudless.jpeg'/>
+        <link rel="icon" href='https://rudless.com/img/logorudless.jpeg' />
       </Helmet>
       <Header2 />
       <main id='main'>
-        <section id="recent-blog-posts" className="recent-blog-posts" style={{marginTop:'120px'}}>
+        <section id="recent-blog-posts" className="recent-blog-posts u-style-aae619ad">
           <div className="container">
             <header className="section-header">
               <h2>Forum</h2>
@@ -27,7 +27,7 @@ const Communiques = () => {
               <div className="col-lg-4">
                 <div className="post-box">
                   <div className="post-img">
-                    <img src={ImageEcole1} class="img-fluid" alt=""/>
+                    <img src={ImageEcole1} class="img-fluid" alt="" />
                   </div>
                   <span className="post-date">Jeudi, Septembre 15</span>
                   <h3 className="post-title">Aimer son prochain comme soi-même</h3>
@@ -38,7 +38,7 @@ const Communiques = () => {
               <div className="col-lg-4">
                 <div className="post-box">
                   <div className="post-img">
-                    <img src={ImageEcole1} class="img-fluid" alt=""/>
+                    <img src={ImageEcole1} class="img-fluid" alt="" />
                   </div>
                   <span className="post-date">Jeudi, Septembre 15</span>
                   <h3 className="post-title">Aimer son prochain comme soi-même</h3>
@@ -49,7 +49,7 @@ const Communiques = () => {
               <div className="col-lg-4">
                 <div className="post-box">
                   <div className="post-img">
-                    <img src={ImageEcole1} class="img-fluid" alt=""/>
+                    <img src={ImageEcole1} class="img-fluid" alt="" />
                   </div>
                   <span className="post-date">Jeudi, Septembre 15</span>
                   <h3 className="post-title">Aimer son prochain comme soi-même</h3>
@@ -63,8 +63,8 @@ const Communiques = () => {
         </section>
       </main>
       <Footer />
- </div>
-  );
+ </div>);
+
 };
 
 export default Communiques;

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import SidebarLeft from '../Users/Profil/SidebarLeft';
-import NavbarTop from  '../Users/Profil/NavbarTop';
+import NavbarTop from '../Users/Profil/NavbarTop';
 const SelectClasseByEnseignant = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const [options, setOptions] = useState([]);
@@ -53,48 +53,48 @@ const SelectClasseByEnseignant = () => {
     setErrors('');
     navigate(`/maternelle/select_type_cote_depot?classe_id=${selectedClasse}&option_id=${selectedOption}`);
   };
- 
+
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className='container'>
           <section className='section d-flex flex-column align-items-center justify-content-center py-4 min-vh-100'>
             <div className='col-lg-6 col-md-8 col-12'>
               <div className="card mb-3">
                 <div className="card-body">
-                  <h4 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                  <h4 className="text-center u-style-951c0e5f">
                     Gestion notes/Ajouter notes
                   </h4> 
                   <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                       <label htmlFor="classe">Classe</label>
-                      <select 
-                        id="classe" 
-                        className="form-control" 
-                        value={selectedClasse} 
-                        onChange={(e) => setSelectedClasse(e.target.value)}
-                      >
+                      <select
+                        id="classe"
+                        className="form-control"
+                        value={selectedClasse}
+                        onChange={(e) => setSelectedClasse(e.target.value)}>
+                        
                         <option value="">-- Sélectionner une classe --</option>
-                        {classes.map(classe => (
-                          <option key={classe.id} value={classe.id}>{classe.name}</option>
-                        ))}
+                        {classes.map((classe) =>
+                        <option key={classe.id} value={classe.id}>{classe.name}</option>
+                        )}
                       </select>
                       {errors && <p className="text-danger">{errors}</p>}
                     </div>
                     <div className="mb-3">
                       <label htmlFor="option">Option</label>
-                      <select 
-                        id="option" 
-                        className="form-control" 
-                        value={selectedOption} 
-                        onChange={(e) => setSelectedOption(e.target.value)}
-                      >
+                      <select
+                        id="option"
+                        className="form-control"
+                        value={selectedOption}
+                        onChange={(e) => setSelectedOption(e.target.value)}>
+                        
                         <option value="">-- Sélectionner une option --</option>
-                        {options.map(option => (
-                          <option key={option.id} value={option.id}>{option.name}</option>
-                        ))}
+                        {options.map((option) =>
+                        <option key={option.id} value={option.id}>{option.name}</option>
+                        )}
                       </select>
                       {errors && <p className="text-danger">{errors}</p>}
                     </div>
@@ -109,8 +109,8 @@ const SelectClasseByEnseignant = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectClasseByEnseignant;

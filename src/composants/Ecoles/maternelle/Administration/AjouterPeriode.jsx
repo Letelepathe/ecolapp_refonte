@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 
 const AjouterPeriode = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [formData, setFormData] = useState({
     name: '',
-    semestre_id : '',
-    ecole_id : ecole_id,
-    direction : direction,
+    semestre_id: '',
+    ecole_id: ecole_id,
+    direction: direction
   });
   const [semestres, setSemestres] = useState([]);
   const [errors, setErrors] = useState({});
@@ -37,7 +37,7 @@ const AjouterPeriode = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -55,41 +55,41 @@ const AjouterPeriode = () => {
     setErrorMessage('');
     setIsSubmitting(true);
 
-    if (!validateForm()){
-      setIsSubmitting(false); 
+    if (!validateForm()) {
+      setIsSubmitting(false);
       return;
     }
 
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/periode/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 200) {
         setSuccessMessage("Période ajoutée avec succès !");
         setErrors({});
-        setFormData({ name: '', semestre_id : '', ecole_id : ecole_id, direction : direction });
+        setFormData({ name: '', semestre_id: '', ecole_id: ecole_id, direction: direction });
       } else {
         setErrorMessage(response.data.msg);
       }
     } catch (error) {
       setErrorMessage("Erreur de connexion au serveur.");
-    }finally {
-      setIsSubmitting(false); 
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <main className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container">
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className='container d-flex align-items-center justify-content-between py-2'>
-                 <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Période</h6>
+                 <h6 className="text-center u-style-951c0e5f">Ajouter Période</h6>
                  <Link to='/maternelle/liste_periode' className='btn btn-warning text-white'>Liste Périodes</Link>
                 </div>
                 <div className="card-body">
@@ -105,8 +105,8 @@ const AjouterPeriode = () => {
                         className="form-control"
                         value={formData.periode}
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.name && <p className="text-danger">{errors.name}</p>}
                     </div>
 
@@ -114,16 +114,16 @@ const AjouterPeriode = () => {
                       <label htmlFor="semestre_id">Semestre</label>
                       <select name="semestre_id" className="form-control" value={formData.semestre_id} onChange={handleInputChange} required>
                         <option value="">Sélectionner un semestre</option>
-                        {semestres.map(semestre => (
-                          <option key={semestre.id} value={semestre.id}>{semestre.name}</option>
-                        ))}
+                        {semestres.map((semestre) =>
+                        <option key={semestre.id} value={semestre.id}>{semestre.name}</option>
+                        )}
                       </select>
                       {errors.semestre_id && <p className="text-danger">{errors.semestre_id}</p>}
                     </div>
                     
 
                     <div className="d-grid">
-                      <button className="btn btn-primary" disabled={isSubmitting} type="submit" style={{ backgroundColor: '#1769ff', border: 'none', padding: '10px', borderRadius: '5px' }}>
+                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
                        {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>
@@ -137,8 +137,8 @@ const AjouterPeriode = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterPeriode;

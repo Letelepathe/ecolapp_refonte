@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SidebarLeft from '../Users/Profil/SidebarLeft';
-import NavbarTop from  '../Users/Profil/NavbarTop';
+import NavbarTop from '../Users/Profil/NavbarTop';
 
-const SelectTypeCoteConsulte = () => { 
+const SelectTypeCoteConsulte = () => {
   const navigate = useNavigate();
-  
+
   const [selectedOption, setSelectedOption] = useState('');
   const [errors, setErrors] = useState('');
 
@@ -15,7 +15,7 @@ const SelectTypeCoteConsulte = () => {
     return Number.isInteger(integerValue) ? integerValue : defaultValue;
   }
 
-   
+
   const classeId = getValidIntegerFromQuery('classe_id', 0);
   const optionId = getValidIntegerFromQuery('option_id', 0);
   const coursId = getValidIntegerFromQuery('cours_id', 0);
@@ -36,15 +36,15 @@ const SelectTypeCoteConsulte = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container">
           <section className="section d-flex flex-column align-items-center justify-content-center py-4 min-vh-100">
             <div className="col-lg-6 col-md-8 col-12">
               <div className="card mb-3">
                 <div className="card-body">
-                  <h4 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                  <h4 className="text-center u-style-951c0e5f">
                     Sélectionnez une option 
                   </h4>
                   <form onSubmit={handleSubmit}>
@@ -54,8 +54,8 @@ const SelectTypeCoteConsulte = () => {
                         id="option"
                         className="form-control"
                         value={selectedOption}
-                        onChange={(e) => setSelectedOption(e.target.value)}
-                      >
+                        onChange={(e) => setSelectedOption(e.target.value)}>
+                        
                         <option value="">-- Sélectionner une option --</option>
                         <option value="periode">Cotes pour période</option>
                         <option value="examen">Cotes pour examen</option>
@@ -74,8 +74,8 @@ const SelectTypeCoteConsulte = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectTypeCoteConsulte;

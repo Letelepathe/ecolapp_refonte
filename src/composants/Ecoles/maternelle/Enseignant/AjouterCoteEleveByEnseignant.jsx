@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import SidebarLeft from '../Users/Profil/SidebarLeft';
-import NavbarTop from  '../Users/Profil/NavbarTop';
+import NavbarTop from '../Users/Profil/NavbarTop';
 
 const AjouterCoteEleveByEnseignant = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -44,13 +44,13 @@ const AjouterCoteEleveByEnseignant = () => {
     const fetchData = async () => {
       try {
         const [eleveRes, periodeRes, coursRes, TypeEpreuve] = await Promise.all([
-          axios.get(`https://api.ecolapp.cd/api/classes/eleves/ecole/${ecole_id}/direction/${direction}/classe/${classeId}/option/${optionId}`),
-          axios.get(`https://api.ecolapp.cd/api/periode/ecole/${ecole_id}/direction/${direction}`),
-          axios.get(`https://api.ecolapp.cd/api/coursens/enseignant/${users_id}`, {
-            withCredentials: true, 
-          }),
-          axios.get(`https://api.ecolapp.cd/api/typeTravail/ecole/${ecole_id}/direction/${direction}`),
-        ]);
+        axios.get(`https://api.ecolapp.cd/api/classes/eleves/ecole/${ecole_id}/direction/${direction}/classe/${classeId}/option/${optionId}`),
+        axios.get(`https://api.ecolapp.cd/api/periode/ecole/${ecole_id}/direction/${direction}`),
+        axios.get(`https://api.ecolapp.cd/api/coursens/enseignant/${users_id}`, {
+          withCredentials: true
+        }),
+        axios.get(`https://api.ecolapp.cd/api/typeTravail/ecole/${ecole_id}/direction/${direction}`)]
+        );
 
         if (eleveRes.data.status === 200) {
           setEleves(eleveRes.data.eleves || []);
@@ -112,15 +112,15 @@ const AjouterCoteEleveByEnseignant = () => {
       cours_id: e.target.cours.value,
       type_epreuve: e.target.type_epreuve.value,
       total_general: totalGeneral,
-      ecole_id : ecole_id,
-      direction : direction,
+      ecole_id: ecole_id,
+      direction: direction
     }));
 
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/cotes/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
- 
+
       if (response.data.status === 200) {
         setSuccessMessage('Cotes enregistrées avec succès !');
         navigate(`/maternelle/liste_cote_periode_classe_by_enseignant?classe_id=${classeId}&option_id=${optionId}&periode_id=${e.target.periode.value}&cours_id=${e.target.cours.value}`);
@@ -137,9 +137,9 @@ const AjouterCoteEleveByEnseignant = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container mt-5">
           <h2 className="text-center text-primary">Ajouter des Cotes</h2>
           <form onSubmit={handleSubmit}>
@@ -155,35 +155,35 @@ const AjouterCoteEleveByEnseignant = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {eleves.map((eleve) => (
-                      <tr key={eleve.id}>
+                    {eleves.map((eleve) =>
+                    <tr key={eleve.id}>
                         <td>{eleve.name} {eleve.first_name}</td>
                         <td>
                           <input
-                            type="number"
-                            className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
-                            min="0"
-                            onChange={(e) => handleNoteChange(eleve.id, e.target.value)}
-                          />
+                          type="number"
+                          className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
+                          min="0"
+                          onChange={(e) => handleNoteChange(eleve.id, e.target.value)} />
+                        
                         </td>
                         <td>
                           {eleveErrors[eleve.id] && <span className="text-danger">{eleveErrors[eleve.id]}</span>}
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
 
               {/* Formulaire des métadonnées */}
-              <div className="col-lg-4 order-1 order-lg-2" style={{ marginTop: '42px' }}>
+              <div className="col-lg-4 order-1 order-lg-2 u-style-9e2237d1">
                 <div className="mb-3">
                   <label htmlFor="type_epreuve">Type épreuve</label>
                   <select id="type_epreuve" name="type_epreuve" className="form-control">
                     <option value="">Sélectionnez type épreuve</option>
-                    {typeEpreuve.map((epreuve) => (
-                      <option key={epreuve.id} value={epreuve.typeTravail}>{epreuve.name}</option>
-                    ))}
+                    {typeEpreuve.map((epreuve) =>
+                    <option key={epreuve.id} value={epreuve.typeTravail}>{epreuve.name}</option>
+                    )}
                   </select>
                 </div>
                 <div className="mb-3">
@@ -194,25 +194,25 @@ const AjouterCoteEleveByEnseignant = () => {
                     id="total_general"
                     name="total_general"
                     value={totalGeneral}
-                    onChange={(e) => setTotalGeneral(e.target.value)}
-                  />
+                    onChange={(e) => setTotalGeneral(e.target.value)} />
+                  
                 </div>
                 <div className="mb-3">
                   <label htmlFor="periode">Période</label>
                   <select id="periode" name="periode" className="form-control">
                     <option value="">Sélectionnez une période</option>
-                    {periodes.map((periode) => (
-                      <option key={periode.id} value={periode.id}>{periode.name}</option>
-                    ))}
+                    {periodes.map((periode) =>
+                    <option key={periode.id} value={periode.id}>{periode.name}</option>
+                    )}
                   </select>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="cours">Cours</label>
                   <select id="cours" name="cours" className="form-control">
                     <option value="">Sélectionnez un cours</option>
-                    {cours.map((c) => (
-                      <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
-                    ))}
+                    {cours.map((c) =>
+                    <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
+                    )}
                   </select>
                 </div>
               </div>
@@ -230,8 +230,8 @@ const AjouterCoteEleveByEnseignant = () => {
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterCoteEleveByEnseignant;

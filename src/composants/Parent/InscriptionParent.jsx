@@ -12,7 +12,7 @@ const InscriptionParent = () => {
     adresse: '',
     telephone: '',
     profession: '',
-    photo: null,
+    photo: null
   });
 
   const [errors, setErrors] = useState({});
@@ -22,16 +22,16 @@ const InscriptionParent = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
   const handleFileChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      photo: e.target.files[0],
+      photo: e.target.files[0]
     }));
   };
 
@@ -62,13 +62,13 @@ const InscriptionParent = () => {
     }
 
     const form = new FormData();
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       form.append(key, formData[key]);
     });
 
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/parents/create', form, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       if (response.data.status === 200) {
@@ -91,19 +91,19 @@ const InscriptionParent = () => {
       <div className="bg-white">
         <div className="container">
           <section className="row d-flex flex-column align-items-center justify-content-center">
-            <div className="col-lg-8 col-12 card my-5" style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+            <div className="col-lg-8 col-12 card my-5 u-style-4637a15a">
               <div className="card-body">
                 <div className="pt-4 pb-2">
-                  <h5 className="text-center" style={{ fontWeight: 900, color: '#1769ff', fontSize: '30px' }}>ecolapp</h5>
+                  <h5 className="text-center u-style-53b8215d">ecolapp</h5>
                   <p className="text-center small">Inscription du parent</p>
                 </div>
 
-                {errors.form && (
-                  <div className="alert alert-danger text-center">{errors.form}</div>
-                )}
-                {successMessage && (
-                  <div className="alert alert-success text-center">{successMessage}</div>
-                )}
+                {errors.form &&
+                <div className="alert alert-danger text-center">{errors.form}</div>
+                }
+                {successMessage &&
+                <div className="alert alert-success text-center">{successMessage}</div>
+                }
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                   <div className="row g-3">
 
@@ -114,8 +114,8 @@ const InscriptionParent = () => {
                         className="form-control"
                         placeholder="Nom"
                         value={formData.nom}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.nom && <p className="text-danger">{errors.nom}</p>}
                     </div>
 
@@ -126,8 +126,8 @@ const InscriptionParent = () => {
                         className="form-control"
                         placeholder="Postnom"
                         value={formData.postnom}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.postnom && <p className="text-danger">{errors.postnom}</p>}
                     </div>
 
@@ -138,8 +138,8 @@ const InscriptionParent = () => {
                         className="form-control"
                         placeholder="Prénom"
                         value={formData.prenom}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.prenom && <p className="text-danger">{errors.prenom}</p>}
                     </div>
 
@@ -148,8 +148,8 @@ const InscriptionParent = () => {
                         name="sexe"
                         className="form-control"
                         value={formData.sexe}
-                        onChange={handleChange}
-                      >
+                        onChange={handleChange}>
+                        
                         <option value="Homme">Homme</option>
                         <option value="Femme">Femme</option>
                       </select>
@@ -162,8 +162,8 @@ const InscriptionParent = () => {
                         className="form-control"
                         placeholder="Profession"
                         value={formData.profession}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.profession && <p className="text-danger">{errors.profession}</p>}
                     </div>
 
@@ -174,8 +174,8 @@ const InscriptionParent = () => {
                         className="form-control"
                         placeholder="Adresse"
                         value={formData.adresse}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.adresse && <p className="text-danger">{errors.adresse}</p>}
                     </div>
 
@@ -186,8 +186,8 @@ const InscriptionParent = () => {
                         className="form-control"
                         placeholder="Téléphone"
                         value={formData.telephone}
-                        onChange={handleChange}
-                      />
+                        onChange={handleChange} />
+                      
                       {errors.telephone && <p className="text-danger">{errors.telephone}</p>}
                     </div>
 
@@ -197,8 +197,8 @@ const InscriptionParent = () => {
                         type="file"
                         name="photo"
                         className="form-control"
-                        onChange={handleFileChange}
-                      />
+                        onChange={handleFileChange} />
+                      
                     </div>
 
                     <div className="col-12 mt-3">
@@ -206,8 +206,8 @@ const InscriptionParent = () => {
                         type="submit"
                         className={`btn btn-primary w-100 ${isLoading ? 'loading' : ''}`}
                         disabled={isLoading}
-                        style={{ backgroundColor: '#1769ff', borderColor: '#1769ff' }}
-                      >
+                        style={{ backgroundColor: '#1769ff', borderColor: '#1769ff' }}>
+                        
                         {isLoading ? 'Inscription en cours...' : 'S\'inscrire'}
                       </button>
                     </div>
@@ -221,8 +221,8 @@ const InscriptionParent = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default InscriptionParent;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import SidebarLeft from '../Users/Profil/SidebarLeft';
-import NavbarTop from  '../Users/Profil/NavbarTop';
+import NavbarTop from '../Users/Profil/NavbarTop';
 
 const AjouterCoteExamen = () => {
   const ecole_id = localStorage.getItem('ecole_id');
@@ -44,13 +44,13 @@ const AjouterCoteExamen = () => {
     const fetchData = async () => {
       try {
         const [eleveRes, semestreRes, coursRes] = await Promise.all([
-          axios.get(`https://api.ecolapp.cd/api/classes/eleves/ecole/${ecole_id}/direction/${direction}/classe/${classeId}/option/${optionId}`),
-          axios.get(`https://api.ecolapp.cd/api/semestre/ecole/${ecole_id}/direction/${direction}`),
-          axios.get(`https://api.ecolapp.cd/api/coursens/enseignant/${users_id}`, {
-            withCredentials: true, 
-          }),
+        axios.get(`https://api.ecolapp.cd/api/classes/eleves/ecole/${ecole_id}/direction/${direction}/classe/${classeId}/option/${optionId}`),
+        axios.get(`https://api.ecolapp.cd/api/semestre/ecole/${ecole_id}/direction/${direction}`),
+        axios.get(`https://api.ecolapp.cd/api/coursens/enseignant/${users_id}`, {
+          withCredentials: true
+        })]
 
-        ]);
+        );
 
         if (eleveRes.data.status === 200) {
           setEleves(eleveRes.data.eleves || []);
@@ -111,15 +111,15 @@ const AjouterCoteExamen = () => {
       semestre_id: e.target.semestre.value,
       note_max: totalGeneral,
       note_obtenue: notes[eleveId],
-      ecole_id : ecole_id,
-      direction : direction,
+      ecole_id: ecole_id,
+      direction: direction
     }));
 
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/examen/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
- 
+
       if (response.data.status === 200) {
         setSuccessMessage(response.data.success_msg);
         navigate(`/maternelle/liste_cote_examen_classe_by_enseignant?classe_id=${classeId}&option_id=${optionId}&semestre_id=${e.target.semestre.value}&cours_id=${e.target.cours.value}`);
@@ -136,9 +136,9 @@ const AjouterCoteExamen = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className="content">
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container mt-5">
           <h2 className="text-center text-primary">Ajouter des Cotes</h2>
           <form onSubmit={handleSubmit}>
@@ -154,28 +154,28 @@ const AjouterCoteExamen = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {eleves.map((eleve) => (
-                      <tr key={eleve.id}>
+                    {eleves.map((eleve) =>
+                    <tr key={eleve.id}>
                         <td>{eleve.name} {eleve.first_name}</td>
                         <td>
                           <input
-                            type="number"
-                            className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
-                            min="0"
-                            onChange={(e) => handleNoteChange(eleve.id, e.target.value)}
-                          />
+                          type="number"
+                          className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
+                          min="0"
+                          onChange={(e) => handleNoteChange(eleve.id, e.target.value)} />
+                        
                         </td>
                         <td>
                           {eleveErrors[eleve.id] && <span className="text-danger">{eleveErrors[eleve.id]}</span>}
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
 
               {/* Formulaire des métadonnées */}
-              <div className="col-lg-4 order-1 order-lg-2" style={{ marginTop: '42px' }}>
+              <div className="col-lg-4 order-1 order-lg-2 u-style-9e2237d1">
                 
                 <div className="mb-3">
                   <label htmlFor="total_general">Total général</label>
@@ -185,25 +185,25 @@ const AjouterCoteExamen = () => {
                     id="total_general"
                     name="total_general"
                     value={totalGeneral}
-                    onChange={(e) => setTotalGeneral(e.target.value)}
-                  />
+                    onChange={(e) => setTotalGeneral(e.target.value)} />
+                  
                 </div>
                 <div className="mb-3">
                   <label htmlFor="semestre">Semestre</label>
                   <select id="semestre" name="semestre" className="form-control">
                     <option value="">Sélectionnez un semestre</option>
-                    {semestres.map((semestre) => (
-                      <option key={semestre.id} value={semestre.id}>{semestre.name}</option>
-                    ))}
+                    {semestres.map((semestre) =>
+                    <option key={semestre.id} value={semestre.id}>{semestre.name}</option>
+                    )}
                   </select>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="cours">Cours</label>
                   <select id="cours" name="cours" className="form-control">
                     <option value="">Sélectionnez un cours</option>
-                    {cours.map((c) => (
-                      <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
-                    ))}
+                    {cours.map((c) =>
+                    <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
+                    )}
                   </select>
                 </div>
               </div>
@@ -221,8 +221,8 @@ const AjouterCoteExamen = () => {
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterCoteExamen;

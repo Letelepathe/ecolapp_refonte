@@ -8,13 +8,13 @@ const AjouterEcole = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
-    ville : '',
-    commune : '',
+    ville: '',
+    commune: '',
     adresse: '',
     telephone: '',
     email: '',
     province_educationnelle_id: '',
-    photo_profil: null,
+    photo_profil: null
   });
 
   const [provinces, setProvinces] = useState([]);
@@ -80,17 +80,17 @@ const AjouterEcole = () => {
     setErrorMessage('');
     setErrors({});
     setIsSubmitting(true);
-  
+
     if (!validateForm()) {
       setIsSubmitting(false);
       return;
     }
-  
+
     // Création d'un FormData pour l'envoi du fichier
     const data = new FormData();
-    data.append('name', formData.name); 
-    data.append('ville', formData.ville); 
-    data.append('commune', formData.commune); 
+    data.append('name', formData.name);
+    data.append('ville', formData.ville);
+    data.append('commune', formData.commune);
     data.append('adresse', formData.adresse);
     data.append('telephone', formData.telephone);
     data.append('email', formData.email);
@@ -98,15 +98,15 @@ const AjouterEcole = () => {
     if (formData.photo_profil) {
       data.append('photo_profil', formData.photo_profil);
     }
-  
+
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/ecole/create', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-  
+
       if (response.data.status === 200) {
         setSuccessMessage("École ajoutée avec succès !");
-        setFormData({ name: '', ville : '', commune : '', adresse: '', telephone: '', email: '', province_educationnelle_id: '', photo_profil: null });
+        setFormData({ name: '', ville: '', commune: '', adresse: '', telephone: '', email: '', province_educationnelle_id: '', photo_profil: null });
         setPreviewImage(null);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
@@ -119,7 +119,7 @@ const AjouterEcole = () => {
       if (error.response) {
         // Erreur côté serveur avec réponse
         console.error("Erreur serveur :", error.response.data);
-  
+
         if (error.response.status === 422) {
           // Erreurs de validation
           setErrors(error.response.data.errorsList || {});
@@ -127,7 +127,7 @@ const AjouterEcole = () => {
         } else {
           // Erreur générale
           setErrorMessage(`Erreur du serveur : ${error.response.data.error_msg || "Une erreur est survenue."}`);
-  
+
           // Afficher les détails techniques en console
           console.error("Détails complets :", error.response.data);
         }
@@ -144,7 +144,7 @@ const AjouterEcole = () => {
       setIsSubmitting(false);
     }
   };
-  
+
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
@@ -156,7 +156,7 @@ const AjouterEcole = () => {
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className='container d-flex align-items-center justify-content-between py-2'>
-                  <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter École</h6>
+                  <h6 className="text-center u-style-951c0e5f">Ajouter École</h6>
                   <Link to='/admin-general/liste_ecole' className='btn btn-warning text-white'>Liste Écoles</Link>
                 </div>
                 <div className="card-body">
@@ -204,9 +204,9 @@ const AjouterEcole = () => {
                       <label>Province Éducationnelle</label>
                       <select name="province_educationnelle_id" className="form-control" value={formData.province_educationnelle_id} onChange={handleInputChange} required>
                         <option value="">Sélectionner une province</option>
-                        {provinces.map(province => (
-                          <option key={province.id} value={province.id}>{province.name}</option>
-                        ))}
+                        {provinces.map((province) =>
+                        <option key={province.id} value={province.id}>{province.name}</option>
+                        )}
                       </select>
                       {errors.province_educationnelle_id && <p className="text-danger">{errors.province_educationnelle_id}</p>}
                     </div>
@@ -214,7 +214,7 @@ const AjouterEcole = () => {
                     <div className="mb-3">
                       <label>Photo de l'école</label>
                       <input type="file" className="form-control" accept="image/*" onChange={handleFileChange} ref={fileInputRef} />
-                      {previewImage && <img src={previewImage} alt="Aperçu" className="mt-2 img-thumbnail" style={{ width: "100px", height: "100px", objectFit: 'cover' }} />}
+                      {previewImage && <img src={previewImage} alt="Aperçu" className="mt-2 img-thumbnail u-style-cec3d5ef" />}
                     </div>
 
                     <button className="btn btn-primary w-100" disabled={isSubmitting}>{isSubmitting ? 'Enregistrement...' : 'Enregistrer'}</button>
@@ -228,8 +228,8 @@ const AjouterEcole = () => {
           </section>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterEcole;

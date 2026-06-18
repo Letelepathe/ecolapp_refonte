@@ -1,22 +1,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
-import 'aos/dist/aos.css';
-
- 
 import { Link } from 'react-router-dom';
 import NavbarBottom from "./NavbarBottom";
-
-import '../../static/styles/assets/vendor/bootstrap/css/bootstrap.min.css'; 
-import '../../static/styles/assets/vendor/bootstrap-icons/bootstrap-icons.css'; 
-import '../../static/styles/assets/vendor/aos/aos.css'; 
-import '../../static/styles/assets/css/style.css'; 
-import '../../static/styles/assets/css/main.css'; 
-import '../../static/styles/css/style_nav.css'; 
-import '../../static/styles/css/style_surho.css'; 
-
-
-import "./Index.css"; 
-
 
 import ImageEcole from '../../static/images/image_ecole.webp';
 

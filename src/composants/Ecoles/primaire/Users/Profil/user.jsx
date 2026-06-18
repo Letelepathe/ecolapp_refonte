@@ -10,8 +10,8 @@ const ProfilUser = () => {
       try {
         const response = await axios.get('https://api.ecolapp.cd/api/user', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`, 
-          },
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+          }
         });
 
         if (response.status === 200) {
@@ -41,19 +41,19 @@ const ProfilUser = () => {
         <div className="card-body">
           <h3 className="card-title text-center">Profil Utilisateur</h3>
           <div className="text-center">
-            {user.file ? (
-              <img
-                src={`https://api.ecolapp.cd/imgUser/${user.file}`}
-                alt=""
-                className="rounded-circle"
-                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-              />
-            ) : (
-              <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
-                   style={{ width: '150px', height: '150px', color: '#fff' }}>
+            {user.file ?
+            <img
+              src={`https://api.ecolapp.cd/imgUser/${user.file}`}
+              alt=""
+              className="rounded-circle u-style-7ec5f53c" /> :
+
+
+
+            <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center u-style-417a891e">
+              
                 Pas d'image
               </div>
-            )}
+            }
           </div>
           <div className="mt-4">
             <p><strong>Nom:</strong> {user.name}</p>
@@ -66,8 +66,8 @@ const ProfilUser = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProfilUser;

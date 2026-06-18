@@ -20,7 +20,7 @@ const ListeMembreEffectif = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center" style={{ color: '#1769ff' }}>Liste des Membres Effectifs</h2>
+      <h2 className="text-center u-style-43ef163a">Liste des Membres Effectifs</h2>
       {error && <p className="text-danger text-center">{error}</p>}
       <table className="table table-striped mt-4">
         <thead>
@@ -33,19 +33,19 @@ const ListeMembreEffectif = () => {
           </tr>
         </thead>
         <tbody>
-          {membres.map((membre) => (
-            <tr key={membre.id}>
+          {membres.map((membre) =>
+          <tr key={membre.id}>
               <td>{membre.nom}</td>
               <td>{membre.postnom}</td>
               <td>{membre.prenom}</td>
               <td>{membre.sexe}</td>
               <td>{membre.fonction}</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ListeMembreEffectif;

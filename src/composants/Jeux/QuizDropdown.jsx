@@ -2,21 +2,21 @@ import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const QuizDropdown = () => {
-    return (
-        <Dropdown className="nav-item dropdown mt-2 mb-2">
-            <Dropdown.Toggle className="nav-link"
-                style={{
-                    fontSize: '15px',
-                    fontWeight: 900,
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    textDecoration: 'none',
-                    cursor: 'pointer',
-                    padding: 0,
-                    display: 'inline-block',
-                    color: '#fff'
-                }}
-            >
+  return (
+    <Dropdown className="nav-item dropdown mt-2 mb-2">
+            <Dropdown.Toggle className="nav-link u-style-2e0471a5">
+
+
+
+
+
+
+
+
+
+
+
+        
                 <i className="bi bi-controller text-warning me-2"></i>Jeux Quiz
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -40,8 +40,8 @@ const QuizDropdown = () => {
                 <Dropdown.Item><Link to="/jeux/quiz_emploi_articles" className="dropdown-item">📜 Emploi des Articles</Link></Dropdown.Item>
                 <Dropdown.Item><Link to="/jeux/quiz_accord_participe_passe" className="dropdown-item">✅ Accord Participe Passé</Link></Dropdown.Item>
             </Dropdown.Menu>
-        </Dropdown>
-    );
+        </Dropdown>);
+
 };
 
 export default QuizDropdown;

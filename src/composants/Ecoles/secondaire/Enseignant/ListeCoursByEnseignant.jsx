@@ -35,14 +35,14 @@ const CoursFichiers = ({ userId }) => {
 
     if (['mp4', 'avi', 'mkv', 'mov', 'wmv', 'flv'].includes(fileExtension)) {
       return (
-        <video src={`https://api.ecolapp.cd/public/Cours/${file}`} controls style={{ height: '200px', width: '200px', objectFit: 'cover' }}></video>
-      );
+        <video src={`https://api.ecolapp.cd/public/Cours/${file}`} controls className="u-style-5e4c2cf9"></video>);
+
     }
 
     if (['mp3'].includes(fileExtension)) {
       return (
-        <audio src={`https://api.ecolapp.cd/public/Cours/${file}`} controls style={{ height: '200px', width: '200px', objectFit: 'cover' }}></audio>
-      );
+        <audio src={`https://api.ecolapp.cd/public/Cours/${file}`} controls className="u-style-5e4c2cf9"></audio>);
+
     }
 
     if (['docx', 'doc', 'pdf'].includes(fileExtension)) {
@@ -50,16 +50,16 @@ const CoursFichiers = ({ userId }) => {
         <a
           href={`https://api.ecolapp.cd/public/Cours/${file}`}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
+          
           Voir PDF
-        </a>
-      );
+        </a>);
+
     }
 
     return (
-      <div>Aucun fichier trouvé</div>
-    );
+      <div>Aucun fichier trouvé</div>);
+
   };
 
   const handleDelete = async (id) => {
@@ -97,9 +97,9 @@ const CoursFichiers = ({ userId }) => {
         <Link className="btn btn-primary" to='/secondaire/ajouter_cours_by_enseignant'>Ajouter cours</Link>
         <h2 className="text-center mb-4 text-primary">Liste des Cours</h2>
       </div>
-      {successMessage && (
-        <p>{successMessage}</p>
-      )}
+      {successMessage &&
+      <p>{successMessage}</p>
+      }
       {error && <p className="text-danger text-center">{error}</p>}
       <div className="table-responsive">
         <table className="table table-bordered table-hover">
@@ -118,9 +118,9 @@ const CoursFichiers = ({ userId }) => {
             </tr>
           </thead>
           <tbody>
-            {coursFichier.length > 0 ? (
-              coursFichier.map((cf, index) => (
-                <tr key={cf.id}>
+            {coursFichier.length > 0 ?
+            coursFichier.map((cf, index) =>
+            <tr key={cf.id}>
                   <td>{index + 1}</td>
                   <td>{renderFileCours(cf.fichier)}</td>
                   <td>{cf.titre}</td>
@@ -132,20 +132,20 @@ const CoursFichiers = ({ userId }) => {
                   <td>{cf.annee.name}</td>
                   <td>
                     <a
-                      className="btn btn-primary mt-2 mb-2 w-100"
-                      href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}
-                    >
+                  className="btn btn-primary mt-2 mb-2 w-100"
+                  href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}>
+                  
                       <i className="bi bi-download"></i> Télécharger
                     </a>
                     <Link onClick={() => handleDelete(cf.id)} className='btn btn-danger mt-2 mb-2 w-100'>Supprimer</Link>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
+            ) :
+
+            <tr>
                 <td colSpan="6" className="text-center">Aucun travail trouvé</td>
               </tr>
-            )}
+            }
           </tbody>
         </table>
         <div className="d-flex justify-content-between align-items-center mt-3">
@@ -158,8 +158,8 @@ const CoursFichiers = ({ userId }) => {
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 const ListeCoursByEnseignant = () => {
@@ -173,8 +173,8 @@ const ListeCoursByEnseignant = () => {
           <CoursFichiers userId={userId} />
         </div>
       </div>
-    </div>
-  );
-}
+    </div>);
+
+};
 
 export default ListeCoursByEnseignant;

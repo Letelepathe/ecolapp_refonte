@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 
@@ -11,7 +11,7 @@ const AjouterEnseignant = () => {
     nom: '',
     postnom: '',
     prenom: '',
-    sexe: '',
+    sexe: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -23,7 +23,7 @@ const AjouterEnseignant = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -47,7 +47,7 @@ const AjouterEnseignant = () => {
 
     try {
       const response = await axios.post('http://localhost/ecole-app/apis/AjouterEnseignant.php', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.success) {
@@ -57,12 +57,12 @@ const AjouterEnseignant = () => {
           nom: '',
           postnom: '',
           prenom: '',
-          sexe: '',
+          sexe: ''
         });
         // navigate('/secondaire/liste_enseignant'); 
       } else {
         setErrors({ form: response.data.message });
-        console.log(response.data)
+        console.log(response.data);
       }
     } catch (error) {
       setErrors({ form: "Erreur de connexion au serveur" });
@@ -71,9 +71,9 @@ const AjouterEnseignant = () => {
 
   return (
     <div className="container-fluid position-relative bg-white d-flex p-0">
-      <SidebarLeft/>
+      <SidebarLeft />
       <div className='content'>
-        <NavbarTop/>
+        <NavbarTop />
         <div className="container">
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
@@ -81,7 +81,7 @@ const AjouterEnseignant = () => {
               <div className="card mb-3">
                 
                 <div className="card-body">
-                  <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Enseignant</h3>
+                  <h3 className="text-center u-style-951c0e5f">Ajouter Enseignant</h3>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
 
                   <form className="needs-validation" onSubmit={handleSubmit} noValidate>
@@ -112,7 +112,7 @@ const AjouterEnseignant = () => {
                    
 
                     <div className="d-grid">
-                      <button className="btn btn-primary" type="submit" style={{ backgroundColor: '#1769ff', border: 'none', padding: '10px', borderRadius: '5px' }}>Ajouter enseignant</button>
+                      <button className="btn btn-primary u-style-2167c5af" type="submit">Ajouter enseignant</button>
                     </div>
 
                     {successMessage && <p className="text-success text-center mt-2">{successMessage}</p>}
@@ -124,8 +124,8 @@ const AjouterEnseignant = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterEnseignant;

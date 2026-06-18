@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const SelectTypeCoteDepot = () => {
-   const navigate = useNavigate();
-   const location = useLocation();
-    const [selectedOption, setSelectedOption] = useState('');
-    const [errors, setErrors] = useState('');
-  
-    function getValidIntegerFromQuery(param, defaultValue = 0) {
-      const value = new URLSearchParams(location.search).get(param);
-      const integerValue = parseInt(value, 10);
-      return Number.isInteger(integerValue) ? integerValue : defaultValue;
-    }
-  
-    const classeId = getValidIntegerFromQuery('classe_id', 0);
-    const optionId = getValidIntegerFromQuery('option_id', 0);
-  
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedOption, setSelectedOption] = useState('');
+  const [errors, setErrors] = useState('');
+
+  function getValidIntegerFromQuery(param, defaultValue = 0) {
+    const value = new URLSearchParams(location.search).get(param);
+    const integerValue = parseInt(value, 10);
+    return Number.isInteger(integerValue) ? integerValue : defaultValue;
+  }
+
+  const classeId = getValidIntegerFromQuery('classe_id', 0);
+  const optionId = getValidIntegerFromQuery('option_id', 0);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedOption) {
@@ -37,7 +37,7 @@ const SelectTypeCoteDepot = () => {
           <div className="col-lg-6 col-md-8 col-12">
             <div className="card mb-3">
               <div className="card-body">
-                <h4 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>
+                <h4 className="text-center u-style-951c0e5f">
                   Sélectionnez une option 
                 </h4>
                 <form onSubmit={handleSubmit}>
@@ -47,8 +47,8 @@ const SelectTypeCoteDepot = () => {
                       id="option"
                       className="form-control"
                       value={selectedOption}
-                      onChange={(e) => setSelectedOption(e.target.value)}
-                    >
+                      onChange={(e) => setSelectedOption(e.target.value)}>
+                      
                       <option value="">-- Sélectionner une option --</option>
                       <option value="periode">Cotes pour période</option>
                       <option value="examen">Cotes pour examen</option>
@@ -66,8 +66,8 @@ const SelectTypeCoteDepot = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SelectTypeCoteDepot;

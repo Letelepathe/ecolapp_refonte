@@ -17,8 +17,8 @@ const AjouterTravailByEnseignant = () => {
     id_classe: '',
     id_option: '',
     file: null,
-    ecole_id : ecole_id,
-    direction: direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
   const [cours, setCours] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -27,15 +27,15 @@ const AjouterTravailByEnseignant = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const userId = localStorage.getItem("userId"); // Récupérer l'userId depuis le localStorage
   const [isSubmitting, setIsSubmitting] = useState(false);
- 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [coursRes, classes, options] = await Promise.all([
-          axios.get(`https://api.ecolapp.cd/api/coursens/enseignant/${userId}`),
-          axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`),
-          axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`),
-        ]);
+        axios.get(`https://api.ecolapp.cd/api/coursens/enseignant/${userId}`),
+        axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`),
+        axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`)]
+        );
         setCours(coursRes.data.cours);
         setClasses(classes.data.classesAll);
         setOptions(options.data.optionAll);
@@ -102,8 +102,8 @@ const AjouterTravailByEnseignant = () => {
           id_classe: '',
           id_option: '',
           file: null,
-          ecole_id : ecole_id,
-          direction: direction,
+          ecole_id: ecole_id,
+          direction: direction
         });
 
         if (fileInputRef.current) {
@@ -133,7 +133,7 @@ const AjouterTravailByEnseignant = () => {
               <div className="card-body">
                 <div className="d-flex align-items-center justify-content-between">
                   <Link className="btn btn-primary" to='/primaire/liste_cours_by_enseignant'>Mes cours</Link>
-                  <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter fichier cours</h6>
+                  <h6 className="text-center u-style-951c0e5f">Ajouter fichier cours</h6>
                 </div>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                   <div className="mb-3">
@@ -151,9 +151,9 @@ const AjouterTravailByEnseignant = () => {
                     <label htmlFor="id_cours">Cours</label>
                     <select id="id_cours" name="id_cours" className="form-control" value={formData.id_cours} onChange={handleInputChange}>
                       <option value="">Sélectionnez un cours</option>
-                      {cours.map((c) => (
-                        <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
-                      ))}
+                      {cours.map((c) =>
+                      <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
+                      )}
                     </select>
                     {errors.id_cours && <p className="text-danger">{errors.id_cours}</p>}
                   </div>
@@ -162,7 +162,7 @@ const AjouterTravailByEnseignant = () => {
                     <label htmlFor="id_classe" className="form-label">Classe</label>
                     <select name="id_classe" className="form-control" value={formData.id_classe} onChange={handleInputChange}>
                       <option value="">Sélectionner une classe</option>
-                      {classes.map(classe => <option key={classe.id} value={classe.id}>{classe.name}</option>)}
+                      {classes.map((classe) => <option key={classe.id} value={classe.id}>{classe.name}</option>)}
                     </select>
                     {errors.id_classe && <p className="text-danger">{errors.id_classe}</p>}
                   </div>
@@ -170,7 +170,7 @@ const AjouterTravailByEnseignant = () => {
                     <label htmlFor="id_option" className="form-label">Option</label>
                     <select name="id_option" className="form-control" value={formData.id_option} onChange={handleInputChange}>
                       <option value="">Sélectionner une option</option>
-                      {options.map(option => <option key={option.id} value={option.id}>{option.name}</option>)}
+                      {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
                     </select>
                     {errors.id_option && <p className="text-danger">{errors.id_option}</p>}
                   </div>
@@ -183,22 +183,22 @@ const AjouterTravailByEnseignant = () => {
                       className="form-control"
                       onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
                       ref={fileInputRef}
-                      required
-                    />
+                      required />
+                    
                     {errors.file && <p className="text-danger">{errors.file}</p>}
                   </div>
 
                   <button
-                    className="btn btn-primary w-100"
+                    className="btn btn-primary w-100 u-style-2167c5af"
                     type="submit"
-                    disabled={isSubmitting}
-                    style={{
-                      backgroundColor: '#1769ff',
-                      border: 'none',
-                      padding: '10px',
-                      borderRadius: '5px',
-                    }}
-                  >
+                    disabled={isSubmitting}>
+
+
+
+
+
+
+                    
                     {isSubmitting ? 'Enregistrement en cours...' : 'Ajouter'}
                   </button>
                   {successMessage && <p className="text-success text-center mt-3">{successMessage}</p>}
@@ -209,8 +209,8 @@ const AjouterTravailByEnseignant = () => {
           </div>
         </section>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterTravailByEnseignant;

@@ -2,93 +2,91 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import "./Bulletin.css";
-
 import ImgDrapeau from "../../../static/images/drapeau.png";
 import ImgSymbole from "../../../static/images/symb.png";
 
 function getValidIntegerFromQuery(param, defaultValue = 0) {
-    const value = new URLSearchParams(window.location.search).get(param);
-    const integerValue = parseInt(value, 10);
-    return Number.isInteger(integerValue) ? integerValue : defaultValue;
+  const value = new URLSearchParams(window.location.search).get(param);
+  const integerValue = parseInt(value, 10);
+  return Number.isInteger(integerValue) ? integerValue : defaultValue;
 }
 
 const AfficherBulletinSemestriel = () => {
-    const [eleveInfo, setEleveInfo] = useState(null);
-    const [periodes, setPeriodes] = useState([]);
-    const [coursGroupes, setCoursGroupes] = useState({});
-    const [totauxPeriode, setTotauxPeriode] = useState({});
-    const [totauxExam, setTotauxExam] = useState({});
-    const [totalGeneral, setTotalGeneral] = useState({});
-    const [pourcentage, setPourcentage] = useState(0);
-    const [errors, setErrors] = useState('');
-    const [authenticated, setAuthenticated] = useState(false);
+  const [eleveInfo, setEleveInfo] = useState(null);
+  const [periodes, setPeriodes] = useState([]);
+  const [coursGroupes, setCoursGroupes] = useState({});
+  const [totauxPeriode, setTotauxPeriode] = useState({});
+  const [totauxExam, setTotauxExam] = useState({});
+  const [totalGeneral, setTotalGeneral] = useState({});
+  const [pourcentage, setPourcentage] = useState(0);
+  const [errors, setErrors] = useState('');
+  const [authenticated, setAuthenticated] = useState(false);
 
-    const eleve_id = getValidIntegerFromQuery('eleve_id');
-    const semestre_id = getValidIntegerFromQuery('semestre_id');
-    const annee_id = getValidIntegerFromQuery('annee_id');
+  const eleve_id = getValidIntegerFromQuery('eleve_id');
+  const semestre_id = getValidIntegerFromQuery('semestre_id');
+  const annee_id = getValidIntegerFromQuery('annee_id');
 
-    useEffect(() => {
-        const fetchResultats = async () => {
-            try {
-                const response = await axios.get(
-                    `http://localhost:8000/api/cotegenerale/eleve/resultat/semestre/${semestre_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`
-                );
+  useEffect(() => {
+    const fetchResultats = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/cotegenerale/eleve/resultat/semestre/${semestre_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`
+        );
 
-                if (response.data.status === 200) {
-                    setEleveInfo(response.data.eleve);
-                    setPeriodes(response.data.periodes);
-                    setCoursGroupes(response.data.cours_groupes);
-                    setTotauxPeriode(response.data.totaux_periode);
-                    setTotauxExam(response.data.totaux_exam);
-                    setTotalGeneral({
-                        max: response.data.total_obtenu,
-                        obtenu: response.data.total_general,
-                        exam_obtenu: response.data.total_exam_obtenu,
-                        exam_max: response.data.total_exam_max
-                    });
-                    setPourcentage(response.data.pourcentage);
-                    setErrors('');
-                } else {
-                    setErrors("Les données récupérées ne sont pas valides.");
-                }
-            } catch (error) {
-                setErrors("Erreur lors de la récupération des résultats.");
-            }
-        };
-
-        const checkSession = () => {
-            const userId = localStorage.getItem('userId');
-            if (userId) {
-                setAuthenticated(true);
-            } else {
-                setAuthenticated(false);
-            }
-        };
-
-        checkSession();
-
-        if (eleve_id && semestre_id) {
-            fetchResultats();
+        if (response.data.status === 200) {
+          setEleveInfo(response.data.eleve);
+          setPeriodes(response.data.periodes);
+          setCoursGroupes(response.data.cours_groupes);
+          setTotauxPeriode(response.data.totaux_periode);
+          setTotauxExam(response.data.totaux_exam);
+          setTotalGeneral({
+            max: response.data.total_obtenu,
+            obtenu: response.data.total_general,
+            exam_obtenu: response.data.total_exam_obtenu,
+            exam_max: response.data.total_exam_max
+          });
+          setPourcentage(response.data.pourcentage);
+          setErrors('');
         } else {
-            setErrors("Paramètres manquants.");
+          setErrors("Les données récupérées ne sont pas valides.");
         }
-    }, [eleve_id, semestre_id, annee_id]);
-
-    if (errors) {
-        return <div className="text-danger text-center">{errors}</div>;
-    }
-
-    if (!eleveInfo || !periodes || Object.keys(coursGroupes).length === 0) {
-        return <div className="spinner"></div>;
-    }
-
-    const printBulletin = () => {
-        window.print();
+      } catch (error) {
+        setErrors("Erreur lors de la récupération des résultats.");
+      }
     };
 
-    return (
-        <div>
+    const checkSession = () => {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        setAuthenticated(true);
+      } else {
+        setAuthenticated(false);
+      }
+    };
+
+    checkSession();
+
+    if (eleve_id && semestre_id) {
+      fetchResultats();
+    } else {
+      setErrors("Paramètres manquants.");
+    }
+  }, [eleve_id, semestre_id, annee_id]);
+
+  if (errors) {
+    return <div className="text-danger text-center">{errors}</div>;
+  }
+
+  if (!eleveInfo || !periodes || Object.keys(coursGroupes).length === 0) {
+    return <div className="spinner"></div>;
+  }
+
+  const printBulletin = () => {
+    window.print();
+  };
+
+  return (
+    <div>
             <Helmet>
                 <title>Bulletin du Secondaire</title>
             </Helmet>
@@ -136,59 +134,59 @@ const AfficherBulletinSemestriel = () => {
                                     <th colSpan={periodes.length + 2}>Semestre {semestre_id}</th>
                                 </tr>
                                 <tr>
-                                    {periodes.map((periode) => (
-                                        <th key={periode.id}>{periode.name}</th>
-                                    ))}
+                                    {periodes.map((periode) =>
+                  <th key={periode.id}>{periode.name}</th>
+                  )}
                                     <th>Examen</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.entries(coursGroupes).map(([ponderation, groupe]) => (
-                                    <React.Fragment key={ponderation}>
+                                {Object.entries(coursGroupes).map(([ponderation, groupe]) =>
+                <React.Fragment key={ponderation}>
                                         <tr className='bg-secondary text-white'>
                                             <td>Max</td>
-                                            {periodes.map((periode) => (
-                                                <td key={periode.id}>{groupe.max / periodes.length}</td>
-                                            ))}
+                                            {periodes.map((periode) =>
+                    <td key={periode.id}>{groupe.max / periodes.length}</td>
+                    )}
                                             <td>{groupe.max}</td>
                                             <td>{groupe.max}</td>
                                         </tr>
-                                        {groupe.cours.map((cours) => (
-                                            <tr key={cours.id_cours}>
+                                        {groupe.cours.map((cours) =>
+                  <tr key={cours.id_cours}>
                                                 <td>{cours.nom_cours}</td>
-                                                {periodes.map((periode) => (
-                                                    <td key={periode.id}>
-                                                        {cours.totaux_periode && cours.totaux_periode[periode.id]
-                                                            ? cours.totaux_periode[periode.id].note
-                                                            : 0}
+                                                {periodes.map((periode) =>
+                    <td key={periode.id}>
+                                                        {cours.totaux_periode && cours.totaux_periode[periode.id] ?
+                      cours.totaux_periode[periode.id].note :
+                      0}
                                                     </td>
-                                                ))}
+                    )}
                                                 <td>{totauxExam[cours.id_cours]?.note_obtenue ?? 0}</td>
                                                 <td>{cours.total_obtenu}</td>
                                             </tr>
-                                        ))}
+                  )}
                                     </React.Fragment>
-                                ))}
+                )}
                             </tbody>
                             <tfoot>
                                 <tr className="total-row">
                                     <td>Total Général</td>
-                                    {periodes.map((periode) => (
-                                        <td key={periode.id}>{totauxPeriode[periode.id]?.obtenu ?? 0}</td>
-                                    ))}
+                                    {periodes.map((periode) =>
+                  <td key={periode.id}>{totauxPeriode[periode.id]?.obtenu ?? 0}</td>
+                  )}
                                     <td>{totalGeneral.exam_obtenu}</td>
                                     <td>{totalGeneral.obtenu + totalGeneral.exam_obtenu}</td>
                                 </tr>
                                 <tr className="total-row">
                                     <td>Pourcentage</td>
-                                    {periodes.map((periode) => (
-                                        <td key={periode.id}>
-                                            {totauxPeriode[periode.id]?.max > 0
-                                                ? ((totauxPeriode[periode.id]?.obtenu / totauxPeriode[periode.id]?.max) * 100).toFixed(2) + "%"
-                                                : "-"}
+                                    {periodes.map((periode) =>
+                  <td key={periode.id}>
+                                            {totauxPeriode[periode.id]?.max > 0 ?
+                    (totauxPeriode[periode.id]?.obtenu / totauxPeriode[periode.id]?.max * 100).toFixed(2) + "%" :
+                    "-"}
                                         </td>
-                                    ))}
+                  )}
                                     <td>{pourcentage.toFixed(2)}%</td>
                                     <td>{pourcentage.toFixed(2)}%</td>
                                 </tr>
@@ -202,17 +200,17 @@ const AfficherBulletinSemestriel = () => {
                     </button>
                 </div>
                 <div className="hide-on-print text-center mb-2 mt-2 py-2">
-                    {authenticated ? (
-                        <Link className="btn btn-warning text-white btn-sm" style={{ borderRadius: '10px' }} to="/secondaire/profil_user">
+                    {authenticated ?
+          <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/secondaire/profil_user">
                             Retour
-                        </Link>
-                    ) : (
-                        <Link className="btn btn-warning text-white btn-sm" style={{ borderRadius: '10px' }} to="/secondaire">Quitter</Link>
-                    )}
+                        </Link> :
+
+          <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/secondaire">Quitter</Link>
+          }
                 </div>
             </div>
-        </div>
-    );
+        </div>);
+
 };
 
 export default AfficherBulletinSemestriel;

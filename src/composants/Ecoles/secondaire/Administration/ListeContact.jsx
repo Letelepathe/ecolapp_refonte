@@ -48,9 +48,9 @@ const ListeContact = () => {
     try {
       await axios.put(`https://api.ecolapp.cd/api/contact/confirme/${id}`);
       setContacts((prevContacts) =>
-        prevContacts.map((contact) =>
-          contact.id === id ? { ...contact, lu: 1 } : contact
-        )
+      prevContacts.map((contact) =>
+      contact.id === id ? { ...contact, lu: 1 } : contact
+      )
       );
     } catch (error) {
       console.error("Erreur lors de la mise à jour du statut lu :", error);
@@ -78,13 +78,13 @@ const ListeContact = () => {
           </div>
 
           <div className="table-responsive">
-            {error ? (
-              <p className="text-danger">{error}</p>
-            ) : (
-              <>
+            {error ?
+            <p className="text-danger">{error}</p> :
+
+            <>
                 <table className="table text-start align-middle table-bordered table-hover mb-0">
                   <thead>
-                    <tr className="text-white" style={{ background: '#1769ff' }}>
+                    <tr className="text-white u-style-77fdd8b0">
                       <th className="text-white">ID</th>
                       <th className="text-white">Nom</th>
                       <th className="text-white">Prénom</th>
@@ -97,8 +97,8 @@ const ListeContact = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {contacts.map((contact, index) => (
-                      <tr key={contact.id}>
+                    {contacts.map((contact, index) =>
+                  <tr key={contact.id}>
                         <td>{index + 1 + (currentPage - 1) * 10}</td>
                         <td>{contact.nom}</td>
                         <td>{contact.prenom}</td>
@@ -112,52 +112,52 @@ const ListeContact = () => {
                         <td>{contact.created_at}</td>
                         <td>{contact.lu === 0 ? 'Non répondu' : 'Répondu'}</td>
                         <td className="d-flex gap-2">
-                          {contact.lu === 0 && (
-                            <button
-                              className="btn btn-primary btn-sm"
-                              onClick={() => {
-                                markAsRead(contact.id);
-                                window.open(`mailto:${contact.mail}`, '_blank');
-                              }}
-                            >
+                          {contact.lu === 0 &&
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => {
+                          markAsRead(contact.id);
+                          window.open(`mailto:${contact.mail}`, '_blank');
+                        }}>
+                        
                               Répondre
                             </button>
-                          )}
+                      }
                           <button
-                            className="btn btn-danger btn-sm"
-                            onClick={() => deleteContact(contact.id)}
-                          >
+                        className="btn btn-danger btn-sm"
+                        onClick={() => deleteContact(contact.id)}>
+                        
                             Supprimer
                           </button>
                         </td>
                       </tr>
-                    ))}
+                  )}
                   </tbody>
                 </table>
                 <div className="d-flex justify-content-between align-items-center mt-3">
                   <button
-                    className="btn btn-secondary"
-                    onClick={prevPage}
-                    disabled={currentPage === 1}
-                  >
+                  className="btn btn-secondary"
+                  onClick={prevPage}
+                  disabled={currentPage === 1}>
+                  
                     Précédent
                   </button>
                   <span>Page {currentPage} sur {totalPages}</span>
                   <button
-                    className="btn btn-secondary"
-                    onClick={nextPage}
-                    disabled={currentPage === totalPages}
-                  >
+                  className="btn btn-secondary"
+                  onClick={nextPage}
+                  disabled={currentPage === totalPages}>
+                  
                     Suivant
                   </button>
                 </div>
               </>
-            )}
+            }
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ListeContact;

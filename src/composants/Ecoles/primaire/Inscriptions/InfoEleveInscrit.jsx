@@ -2,31 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import './InfoEleveInscrit.css';
-
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
 
 const InfoEleveInscritprimaire = () => {
-   const [ecole, setEcole] = useState(null);
-          const id_ecole = localStorage.getItem('ecole_id');
-        
-          useEffect(() => {
-            const fetchInfoEcole = async () => {
-              try {
-                const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${id_ecole}`);
-                setEcole(response.data.ecole);
-              } catch (error) {
-                console.error("Erreur lors de la récupération des informations:", error);
-              }
-            };
-        
-            fetchInfoEcole();
-          }, [id_ecole]);
-        
+  const [ecole, setEcole] = useState(null);
+  const id_ecole = localStorage.getItem('ecole_id');
+
+  useEffect(() => {
+    const fetchInfoEcole = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${id_ecole}`);
+        setEcole(response.data.ecole);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des informations:", error);
+      }
+    };
+
+    fetchInfoEcole();
+  }, [id_ecole]);
+
 
   const [eleve, setEleve] = useState(null);
-  const { id } = useParams(); 
+  const { id } = useParams();
   useEffect(() => {
     const fetchEleveInfo = async () => {
       try {
@@ -46,13 +44,13 @@ const InfoEleveInscritprimaire = () => {
   };
 
   if (!eleve || eleve.message) {
-    return <div style={{textAlign : 'center'}}>{eleve ? eleve.message : 'Chargement des informations...'}</div>;
+    return <div className="u-style-72a68ac3">{eleve ? eleve.message : 'Chargement des informations...'}</div>;
   }
 
-  if(!ecole){
+  if (!ecole) {
     return (
-      <div className="spinner"></div>
-    );
+      <div className="spinner"></div>);
+
   }
 
   return (
@@ -62,13 +60,13 @@ const InfoEleveInscritprimaire = () => {
           {/* En-tête */}
           <div className="info-eleve-header">
             <div className="info-eleve-row justify-content-between d-flex">
-              <img src={ImgDrapeau} alt="logo collège" className="info-eleve-logo" style={{width:'40px', height:'40px', objectFit:'cover', borderRadius:'50px'}} />
+              <img src={ImgDrapeau} alt="logo collège" className="info-eleve-logo u-style-9ce04a60" />
               <div className='text-center'>
                 <h3>ecolapp</h3>
                 <h4>{ecole.name}</h4>
                 <h6>Bulletin de demande d'inscription</h6>
               </div>
-              <img src={ImgSymbole} alt="logo RDC" className="info-eleve-logo" style={{width:'40px', height:'40px', objectFit:'cover', borderRadius:'50px'}} />
+              <img src={ImgSymbole} alt="logo RDC" className="info-eleve-logo u-style-9ce04a60" />
             </div>
             <hr />
           </div>
@@ -146,8 +144,8 @@ const InfoEleveInscritprimaire = () => {
         <Link to="/primaire" className="info-eleve-button info-eleve-btn-danger">Quitter cette page</Link>
         <button onClick={handlePrint} className="info-eleve-button info-eleve-btn-primary info-eleve-ml-3">Imprimer</button>
       </div>
-    </main>
-  );
+    </main>);
+
 };
 
 export default InfoEleveInscritprimaire;

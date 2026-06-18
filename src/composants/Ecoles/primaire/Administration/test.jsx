@@ -1,5 +1,5 @@
-    <div className="ajouter-membre-effectif-container">
-      <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Membre Effectif</h3>
+<div className="ajouter-membre-effectif-container">
+      <h3 className="text-center u-style-951c0e5f">Ajouter Membre Effectif</h3>
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
@@ -30,9 +30,9 @@
           <label htmlFor="fonction">Fonction</label>
           <select name="fonction" className="form-control" value={formData.fonction} onChange={handleInputChange} required>
             <option value="">Sélectionner une fonction</option>
-            {fonctions.map((fonction, index) => (
-              <option key={index} value={fonction}>{fonction}</option>
-            ))}
+            {fonctions.map((fonction, index) =>
+        <option key={index} value={fonction}>{fonction}</option>
+        )}
           </select>
           {errors.fonction && <p className="text-danger">{errors.fonction}</p>}
         </div>
@@ -40,4 +40,4 @@
         {successMessage && <p className="text-success mt-2">{successMessage}</p>}
         {errors.form && <p className="text-danger mt-2">{errors.form}</p>}
       </form>
-    </div>
+    </div>;

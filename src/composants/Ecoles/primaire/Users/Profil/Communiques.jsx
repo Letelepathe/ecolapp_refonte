@@ -39,11 +39,11 @@ const Communiques = () => {
       return (
         <img
           src={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
-          className="img-fluid w-100"
-          alt="Communiqué visuel"
-          style={{ height: "200px", objectFit: "cover" }}
-        />
-      );
+          className="img-fluid w-100 u-style-a38c38cd"
+          alt="Communiqué visuel" />);
+
+
+
     }
     if (fileExtension === 'pdf') {
       return (
@@ -51,22 +51,22 @@ const Communiques = () => {
           href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn btn-primary"
-        >
+          className="btn btn-primary">
+          
           Voir PDF
-        </a>
-      );
+        </a>);
+
     }
     return (
       <a
         href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn btn-secondary"
-      >
+        className="btn btn-secondary">
+        
         Télécharger le fichier
-      </a>
-    );
+      </a>);
+
   };
 
   return (
@@ -82,11 +82,11 @@ const Communiques = () => {
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
-            1024: { slidesPerView: 2 },
-          }}
-        >
-          {communiques.map((communique) => (
-            <SwiperSlide key={communique.id}>
+            1024: { slidesPerView: 2 }
+          }}>
+          
+          {communiques.map((communique) =>
+          <SwiperSlide key={communique.id}>
               <div className="post-box card">
                 <div className="post-img">
                   {renderFile(communique.file)} 
@@ -94,29 +94,29 @@ const Communiques = () => {
                 <div className="py-3 container">
                   <span className="post-date">
                     {new Date(communique.created_at).toLocaleDateString("fr-FR", {
-                      weekday: "long",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric"
+                  })}
                   </span>
                   <h6 className="post-title">{communique.title}</h6>
                   <p>{truncateText(communique.content, 30)}</p>
                   <Link
-                    to={`/primaire/details-communique/${communique.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary w-100"
-                  >
+                  to={`/primaire/details-communique/${communique.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary w-100">
+                  
                     Lire plus <i className="bi bi-arrow-right"></i>
                   </Link>
                 </div>
               </div>
             </SwiperSlide>
-          ))}
+          )}
         </Swiper>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default Communiques;

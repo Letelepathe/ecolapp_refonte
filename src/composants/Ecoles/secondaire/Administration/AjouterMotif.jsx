@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 const AjouterMotif = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [devises, setDevises] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
-    montant : '',
+    montant: '',
     devise_id: '',
-    ecole_id : ecole_id,
-    direction : direction,
+    ecole_id: ecole_id,
+    direction: direction
   });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
@@ -21,22 +21,22 @@ const AjouterMotif = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const fetchDevises = async () =>{
-      try{
+    const fetchDevises = async () => {
+      try {
         const response = await axios.get('https://api.ecolapp.cd/api/devise/direction/3');
-          setDevises(response.data.deviseAll);
-      }catch{
+        setDevises(response.data.deviseAll);
+      } catch {
         console.log("Erreur lors de la récupération des devises");
       }
     };
     fetchDevises();
-  }, [])
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -45,7 +45,7 @@ const AjouterMotif = () => {
     if (!formData.name) newErrors.name = "Le motif est requis";
     if (!formData.montant) newErrors.montant = "Montant requis";
     if (!formData.devise_id) newErrors.devise_id = "Devise requise";
-     setErrors(newErrors);
+    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -54,30 +54,30 @@ const AjouterMotif = () => {
     setSuccessMessage('');
     setErrorMessage('');
     setIsSubmitting(true);
-    
-     if (!validateForm()){
-      setIsSubmitting(false); 
+
+    if (!validateForm()) {
+      setIsSubmitting(false);
       return;
     }
 
     try {
       const response = await axios.post('https://api.ecolapp.cd/api/motif/create', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 200) {
         setSuccessMessage("Motif ajouté avec succès !");
         setErrors({});
-        setFormData({ name: '', montant: '', devise_id : '', ecole_id : ecole_id, direction : direction });
-     
+        setFormData({ name: '', montant: '', devise_id: '', ecole_id: ecole_id, direction: direction });
+
       } else {
         setErrorMessage(response.data.erroList);
         console.log(response.data);
       }
     } catch (error) {
       setErrorMessage("Erreur de connexion au serveur.");
-    }finally {
-      setIsSubmitting(false); 
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -92,7 +92,7 @@ const AjouterMotif = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className='justify-content-between align-items-center d-flex'>
-                   <h6 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter Motif de Paiement</h6>
+                   <h6 className="text-center u-style-951c0e5f">Ajouter Motif de Paiement</h6>
                    <Link to='/secondaire/liste_motif' className='btn btn-warning text-white'>Liste motifs</Link>
                   </div>
                   
@@ -107,8 +107,8 @@ const AjouterMotif = () => {
                         className="form-control"
                         value={formData.name}
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.name && <p className="text-danger">{errors.name}</p>}
                     </div>
 
@@ -120,8 +120,8 @@ const AjouterMotif = () => {
                         className="form-control"
                         value={formData.montant}
                         onChange={handleInputChange}
-                        required
-                      />
+                        required />
+                      
                       {errors.montant && <p className="text-danger">{errors.montant}</p>}
                     </div>
 
@@ -131,20 +131,20 @@ const AjouterMotif = () => {
                         name="devise_id"
                         className="form-control"
                         value={formData.devises_id}
-                        onChange={handleInputChange}
-                      >
+                        onChange={handleInputChange}>
+                        
                         <option value="">Sélectionner une devise</option>
-                          {devises.map((devise) => (
-                              <option key={devise.id} value={devise.id}>
+                          {devises.map((devise) =>
+                        <option key={devise.id} value={devise.id}>
                                 {devise.name} 
                               </option>
-                          ))}
+                        )}
                       </select>
                           {errors.devise_id && <p className="text-danger">{errors.devise_id}</p>}
                     </div>
 
                     <div className="d-grid">
-                      <button className="btn btn-primary" disabled={isSubmitting} type="submit" style={{ backgroundColor: '#1769ff', border: 'none', padding: '10px', borderRadius: '5px' }}>
+                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
                       {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>
@@ -158,8 +158,8 @@ const AjouterMotif = () => {
           </section>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterMotif;

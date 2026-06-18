@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 
 const Inscriptions = () => {
   return (
-    <div style={{ marginTop: '120px', display: 'flex', justifyContent: 'center' }}>
+    <div className="u-style-3f3e684d">
       <section id="features-cards" className="features-cards section">
-        <h2 style={{textAlign: 'center', fontWeight:900, color:'#1769ff'}}>Inscriptions</h2>
+        <h2 className="u-style-3959a91c">Inscriptions</h2>
         <div className="container">
-          <div className="row gy-4" style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+          <div className="row gy-4 u-style-1846cfac">
 
             {/* Maternelle */}
             <div className="col-xl-4 col-lg-4 col-md-6 d-flex justify-content-center text-center align-items-center">
@@ -62,9 +62,9 @@ const Inscriptions = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
-}
+    </div>);
+
+};
 
 
 const cardStyle = {

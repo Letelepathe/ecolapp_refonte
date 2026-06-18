@@ -38,11 +38,11 @@ const AjouterCote = () => {
     const fetchData = async () => {
       try {
         const [eleveRes, periodeRes, coursRes, TypeEpreuve] = await Promise.all([
-          axios.get(`http://localhost/ecole-app/apis/getEleveByIdClasse?classe_id=${classeId}`),
-          axios.get('http://localhost/ecole-app/apis/getPeriode'),
-          axios.get(`http://localhost/ecole-app/apis/getCoursByClasse?classe_id=${classeId}`),
-          axios.get('http://localhost/ecole-app/apis/getTypeTravail'),
-        ]);
+        axios.get(`http://localhost/ecole-app/apis/getEleveByIdClasse?classe_id=${classeId}`),
+        axios.get('http://localhost/ecole-app/apis/getPeriode'),
+        axios.get(`http://localhost/ecole-app/apis/getCoursByClasse?classe_id=${classeId}`),
+        axios.get('http://localhost/ecole-app/apis/getTypeTravail')]
+        );
 
         if (eleveRes.data.success) {
           setEleves(eleveRes.data.data || []);
@@ -100,12 +100,12 @@ const AjouterCote = () => {
       periode_id: e.target.periode.value,
       cours_id: e.target.cours.value,
       type_epreuve: e.target.type_epreuve.value,
-      total_general: totalGeneral,
+      total_general: totalGeneral
     }));
 
     try {
       const response = await axios.post('http://localhost/ecole-app/apis/insertCote.php', formData, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       });
 
       if (response.data.status === 'success') {
@@ -143,36 +143,36 @@ const AjouterCote = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {eleves.map((eleve) => (
-                      <tr key={eleve.id}>
+                    {eleves.map((eleve) =>
+                    <tr key={eleve.id}>
                         <td>{eleve.nom} {eleve.prenom}</td>
                         <td>
                           <input
-                            type="number"
-                            className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
-                            min="0"
-                            value={notes[eleve.id] || ''}
-                            onChange={(e) => handleNoteChange(eleve.id, e.target.value)}
-                          />
+                          type="number"
+                          className={`form-control ${eleveErrors[eleve.id] ? 'is-invalid' : ''}`}
+                          min="0"
+                          value={notes[eleve.id] || ''}
+                          onChange={(e) => handleNoteChange(eleve.id, e.target.value)} />
+
                         </td>
                         <td>
                           {eleveErrors[eleve.id] && <span className="text-danger">{eleveErrors[eleve.id]}</span>}
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
 
               {/* Formulaire des métadonnées */}
-              <div className="col-lg-4 order-1 order-lg-2" style={{ marginTop: '42px' }}>
+              <div className="col-lg-4 order-1 order-lg-2 u-style-9e2237d1">
                 <div className="mb-3">
                   <label htmlFor="type_epreuve">Type épreuve</label>
                   <select id="type_epreuve" name="type_epreuve" className="form-control">
                     <option value="">Sélectionnez type épreuve</option>
-                    {typeEpreuve.map((epreuve) => (
-                      <option key={epreuve.id} value={epreuve.typeTravail}>{epreuve.typeTravail}</option>
-                    ))}
+                    {typeEpreuve.map((epreuve) =>
+                    <option key={epreuve.id} value={epreuve.typeTravail}>{epreuve.typeTravail}</option>
+                    )}
                   </select>
                 </div>
                 <div className="mb-3">
@@ -183,25 +183,25 @@ const AjouterCote = () => {
                     id="total_general"
                     name="total_general"
                     value={totalGeneral}
-                    onChange={(e) => setTotalGeneral(e.target.value)}
-                  />
+                    onChange={(e) => setTotalGeneral(e.target.value)} />
+
                 </div>
                 <div className="mb-3">
                   <label htmlFor="periode">Période</label>
                   <select id="periode" name="periode" className="form-control">
                     <option value="">Sélectionnez une période</option>
-                    {periodes.map((periode) => (
-                      <option key={periode.id} value={periode.id}>{periode.periode}</option>
-                    ))}
+                    {periodes.map((periode) =>
+                    <option key={periode.id} value={periode.id}>{periode.periode}</option>
+                    )}
                   </select>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="cours">Cours</label>
                   <select id="cours" name="cours" className="form-control">
                     <option value="">Sélectionnez un cours</option>
-                    {cours.map((cour) => (
-                      <option key={cour.id} value={cour.id}>{cour.nom}</option>
-                    ))}
+                    {cours.map((cour) =>
+                    <option key={cour.id} value={cour.id}>{cour.nom}</option>
+                    )}
                   </select>
                 </div>
               </div>
@@ -209,14 +209,14 @@ const AjouterCote = () => {
 
             <div className="d-grid mt-3">
               <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
+                {isSubmitting ?
+                <>
                     <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Enregistrement...
-                  </>
-                ) : (
-                  'Enregistrer'
-                )}
+                  </> :
+
+                'Enregistrer'
+                }
               </button>
             </div>
 
@@ -226,8 +226,8 @@ const AjouterCote = () => {
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AjouterCote;

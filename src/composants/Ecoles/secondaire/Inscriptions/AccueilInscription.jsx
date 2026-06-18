@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './AccueilInscription.css'; 
-
 const AccueilInscriptionsecondaire = () => {
   const [eleve, setEleve] = useState(null);
   const { id } = useParams(); 

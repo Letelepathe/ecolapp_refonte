@@ -8,7 +8,7 @@ import NavbarTop from "./NavbarTop";
 const ListeAdminGeneral = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
-  
+
   const [members, setMembers] = useState([]);
   const [error, setError] = useState('');
 
@@ -26,10 +26,10 @@ const ListeAdminGeneral = () => {
   }, [ecole_id, direction]);
 
   return (
-      <div className="container-fluid position-relative bg-white d-flex p-0">
-        <SidebarLeft/>
+    <div className="container-fluid position-relative bg-white d-flex p-0">
+        <SidebarLeft />
         <div className="content">
-          <NavbarTop/>
+          <NavbarTop />
           <div className="container-fluid pt-4 px-4">
             <div className="bg-white text-center rounded p-4">
               <div className="d-flex align-items-center justify-content-between mb-4">
@@ -38,10 +38,10 @@ const ListeAdminGeneral = () => {
               </div>
               
               <div className="table-responsive">
-                {error ? (
-                  <p className="text-danger">{error}</p>
-                ) : (
-                  <table className="table text-start align-middle table-bordered table-hover mb-0">
+                {error ?
+              <p className="text-danger">{error}</p> :
+
+              <table className="table text-start align-middle table-bordered table-hover mb-0">
                     <thead>
                       <tr className="text-dark">
                         <th>Id</th>
@@ -56,16 +56,16 @@ const ListeAdminGeneral = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {members.map((m) => (
-                        <tr key={m.id}>
+                      {members.map((m) =>
+                  <tr key={m.id}>
                           <td>{m.id}</td>
                           <td>
-                            <img 
-                              src={`https://api.ecolapp.cd/public/imgUser/${m.file}`} 
-                                className="rounded-circle flex-shrink-0" 
-                                alt="Profil" 
-                                style={{ width: '60px', height: '60px', objectFit : 'cover' }} 
-                              />
+                            <img
+                        src={`https://api.ecolapp.cd/public/imgUser/${m.file}`}
+                        className="rounded-circle flex-shrink-0 u-style-31bd8151"
+                        alt="Profil" />
+
+                      
                           </td>
                           <td>{m.name}</td>
                           <td>{m.last_name}</td>
@@ -75,16 +75,16 @@ const ListeAdminGeneral = () => {
                           <td>{m.role}</td>
                         
                         </tr>
-                      ))}
+                  )}
                     </tbody>
                   </table>
-                )}
+              }
               </div>
             </div>
           </div>
         </div>
-      </div>
-  );
+      </div>);
+
 };
 
 export default ListeAdminGeneral;
