@@ -1,0 +1,53 @@
+.badge-number {
+    position: absolute;
+    inset: 8px 1px auto auto;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 3px 8px;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: #1769ff;
+    border-radius: 50px;
+}
+.sidebar::-webkit-scrollbar {
+    background-color: rgb(255, 255, 255);
+    width: 9px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+  }
+  
+
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #1769ff;
+    border-radius: 50px;
+}
+
+.sidebar-right::-webkit-scrollbar {
+    background-color: rgb(255, 255, 255);
+    width: 9px;
+    border-radius: 50px;
+    cursor: #1769ff;
+    max-height:20px;
+}
+body::-webkit-scrollbar {
+    background-color: rgb(255, 255, 255);
+    width: 9px;
+    border-radius: 50px;
+    cursor: #1769ff;
+}
+
+.sidebar-right::-webkit-scrollbar-thumb {
+    background-color: #1769ff;
+    border-radius: 50px;
+}
+@media(max-width:986px){
+    body::-webkit-scrollbar {
+    display:none;
+ }
+}

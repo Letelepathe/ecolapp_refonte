@@ -1,0 +1,19 @@
+.spinner {
+    width: 50px; /* Taille du spinner */
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1); /* Bord extérieur gris clair */
+    border-top: 5px solid #1769ff; /* Bord supérieur coloré */
+    border-radius: 50%; /* Cercle parfait */
+    animation: spin 1s linear infinite; /* Animation de rotation */
+  
+    /* Centrage autonome */
+    position: fixed; /* Fixé par rapport à la fenêtre */
+    top: 50%; /* Centré verticalement */
+    left: 50%; /* Centré horizontalement */
+    transform: translate(-50%, -50%); /* Ajuste pour centrer précisément */
+    
+    /* Optionnel : Ajoutez un fond semi-transparent si souhaité */
+    background: rgba(255, 255, 255, 0.8); /* Facultatif */
+    z-index: 1000; 
+  }
+  

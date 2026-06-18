@@ -1,0 +1,271 @@
+import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
+
+import SidebarLeft from '../Users/Profil/SidebarLeft';
+import NavbarTop from  '../Users/Profil/NavbarTop';
+
+const AjouterTravailByEnseignant = () => {
+  const fileInputRef = useRef(null);
+
+  const ecole_id = localStorage.getItem('ecole_id');
+  const direction = localStorage.getItem('direction');
+  
+  const [formData, setFormData] = useState({
+    titre: '',
+    description: '',
+    date_remise: '',
+    id_cours: '',
+    id_classe : '',
+    id_option : '',
+    id_type_travail: '',
+    file: '',
+    ecole_id : ecole_id,
+    direction : direction,
+  });
+  const [cours, setCours] = useState([]);
+  const [typesTravail, setTypesTravail] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [options, setOptions] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+  const userId = localStorage.getItem("userId"); // Récupérer l'userId depuis le localStorage
+  
+  useEffect(() => {
+    const fetchCours = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/coursens/enseignant/${userId}`);
+        setCours(response.data.cours || []);
+        console.log(response.data.cours);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des cours:", error);
+        throw error;
+      }
+    };
+    
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`);
+        setClasses(response.data.classesAll);
+        console.log(response.data.classesAll);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des classes:", error);
+        throw error;
+      }
+    };
+    
+    const fetchOptions = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`);
+         setOptions(response.data.optionAll);
+         console.log(response.data.optionAll);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des options:", error);
+        throw error;
+      }
+    };
+    
+    const fetchTypesTravail = async () => {
+      try {
+        const response = await axios.get(`https://api.ecolapp.cd/api/typeTravail/ecole/${ecole_id}/direction/${direction}`);
+        setTypesTravail(response.data.typetravailAll);
+        console.log(response.data.typetravailAll);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des types de travail:", error);
+        throw error;
+      }
+    };
+
+    fetchCours();
+    fetchClasses();
+    fetchOptions();
+    fetchTypesTravail();
+  }, [userId, ecole_id, direction]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.titre) newErrors.titre = "Titre requis";
+    if (!formData.description) newErrors.description = "Description requise";
+    if (!formData.date_remise) newErrors.date_remise = "Date de remise requise";
+    if (!formData.id_cours) newErrors.id_cours = "Cours requis";
+    if (!formData.id_classe) newErrors.id_classe = "Classe requise";
+    if (!formData.id_option) newErrors.id_option = "Option requise";
+    if (!formData.id_type_travail) newErrors.id_type_travail = "Type de travail requis";
+    if (!formData.file) newErrors.file = "Fichier requis";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSuccessMessage('');
+    setIsSubmitting(true); 
+
+    if (!validateForm()){
+      setIsSubmitting(false); 
+      return;
+    }
+    const data = new FormData();
+    data.append('titre', formData.titre);
+    data.append('description', formData.description);
+    data.append('date_remise', formData.date_remise);
+    data.append('id_cours', formData.id_cours);
+    data.append('id_classe', formData.id_classe);
+    data.append('id_option', formData.id_option);
+    data.append('id_type_travail', formData.id_type_travail);
+    data.append('id_enseignant', userId);
+    data.append('file', formData.file);
+    data.append('ecole_id', formData.ecole_id);
+    data.append('direction', formData.direction);
+
+    try {
+      const response = await axios.post(
+        'https://api.ecolapp.cd/api/travail/create',
+        data,
+        { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
+      );
+ 
+
+      if (response.data.status === 200) {
+        setSuccessMessage(response.data.success_msg);
+        setErrors({});
+        setFormData({
+          titre: '',
+          description: '',
+          date_remise: '',
+          id_cours: '',
+          id_classe : '',
+          id_type_travail: '',
+          file: '',
+          ecole_id : ecole_id,
+          direction : direction,
+        });
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+
+        console.log(response.data);
+      } else {
+        console.log(response.data);
+        setErrors({ form: "Erreur lors de l'ajout du travail" });
+      }
+      console.log(response.data);
+    } catch (error) {
+      setErrors({ form: "Erreur de connexion au serveur" });
+    }finally{
+      setIsSubmitting(false); 
+    }
+  };
+
+  return (
+    <div className="container-fluid position-relative bg-white d-flex p-0">
+      <SidebarLeft/>
+       <div className="content">
+        <NavbarTop/>
+        <section className='section d-flex flex-column align-items-center justify-content-center py-4'>
+          <div className='col-lg-6 col-md-8 col-12'>
+            <div className='card mb-3'>
+              <div className="card-body">
+                     <Link className="btn btn-primary" to='/primaire/liste_travail_by_enseignant'>Liste des travaux</Link>
+                    <h3 className="text-center" style={{ fontWeight: 900, color: '#1769ff' }}>Ajouter travail</h3>
+                    <form onSubmit={handleSubmit} encType="multipart/form-data">
+                      <div className="mb-3"> 
+                        <label htmlFor="titre" className="form-label">Titre</label>
+                        <input type="text" name="titre" className="form-control" value={formData.titre} onChange={handleInputChange} />
+                        {errors.titre && <p className="text-danger">{errors.titre}</p>}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="description" className="form-label">Description</label>
+                        <textarea name="description" className="form-control" value={formData.description} onChange={handleInputChange}></textarea>
+                        {errors.description && <p className="text-danger">{errors.description}</p>}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="date_remise" className="form-label">Date de remise</label>
+                        <input type="date" name="date_remise" className="form-control" value={formData.date_remise} onChange={handleInputChange} />
+                        {errors.date_remise && <p className="text-danger">{errors.date_remise}</p>}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="id_cours">Cours</label>
+                        <select id="id_cours" name="id_cours" className="form-control" value={formData.id_cours} onChange={handleInputChange}>
+                          <option value="">Sélectionnez un cours</option>
+                          {cours.map((c) => (
+                            <option key={c.cour.id} value={c.cour.id}>{c.cour.name}</option>
+                          ))}
+                        </select>
+                        {errors.id_cours && <p className="text-danger">{errors.id_cours}</p>}
+                      </div>
+
+                      <div className="mb-3">
+                        <label htmlFor="id_classe" className="form-label">Classe</label>
+                        <select name="id_classe" className="form-control" value={formData.id_classe} onChange={handleInputChange}>
+                          <option value="">Sélectionner une classe</option>
+                          {classes.map(classe => <option key={classe.id} value={classe.id}>{classe.name}</option>)}
+                        </select>
+                        {errors.id_classe && <p className="text-danger">{errors.id_classe}</p>}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="id_option" className="form-label">Option</label>
+                        <select name="id_option" className="form-control" value={formData.id_option} onChange={handleInputChange}>
+                          <option value="">Sélectionner une option</option>
+                          {options.map(option => <option key={option.id} value={option.id}>{option.name}</option>)}
+                        </select>
+                        {errors.id_option && <p className="text-danger">{errors.id_opton}</p>}
+                      </div>
+                      
+                      <div className="mb-3">
+                        <label htmlFor="id_type_travail" className="form-label">Type de travail</label>
+                        <select name="id_type_travail" className="form-control" value={formData.id_type_travail} onChange={handleInputChange}>
+                          <option value="">Sélectionner un type</option>
+                          {typesTravail.map(type => <option key={type.id} value={type.id}>{type.name}</option>)}
+                        </select>
+                        {errors.id_type_travail && <p className="text-danger">{errors.id_type_travail}</p>}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="file">Fichier</label>
+                        <input
+                          type="file"
+                          name="file"
+                          className="form-control"
+                          onChange={(e) => setFormData({ ...formData, file: e.target.files[0] })}
+                          ref={fileInputRef}
+                          required
+                        />
+                        {errors.file && <p className="text-danger">{errors.file}</p>}
+                      </div>
+                      
+                      <button
+                        className="btn btn-primary w-100"
+                        type="submit"
+                        disabled={isSubmitting}
+                        style={{
+                          backgroundColor: '#1769ff',
+                          border: 'none',
+                          padding: '10px',
+                          borderRadius: '5px',
+                        }}
+                      >
+                        {isSubmitting ? 'Enregistrement en cours...' : 'Ajouter'}
+                      </button>
+                      {successMessage && <p className="text-success text-center mt-3">{successMessage}</p>}
+                      {errors.form && <p className="text-danger text-center mt-3">{errors.form}</p>}
+                    </form>
+           
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default AjouterTravailByEnseignant;

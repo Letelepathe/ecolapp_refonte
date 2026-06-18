@@ -1,0 +1,43 @@
+@media all and (min-width: 480px) and (max-width: 1199px) {
+    #nav-links {
+        justify-content: space-evenly;
+    }
+    main {
+        height: 90vh;
+    }
+    footer {
+        position: relative;
+    }
+}
+
+@media all and (min-width: 576px) and (max-width: 679px) {
+    #google-logo img {
+        width: 260px;
+    }
+}
+
+@media all and (min-width: 480px) and (max-width: 575px) {
+    #google-logo img {
+        width: 250px;
+    }
+}
+
+@media all and (min-width: 0px) and (max-width: 479px) {
+    main {
+        padding-top: 20px;
+    }
+
+    #nav-links {
+        justify-content: space-evenly;
+    }
+
+    #google-logo img {
+        width: 240px;
+    }
+}
+
+@media all and (min-height: 0px) and (max-height: 550px) {
+    footer {
+        display: none;
+    }
+}

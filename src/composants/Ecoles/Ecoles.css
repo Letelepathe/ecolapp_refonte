@@ -1,0 +1,40 @@
+.bloc-ecole-3{
+  margin-top: 0;
+}
+  .bloc-ecole-1 .card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bloc-ecole-1 h3 {
+    color: #007bff;
+  }
+  
+  .bloc-ecole-1 .list-group-item {
+    transition: background-color 0.3s;
+  }
+  
+  .bloc-ecole-1 .list-group-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .bloc-ecole-1 button {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .bloc-ecole-1 input[type="radio"] {
+    margin-left: 10px;
+  }
+  
+  .bloc-ecole-1{
+    width:60%;
+  }
+  @media(max-width:986px){
+    .bloc-ecole-1{
+      width: 100%;
+    }
+    .bloc-ecole-3{
+      margin-top: 0;
+      margin-bottom: 50px;
+    }
+  }

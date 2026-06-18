@@ -1,0 +1,72 @@
+{
+  "name": "ecolapp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "aos": "^2.3.4",
+    "axios": "^1.7.7",
+    "bootstrap": "^4.6.2",
+    "bootstrap-icons": "^1.11.3",
+    "embla-carousel-react": "^8.5.1",
+    "html2canvas": "^1.4.1",
+    "jquery": "^3.7.1",
+    "jspdf": "^3.0.3",
+    "lightbox2": "^2.11.5",
+    "owl.carousel": "^2.3.4",
+    "plyr": "^3.7.8",
+    "plyr-react": "^5.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-feather": "^2.0.10",
+    "react-helmet": "^6.1.0",
+    "react-icons": "^5.3.0",
+    "react-player": "^2.16.0",
+    "react-router-dom": "^6.30.0",
+    "react-slick": "^0.30.2",
+    "recharts": "^2.15.1",
+    "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.8.1",
+    "swiper": "^11.1.14",
+    "video.js": "^8.21.0",
+    "vite-plugin-pwa": "^1.0.0",
+    "web-vitals": "^2.1.4",
+    "yet-another-react-lightbox": "^3.21.7",
+    "zustand": "^5.0.8"
+  },
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.25.9",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.2.4",
+    "workbox-cli": "^7.3.0"
+  }
+}

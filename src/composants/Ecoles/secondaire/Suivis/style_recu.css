@@ -1,0 +1,60 @@
+.receipt-container {
+    font-family: Arial, sans-serif;
+    border: 5px solid #e9f7fe;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #e9f7fe;
+    background: linear-gradient(to bottom right, #e9f7fe, #fff);
+    border-radius: 8px;
+}
+.receipt-header {
+    text-align: center;
+    font-size: 22px;
+    color: #1769ff;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.logo_paiement {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50px;
+    border: 2px solid #e9f7fe;
+}
+.receipt-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.label_paiement {
+    font-weight: bold;
+    color: #1769ff;
+}
+.info {
+    font-weight: normal;
+    color: #1769ff;
+}
+.signature {
+    margin-top: 20px;
+    text-align: right;
+}
+.signature span {
+    display: inline-block;
+    margin-top: 10px;
+    border-top: 1px solid #1769ff;
+    width: 200px;
+    text-align: center;
+    color: #1769ff;
+}
+.bloc_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.bloc_header h5{
+    font-weight: 900;
+    font-size: 20px;
+    color: #1769ff;
+}

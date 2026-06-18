@@ -1,0 +1,100 @@
+.bulletin {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.bulletin .header {
+    background-color: #1769ff;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.bulletin .header img {
+    height: 50px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.bulletin .header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.bulletin .info p {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    justify-content:space-between;
+    align-items: center;
+    display: flex;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.bulletin table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.bulletin table th,
+.bulletin table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: 0.9rem;
+}
+
+.bulletin table th {
+    background-color: #1769ff;
+    color: white;
+}
+
+.bulletin .additional-section {
+    margin-top: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.bulletin .additional-section h4 {
+    color: #1769ff;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.bulletin .additional-section p {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bulletin .additional-section span {
+    font-weight: bold;
+}
+
+@media screen and (max-width: 600px) {
+    .bulletin .header h1 {
+        font-size: 1.2rem;
+    }
+
+    .bulletin .info p {
+        font-size: 0.8rem;
+    }
+
+    .bulletin table th,
+    .bulletin table td {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+
+    .bulletin .additional-section p {
+        font-size: 0.8rem;
+    }
+}

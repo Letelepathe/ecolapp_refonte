@@ -1,0 +1,48 @@
+/* Container principal */
+.options-etudes-container {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  /* Animation au survol */
+  .options-etudes-container:hover {
+    transform: translateY(-5px);
+    /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); */
+  }            
+  
+  /* Titre */
+  .options-title {
+    font-weight: 900;
+    color: #1769ff;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  /* Liste des options */
+  .options-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  
+  .options-list li {
+    font-weight: bold;
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    color: #0d47a1; /* un bleu légèrement plus foncé */
+    transition: color 0.3s;
+  }
+  
+  /* Couleur au survol des éléments de la liste */
+  .options-list li:hover {
+    color: #1769ff;
+    cursor: pointer;
+  }
+  
+  /* Paragraphe de description */
+  .options-description {
+    font-size: 1rem;
+    color: #333;
+    margin-top: 1.5rem;
+    line-height: 1.6;
+  }
+  

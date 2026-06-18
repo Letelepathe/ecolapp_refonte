@@ -1,0 +1,148 @@
+  /* Global Styles */
+.bulletin-eleve {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 20px;
+}
+
+.bloc-bulletin {
+    width: 100%;
+    max-width: 1030px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid black;
+}
+
+/* Header */
+.header-bulletin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid black;
+    padding-bottom: 10px;
+}
+
+.header-bulletin img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+}
+
+.pays-titre {
+    text-align: center;
+}
+
+.pays-titre h2 {
+    margin: 5px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Matricule & Province */
+.bloc-2-bulletin, .bloc-province {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    border: 2px solid black;
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+/* Bloc Infos Élève */
+.bloc-responsive {
+    margin-top: 15px;
+    padding: 10px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 5px;
+}
+
+.bloc-responsive .table-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bloc-responsive .table-info div {
+    width: 48%;
+    padding: 10px;
+    border: 1px solid black;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* Tableau des Notes */
+.bulletin-eleve .table-container {
+    margin-top: 20px;
+}
+
+.bulletin-eleve table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bulletin-eleve th, .bulletin-eleve td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+.bulletin-eleve th {
+    background-color: #007bff;
+    color: white;
+}
+
+.total-row {
+    font-weight: bold;
+    background-color: #f1f1f1;
+}
+
+/* Bloc Résumé des Résultats */
+       /* Bloc Résumé des Résultats */
+.summary-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.summary-container .result-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+
+.final-result {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.bulletin-eleve .success {
+    background-color: #28a745;
+    color: white;
+}
+
+.failure {
+    background-color: #dc3545;
+    color: white;
+}
+.bloc-2-bulletin, .bloc-province {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}

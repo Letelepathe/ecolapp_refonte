@@ -1,0 +1,44 @@
+@media print {
+    .hide-on-print {
+      display: none;
+    }
+    
+    /* Si vous voulez masquer d'autres parties de votre interface pendant l'impression, ajoutez-les ici */
+    .sidebar, .navbar, .footer {
+      display: none;
+    }
+    
+    .receipt-container {
+      display: block;
+    }
+  }
+  
+  
+.loading {
+  position: relative;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  from {
+      transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+      transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

@@ -1,0 +1,11 @@
+input[type=text], input[type=email]{
+ outline:none;
+ height:50px;
+ border: 1 px solid #0d83fd;
+ box-shadow: none;
+}
+textarea{
+  resize: none;
+  border: 1 px solid #0d83fd;
+  box-shadow: none;
+}

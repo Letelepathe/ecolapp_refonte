@@ -1,0 +1,15 @@
+.conditions-container {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .condition-section h4 {
+    color: #002855;
+  }
+  
+  .condition-section p {
+    color: #333;
+    line-height: 1.6;
+  }
+  

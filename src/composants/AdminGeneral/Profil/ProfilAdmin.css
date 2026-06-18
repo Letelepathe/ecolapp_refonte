@@ -1,0 +1,64 @@
+.bloc-profil-admin {
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.bloc-profil-admin .profile-container {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 500px;
+    margin-top: 30px;
+}
+@media(max-width:986px){
+    .profile-container{
+        width: 100%;
+        padding: 0;
+    }
+}
+.bloc-profil-admin .profile-block {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+.bloc-profil-admin .profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid #007bff;
+    object-fit: cover;
+}
+
+.bloc-profil-admin .info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.bloc-profil-admin .info-item i {
+    color: #007bff;
+    font-size: 18px;
+}
+.bloc-profil-admin .btn-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.bloc-profil-admin .btn-custom {
+    padding: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.bloc-profil-admin .btn-custom i {
+    font-size: 18px;
+}

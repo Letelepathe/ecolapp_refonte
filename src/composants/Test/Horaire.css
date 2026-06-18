@@ -1,0 +1,21 @@
+/* Style normal */
+.horaire-container {
+  font-family: Arial, sans-serif;
+}
+
+/* Impression */
+@media print {
+ 
+  .horaire-table, .horaire-table * {
+    visibility: visible;
+  }
+  .horaire-table {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .btn {
+    display: none;
+  }
+}

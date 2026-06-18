@@ -1,0 +1,15 @@
+.privacy-container {
+    background-color: #f0f2f5;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .privacy-section h4 {
+    color: #002855;
+  }
+  
+  .privacy-section p {
+    color: #555;
+    line-height: 1.6;
+  }
+  

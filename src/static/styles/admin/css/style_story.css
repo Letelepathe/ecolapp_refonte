@@ -1,0 +1,108 @@
+.stors-container {
+    display: flex;
+    overflow-y: hidden;
+    max-width: 50vw;
+    padding:3px;
+  }
+  .stors-container:hover {
+    overflow-y: auto;
+  }
+  .stors {
+    width: 145px;
+    height: 205px;
+    border-radius:10px;
+    margin: 5px;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    background-color: #e6e6e6;
+    background-repeat: no-repeat;
+    box-shadow: 0px 5px 17px -7px rgba(0, 0, 0, 0.75);
+    transition: transform 100ms ease-in;
+    cursor: pointer;
+  }
+ 
+
+      .stors .sto {
+   
+        background-color: black;
+        opacity: .8;
+    border-radius: 15px;
+    color: #fff;
+  } 
+
+  
+ 
+
+ 
+  @media (max-width: 768px) {
+    .stors-container {
+      max-width: 100%;
+    }
+  }
+  .profil{
+    display: flex;
+  }
+  .profil img{
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          margin-right: 27px;
+
+  }
+  .profil .nb_storie{
+          background-color: #4285f4;
+          color: white;
+          border-radius: 4px;
+          padding: 5px 5px;
+          font-size: 14px;
+      }
+      .name {
+          margin-top: 139px; 
+          padding: 0 5px; 
+          font-size: 16px;
+          color: white;
+          font-weight: bold;
+          text-align: center;
+          text-overflow: ellipsis; 
+          overflow: hidden; 
+          white-space: nowrap; 
+      }
+      .ajout{
+        margin-top: 108px; 
+      }
+      .btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+.stors-container::-webkit-scrollbar{
+   background-color:royalBlue;
+   width:20px;
+}
+.stors-container::-webkit-scrollbar-thumb{
+  background-color:royalBlue;
+  width:20px;
+}
+.stors-container::-webkit-scrollbar-track{
+  background-color:royalBlue;
+  width:20px;
+}
+.stors-container::-webkit-scrollbar-thumb{
+ background-color:royalBlue;
+ width:20px;
+}

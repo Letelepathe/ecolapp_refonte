@@ -1,0 +1,61 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.autre{
+    margin-right: 10px;
+}
+@media(max-width:986px){
+    .autre{
+        margin-top: 6px;
+    }
+}
+.btn_search{
+    background-color: #000;
+    color: #fff;
+    width: 40px;
+    margin-left: -3px;
+    border-radius: 0px 5px 5px 0px;
+    border: none;
+}
+
+.icons .bi{
+    font-size: 18px;
+    color: #000;
+    border-radius: 50px;
+    padding: 5px;
+}
+.search-input {
+    border: 1 solid #000;
+    outline: none;
+    box-shadow: none;
+}
+.badge-number {
+    position: relative;
+    inset: -10px 15px auto auto;
+    font-weight: normal;
+    font-size: 12px;
+    border-radius:40px;
+}
+.img-produit{
+    width: 100%;
+    height: 180px;
+}
+.icon_bt .bi{
+    font-size: 20px;
+    color: #fff;
+    border-radius: 50px;
+    padding: 5px;
+    background: #000;
+}
+.scrollto{
+    color: #0d83fd; 
+}
+.autre_nav{
+    margin-bottom: -6px;
+}
+@media(max-width:986px){
+    .autre_nav{
+        margin-bottom: 0px;
+    }
+}
