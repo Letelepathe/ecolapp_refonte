@@ -9,6 +9,7 @@ const AjouterEleve = () => (
     BarreGauche={SidebarLeft}
     NavHaut={NavbarTop}
     lienListe="/maternelle/liste_eleve"
+    ageMinimumEleve={3}
   />
 );
 

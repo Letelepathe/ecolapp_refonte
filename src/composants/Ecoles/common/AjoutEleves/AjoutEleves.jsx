@@ -10,7 +10,7 @@ import {
   validerEleve,
 } from "./outilsAjoutEleves";
 
-const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
+const AjoutEleves = ({ BarreGauche, NavHaut, lienListe, ageMinimumEleve }) => {
   const ecoleId = localStorage.getItem("ecole_id");
   const direction = localStorage.getItem("direction");
   const userId = localStorage.getItem("userId");
@@ -83,7 +83,7 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
   };
 
   const validerForm = () => {
-    const erreurs = eleves.map(validerEleve);
+    const erreurs = eleves.map((eleve) => validerEleve(eleve, ageMinimumEleve));
     setErrs(erreurs);
     return erreurs.every((erreur) => Object.keys(erreur).length === 0);
   };

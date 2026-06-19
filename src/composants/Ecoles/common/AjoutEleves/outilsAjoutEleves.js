@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAgeMinimumEleveError } from "../validationAgeEleve";
 
 export const URL_API = "https://api.ecolapp.cd/api";
 
@@ -80,7 +81,7 @@ export const creerEleveVide = (ecoleId, direction) => ({
   direction,
 });
 
-export const validerEleve = (eleve) => {
+export const validerEleve = (eleve, ageMinimumEleve) => {
   const err = {};
 
   champsReq.forEach((champ) => {
@@ -88,6 +89,14 @@ export const validerEleve = (eleve) => {
       err[champ] = `${nomsChamps[champ]} requis`;
     }
   });
+
+  if (ageMinimumEleve) {
+    const erreurDateNaissance = getAgeMinimumEleveError(eleve.date_naissance, ageMinimumEleve);
+
+    if (erreurDateNaissance) {
+      err.date_naissance = erreurDateNaissance;
+    }
+  }
 
   return err;
 };

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './style_inscription.css';
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
+import { getAgeMinimumEleveError } from "../../common/validationAgeEleve";
 
 const Inscriptionmaternelle = () => {
   const [ecole, setEcole] = useState(null);
@@ -95,7 +96,8 @@ const Inscriptionmaternelle = () => {
 
     if (!formData.classes_id) newErrors.classes_id = "Classe d'inscription requise";
     
-    if (!formData.date_naissance) newErrors.date_naissance = "Date de naissance requise";
+    const dateNaissanceError = getAgeMinimumEleveError(formData.date_naissance, 3);
+    if (dateNaissanceError) newErrors.date_naissance = dateNaissanceError;
     if (!formData.lieu_de_naissance) newErrors.lieu_de_naissance = "Lieu de naissance requis";
     if (!formData.nationalite) newErrors.nationalite = "Nationalité requise";
     
