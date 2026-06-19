@@ -457,17 +457,17 @@ const ProfilUser = () => {
   if (isLoading) return <div className='spinner'></div>;
 
   return (
-    <div>
+    <div className="profil-user-page refonte-shell">
             <Helmet>
                 <title>primaire | Profil utilisateur</title>
 
             </Helmet>
-            <div className="container-fluid position-relative  d-flex p-0">
+            <div className="container-fluid position-relative d-flex p-0 refonte-shell">
            
                 <SidebarLeft />
-                <div className="content">
+                <div className="content refonte-content">
                     <NavbarTop />
-                    <div className="container-fluid pt-4 px-4">
+                    <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
                             {/* Bloc pour les enseignants */}
                             {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
@@ -512,7 +512,7 @@ const ProfilUser = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="container-fluid pt-4 px-4">
+                    <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
                           {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
               <div className='col-12'>
@@ -618,16 +618,17 @@ const ProfilUser = () => {
 
 };
 
-const DashboardCard = ({ title, count, icon }) =>
-
-<div className="  rounded d-flex align-items-center justify-content-between p-4">
-            <i className={`bi ${icon} icone-profil-grand text-primary`} />
-            <div className="ms-3">
-                <p className="mb-2">{title}</p>
-                <h6 className="mb-0">{count}</h6>
-            </div>
-        </div>;
-
-
+const DashboardCard = ({ title, count, icon }) => (
+  <article className="dashboard-stat bleu profil-stat-card">
+    <div className="dashboard-stat-top">
+      <span className="dashboard-stat-icon">
+        <i className={`bi ${icon}`} />
+      </span>
+      <span className="dashboard-stat-badge" />
+    </div>
+    <h3>{count}</h3>
+    <p>{title}</p>
+  </article>
+);
 
 export default ProfilUser;

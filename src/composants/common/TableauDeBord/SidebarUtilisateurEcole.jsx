@@ -13,6 +13,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 import BarreLaterale from "./BarreLaterale";
+import { menusEcole } from "./menusTableauBord";
 
 const ROLES_ADMIN = ["administrateur", "administratrice", "super administrateur", "super administratrice"];
 const ROLES_ENSEIGNANT = [...ROLES_ADMIN, "enseignant", "enseignante"];
@@ -42,12 +43,7 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
   ];
 
   if (estAdmin) {
-    menus.push({
-      id: "admin",
-      titre: "Administration",
-      icone: FiHome,
-      to: `/${cycle}/bureau_admin`,
-    });
+    menus.push(...menusEcole(cycle));
   }
 
   if (infoClasseUser?.length) {

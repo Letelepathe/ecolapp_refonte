@@ -1,154 +1,108 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import AOS from "aos";
+import { Link } from "react-router-dom";
+import { FiBookOpen, FiInfo, FiUsers, FiZap } from "react-icons/fi";
 import NavbarBottom from "./NavbarBottom";
+import ImageEcole from "../../static/images/image_ecole.webp";
 
-import ImageEcole from '../../static/images/image_ecole.webp';
+const HeroSection = () => (
+  <section className="index-hero" data-aos="fade-up">
+    <div className="index-hero-copy">
+      <h1>ecolapp</h1>
+      <p>
+        <strong>ecolapp, gestion scolaire simplifiée et efficace.</strong>
+        <span>Un outil tout-en-un pour les écoles, enseignants, élèves, et parents.</span>
+      </p>
+    </div>
 
+    <div className="index-hero-wheel" data-aos="zoom-in">
+      <div className="index-wheel-dots" aria-hidden="true">
+        {Array.from({ length: 18 }, (_, index) => (
+          <span key={index} style={{ "--dot-index": index }} />
+        ))}
+      </div>
+      <div className="index-hero-photo">
+        <img src={ImageEcole} alt="ecolapp" />
+      </div>
+    </div>
+  </section>
+);
 
-const HeroSection = () => {
+const cartes = [
+  {
+    icon: FiBookOpen,
+    title: "Écoles",
+    text: "Accéder aux établissements et aux cycles.",
+    lien: "/ecoles",
+  },
+  {
+    icon: FiUsers,
+    title: "Parents",
+    text: "Suivre les informations scolaires de vos enfants.",
+    lien: "/parent",
+  },
+  {
+    icon: FiInfo,
+    title: "À propos",
+    text: "Découvrir la mission et les réponses utiles.",
+    lien: "/apropos",
+  },
+  {
+    icon: FiZap,
+    title: "Services",
+    text: "Explorer les outils et fonctionnalités ecolapp.",
+    lien: "/services",
+  },
+];
+
+const CardSection = () => (
+  <section className="index-card-section" data-aos="fade-up">
+    <div className="index-card-intro">
+      <span className="dashboard-pill">Bienvenue</span>
+      <h2>Choisissez votre espace</h2>
+      <p>Tout est regroupé dans une grille claire, rapide et agréable.</p>
+    </div>
+
+    <div className="index-card-grid">
+      {cartes.map((carte) => {
+        const Icone = carte.icon;
+        return (
+          <article className="index-card" key={carte.title}>
+            <span className="index-card-icon">
+              <Icone />
+            </span>
+            <h3>{carte.title}</h3>
+            <p>{carte.text}</p>
+            <Link to={carte.lien} className="btn">
+              Explorer
+            </Link>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+);
+
+const Index = () => {
+  const [afficherHero, setAfficherHero] = useState(true);
+
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true
+      duration: 900,
+      easing: "ease-in-out",
+      once: true,
     });
+
+    const timer = window.setTimeout(() => setAfficherHero(false), 2800);
+    return () => window.clearTimeout(timer);
   }, []);
 
   return (
-    <section className="her container-fluid text-center justify-content-center  py-3"
-    >
-      <h1 className="titre" data-aos="fade-up">ecolapp</h1>
-      <p className="p" data-aos="fade-right">
-        <span>ecolapp, gestion scolaire simplifiée et efficace.</span>
-         <br />
-        <span>
-          Un outil tout-en-un pour les écoles, enseignants, élèves, et parents.
-        </span>
-      </p>
-      <div className="photo-container">
-        <div className="circle"></div>
-        <img
-          src={ImageEcole}
-          alt="ecolapp"
-          className="img-fluid-1 img_index"
-          data-aos="zoom-in" />
-        
-      </div>
-      
-    </section>);
-
-};
-
-const Card = ({ icon, text, lien }) => {
-  return (
-
-    <div className="card">
-        <div className="card-body">
-          <h5 className="card-title"> <i className={`${`${icon}`} style-fr-d3696138`}></i> </h5>
-          <p className="card-text">{text}</p>
-          <Link to={lien} className="btn btn-custom ms-3">Explorer</Link>
-        </div>
-      </div>);
-
-
-};
-
-const CardsSection = () => {
-  return (
-    <div className="section-cards container-fluid">
-      <div className="row">
-        
-        <div className="col-lg-3 col-md-12 col-sm-12 mb-4 b">
-          <div className="style-fr-e363f0ae">
-           Ecoles
-          </div>
-          <Card
-            icon="bi bi-mortarboard-fill icon"
-            text=""
-            lien="/ecoles" />
-          
-        </div>
-        <div className="col-lg-3 col-md-6 mb-4 b">
-          <div className="style-fr-e363f0ae">
-           Parents
-          </div>
-          <Card
-            icon="bi bi-person-fill icon"
-            text=""
-            lien="/parent" />
-          
-        </div>
-        <div className="col-lg-3 col-md-12 col-sm-12 mb-4 b">
-          <div className="style-fr-e363f0ae">
-           A propos
-          </div>
-          <Card
-            icon="bi bi-info-circle-fill icon"
-            text=""
-            lien="/apropos" />
-          
-        </div>
-        <div className="col-lg-3 col-md-6 mb-4 b">
-          <div className="style-fr-e363f0ae">
-           Services
-          </div>
-          <Card
-            icon="bi bi-flower1 icon"
-            text=""
-            lien="/services" />
-          
-        </div>
-      </div>
-    </div>);
-
-};
-
-const Copyright = () => {
-  const currentYear = new Date().getFullYear();
-
-  return (
-    <footer>
-        <p className='text-center'>
-            &copy; <span>{currentYear}</span> 
-            <strong className="px-1">ecolapp</strong> 
-            <span>Tous droits réservés</span>
-        </p>
-      </footer>);
-
-};
-
-
-
-const Index = () => {
-  return (
-    <div className="bloc-index">
-      <HeroSection />
-      <CardsSection />
-      <Copyright />
+    <div className="bloc-index index-refonte">
+      {afficherHero ? <HeroSection /> : <CardSection />}
       <NavbarBottom />
-     
-    </div>);
-
+    </div>
+  );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default Index;
