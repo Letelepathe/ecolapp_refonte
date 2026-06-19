@@ -192,7 +192,7 @@ const AjouterPaiement = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -203,7 +203,7 @@ const AjouterPaiement = () => {
                 <div className="card-body">
                   <div className="justify-content-between align-items-center d-flex">
                     <h3 className="text-center text-primary">Ajouter Paiement</h3>
-                    <Link to="/maternelle/liste_paiement" className="btn btn-warning text-white">Liste paiements</Link>
+                    <Link to="/maternelle/liste_paiement" className="btn  text-white">Liste paiements</Link>
                   </div>
                   <form onSubmit={handleSubmit}>
                     <div className="row">
@@ -313,7 +313,7 @@ const AjouterPaiement = () => {
                           {errors.motif_id && <p className="text-danger">{errors.motif_id}</p>}
                         </div>
                         
-                        <button className={`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} type="submit"
+                        <button className={`btn  w-100 ${isLoading ? "loading" : ""}`} type="submit"
                           disabled={isLoading}
                         >
                           {isLoading ? "Paiement en cours..." : "Ajouter paiement"}
@@ -367,7 +367,7 @@ const AjouterPaiement = () => {
                             })}</span>
 
                             </div>
-                            <button className="btn btn-primary hide-on-print" onClick={printReceipt}>
+                            <button className="btn  hide-on-print" onClick={printReceipt}>
                               Imprimer
                             </button>
                         </div>

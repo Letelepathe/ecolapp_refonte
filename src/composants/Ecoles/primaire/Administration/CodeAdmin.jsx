@@ -46,7 +46,7 @@ const CodeAdmin = () => {
                 value={code}
                 onChange={(e) => setCode(e.target.value)} />
               
-              <button type="submit" className="btn btn-primary w-100 submit-button">
+              <button type="submit" className="btn  w-100 submit-button">
                 Valider le code
               </button>
               {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}

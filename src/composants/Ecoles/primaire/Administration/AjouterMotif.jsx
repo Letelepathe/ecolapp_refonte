@@ -82,7 +82,7 @@ const AjouterMotif = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
      <SidebarLeft />
       <div className="content">
       <NavbarTop />
@@ -93,7 +93,7 @@ const AjouterMotif = () => {
                 <div className="card-body">
                   <div className='justify-content-between align-items-center d-flex'>
                    <h6 className="text-center u-style-951c0e5f">Ajouter Motif de Paiement</h6>
-                   <Link to='/primaire/liste_motif' className='btn btn-warning text-white'>Liste motifs</Link>
+                   <Link to='/primaire/liste_motif' className='btn  text-white'>Liste motifs</Link>
                   </div>
                   
                   <p className="text-center">Veuillez remplir le motif de paiement ci-dessous.</p>
@@ -144,7 +144,7 @@ const AjouterMotif = () => {
                     </div>
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                       {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

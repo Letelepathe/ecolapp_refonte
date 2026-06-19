@@ -290,11 +290,11 @@ const PanelEleve = () => {
         <div className="text-center">
           <div className="hide-on-print">
           {authenticated ?
-            <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/secondaire/profil_user">
+            <Link className="btn  text-white  u-style-420aab4e" to="/secondaire/profil_user">
             Retour
           </Link> :
 
-            <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/secondaire">Quitter</Link>
+            <Link className="btn  text-white  u-style-420aab4e" to="/secondaire">Quitter</Link>
             }
           </div>
         </div>
@@ -303,9 +303,9 @@ const PanelEleve = () => {
       <div className="container-fluid panel-eleve">
         <div className="row g-4">
           
-          <div className="col-lg-4 col-12 hide-on-print bg-white py-3 shadow mt-2 d-none d-lg-block u-style-59f7bcd2">
+          <div className="col-lg-4 col-12 hide-on-print  py-3  mt-2 d-none d-lg-block u-style-59f7bcd2">
             <h3 className="section-title text-center hide-on-print u-style-43ef163a">Informations de l'élève</h3>
-             <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+             <div className=" py-3  mt-2 u-style-59f7bcd2">
               <ul className="info-list container hide-on-print">
                 <li><strong>Nom:</strong> {eleve.name}</li>
                 <li><strong>Postnom:</strong> {eleve.last_name}</li>
@@ -315,7 +315,7 @@ const PanelEleve = () => {
                 <li><strong>Matricule:</strong> {eleve.matricule}</li>
               </ul>
              </div>
-            <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+            <div className=" py-3  mt-2 u-style-59f7bcd2">
               <div id="recent-blog-posts" className="recent-blog-posts container">
                     <h3 className="mb-4 text-primary">Horaires</h3>
                     <div className="row">
@@ -333,9 +333,9 @@ const PanelEleve = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4 col-12 hide-on-print bg-white py-3 shadow mt-2 d-block d-lg-none u-style-59f7bcd2">
+          <div className="col-lg-4 col-12 hide-on-print  py-3  mt-2 d-block d-lg-none u-style-59f7bcd2">
             <h3 className="section-title text-center hide-on-print u-style-43ef163a">Informations de l'élève</h3>
-            <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+            <div className=" py-3  mt-2 u-style-59f7bcd2">
               <ul className="info-list container hide-on-print">
                 <li><strong>Nom:</strong> {eleve.name}</li>
                 <li><strong>Postnom:</strong> {eleve.last_name}</li>
@@ -396,10 +396,10 @@ const PanelEleve = () => {
                 <div className="tab-content" id="pills-tabContent">
                 
                   <div className="tab-pane fade show active" id="cours_classe" role="tabpanel" aria-labelledby="pills-home-tab">
-                      <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 u-style-59f7bcd2">
                         <h3 className="section-title container">Cours de la Classe ({cours.length}) </h3>
                         <div className="table-responsive container">
-                          <table className="table table-striped">
+                          <table className="table ">
                             <thead>
                               <tr>
                                 <th>#</th>
@@ -421,7 +421,7 @@ const PanelEleve = () => {
                       </div>                 
                     </div>
                     <div className="tab-pane fade" id="horaires" role="tabpanel" aria-labelledby="pills-home-tab">
-                      <div className="bg-white py-3 shadow mt-2 d-block d-lg-none u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 d-block d-lg-none u-style-59f7bcd2">
                         <div id="recent-blog-posts" className="recent-blog-posts container">
                               <h3 className="mb-4 text-primary">Horaires</h3>
                               <div className="row">
@@ -440,15 +440,15 @@ const PanelEleve = () => {
                       </div>
                     </div>
                    <div className="text-center mt-2 mb-2">
-                     <Link to={`/secondaire/consulter_resultat/${id}`} className="btn btn-primary">Consulter résultat</Link>
+                     <Link to={`/secondaire/consulter_resultat/${id}`} className="btn ">Consulter résultat</Link>
                    </div>
                    <div className="tab-pane fade" id="cours_fichier" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <div className="bg-white shadow py-3 container">
-                          <div className="bg-white py-3 shadow mt-2 hide-on-print u-style-59f7bcd2">
+                        <div className="  py-3 container">
+                          <div className=" py-3  mt-2 hide-on-print u-style-59f7bcd2">
                             <h2 className="text-center mb-4 text-primary">Cours en fichier ({cours_fichier.length})</h2>
                             {error && <p className="text-danger text-center">{error}</p>}
                             <div className="table-responsive hide-on-print container">
-                              <table className="table table-bordered table-hover">
+                              <table className="table  ">
                                 <thead className="bg-primary text-white">
                                   <tr>
                                     <th className='text-white'>#</th>
@@ -474,7 +474,7 @@ const PanelEleve = () => {
                                         <td>{cf.annee.name}</td>
                                         <td>
                                         <a
-                                  className="btn btn-primary"
+                                  className="btn "
                                   href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}>
                                   
                                             <i className="bi bi-download"></i> Télécharger
@@ -495,10 +495,10 @@ const PanelEleve = () => {
                     </div>
 
                     <div className="tab-pane fade" id="travaux_eleve" role="tabpanel" aria-labelledby="pills-contact-tab">
-                      <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 u-style-59f7bcd2">
                         <h2 className="mb-4 text-primary hide-on-print container">Liste des Travaux ({travaux.length}) </h2>
                         <div className="table-responsive container">
-                          <table className="table table-bordered table-hover">
+                          <table className="table  ">
                             <thead className="bg-primary text-white">
                               <tr>
                                 <th className='text-white'>#</th>
@@ -528,7 +528,7 @@ const PanelEleve = () => {
                                       <td>{travail.annee.name}</td>
                                     <td>
                                     <a
-                                className="btn btn-primary"
+                                className="btn "
                                 href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail.fichier}`}>
                                 
                                       <i className="bi bi-download"></i> Télécharger
@@ -547,11 +547,11 @@ const PanelEleve = () => {
                       </div>
                     </div>
                     <div className="tab-pane fade" id="travaux_deposes" role="tabpanel" aria-labelledby="pills-contact-tab">
-                      <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 u-style-59f7bcd2">
                         <div className="container table-responsive mt-5">
                           <h2 className="text-primary">Travaux Déposés ({travaux_eleve.length})</h2>
                           {message && <div className="alert alert-info">{message}</div>}
-                          <table className="table table-bordered table-hover mt-3">
+                          <table className="table   mt-3">
                             <thead className="bg-primary text-white">
                               <tr>
                                 <th>#</th>
@@ -572,7 +572,7 @@ const PanelEleve = () => {
                                   <td>{travail_eleve.date_depot}</td>
                                   <td>
                                    <a
-                                className="btn btn-primary"
+                                className="btn "
                                 download
                                 href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail_eleve.fichier}`}>
                                 
@@ -587,10 +587,10 @@ const PanelEleve = () => {
                       </div>
                     </div>
                     <div className="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="pills-contact-tab">
-                      <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 u-style-59f7bcd2">
                           <div className="table-responsive hide-on-print container">
                             <h3 className="section-title container">Résultats/Notes</h3>
-                            <table className="table table-striped">
+                            <table className="table ">
                               <thead>
                                 <tr>
                                   <th>#</th>
@@ -618,10 +618,10 @@ const PanelEleve = () => {
                             </table>
                           </div>
                       </div>
-                      <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 u-style-59f7bcd2">
                           <div className="table-responsive hide-on-print container">
                             <h3 className="section-title container">Notes générales</h3>
-                            <table className="table table-striped">
+                            <table className="table ">
                               <thead>
                                 <tr>
                                   <th>#</th>
@@ -649,10 +649,10 @@ const PanelEleve = () => {
                       </div>
                     </div>
                     <div className="tab-pane fade" id="paiements" role="tabpanel" aria-labelledby="pills-contact-tab">
-                      <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 u-style-59f7bcd2">
                         <h3 className="section-title container">Paiements ({paiements.length}) </h3>
                         <div className="table-responsive container">
-                          <table className="table table-striped">
+                          <table className="table ">
                             <thead>
                               <tr>
                                 <th>#</th>
@@ -675,7 +675,7 @@ const PanelEleve = () => {
                                   <td>{paiement.annee.name}</td>
                                   <td>
                                     <button
-                                className="btn btn-secondary"
+                                className="btn "
                                 onClick={() => generateProof(paiement)}>
                                 
                                       Générer Preuve
@@ -721,7 +721,7 @@ const PanelEleve = () => {
                               {/* Statistiques */}
                               <h3>Statistiques :</h3>
                               <div className='table-responsive'>
-                                  <table className="table table-bordered">
+                                  <table className="table ">
                                       <thead>
                                           <tr>
                                               <th>Présences</th>
@@ -740,7 +740,7 @@ const PanelEleve = () => {
                               {/* Historique */}
                               <h3>Historique :</h3>
                               <div className='table-responsive'>
-                                  <table className="table table-bordered">
+                                  <table className="table ">
                                       <thead>
                                           <tr>
                                               <th>Date</th>
@@ -821,7 +821,7 @@ const PanelEleve = () => {
                   })}
                   </span>
                 </div>
-                <button className="btn btn-primary hide-on-print" onClick={printReceipt}>
+                <button className="btn  hide-on-print" onClick={printReceipt}>
                   Imprimer
                 </button>
               </div>

@@ -3,7 +3,7 @@ import { anneeSco, idEleve, nomCls, nomOpt } from "./outilsCarte";
 
 const TableEleves = ({ eleves, idsSel, bascEleve, selUn }) => (
   <div className="table-responsive mt-3">
-    <table className="table table-striped table-bordered align-middle mb-0">
+    <table className="table   align-middle mb-0">
       <thead>
         <tr>
           <th>Choix</th>
@@ -38,7 +38,7 @@ const TableEleves = ({ eleves, idsSel, bascEleve, selUn }) => (
               <td>{nomOpt(eleve)}</td>
               <td>{anneeSco(eleve)}</td>
               <td>
-                <button className="btn btn-sm btn-primary" onClick={() => selUn(eleve)}>
+                <button className="btn  " onClick={() => selUn(eleve)}>
                   Générer seul
                 </button>
               </td>

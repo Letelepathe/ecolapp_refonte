@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 
 const Table = ({ title, data, error }) =>
 <div>
-    <div className="bg-white shadow text-center rounded p-4">
+    <div className="  text-center rounded p-4">
       <div className="d-flex align-items-center justify-content-between mb-4">
         <h6 className="mb-0">{title}</h6>
-          <Link className="text-center btn btn-success" to='/maternelle/creationcompte'><i className="bi bi-plus"></i> Créer un utilisateur</Link>
+          <Link className="text-center btn " to='/maternelle/creationcompte'><i className="bi bi-plus"></i> Créer un utilisateur</Link>
       </div>
       <div className="table-responsive">
         {error ?
@@ -16,7 +16,7 @@ const Table = ({ title, data, error }) =>
 
       <div>
             {data && data.length > 0 ?
-        <table className="table text-start align-middle table-bordered table-hover mb-0">
+        <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Id</th>

@@ -5,7 +5,7 @@ const AlertCreationCompte = () => {
     <div className="alert-creation-compte bg-light">
             <div className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                 <div className="col-lg-5 col-md-8 d-flex flex-column align-items-center justify-content-center">
-                    <div className="card shadow p-4">
+                    <div className="card  p-4">
                         <div className="text-center py-3">
                             <div className="alert-icon mb-3 text-warning">
                                 <i className="bi bi-exclamation-triangle-fill u-style-8c22ea69"></i>
@@ -16,7 +16,7 @@ const AlertCreationCompte = () => {
                                 Si vous avez besoin d’un compte, veuillez contacter un administrateur pour qu’il le crée pour vous. Merci de votre compréhension.
                             </p>
                             <div className="text-center">
-                                <Link className="btn btn-primary btn-lg px-4" to="/secondaire">
+                                <Link className="btn   px-4" to="/secondaire">
                                     Ok, merci
                                 </Link>
                             </div>

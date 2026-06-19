@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 import './css/style-uniforme.css';
+import TableauAutoPagination from './composants/common/Tableau/TableauAutoPagination';
 
 
 // Index
@@ -662,6 +663,7 @@ const App = () => {
 
   return (
     <Router>
+      <TableauAutoPagination />
       <Routes>
          {/* Index */}
           <Route path="/h" element={<Horaire/>} />

@@ -56,7 +56,7 @@ const AccueilInscriptionmaternelle = () => {
                   Nous sommes ravis de vous accueillir dans notre établissement. Merci pour votre confiance !
                 </p>
                 <div className="text-center">
-                  <Link to={`/maternelle/info_eleve_inscrit_maternelle/${id}`} className="btn btn-primary ml-3">
+                  <Link to={`/maternelle/info_eleve_inscrit_maternelle/${id}`} className="btn  ml-3">
                     Voir et imprimer mon bulletin
                   </Link>
                 </div>

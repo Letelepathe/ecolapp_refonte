@@ -28,7 +28,7 @@
 
 @import "aos/dist/aos.css";
 
-@import "bootstrap/dist/css/bootstrap.min.css";
+/* @import "bootstrap/dist/css/bootstrap.min.css"; */
 
 @import "plyr-react/plyr.css";
 
@@ -9049,3 +9049,215 @@ textarea.form-control:focus {
 .style-fr-fb18fb29 { display: inline-block; padding: 10px 20px; margin-top: 20px; background-color: #1769ff; color: #fff; text-decoration: none; border-radius: 20px; font-size: 16px; font-weight: bold; transition: background-color 0.3s ease; }
 .style-fr-a659ffe5 { border-radius: 15px; background-color: #ffffff; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); padding: 30px; font-family: 'Roboto', sans-serif; color: #333333; line-height: 1.8; font-size: 16px; }
 .style-fr-e4b453bf { font-weight: bold; color: #0d83fd; }
+
+/* Design uniforme des tableaux, boutons et paginations */
+:root {
+  --ecolapp-table-bg: #f5f0e7;
+  --ecolapp-table-head-bg: #dfddcc;
+  --ecolapp-table-border: rgba(65, 59, 42, 0.16);
+  --ecolapp-table-text: #1f2119;
+  --ecolapp-button-bg: #c8ef92;
+  --ecolapp-button-bg-hover: #b8e575;
+  --ecolapp-button-text: #1f2a12;
+  --ecolapp-control-border: rgba(31, 33, 25, 0.18);
+}
+
+*,
+*::before,
+*::after {
+  box-shadow: none !important;
+}
+
+.shadow,
+.shadow-sm,
+.shadow-lg,
+[class*=" shadow"],
+[class^="shadow"] {
+  box-shadow: none !important;
+}
+
+.bg-white:not(.card),
+.table-responsive.bg-white,
+.ecolapp-table-shell.bg-white {
+  background-color: transparent !important;
+}
+
+.table-responsive,
+.ecolapp-table-shell {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 18px;
+  box-shadow: none !important;
+  overflow-x: auto;
+}
+
+table.table,
+table.ecolapp-table {
+  width: 100%;
+  color: var(--ecolapp-table-text) !important;
+  background: transparent !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 0 !important;
+  font-size: 0.9rem;
+}
+
+table.table thead tr,
+table.ecolapp-table thead tr {
+  background: var(--ecolapp-table-head-bg) !important;
+}
+
+table.table thead th,
+table.ecolapp-table thead th {
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--ecolapp-table-text) !important;
+  font-weight: 700;
+  padding: 1.2rem 1rem !important;
+  white-space: nowrap;
+}
+
+table.table thead th:first-child,
+table.ecolapp-table thead th:first-child {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+
+table.table thead th:last-child,
+table.ecolapp-table thead th:last-child {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+table.table tbody tr,
+table.ecolapp-table tbody tr {
+  background: transparent !important;
+  border-bottom: 1px solid var(--ecolapp-table-border) !important;
+}
+
+table.table tbody td,
+table.ecolapp-table tbody td {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--ecolapp-table-border) !important;
+  color: var(--ecolapp-table-text) !important;
+  padding: 1rem !important;
+  vertical-align: middle !important;
+}
+
+table.table tbody tr:hover,
+table.ecolapp-table tbody tr:hover {
+  background: rgba(200, 239, 146, 0.14) !important;
+}
+
+.ecolapp-table-empty {
+  color: #6f6b5d !important;
+  font-weight: 600;
+  text-align: center;
+}
+
+button:not(.navbar-toggler):not(.btn-close):not(.carousel-control-prev):not(.carousel-control-next):not(.ecolapp-page-number):not(.ecolapp-page-control),
+.btn:not(.btn-link):not(.navbar-toggler):not(.btn-close),
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a.btn:not(.btn-link) {
+  align-items: center;
+  background: var(--ecolapp-button-bg) !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: var(--ecolapp-button-text) !important;
+  display: inline-flex;
+  font-weight: 700 !important;
+  gap: 0.45rem;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0.58rem 1.35rem !important;
+  text-decoration: none !important;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:not(.navbar-toggler):not(.btn-close):not(.carousel-control-prev):not(.carousel-control-next):not(.ecolapp-page-number):not(.ecolapp-page-control):hover,
+.btn:not(.btn-link):not(.navbar-toggler):not(.btn-close):hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+a.btn:not(.btn-link):hover {
+  background: var(--ecolapp-button-bg-hover) !important;
+  color: var(--ecolapp-button-text) !important;
+  transform: translateY(-1px);
+}
+
+button:disabled,
+.btn:disabled,
+.btn.disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none !important;
+}
+
+.ecolapp-pagination,
+.pagination {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1rem 0 0;
+}
+
+.ecolapp-page-number,
+.ecolapp-page-control,
+.pagination .page-link {
+  align-items: center;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: var(--ecolapp-table-text) !important;
+  display: inline-flex;
+  font-size: 0.86rem;
+  font-weight: 700;
+  height: 30px;
+  justify-content: center;
+  min-height: 30px;
+  min-width: 30px;
+  padding: 0 !important;
+}
+
+.ecolapp-page-number.active,
+.pagination .active .page-link,
+.pagination .page-link.active {
+  background: var(--ecolapp-button-bg) !important;
+}
+
+.ecolapp-page-control {
+  background: #d9f3ad !important;
+  color: #5b7428 !important;
+}
+
+.ecolapp-page-control:disabled {
+  opacity: 0.35;
+}
+
+.ecolapp-page-ellipsis {
+  color: var(--ecolapp-table-text);
+  font-weight: 700;
+  padding: 0 0.25rem;
+}
+
+@media (max-width: 768px) {
+  table.table,
+  table.ecolapp-table {
+    font-size: 0.82rem;
+  }
+
+  table.table thead th,
+  table.table tbody td,
+  table.ecolapp-table thead th,
+  table.ecolapp-table tbody td {
+    padding: 0.85rem 0.75rem !important;
+  }
+}

@@ -72,7 +72,7 @@ const DeposerTravailByEleve = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -80,11 +80,11 @@ const DeposerTravailByEleve = () => {
           <div className="justify-content-between align-items-center d-flex">
             <h2 className="text-primary">Déposer un Travail</h2>
             {message && <div className="alert alert-info">{message}</div>}
-            <Link to="/secondaire/liste_travail_by_eleve" className="btn btn-secondary mb-3">
+            <Link to="/secondaire/liste_travail_by_eleve" className="btn  mb-3">
               Voir mes travaux déposés
             </Link>
           </div>
-          <form onSubmit={handleSubmit} className="shadow p-4 bg-white rounded">
+          <form onSubmit={handleSubmit} className=" p-4  rounded">
             <div className="mb-3">
               <label htmlFor="description" className="form-label">Description</label>
               <textarea
@@ -108,7 +108,7 @@ const DeposerTravailByEleve = () => {
               
             </div>
             <button
-              className="btn btn-primary w-100 u-style-2167c5af"
+              className="btn  w-100 u-style-2167c5af"
               type="submit"
               disabled={isSubmitting}>
 

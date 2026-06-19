@@ -57,7 +57,7 @@ const PaiementEleve = () => {
       <div className="hide-on-print">
                           <h3 className="section-title container">Paiements </h3>
                           <div className="table-responsive container">
-                            <table className="table table-striped">
+                            <table className="table ">
                               <thead>
                                 <tr>
                                   <th>#</th>
@@ -80,7 +80,7 @@ const PaiementEleve = () => {
                                     <td>{paiement.annee.name}</td>
                                     <td>
                                       <button
-                    className="btn btn-secondary"
+                    className="btn "
                     onClick={() => generateProof(paiement)}>
                     
                                         Générer Preuve
@@ -92,7 +92,7 @@ const PaiementEleve = () => {
                             </table>
                             <div className="d-flex justify-content-between align-items-center mt-3">
                               <button
-              className="btn btn-secondary"
+              className="btn "
               onClick={prevPage}
               disabled={currentPage === 1}>
               
@@ -100,7 +100,7 @@ const PaiementEleve = () => {
                               </button>
                               <span>Page {currentPage} sur {totalPages}</span>
                               <button
-              className="btn btn-secondary"
+              className="btn "
               onClick={nextPage}
               disabled={currentPage === totalPages}>
               
@@ -157,7 +157,7 @@ const PaiementEleve = () => {
                   })}
                                     </span>
                                   </div>
-                                  <button className="btn btn-primary hide-on-print" onClick={printReceipt}>
+                                  <button className="btn  hide-on-print" onClick={printReceipt}>
                                     Imprimer
                                   </button>
                                 </div>
@@ -446,11 +446,11 @@ const PanelEleve = () => {
           <div className="text-center">
             <div className="hide-on-print">
               {authenticated ?
-            <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/secondaire/profil_user">
+            <Link className="btn  text-white  u-style-420aab4e" to="/secondaire/profil_user">
                 Retour
               </Link> :
 
-            <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/secondaire">Quitter</Link>
+            <Link className="btn  text-white  u-style-420aab4e" to="/secondaire">Quitter</Link>
             }
             </div>
           </div>
@@ -460,7 +460,7 @@ const PanelEleve = () => {
         <div className="u-style-5fa693f3">
           <div className="justify-content-between align-items-center d-flex hide-on-print mt-2 mb-2">
             <h6>Suivi scolaire</h6>
-            <Link to={`/secondaire/consulter_resultat/${id}`} className="btn btn-warning text-white">Consulter résultat</Link>
+            <Link to={`/secondaire/consulter_resultat/${id}`} className="btn  text-white">Consulter résultat</Link>
           </div>
           <div className="row hide-on-print">
               <div className="col-md-4 mt-1 mb-1">
@@ -507,7 +507,7 @@ const PanelEleve = () => {
                   <div className="box">
                     <h3 className="section-title container">Cours de la Classe ({cours.length}) </h3>
                         <div className="table-responsive container">
-                          <table className="table table-striped">
+                          <table className="table ">
                             <thead>
                               <tr>
                                 <th>#</th>
@@ -533,7 +533,7 @@ const PanelEleve = () => {
                   <h2 className="text-center mb-4 text-primary">Cours en fichier ({cours_fichier.length})</h2>
                             {error && <p className="text-danger text-center">{error}</p>}
                             <div className="table-responsive hide-on-print container">
-                              <table className="table table-bordered table-hover">
+                              <table className="table  ">
                                 <thead className="bg-primary text-white">
                                   <tr>
                                     <th className='text-white'>#</th>
@@ -559,7 +559,7 @@ const PanelEleve = () => {
                                         <td>{cf.annee.name}</td>
                                         <td>
                                         <a
-                            className="btn btn-primary"
+                            className="btn "
                             href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}>
                             
                                             <i className="bi bi-download"></i> Télécharger
@@ -584,7 +584,7 @@ const PanelEleve = () => {
                   <div className="box">
                   <h2 className="mb-4 text-primary hide-on-print container">Liste des Travaux ({travaux.length}) </h2>
                         <div className="table-responsive container">
-                          <table className="table table-bordered table-hover">
+                          <table className="table  ">
                             <thead className="bg-primary text-white">
                               <tr>
                                 <th className='text-white'>#</th>
@@ -614,7 +614,7 @@ const PanelEleve = () => {
                                       <td>{travail.annee.name}</td>
                                     <td>
                                     <a
-                            className="btn btn-primary"
+                            className="btn "
                             href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail.fichier}`}>
                             
                                       <i className="bi bi-download"></i> Télécharger
@@ -637,7 +637,7 @@ const PanelEleve = () => {
                   <div className="container table-responsive mt-5">
                           <h2 className="text-primary">Travaux Déposés ({travaux_eleve.length})</h2>
                           {message && <div className="alert alert-info">{message}</div>}
-                          <table className="table table-bordered table-hover mt-3">
+                          <table className="table   mt-3">
                             <thead className="bg-primary text-white">
                               <tr>
                                 <th>#</th>
@@ -658,7 +658,7 @@ const PanelEleve = () => {
                                   <td>{travail_eleve.date_depot}</td>
                                   <td>
                                    <a
-                            className="btn btn-primary"
+                            className="btn "
                             download
                             href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail_eleve.fichier}`}>
                             
@@ -708,7 +708,7 @@ const PanelEleve = () => {
                               {/* Statistiques */}
                               <h3>Statistiques :</h3>
                               <div className='table-responsive'>
-                                  <table className="table table-bordered">
+                                  <table className="table ">
                                       <thead>
                                           <tr>
                                               <th>Présences</th>
@@ -727,7 +727,7 @@ const PanelEleve = () => {
                               {/* Historique */}
                               <h3>Historique :</h3>
                               <div className='table-responsive'>
-                                  <table className="table table-bordered">
+                                  <table className="table ">
                                       <thead>
                                           <tr>
                                               <th>Date</th>
@@ -754,7 +754,7 @@ const PanelEleve = () => {
               <div className="col-md-6">
                   <div className="box">
                       <h4>Notes des cours</h4>
-                      <table className="table table-bordered">
+                      <table className="table ">
                           <thead>
                               <tr>
                                   <th>Matière</th>
@@ -777,10 +777,10 @@ const PanelEleve = () => {
           </div>
           <div class="row">
             <div class="col-lg-6 col-12 hide-on-print">
-              <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+              <div className=" py-3  mt-2 u-style-59f7bcd2">
                           <div className="table-responsive hide-on-print container">
                             <h3 className="section-title container">Résultats/Notes</h3>
-                            <table className="table table-striped">
+                            <table className="table ">
                               <thead>
                                 <tr>
                                   <th>#</th>
@@ -808,10 +808,10 @@ const PanelEleve = () => {
                             </table>
                           </div>
                       </div>
-                      <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                      <div className=" py-3  mt-2 u-style-59f7bcd2">
                           <div className="table-responsive hide-on-print container">
                             <h3 className="section-title container">Notes générales</h3>
-                            <table className="table table-striped">
+                            <table className="table ">
                               <thead>
                                 <tr>
                                   <th>#</th>

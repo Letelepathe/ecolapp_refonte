@@ -80,7 +80,7 @@ const AjouterPeriode = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -90,7 +90,7 @@ const AjouterPeriode = () => {
               <div className="card mb-3">
                 <div className='container d-flex align-items-center justify-content-between py-2'>
                  <h6 className="text-center u-style-951c0e5f">Ajouter Période</h6>
-                 <Link to='/maternelle/liste_periode' className='btn btn-warning text-white'>Liste Périodes</Link>
+                 <Link to='/maternelle/liste_periode' className='btn  text-white'>Liste Périodes</Link>
                 </div>
                 <div className="card-body">
                   
@@ -123,7 +123,7 @@ const AjouterPeriode = () => {
                     
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                        {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

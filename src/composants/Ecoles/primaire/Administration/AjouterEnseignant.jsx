@@ -70,14 +70,14 @@ const AjouterEnseignant = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className='content'>
         <NavbarTop />
         <div className="container">
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
-              <Link className="btn btn-primary mb-2" to='/primaire/liste_enseignant'>Liste enseignants</Link>
+              <Link className="btn  mb-2" to='/primaire/liste_enseignant'>Liste enseignants</Link>
               <div className="card mb-3">
                 
                 <div className="card-body">
@@ -112,7 +112,7 @@ const AjouterEnseignant = () => {
                    
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" type="submit">Ajouter enseignant</button>
+                      <button className="btn  u-style-2167c5af" type="submit">Ajouter enseignant</button>
                     </div>
 
                     {successMessage && <p className="text-success text-center mt-2">{successMessage}</p>}

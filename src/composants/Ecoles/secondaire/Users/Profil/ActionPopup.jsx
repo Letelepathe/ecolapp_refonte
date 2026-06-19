@@ -89,12 +89,12 @@ const ActionPopup = () => {
                 <div className="modal-footer">
                   <button
                     type="button"
-                    className="btn btn-outline-secondary"
+                    className="btn "
                     data-bs-dismiss="modal"
                   >
                     Annuler
                   </button>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn ">
                     Mettre à jour
                   </button>
                 </div>

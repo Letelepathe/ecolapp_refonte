@@ -51,7 +51,7 @@ const Communiques = () => {
           href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn btn-primary">
+          className="btn ">
           
           Voir PDF
         </a>);
@@ -62,7 +62,7 @@ const Communiques = () => {
         href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn btn-secondary">
+        className="btn ">
         
         Télécharger le fichier
       </a>);
@@ -105,7 +105,7 @@ const Communiques = () => {
                   to={`/maternelle/details-communique/${communique.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary w-100">
+                  className="btn  w-100">
                   
                     Lire plus <i className="bi bi-arrow-right"></i>
                   </Link>

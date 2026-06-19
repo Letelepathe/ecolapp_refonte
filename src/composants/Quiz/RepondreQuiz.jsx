@@ -88,7 +88,7 @@ const RepondreQuiz = () => {
     <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-lg-6 col-12">
-                    <div className="card shadow-sm">
+                    <div className="card ">
                         <div className="card-body">
                             <h4 className="mb-4 text-center">Répondre au Quiz</h4>
 
@@ -112,8 +112,8 @@ const RepondreQuiz = () => {
                 }
 
                                     <div className="mt-4 text-center">
-                                        <button className="btn btn-primary me-2" onClick={handleReplay}>Rejouer</button>
-                                        <button className="btn btn-secondary" onClick={handleQuit}>Quitter</button>
+                                        <button className="btn  me-2" onClick={handleReplay}>Rejouer</button>
+                                        <button className="btn " onClick={handleQuit}>Quitter</button>
                                     </div>
                                 </div> :
 
@@ -145,7 +145,7 @@ const RepondreQuiz = () => {
                                         </div>
                 )}
                                     <button
-                  className="btn btn-primary u-style-2e6f0cdf"
+                  className="btn  u-style-2e6f0cdf"
                   type="submit"
                   disabled={isSubmitting}>
 

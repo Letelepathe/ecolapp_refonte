@@ -82,7 +82,7 @@ const AjouterQuestions = () => {
     <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-lg-10 col-12">
-                    <div className="card shadow-sm">
+                    <div className="card ">
                         <div className="card-body">
                             <h3 className="text-center mb-4 u-style-4789709b">
                              <i className="bi bi-quote"></i> {quiz.titre} <i className="bi bi-quote"></i>
@@ -125,7 +125,7 @@ const AjouterQuestions = () => {
                                     </div>
                 )}
                                 <button
-                  className="btn btn-primary u-style-2e6f0cdf"
+                  className="btn  u-style-2e6f0cdf"
                   type="submit"
                   disabled={isSubmitting}>
 

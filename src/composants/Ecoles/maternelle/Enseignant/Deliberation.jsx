@@ -134,7 +134,7 @@ const Deliberation = () => {
                 />
               </div>
               
-              <button type="submit" disabled={isSubmitting} className="btn btn-primary w-100">
+              <button type="submit" disabled={isSubmitting} className="btn  w-100">
                 {isSubmitting ? 'Délibération en cours...' : 'Valider'}
               </button>
             </form>

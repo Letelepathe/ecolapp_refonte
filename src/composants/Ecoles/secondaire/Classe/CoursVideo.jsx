@@ -50,13 +50,13 @@ const CoursVideo = () => {
       <Helmet>
         <title>ecolapp | Cours Vidéos</title>
       </Helmet>
-      <div className="container-fluid position-relative bg-white d-flex p-0">
+      <div className="container-fluid position-relative  d-flex p-0">
         <SidebarLeft />
         <div className="content">
           <NavbarTop />
           <div className="container py-4">
             <div className="justify-content-between align-items-center d-flex">
-              <Link to={`/secondaire/ma_classe/${id_classe}/${id_option}`} className="btn btn-primary">
+              <Link to={`/secondaire/ma_classe/${id_classe}/${id_option}`} className="btn ">
                 Ma classe
               </Link>
               <h6 className="text-primary">Cours Vidéos</h6>
@@ -70,7 +70,7 @@ const CoursVideo = () => {
                   })
                   .map((cf) => (
                     <div key={cf.id} className="col-md-6 col-lg-4 mb-4">
-                      <div className="card shadow-sm p-3 border-0 rounded-3">
+                      <div className="card  p-3 border-0 rounded-3">
                         <PlyrComponent
                           source={{
                             type: "video",
@@ -92,7 +92,7 @@ const CoursVideo = () => {
                           <p className="card-text text-muted">
                             <strong>Enseignant:</strong> {cf.enseignant.name} {cf.enseignant.last_name} {cf.enseignant.first_name}
                           </p>
-                          <a href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`} className="btn btn-primary" download>
+                          <a href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`} className="btn " download>
                             Télécharger la vidéo
                           </a>
                         </div>

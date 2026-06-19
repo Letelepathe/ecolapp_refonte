@@ -177,7 +177,7 @@ export default function Horaire() {
 
       <h5 className="no-print">Liste des titulaires</h5>
       <div className="table-responsive mb-4">
-        <table className="table table-bordered table-striped table-sm no-print">
+        <table className="table   table-sm no-print">
           <thead className="table-dark">
             <tr>
               <th>Professeur</th>
@@ -204,7 +204,7 @@ export default function Horaire() {
       </div>
 
       <div className="mb-4 no-print">
-        <button className="btn btn-success no-print" onClick={generateSchedule}>
+        <button className="btn  no-print" onClick={generateSchedule}>
           <Repeat /> Générer les horaires
         </button>
       </div>
@@ -212,7 +212,7 @@ export default function Horaire() {
       {Object.keys(schedule).length > 0 &&
       <>
           <div className="mb-3">
-            <button className="btn btn-primary no-print" onClick={handlePrint}>
+            <button className="btn  no-print" onClick={handlePrint}>
               Imprimer
             </button>
           </div>
@@ -220,7 +220,7 @@ export default function Horaire() {
         <div key={cls} className="mb-5 horaire-print-content">
               <h4 className="text-primary mb-2">Classe {cls}</h4>
               <div className="table-responsive">
-                <table className="table table-bordered table-hover table-sm">
+                <table className="table   table-sm">
                   <thead className="table-dark">
                     <tr>
                       <th>Jour</th>

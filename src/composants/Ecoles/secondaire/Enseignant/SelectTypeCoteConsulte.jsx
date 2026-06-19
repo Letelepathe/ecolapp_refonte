@@ -35,7 +35,7 @@ const SelectTypeCoteConsulte = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -63,7 +63,7 @@ const SelectTypeCoteConsulte = () => {
                     </div>
                     {errors && <p className="text-danger">{errors}</p>}
                     <div className="d-grid">
-                      <button className="btn btn-primary" type="submit">
+                      <button className="btn " type="submit">
                         Continuer
                       </button>
                     </div>

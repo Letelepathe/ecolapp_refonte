@@ -26,7 +26,7 @@ const Admins = () => {
         <div className="row gy-5">
           {admins.map((admin) =>
           <div className="col-lg-6 col-md-6 col-12 py-2" key={admin.id}>
-              <div className=' shadow bg-white justify-content-center align-items-center py-2'>
+              <div className='   justify-content-center align-items-center py-2'>
                
                 <div className="admin-membre-info member-info text-center p-3">
                   <img

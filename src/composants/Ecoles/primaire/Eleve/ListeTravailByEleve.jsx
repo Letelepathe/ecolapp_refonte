@@ -70,7 +70,7 @@ const ListeTravailByEleve = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -81,7 +81,7 @@ const ListeTravailByEleve = () => {
           )}
           {error && <p className="text-danger text-center">{error}</p>}
           {message && <div className="alert alert-info">{message}</div>}
-          <table className="table table-bordered table-hover mt-3">
+          <table className="table   mt-3">
             <thead className="bg-primary text-white">
               <tr>
                 <th>#</th>
@@ -102,12 +102,12 @@ const ListeTravailByEleve = () => {
                   <td>{travail_eleve.date_depot}</td>
                   <td>
                     <a
-                      className="btn btn-warning text-white w-100 mb-2 mt-2"
+                      className="btn  text-white w-100 mb-2 mt-2"
                       href={`https://api.ecolapp.cd/public/Travaux/DepotByEleve/${travail_eleve.fichier}`}
                     >
                       Lire
                     </a>
-                    <Link onClick={() => handleDelete(travail_eleve.id)} className='btn btn-danger mt-2 mb-2 w-100'>Supprimer</Link>
+                    <Link onClick={() => handleDelete(travail_eleve.id)} className='btn  mt-2 mb-2 w-100'>Supprimer</Link>
                   </td>
                 </tr>
               ))}

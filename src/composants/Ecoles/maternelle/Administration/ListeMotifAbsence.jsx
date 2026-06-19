@@ -43,7 +43,7 @@ const ListeMotifAbsence = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -53,7 +53,7 @@ const ListeMotifAbsence = () => {
               <div className="card-body">
                 <div className='align-items-center justify-content-between d-flex'>
                   <h6>Liste motifs absence</h6>
-                  <Link to='/maternelle/ajouter_motif_absence' className="btn btn-primary mb-2 mt-2">Ajouter motif</Link>
+                  <Link to='/maternelle/ajouter_motif_absence' className="btn  mb-2 mt-2">Ajouter motif</Link>
                 </div>
               </div>
               <div className="table-responsive">
@@ -64,7 +64,7 @@ const ListeMotifAbsence = () => {
                 {error ? (
                   <p className="text-danger">{error}</p>
                 ) : motifs.length > 0 ? (
-                  <table className="table text-start align-middle table-bordered table-hover mb-0">
+                  <table className="table text-start align-middle   mb-0">
                     <thead>
                       <tr className="text-dark">
                         <th>Motif</th>
@@ -76,7 +76,7 @@ const ListeMotifAbsence = () => {
                         <tr key={motif.id}>
                           <td>{motif.name}</td>
                           <td>
-                            <Link onClick={() => handleDelete(motif.id)} className='btn btn-danger'>Supprimer</Link>
+                            <Link onClick={() => handleDelete(motif.id)} className='btn '>Supprimer</Link>
                           </td>
                         </tr>
                       ))}

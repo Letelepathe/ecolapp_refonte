@@ -45,20 +45,20 @@ const ListeDevise = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
         <div className="container">
           <div className="table-responsive">
-            <Link to='/maternelle/ajouter_devise' className='btn btn-primary mb-2 mt-2'>Ajouter devise</Link>
+            <Link to='/maternelle/ajouter_devise' className='btn  mb-2 mt-2'>Ajouter devise</Link>
             {successMessage && ( 
                 <p> {successMessage} </p>
             )}
             {error ? (
               <p className="text-danger">{error}</p>
             ) : devises.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Devise</th>
@@ -70,7 +70,7 @@ const ListeDevise = () => {
                     <tr key={devise.id}>
                       <td>{devise.name}</td>
                       <td>
-                          <Link onClick={() => handleDelete(devise.id)} className='btn btn-danger'>Supprimer</Link>
+                          <Link onClick={() => handleDelete(devise.id)} className='btn '>Supprimer</Link>
                       </td>
                     </tr>
                   ))}

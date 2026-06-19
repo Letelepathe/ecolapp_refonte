@@ -88,7 +88,7 @@ const InscriptionParent = () => {
   return (
     <div>
       <Helmet><title>Parent | Inscription</title></Helmet>
-      <div className="bg-white">
+      <div className="">
         <div className="container">
           <section className="row d-flex flex-column align-items-center justify-content-center">
             <div className="col-lg-8 col-12 card my-5 u-style-4637a15a">
@@ -204,7 +204,7 @@ const InscriptionParent = () => {
                     <div className="col-12 mt-3">
                       <button
                         type="submit"
-                        className={`${`btn btn-primary w-100 ${isLoading ? 'loading' : ''}`} style-fr-062c2c83`}
+                        className={`${`btn  w-100 ${isLoading ? 'loading' : ''}`} style-fr-062c2c83`}
                         disabled={isLoading}>
 
                         
@@ -212,7 +212,7 @@ const InscriptionParent = () => {
                       </button>
                     </div>
                     <div className="col-12 text-center">
-                      <p className="small mb-0">Vous avez déjà un compte ? <Link to="/parent/login" className="btn btn-success">Connectez-vous ici</Link></p>
+                      <p className="small mb-0">Vous avez déjà un compte ? <Link to="/parent/login" className="btn ">Connectez-vous ici</Link></p>
                     </div>
                   </div>
                 </form>

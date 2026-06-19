@@ -101,7 +101,7 @@ const AjouterCours = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -110,7 +110,7 @@ const AjouterCours = () => {
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className="card-body">
-                  <Link to='/maternelle/liste_cours' className='btn btn-primary mt-2 mb-2'>Liste cours</Link>
+                  <Link to='/maternelle/liste_cours' className='btn  mt-2 mb-2'>Liste cours</Link>
                   <h3 className="text-center u-style-951c0e5f">Ajouter Cours</h3>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
 
@@ -147,7 +147,7 @@ const AjouterCours = () => {
                       {errors.options_id && <p className="text-danger">{errors.options_id}</p>}
                     </div>
                     <div className="d-grid">
-                      <button className="btn btn-primary" disabled={isSubmitting} type="submit">
+                      <button className="btn " disabled={isSubmitting} type="submit">
                       {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

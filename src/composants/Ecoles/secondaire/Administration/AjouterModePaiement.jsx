@@ -66,7 +66,7 @@ const AjouterModePaiement = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
      <SidebarLeft />
       <div className="content">
       <NavbarTop />
@@ -76,7 +76,7 @@ const AjouterModePaiement = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className='align-items-center justify-content-between d-flex'>
-                   <Link to='/secondaire/liste_mode_paiement' className='btn btn-primary'>Liste mode paiement</Link>
+                   <Link to='/secondaire/liste_mode_paiement' className='btn '>Liste mode paiement</Link>
                    <h6 className="text-center u-style-951c0e5f">Ajouter Mode de paiement</h6>
                   </div>
                   <form onSubmit={handleSubmit}>
@@ -94,7 +94,7 @@ const AjouterModePaiement = () => {
                     </div>
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                       {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

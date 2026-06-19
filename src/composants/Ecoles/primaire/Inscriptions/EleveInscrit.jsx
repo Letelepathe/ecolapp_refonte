@@ -94,14 +94,14 @@ const EleveInscritprimaire = () => {
   }
 
   return (
-    <div className='container-fluid position-relative bg-white d-flex p-0'>
+    <div className='container-fluid position-relative  d-flex p-0'>
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
         <div className="container mt-3">
           <div className="justify-content-between align-items-center d-flex">
-            <Link to='/primaire/liste_eleve' className='btn btn-warning text-white'>Listes élèves</Link>
-            <Link to='/primaire/inscription_en_attente' className='btn btn-warning text-white'>Inscriptions en attente</Link>
+            <Link to='/primaire/liste_eleve' className='btn  text-white'>Listes élèves</Link>
+            <Link to='/primaire/inscription_en_attente' className='btn  text-white'>Inscriptions en attente</Link>
             <Link to='/bulletin/checking' className="btn btn-white u-style-92f685a5" target='_blank' rel='noopener noreferrer'> Checker bulletin</Link>
           </div>
           <h2 className="text-center u-style-43ef163a">Liste des Élèves Inscrits au primaire</h2>
@@ -144,7 +144,7 @@ const EleveInscritprimaire = () => {
           <p className="text-center mt-3">Aucune inscription trouvée.</p> :
 
           <div className='table-responsive'>
-              <table className="table table-striped mt-4">
+              <table className="table  mt-4">
                 <thead>
                   <tr>
                     <th>Id</th>
@@ -177,7 +177,7 @@ const EleveInscritprimaire = () => {
 
                           {inscription.status !== undefined && Number(inscription.status) === 0 &&
                     <button
-                      className="btn btn-primary mt-2 mb-2"
+                      className="btn  mt-2 mb-2"
                       onClick={() => confirmerInscription(inscription.id)}>
                       
                               Confirmer
@@ -185,7 +185,7 @@ const EleveInscritprimaire = () => {
                     }
                           
                           <button
-                      className="btn btn-danger mt-2 mb-2"
+                      className="btn  mt-2 mb-2"
                       onClick={() => supprimerInscription(inscription.id)}>
                       
                             Supprimer 
@@ -193,7 +193,7 @@ const EleveInscritprimaire = () => {
                           
                         <Link
                       to={`/primaire/details_info_eleve_inscrit/${inscription.id}`}
-                      className="btn btn-info text-white mt-2 mb-2" target='_blank' rel='noopener noreferrer'>
+                      className="btn  text-white mt-2 mb-2" target='_blank' rel='noopener noreferrer'>
                        
                           Détails    
                         </Link>

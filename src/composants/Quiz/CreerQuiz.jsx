@@ -58,7 +58,7 @@ const CreerQuiz = () => {
     <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-lg-6 col-12">
-                    <div className="card shadow-sm">
+                    <div className="card ">
                         <div className="card-body">
                             <h4 className="text-center u-style-4789709b">{cours.name}</h4>
                             <h6 className="card-title text-center mb-4">Créer un Quiz</h6>
@@ -97,7 +97,7 @@ const CreerQuiz = () => {
                   
                                 </div>
                                 <button
-                  className="btn btn-primary u-style-2e6f0cdf"
+                  className="btn  u-style-2e6f0cdf"
                   type="submit"
                   disabled={isSubmitting}>
 

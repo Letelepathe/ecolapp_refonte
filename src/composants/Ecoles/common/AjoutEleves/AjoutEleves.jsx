@@ -23,6 +23,7 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
   const [msgOk, setMsgOk] = useState("");
   const [msgErr, setMsgErr] = useState("");
   const [charg, setCharg] = useState(false);
+  const ageMinimumEleve = direction === "maternelle" ? 3 : direction === "primaire" ? 5 : null;
 
   const anneeDef = () => {
     const anneeActive = annees.find((annee) => Number(annee.status) === 1) || annees[0];
@@ -83,7 +84,7 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
   };
 
   const validerForm = () => {
-    const erreurs = eleves.map(validerEleve);
+    const erreurs = eleves.map((eleve) => validerEleve(eleve, ageMinimumEleve));
     setErrs(erreurs);
     return erreurs.every((erreur) => Object.keys(erreur).length === 0);
   };
@@ -130,7 +131,7 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <BarreGauche />
       <div className="content">
         <NavHaut />
@@ -139,11 +140,11 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
             <div className="col-lg-11 col-md-12">
               <div className="card mb-3">
                 <div className="container d-flex flex-wrap gap-2 justify-content-between align-items-center">
-                  <Link to={lienListe} className="btn btn-warning text-white">Liste élèves</Link>
+                  <Link to={lienListe} className="btn  text-white">Liste élèves</Link>
                   <p className="text-center mb-0 u-style-951c0e5f">
                     Ajouter Élève(s)
                   </p>
-                  <button type="button" className="btn btn-outline-primary" onClick={ajouterLigne}>
+                  <button type="button" className="btn " onClick={ajouterLigne}>
                     + Ajouter une ligne
                   </button>
                 </div>
@@ -167,11 +168,11 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
                     )}
 
                     <div className="d-flex flex-wrap gap-2 mt-2">
-                      <button type="button" className="btn btn-outline-primary" onClick={ajouterLigne}>
+                      <button type="button" className="btn " onClick={ajouterLigne}>
                         + Ajouter un autre élève
                       </button>
                       <button
-                        className={`${`btn btn-primary flex-grow-1 ${charg ? "loading" : ""}`} style-fr-0b1f4524`}
+                        className={`${`btn  flex-grow-1 ${charg ? "loading" : ""}`} style-fr-0b1f4524`}
                         type="submit"
                         disabled={charg}>
 

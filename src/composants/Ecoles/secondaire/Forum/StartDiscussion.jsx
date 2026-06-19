@@ -64,7 +64,7 @@ const StartDiscussion = () => {
                   
                 </div>
                 <button
-                  className="btn btn-primary w-100 u-style-2167c5af"
+                  className="btn  w-100 u-style-2167c5af"
                   type="submit"
                   disabled={isSubmitting}>
 

@@ -188,7 +188,7 @@ const EditionProfil = () => {
 
           }
         </div>
-        <button type="submit" className="btn btn-primary">Mettre à jour</button>
+        <button type="submit" className="btn ">Mettre à jour</button>
       </form>
       {successMessage && <p className="text-success">{successMessage}</p>}
       {errorMessage && <p className="text-danger">{errorMessage}</p>}

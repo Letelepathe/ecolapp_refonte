@@ -124,21 +124,21 @@ const PaiementAvecDette = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
-        <section className="container mt-3 shadow bg-white py-3">
+        <section className="container mt-3   py-3">
           <div className="justify-content-between align-items-center d-flex">
             <h2 className="text-primary text-center">Liste des paiements</h2>
-            <Link to="/secondaire/ajouter_paiement" className="btn btn-primary mb-3">
+            <Link to="/secondaire/ajouter_paiement" className="btn  mb-3">
               <i className="bi bi-plus"></i> Ajouter paiement
             </Link>
           </div>
           <div className="justify-content-between align-items-center d-flex">
             
             <button
-              className="btn btn-primary"
+              className="btn "
               onClick={() => {
                 setIsOrdreModalOpen(true);
                 setError(null);
@@ -146,7 +146,7 @@ const PaiementAvecDette = () => {
             >
               Paiements en ordre
             </button>
-           <Link to="/secondaire/liste_paiement" className="btn btn-warning text-white">Liste paiements</Link>
+           <Link to="/secondaire/liste_paiement" className="btn  text-white">Liste paiements</Link>
           </div>
           <div className="table-responsive hide-on-print">
             
@@ -176,7 +176,7 @@ const PaiementAvecDette = () => {
             />
 
             {filteredPaiements.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Id</th>
@@ -224,7 +224,7 @@ const PaiementAvecDette = () => {
                       
                       <td>
                         <button
-                          className="btn btn-primary"
+                          className="btn "
                           onClick={() => generateProof(paiement.id)}
                         >
                           Générer Preuve
@@ -284,7 +284,7 @@ const PaiementAvecDette = () => {
                             })}
                   </span>
                 </div>
-                <button className="btn btn-primary hide-on-print" onClick={printReceipt}>
+                <button className="btn  hide-on-print" onClick={printReceipt}>
                   Imprimer
                 </button>
               </div>
@@ -315,13 +315,13 @@ const PaiementAvecDette = () => {
             <div className="modal-footer justify-content-between align-items-center d-flex">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn "
                 onClick={() => setIsOrdreModalOpen(false)}
               >
                 Annuler
               </button>
               <button
-                className="btn btn-primary"
+                className="btn "
                 onClick={handleOrdreSubmit}
               >
                 Valider

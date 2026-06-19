@@ -7,7 +7,7 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         Élève {index + 1}
       </h6>
       {peutRetirer &&
-    <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => retirer(index)}>
+    <button type="button" className="btn  " onClick={() => retirer(index)}>
           Retirer
         </button>
     }

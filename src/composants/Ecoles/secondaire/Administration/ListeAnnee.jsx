@@ -61,7 +61,7 @@ const ListeAnnee = () => {
 
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -71,7 +71,7 @@ const ListeAnnee = () => {
               <div className="card-body">
                 <div className="justify-content-between align-items-center d-flex">
                   <h6>Liste années</h6>
-                  <Link to='/secondaire/ajouter_annee_scolaire' className='btn btn-primary mb-2 mt-2'>Ajouter année</Link>
+                  <Link to='/secondaire/ajouter_annee_scolaire' className='btn  mb-2 mt-2'>Ajouter année</Link>
                 </div>
               </div>
               <div className="table-responsive">
@@ -83,7 +83,7 @@ const ListeAnnee = () => {
                   <p className="text-danger">{error}</p>
                 )} 
                 {annees.length > 0 ? (
-                  <table className="table text-start align-middle table-bordered table-hover mb-0">
+                  <table className="table text-start align-middle   mb-0">
                     <thead>
                       <tr className="text-dark">
                         <th>Année scolaire</th>
@@ -97,10 +97,10 @@ const ListeAnnee = () => {
                           <td>
                             <div className='justify-content-between align-itmes-center d-flex'>
                               {annee.status !== undefined && Number(annee.status) === 0 && (
-                                <Link onClick={() => handleActiver(annee.id)} className='btn btn-primary w-100'>Activer</Link>
+                                <Link onClick={() => handleActiver(annee.id)} className='btn  w-100'>Activer</Link>
                               )}
                               {annee.status !== undefined && Number(annee.status) === 1 && (
-                                <Link onClick={() => handleDelete(annee.id)} className='btn btn-danger w-100'>Désactiver</Link>
+                                <Link onClick={() => handleDelete(annee.id)} className='btn  w-100'>Désactiver</Link>
                               )}
                             </div>
                           </td>

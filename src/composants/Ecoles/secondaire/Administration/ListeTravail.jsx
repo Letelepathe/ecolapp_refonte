@@ -46,16 +46,16 @@ const ListeTravail = () => {
     );
   };
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
         <SidebarLeft/>
         <div className="content">
           <NavbarTop/>
           <div className="container mt-4">
-            <Link className="btn btn-primary" to='/secondaire/ajouter_travail'>Ajouter travail</Link>
+            <Link className="btn " to='/secondaire/ajouter_travail'>Ajouter travail</Link>
             <h2 className="text-center mb-4 text-primary">Liste des Travaux</h2>
             {error && <p className="text-danger text-center">{error}</p>}
             <div className="table-responsive">
-              <table className="table table-bordered table-hover">
+              <table className="table  ">
                 <thead className="bg-primary text-white">
                   <tr>
                     <th className='text-white'>#</th>
@@ -87,7 +87,7 @@ const ListeTravail = () => {
                         <td>{travail.annee}</td>
                         <td>
                          <a
-                            className="btn btn-primary"
+                            className="btn "
                             href={`http://localhost/ecole-app/apis/downloadTravail?file=${travail.fichier}`}
                           >
                             <i className="bi bi-download"></i> Télécharger

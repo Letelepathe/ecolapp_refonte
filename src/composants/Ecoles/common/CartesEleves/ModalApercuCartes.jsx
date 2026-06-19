@@ -27,13 +27,13 @@ const ModalApercuCartes = ({
         </div>
 
         <div className="actions-modal-cartes">
-          <button type="button" className="btn btn-secondary" onClick={fermer}>
+          <button type="button" className="btn " onClick={fermer}>
             Fermer
           </button>
-          <button type="button" className="btn btn-primary" onClick={impCartes} disabled={!eleves.length}>
+          <button type="button" className="btn " onClick={impCartes} disabled={!eleves.length}>
             Imprimer
           </button>
-          <button type="button" className="btn btn-success" onClick={telechPdf} disabled={!eleves.length || exportPdf}>
+          <button type="button" className="btn " onClick={telechPdf} disabled={!eleves.length || exportPdf}>
             {exportPdf ? "Génération..." : "Télécharger"}
           </button>
         </div>

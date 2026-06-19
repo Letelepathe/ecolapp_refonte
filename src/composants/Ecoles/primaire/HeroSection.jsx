@@ -67,7 +67,7 @@ const HeroSection = ({ ecole }) => {
           <div className="options-etudes-container row justify-content-center text-center align-items-center">
            
             <div className='col-lg-6 col-12 container'>
-              <div className="shadow  justify-content-center align-items-center container py-4 u-style-420aab4e">
+              <div className="  justify-content-center align-items-center container py-4 u-style-420aab4e">
                 <h3 className="options-title">Options d'études</h3>
                 <ul className="options-list">
                     {options.map((option) =>

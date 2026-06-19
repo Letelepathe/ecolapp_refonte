@@ -65,7 +65,7 @@ const AjouterMotifAbsence = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
      <SidebarLeft />
       <div className="content">
       <NavbarTop />
@@ -75,7 +75,7 @@ const AjouterMotifAbsence = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className='align-items-center justify-content-between d-flex'>
-                   <Link to='/primaire/liste_motif_absence' className='btn btn-primary'>Liste motifs</Link>
+                   <Link to='/primaire/liste_motif_absence' className='btn '>Liste motifs</Link>
                    <h6 className="text-center u-style-951c0e5f">Ajouter Motif absence</h6>
                   </div>
                   <form onSubmit={handleSubmit}>
@@ -93,7 +93,7 @@ const AjouterMotifAbsence = () => {
                     </div>
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                       {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

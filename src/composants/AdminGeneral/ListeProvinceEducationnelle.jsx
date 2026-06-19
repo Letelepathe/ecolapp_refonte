@@ -56,21 +56,21 @@ const ListeProvinceEducationnelle = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
         <div className="container">
           <div className="d-flex justify-content-between align-items-center">
             <h6>Liste provinces éducationnelles</h6>
-            <Link to='/admin-general/ajouter_province_educationnelle' className="btn btn-primary">Ajouter province éducationnelle</Link>
+            <Link to='/admin-general/ajouter_province_educationnelle' className="btn ">Ajouter province éducationnelle</Link>
           </div>
           <div className="table-responsive">
             {successMessage && <p className="text-success">{successMessage}</p>}
             {error && <p className="text-danger">{error}</p>}
             {provincesEducationnelles.length > 0 ? (
               <>
-                <table className="table text-start align-middle table-bordered table-hover mb-0">
+                <table className="table text-start align-middle   mb-0">
                   <thead>
                     <tr className="text-dark">
                       <th>Province Éducationnelle</th>
@@ -84,18 +84,18 @@ const ListeProvinceEducationnelle = () => {
                         <td>{provinceEducationnelle.name}</td>
                         <td>{provinceEducationnelle.province?.name}</td>
                         <td>
-                          <button onClick={() => handleDelete(provinceEducationnelle.id)} className='btn btn-danger'>Supprimer</button>
+                          <button onClick={() => handleDelete(provinceEducationnelle.id)} className='btn '>Supprimer</button>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
                 <div className="d-flex justify-content-between align-items-center mt-3">
-                  <button className="btn btn-secondary" onClick={prevPage} disabled={currentPage === 1}>
+                  <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
                     Précédent
                   </button>
                   <span>Page {currentPage} sur {totalPages}</span>
-                  <button className="btn btn-secondary" onClick={nextPage} disabled={currentPage === totalPages}>
+                  <button className="btn " onClick={nextPage} disabled={currentPage === totalPages}>
                     Suivant
                   </button>
                 </div>

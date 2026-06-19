@@ -83,7 +83,7 @@ const AjouterMembreEffectif = () => {
 
   return (
     <div>
-      <main className='bg-white'>
+      <main className=''>
         <div className="container">
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
@@ -128,7 +128,7 @@ const AjouterMembreEffectif = () => {
                       {errors.fonction && <p className="text-danger">{errors.fonction}</p>}
                     </div>
 
-                    <button type="submit" className="btn btn-primary w-100">Ajouter Membre Effectif</button>
+                    <button type="submit" className="btn  w-100">Ajouter Membre Effectif</button>
                     {successMessage && <p className="text-success mt-2">{successMessage}</p>}
                     {errors.form && <p className="text-danger mt-2">{errors.form}</p>}
                   </form>

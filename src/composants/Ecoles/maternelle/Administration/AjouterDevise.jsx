@@ -65,7 +65,7 @@ const AjouterDevise = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -73,7 +73,7 @@ const AjouterDevise = () => {
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
-                <Link to='/maternelle/liste_devise' className='btn btn-primary mb-2 mt-2'>Liste devises</Link>
+                <Link to='/maternelle/liste_devise' className='btn  mb-2 mt-2'>Liste devises</Link>
                 <div className="card-body">
                   <h3 className="text-center u-style-951c0e5f">Ajouter Devise</h3>
                   <p className="text-center">Veuillez remplir les informations de la devise ci-dessous.</p>
@@ -95,7 +95,7 @@ const AjouterDevise = () => {
 
                     <div className="d-grid">
                       <button
-                        className="btn btn-primary u-style-2167c5af"
+                        className="btn  u-style-2167c5af"
                         type="submit"
                         disabled={isSubmitting}>
 

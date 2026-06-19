@@ -55,7 +55,7 @@ const AjouterAnnee = () => {
 
   return (
     <div>
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -64,7 +64,7 @@ const AjouterAnnee = () => {
             <div className="card mb-3">
               <div className="card-body">
                 <div className='justify-content-between align-items-center d-flex'>
-                  <Link to='/primaire/liste_annee_scolaire' className='btn btn-primary'>Liste années</Link>
+                  <Link to='/primaire/liste_annee_scolaire' className='btn '>Liste années</Link>
                   <h6 className="text-center u-style-951c0e5f">
                     Ajouter année scolaire
                   </h6>
@@ -84,7 +84,7 @@ const AjouterAnnee = () => {
                   
                   {errorMessage && <p className="text-danger">{errorMessage}</p>}
                   {successMessage && <p className="text-success">{successMessage}</p>}
-                  <button type="submit" disabled={isSubmitting} className="btn btn-primary w-100 mt-2 mb-2">
+                  <button type="submit" disabled={isSubmitting} className="btn  w-100 mt-2 mb-2">
                   {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                   </button>
                 </form>

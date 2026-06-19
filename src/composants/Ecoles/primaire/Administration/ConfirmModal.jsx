@@ -9,7 +9,7 @@ const ConfirmModal = ({ show, onClose, onConfirm, message }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="confirmModalLabel">Confirmer la suppression</h5>
-            <button type="button" className="close btn btn-danger" data-dismiss="modal" aria-label="Close" onClick={onClose}>
+            <button type="button" className="close btn " data-dismiss="modal" aria-label="Close" onClick={onClose}>
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -17,8 +17,8 @@ const ConfirmModal = ({ show, onClose, onConfirm, message }) => {
             {message}
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>Annuler</button>
-            <button type="button" className="btn btn-danger" onClick={onConfirm}>Confirmer</button>
+            <button type="button" className="btn " onClick={onClose}>Annuler</button>
+            <button type="button" className="btn " onClick={onConfirm}>Confirmer</button>
           </div>
         </div>
       </div>

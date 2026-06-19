@@ -68,11 +68,11 @@ const ListeContact = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
-        <div className="bg-light text-center rounded p-4 shadow-sm mt-3">
+        <div className="bg-light text-center rounded p-4  mt-3">
           <div className="d-flex align-items-center justify-content-between mb-4">
             <h6 className="mb-0">Liste des Contacts</h6>
           </div>
@@ -82,7 +82,7 @@ const ListeContact = () => {
             <p className="text-danger">{error}</p> :
 
             <>
-                <table className="table text-start align-middle table-bordered table-hover mb-0">
+                <table className="table text-start align-middle   mb-0">
                   <thead>
                     <tr className="text-white u-style-77fdd8b0">
                       <th className="text-white">ID</th>
@@ -114,7 +114,7 @@ const ListeContact = () => {
                         <td className="d-flex gap-2">
                           {contact.lu === 0 &&
                       <button
-                        className="btn btn-primary btn-sm"
+                        className="btn  "
                         onClick={() => {
                           markAsRead(contact.id);
                           window.open(`mailto:${contact.mail}`, '_blank');
@@ -124,7 +124,7 @@ const ListeContact = () => {
                             </button>
                       }
                           <button
-                        className="btn btn-danger btn-sm"
+                        className="btn  "
                         onClick={() => deleteContact(contact.id)}>
                         
                             Supprimer
@@ -136,7 +136,7 @@ const ListeContact = () => {
                 </table>
                 <div className="d-flex justify-content-between align-items-center mt-3">
                   <button
-                  className="btn btn-secondary"
+                  className="btn "
                   onClick={prevPage}
                   disabled={currentPage === 1}>
                   
@@ -144,7 +144,7 @@ const ListeContact = () => {
                   </button>
                   <span>Page {currentPage} sur {totalPages}</span>
                   <button
-                  className="btn btn-secondary"
+                  className="btn "
                   onClick={nextPage}
                   disabled={currentPage === totalPages}>
                   

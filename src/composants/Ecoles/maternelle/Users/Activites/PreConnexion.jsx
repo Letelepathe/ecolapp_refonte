@@ -34,7 +34,7 @@ const PreConnexion = () => {
                       <>
                         <h1 className="text-primary text-center">Bienvenue, {user.last_name} {user.name} !</h1>
                         <p>Votre compte a été créé avec succès. Nous sommes ravis de vous avoir parmi nous !</p>
-                        <Link to="/maternelle/bureau_admin" className="btn btn-dark">Retour au bureau admin</Link>
+                        <Link to="/maternelle/bureau_admin" className="btn ">Retour au bureau admin</Link>
                       </>
                     ) : (
                       <p>Chargement des informations...</p>

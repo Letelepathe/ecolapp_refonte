@@ -147,7 +147,7 @@ const CreationCompte = () => {
         <title>maternelle | Création compte</title>
        
       </Helmet>
-      <div className="bg-white">
+      <div className="">
         <div className="container">
           <section className="row section register d-flex flex-column align-items-center justify-content-center">
             <div className="col-lg-8 col-12 card mb-3">

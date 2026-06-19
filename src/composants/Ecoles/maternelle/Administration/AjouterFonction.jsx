@@ -67,7 +67,7 @@ const AjouterFonction = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -76,7 +76,7 @@ const AjouterFonction = () => {
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className="card-body">
-                <Link to='/maternelle/liste_fonction' className='btn btn-primary mb-2 mt-2'>Liste fonctions</Link>
+                <Link to='/maternelle/liste_fonction' className='btn  mb-2 mt-2'>Liste fonctions</Link>
                   <h3 className="text-center u-style-951c0e5f">Ajouter Fonction</h3>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
 
@@ -96,7 +96,7 @@ const AjouterFonction = () => {
                     
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                        {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

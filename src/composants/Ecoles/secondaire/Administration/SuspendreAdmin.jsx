@@ -47,13 +47,13 @@ const SuspendreAdmin = () => {
                 value={id_user}
                 onChange={(e) => setIdUser(e.target.value)} />
               
-              <button type="submit" disabled={isSubmitting} className="btn btn-primary w-100 submit-button">
+              <button type="submit" disabled={isSubmitting} className="btn  w-100 submit-button">
                {isSubmitting ? 'Traitement en cours...' : 'Suspendre Admin'}
               </button> 
               {errorMessage &&
               <p className="text-danger mt-3">
                     {errorMessage} <br />
-                <Link to='/secondaire/bureau_admin' className='btn btn-primary'>Retour</Link>
+                <Link to='/secondaire/bureau_admin' className='btn '>Retour</Link>
                 </p>
               }
             </form>

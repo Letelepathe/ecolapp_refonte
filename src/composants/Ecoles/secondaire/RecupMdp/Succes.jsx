@@ -8,7 +8,7 @@ const Succes = () => (
       </div>
       <div className="card-body text-center">
         <p>Votre mot de passe a été réinitialisé avec succès !</p>
-        <Link to="/secondaire/login" className="btn btn-primary">
+        <Link to="/secondaire/login" className="btn ">
           Me connecter
         </Link>
       </div>

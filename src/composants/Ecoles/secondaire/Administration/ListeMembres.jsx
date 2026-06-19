@@ -26,22 +26,22 @@ const ListeMembres = () => {
   }, [ecole_id, direction]);
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
         <SidebarLeft />
         <div className="content">
           <NavbarTop />
           <div className="container-fluid pt-4 px-4">
-            <div className="bg-white text-center rounded p-4">
+            <div className=" text-center rounded p-4">
               <div className="d-flex align-items-center justify-content-between mb-4">
                 <h6 className="mb-0">Membres</h6>
-                <Link className="text-center btn btn-success" to='/secondaire/creationcompte'><i className="bi bi-plus"></i> Créer un utilisateur</Link>
+                <Link className="text-center btn " to='/secondaire/creationcompte'><i className="bi bi-plus"></i> Créer un utilisateur</Link>
               </div>
               
               <div className="table-responsive">
                 {error ?
               <p className="text-danger">{error}</p> :
 
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                     <thead>
                       <tr className="text-dark">
                         <th>Id</th>

@@ -140,8 +140,8 @@ const InfoEleveInscritprimaire = () => {
 
       {/* Boutons */}
       <div className="text-center">
-        <Link to="/primaire" className="info-eleve-button info-eleve-btn-danger">Quitter cette page</Link>
-        <button onClick={handlePrint} className="info-eleve-button info-eleve-btn-primary info-eleve-ml-3">Imprimer</button>
+        <Link to="/primaire" className="info-eleve-button info-eleve-">Quitter cette page</Link>
+        <button onClick={handlePrint} className="info-eleve-button info-eleve- info-eleve-ml-3">Imprimer</button>
       </div>
     </main>);
 

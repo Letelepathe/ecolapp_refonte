@@ -73,7 +73,7 @@ const ProfilParent = () => {
                 </div>
 
                 <div className="profile-block btn-block">
-                  <Link to="/parent/deconnexion" className="btn btn-danger btn-custom">
+                  <Link to="/parent/deconnexion" className="btn  btn-custom">
                     <i className="bi bi-box-arrow-right"></i> Déconnexion
                   </Link>
                 </div>
@@ -83,7 +83,7 @@ const ProfilParent = () => {
 
           {/* Bloc Enfants à droite */}
           <div className="col-md-12 mt-2">
-            <div className="shadow bg-white u-style-e00d2ae6">
+            <div className="  u-style-e00d2ae6">
             
               <div className="row py-2">
                 <h4 className="mb-4 mt-4 text-center u-style-43ef163a">Enfants ({parent.eleves.length})</h4>

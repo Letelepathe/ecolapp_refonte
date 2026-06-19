@@ -107,7 +107,7 @@ const AjouterTravail = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
        <div className="content">
         <NavbarTop />
@@ -115,7 +115,7 @@ const AjouterTravail = () => {
           <div className='col-lg-6 col-md-8 col-12'>
             <div className='card mb-3'>
               <div className="card-body">
-                     <Link className="btn btn-primary" to='/secondaire/liste_travail'>Liste des travaux</Link>
+                     <Link className="btn " to='/secondaire/liste_travail'>Liste des travaux</Link>
                     <h3 className="text-center u-style-951c0e5f">Ajouter travail</h3>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
                       <div className="mb-3">
@@ -171,7 +171,7 @@ const AjouterTravail = () => {
                         {errors.file && <p className="text-danger">{errors.file}</p>}
                       </div>
                       
-                      <button type="submit" className="btn btn-primary w-100">Ajouter Travail</button>
+                      <button type="submit" className="btn  w-100">Ajouter Travail</button>
                       {successMessage && <p className="text-success text-center mt-3">{successMessage}</p>}
                       {errors.form && <p className="text-danger text-center mt-3">{errors.form}</p>}
                     </form>

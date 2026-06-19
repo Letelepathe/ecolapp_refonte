@@ -46,7 +46,7 @@ const ListeSection = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -54,7 +54,7 @@ const ListeSection = () => {
           <div className="table-responsive">
             <div className='d-flex justify-content-between align-items-center'>
               <h6>Liste section</h6>
-              <Link to='/primaire/ajouter_section' className='btn btn-warning text-white'>Ajouter section</Link>
+              <Link to='/primaire/ajouter_section' className='btn  text-white'>Ajouter section</Link>
             </div>
             <div className="section d-flex flex-column align-items-center justify-content-center py-4">
               <div className="col-lg-6 col-md-8">
@@ -65,7 +65,7 @@ const ListeSection = () => {
                   {error ? (
                     <p className="text-danger">{error}</p>
                   ) : sections.length > 0 ? (
-                    <table className="table text-start align-middle table-bordered table-hover mb-0">
+                    <table className="table text-start align-middle   mb-0">
                       <thead>
                         <tr className="text-dark">
                           <th>Section</th>
@@ -77,7 +77,7 @@ const ListeSection = () => {
                           <tr key={section.id}>
                             <td>{section.name}</td>
                             <td>
-                                <Link onClick={() => handleDelete(section.id)} className='btn btn-danger'>Supprimer</Link>
+                                <Link onClick={() => handleDelete(section.id)} className='btn '>Supprimer</Link>
                             </td>
                           </tr>
                         ))}

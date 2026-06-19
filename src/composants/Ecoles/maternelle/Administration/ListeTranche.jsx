@@ -45,14 +45,14 @@ const ListeTranche = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
         <div className="container">
           <div className="justify-content-between align-items-center d-flex">
             <h3 className='text-primary'>Les tranches</h3>
-            <Link to='/maternelle/ajouter_tranche' className='btn btn-primary'><i className='bi bi-plus'></i> Ajouter tranche</Link>
+            <Link to='/maternelle/ajouter_tranche' className='btn '><i className='bi bi-plus'></i> Ajouter tranche</Link>
           </div>
           <div className="table-responsive">
             
@@ -62,7 +62,7 @@ const ListeTranche = () => {
             {error ? (
               <p className="text-danger">{error}</p>
             ) : tranches.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Tranche</th>
@@ -74,7 +74,7 @@ const ListeTranche = () => {
                     <tr key={tranche.id}>
                       <td>{tranche.name}</td>
                       <td>
-                          <Link onClick={() => handleDelete(tranche.id)} className='btn btn-danger'>Supprimer</Link>
+                          <Link onClick={() => handleDelete(tranche.id)} className='btn '>Supprimer</Link>
                       </td>
                     </tr>
                   ))}

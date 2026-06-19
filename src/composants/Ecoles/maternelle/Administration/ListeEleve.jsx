@@ -124,12 +124,12 @@ const ListeEleve = () => {
 
   return (
     <div>
-      <div className="container-fluid position-relative bg-white d-flex p-0">
+      <div className="container-fluid position-relative  d-flex p-0">
         <SidebarLeft />
         <div className="content">
           <NavbarTop />
           <div className="container-fluid pt-4 px-4">
-            <div className="bg-white text-center rounded p-4">
+            <div className=" text-center rounded p-4">
               <div className="d-flex align-items-center justify-content-between mb-4">
                 <h6 className="mb-0">Liste des élèves</h6>
                 <div className="d-flex gap-3">
@@ -174,7 +174,7 @@ const ListeEleve = () => {
                   <p className="text-danger">{error}</p>
                 ) : filteredEleves.length > 0 ? (
                   <>
-                    <table className="table table-striped mt-4 table-bordered table-hover mb-0">
+                    <table className="table  mt-4   mb-0">
                       <thead>
                         <tr className="text-dark">
                           <th>ID</th>
@@ -203,7 +203,7 @@ const ListeEleve = () => {
                             <td>{eleve.annee.name}</td>
                             <td>
                               <button
-                                className="btn btn-danger"
+                                className="btn "
                                 onClick={() => handleDelete(eleve.id)}
                               >
                                 Supprimer
@@ -217,7 +217,7 @@ const ListeEleve = () => {
                     {/* Pagination */}
                     <div className="d-flex justify-content-center gap-2 mt-3">
                       <button
-                        className="btn btn-primary"
+                        className="btn "
                         onClick={handlePrevPage}
                         disabled={currentPage === 1}
                       >
@@ -227,7 +227,7 @@ const ListeEleve = () => {
                         Page {currentPage} sur {totalPages}
                       </span>
                       <button
-                        className="btn btn-primary"
+                        className="btn "
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
                       >

@@ -58,7 +58,7 @@ const PresenceEleve = () => {
             <div className="content">
                 <NavbarTop />
                 <div className="container">
-                    <Link to={`/maternelle/historique_presence_eleve/${id_classe}/${eleve?.options_id}`} className="btn btn-warning text-white mb-3">
+                    <Link to={`/maternelle/historique_presence_eleve/${id_classe}/${eleve?.options_id}`} className="btn  text-white mb-3">
                         Historique
                     </Link>
                   
@@ -109,7 +109,7 @@ const PresenceEleve = () => {
                     {/* Statistiques */}
                     <h3>Statistiques :</h3>
                     <div className='table-responsive'>
-                        <table className="table table-bordered">
+                        <table className="table ">
                             <thead>
                                 <tr>
                                     <th>Présences</th>
@@ -128,7 +128,7 @@ const PresenceEleve = () => {
                     {/* Historique */}
                     <h3>Historique :</h3>
                     <div className='table-responsive'>
-                        <table className="table table-bordered">
+                        <table className="table ">
                             <thead>
                                 <tr>
                                     <th>Date</th>

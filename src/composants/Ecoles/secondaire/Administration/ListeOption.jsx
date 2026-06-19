@@ -43,7 +43,7 @@ const ListeOption = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
      <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -55,7 +55,7 @@ const ListeOption = () => {
                   <div className="table-responsive">
                     <div className='d-flex align-items-center justify-content-between'>
                       <h6>Liste options</h6>
-                    <Link className="btn btn-primary mb-2 mt-2" to='/secondaire/ajouter_option'>Ajouter option</Link>
+                    <Link className="btn  mb-2 mt-2" to='/secondaire/ajouter_option'>Ajouter option</Link>
                     </div>
                   {successMessage && ( 
                         <p> {successMessage} </p>
@@ -63,7 +63,7 @@ const ListeOption = () => {
                     {error ? (
                       <p className="text-danger">{error}</p>
                     ) : options.length > 0 ? (
-                      <table className="table text-start align-middle table-bordered table-hover mb-0">
+                      <table className="table text-start align-middle   mb-0">
                         <thead>
                           <tr className="text-dark">
                             <th>Id</th>
@@ -79,7 +79,7 @@ const ListeOption = () => {
                               <td>{option.name}</td>
                               <td>{option.section.name}</td>
                               <td>
-                                <Link onClick={() => handleDelete(option.id)} className='btn btn-danger'>Supprimer</Link>
+                                <Link onClick={() => handleDelete(option.id)} className='btn '>Supprimer</Link>
                               </td>
                             </tr>
                           ))}

@@ -66,14 +66,14 @@ const MesNotifications = () => {
                 <title>Mes notifications</title>
                 <link rel="icon" href="https://rudless.com/img/logorudless.jpeg" />
             </Helmet>
-            <div className="container-fluid position-relative bg-white d-flex p-0">
+            <div className="container-fluid position-relative  d-flex p-0">
                 <SidebarLeft />
                 <div className="content">
                     <NavbarTop />
                     <div className="container my-3">
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h4>Notifications</h4>
-                            <button className="btn btn-primary" onClick={markAllAsRead}>
+                            <button className="btn " onClick={markAllAsRead}>
                                 Tout marquer comme lu
                             </button>
                         </div>

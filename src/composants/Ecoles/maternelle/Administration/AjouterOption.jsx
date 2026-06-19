@@ -81,7 +81,7 @@ const AjouterOption = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
     <SidebarLeft />
      <div className="content">
      <NavbarTop />
@@ -91,7 +91,7 @@ const AjouterOption = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className='d-flex align-items-center justify-content-between'>
-                   <Link to='/maternelle/liste_option' className="btn btn-warning text-white">Liste option</Link>
+                   <Link to='/maternelle/liste_option' className="btn  text-white">Liste option</Link>
                    <h6 className="text-center u-style-951c0e5f">Ajouter Option</h6>
                   </div>
                   <form onSubmit={handleSubmit}>
@@ -127,7 +127,7 @@ const AjouterOption = () => {
                     </div>
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                       {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

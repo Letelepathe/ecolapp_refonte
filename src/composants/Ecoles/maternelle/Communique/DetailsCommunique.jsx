@@ -56,7 +56,7 @@ const DetailsCommunique = () => {
           href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn btn-primary mt-3">
+          className="btn  mt-3">
           
           Voir PDF
         </a>);
@@ -67,7 +67,7 @@ const DetailsCommunique = () => {
         href={`https://api.ecolapp.cd/public/imgCommunique/${file}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn btn-secondary mt-3">
+        className="btn  mt-3">
         
         Télécharger le fichier
       </a>);
@@ -79,14 +79,14 @@ const DetailsCommunique = () => {
       <div className="row">
         {/* Bouton retour */}
         <div className="col-12">
-          <Link to="/maternelle/communiques" className="btn btn-primary text-white mb-4">
+          <Link to="/maternelle/communiques" className="btn  text-white mb-4">
             <i className="bi bi-arrow-left"></i>
           </Link>
         </div>
 
         {/* Contenu principal */}
         <div className="col-lg-8 mb-4">
-          <div className="card shadow-sm">
+          <div className="card ">
             <div className="card-body">
               <h1 className="card-title text-center">{communique.title}</h1>
               <p className="text-muted text-center">
@@ -104,7 +104,7 @@ const DetailsCommunique = () => {
 
         {/* Autres communiqués */}
         <div className="col-lg-4">
-          <div className="card shadow-sm">
+          <div className="card ">
             <div className="card-body">
               <h4 className="card-title mb-4">Autres Communiqués</h4>
               {otherCommuniques.map((item) =>

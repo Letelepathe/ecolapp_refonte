@@ -78,12 +78,12 @@ const CoteGenerale = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
         <div className="container mt-5">
-          <Link to='/secondaire/profil_user' className='btn btn-warning text-white'>
+          <Link to='/secondaire/profil_user' className='btn  text-white'>
             <i className="bi bi-arrow-left"></i> Retour
           </Link>
           <h2 className="text-center">Cotes Générales</h2>
@@ -131,10 +131,10 @@ const CoteGenerale = () => {
                       </td>
                       <td>
                         {editingId === cote.id ? (
-                          <button className="btn btn-success btn-sm" onClick={updateCoteGenerale}>Sauvegarder</button>
+                          <button className="btn  " onClick={updateCoteGenerale}>Sauvegarder</button>
                         ) : (
                           <button
-                            className="btn btn-primary btn-sm"
+                            className="btn  "
                             onClick={() => { setEditingId(cote.id); setEditNote(cote.total_obtenu); }}
                           >
                             Modifier

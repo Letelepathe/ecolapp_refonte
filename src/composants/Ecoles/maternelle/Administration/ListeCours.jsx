@@ -27,21 +27,21 @@ const ListeCours = () => {
   }, [ecole_id, direction]);
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
         <div className="container-fluid pt-4 px-4">
-          <div className="bg-white text-center rounded p-4">
+          <div className=" text-center rounded p-4">
             <div className='d-flex justify-content-between align-items-center'>
              <h6 className="mb-4">Liste des Cours</h6>
-             <Link to="/maternelle/ajouter_cours" className='btn btn-warning text-white'>Ajouter cours</Link>
+             <Link to="/maternelle/ajouter_cours" className='btn  text-white'>Ajouter cours</Link>
             </div>
             <div className="table-responsive">
               {error ? (
                 <p className="text-danger">{error}</p>
               ) : cours.length > 0 ? (
-                <table className="table text-start align-middle table-bordered table-hover mb-0">
+                <table className="table text-start align-middle   mb-0">
                   <thead>
                     <tr className="text-dark">
                       <th>Nom</th>

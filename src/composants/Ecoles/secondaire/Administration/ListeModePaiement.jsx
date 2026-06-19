@@ -43,7 +43,7 @@ const ListeModePaiement = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -53,18 +53,18 @@ const ListeModePaiement = () => {
                 <div className="card-body">
                   <div className="justify-content-between align-items-center d-flex">
                     <h6>Liste mode paiement</h6>
-                    <Link to='/secondaire/ajouter_mode_paiement' className='btn btn-primary mb-2 mt-2'>Ajouter</Link>
+                    <Link to='/secondaire/ajouter_mode_paiement' className='btn  mb-2 mt-2'>Ajouter</Link>
                   </div>
                 </div>
                 <div className="table-responsive">
-                    <Link to='/secondaire/ajouter_mode_paiement' className="btn btn-primary mb-2 mt-2">Ajouter mode</Link>
+                    <Link to='/secondaire/ajouter_mode_paiement' className="btn  mb-2 mt-2">Ajouter mode</Link>
                     {successMessage && ( 
                         <p> {successMessage} </p>
                     )}
                     {error ? (
                       <p className="text-danger">{error}</p>
                     ) : modes.length > 0 ? (
-                      <table className="table text-start align-middle table-bordered table-hover mb-0">
+                      <table className="table text-start align-middle   mb-0">
                         <thead>
                           <tr className="text-dark">
                             <th>Mode</th>
@@ -76,7 +76,7 @@ const ListeModePaiement = () => {
                             <tr key={mode.id}>
                               <td>{mode.name}</td>
                               <td>
-                                <Link onClick={() => handleDelete(mode.id)} className='btn btn-danger'>Supprimer</Link>
+                                <Link onClick={() => handleDelete(mode.id)} className='btn '>Supprimer</Link>
                               </td>
                             </tr>
                           ))}

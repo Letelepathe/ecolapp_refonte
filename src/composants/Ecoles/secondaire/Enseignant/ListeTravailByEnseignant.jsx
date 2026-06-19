@@ -85,14 +85,14 @@ const Travaux = ({userId}) =>{
        <div className="container mt-4">
           <div className="justify-content-between align-items-center d-flex">
             <h5 className="text-center mb-4 text-primary">Liste des Travaux</h5>
-            <Link className="btn btn-primary" to='/secondaire/ajouter_travail_by_enseignant'>Ajouter travail</Link>
+            <Link className="btn " to='/secondaire/ajouter_travail_by_enseignant'>Ajouter travail</Link>
           </div>
           {successMessage && (
             <p>{successMessage}</p>
           )}
           {error && <p className="text-danger text-center">{error}</p>}
           <div className="table-responsive">
-            <table className="table table-bordered table-hover">
+            <table className="table  ">
               <thead className="bg-primary text-white">
                 <tr>
                   <th className='text-white'>#</th>
@@ -126,15 +126,15 @@ const Travaux = ({userId}) =>{
                       <td>{travail.annee.name}</td>
                       <td>
                         <a
-                          className="btn btn-primary mt-2 mb-2 w-100"
+                          className="btn  mt-2 mb-2 w-100"
                           href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail.fichier}`}
                         >
                           <i className="bi bi-download"></i> Télécharger
                         </a>
-                        <Link to={`/secondaire/liste_travaux_deposes/${travail.id}`} target="_blank" rel="noopener noreferrer" className="btn btn-warning mt-2 mb-2 w-100 text-white">
+                        <Link to={`/secondaire/liste_travaux_deposes/${travail.id}`} target="_blank" rel="noopener noreferrer" className="btn  mt-2 mb-2 w-100 text-white">
                           Voir travaux déposés
                         </Link>
-                        <Link onClick={() => handleDelete(travail.id)} className='btn btn-danger mt-2 mb-2 w-100'>Supprimer</Link>
+                        <Link onClick={() => handleDelete(travail.id)} className='btn  mt-2 mb-2 w-100'>Supprimer</Link>
                       </td>
                     </tr>
                   ))
@@ -146,11 +146,11 @@ const Travaux = ({userId}) =>{
               </tbody>
             </table>
             <div className="d-flex justify-content-between align-items-center mt-3">
-              <button className="btn btn-secondary" onClick={prevPage} disabled={currentPage === 1}>
+              <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
                 Précédent
               </button>
               <span>Page {currentPage} sur {totalPages}</span>
-              <button className="btn btn-secondary" onClick={nextPage} disabled={currentPage === totalPages}>
+              <button className="btn " onClick={nextPage} disabled={currentPage === totalPages}>
                 Suivant
               </button>
             </div>
@@ -165,7 +165,7 @@ const ListeTravailByEnseignant = () => {
   const userId = localStorage.getItem("userId");
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />

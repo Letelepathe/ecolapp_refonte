@@ -35,12 +35,12 @@ const CoursListe = () => {
                 {cours.map(course => (
                     <li key={course.id} className="list-group-item mb-3">
                         <h3>{course.name}</h3>
-                        <Link to={`/quiz/creer/${course.id}`} className="btn btn-primary btn-sm me-2">Créer un Quiz</Link>
+                        <Link to={`/quiz/creer/${course.id}`} className="btn   me-2">Créer un Quiz</Link>
                         <ul className="list-group mt-2">
                             {course.quiz.map(quiz => (
                                 <li key={quiz.id} className="list-group-item d-flex justify-content-between align-items-center">
                                     {quiz.titre}
-                                    <Link to={`/quiz/repondre/${quiz.id}`} className="btn btn-secondary btn-sm">Faire ce quiz</Link>
+                                    <Link to={`/quiz/repondre/${quiz.id}`} className="btn  ">Faire ce quiz</Link>
                                 </li>
                             ))}
                         </ul>

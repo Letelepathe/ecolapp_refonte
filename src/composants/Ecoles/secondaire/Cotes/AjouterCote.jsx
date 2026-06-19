@@ -124,7 +124,7 @@ const AjouterCote = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -208,7 +208,7 @@ const AjouterCote = () => {
             </div>
 
             <div className="d-grid mt-3">
-              <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
+              <button className="btn " type="submit" disabled={isSubmitting}>
                 {isSubmitting ?
                 <>
                     <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

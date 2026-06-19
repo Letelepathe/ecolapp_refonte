@@ -57,8 +57,8 @@ const Forum = () => {
         <div className="col-md-12">
           <div className="forum-header d-flex justify-content-between align-items-center mb-4">
             <h2>Forum</h2>
-            <Link to="/maternelle/forum/start-discussion" className="btn btn-primary">Créer topic</Link>
-            <Link className='btn btn-dark' to='/maternelle/profil_user'>Quitter</Link>
+            <Link to="/maternelle/forum/start-discussion" className="btn ">Créer topic</Link>
+            <Link className='btn ' to='/maternelle/profil_user'>Quitter</Link>
           </div>
           {error && <div className="alert alert-danger">{error}</div>}
           <div className="mb-3">

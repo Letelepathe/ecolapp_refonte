@@ -43,7 +43,7 @@ const ListeHoraire = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
     <SidebarLeft />
     <div className='content'>
       <NavbarTop />
@@ -56,7 +56,7 @@ const ListeHoraire = () => {
         {error &&
           <p> {error} </p>
           }
-        <table className="table table-bordered">
+        <table className="table ">
           <thead>
             <tr>
               <th>Titre</th>
@@ -84,7 +84,7 @@ const ListeHoraire = () => {
                   <td>{horaire.option.name}</td>
                   <td>{horaire.annee.name}</td>
                   <td>
-                    <Link onClick={() => handleDelete(horaire.id)} className='btn btn-danger'>Supprimer</Link>
+                    <Link onClick={() => handleDelete(horaire.id)} className='btn '>Supprimer</Link>
                   </td>
                 </tr>);
 

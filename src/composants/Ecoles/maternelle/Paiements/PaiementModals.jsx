@@ -47,7 +47,7 @@ const PaiementModals = () => {
 
       {/* Boutons pour ouvrir les modales */}
       <button
-        className="btn btn-primary"
+        className="btn "
         onClick={() => {
           setIsOrdreModalOpen(true);
           setError(null);
@@ -56,7 +56,7 @@ const PaiementModals = () => {
         Paiements en ordre
       </button>
       <button
-        className="btn btn-secondary"
+        className="btn "
         onClick={() => {
           setIsDetteModalOpen(true);
           setError(null);
@@ -88,13 +88,13 @@ const PaiementModals = () => {
             <div className="modal-footer justify-content-between align-items-center d-flex">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn "
                 onClick={() => setIsOrdreModalOpen(false)}
               >
                 Annuler
               </button>
               <button
-                className="btn btn-primary"
+                className="btn "
                 onClick={handleOrdreSubmit}
               >
                 Valider
@@ -127,13 +127,13 @@ const PaiementModals = () => {
             <div className="modal-footer justify-content-between align-items-center d-flex">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn "
                 onClick={() => setIsDetteModalOpen(false)}
               >
                 Annuler
               </button>
               <button
-                className="btn btn-primary"
+                className="btn "
                 onClick={handleDetteSubmit}
               >
                 Valider

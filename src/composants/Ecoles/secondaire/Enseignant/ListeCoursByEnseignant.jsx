@@ -94,7 +94,7 @@ const CoursFichiers = ({ userId }) => {
   return (
     <div className="container mt-4">
       <div className="d-flex align-items-center justify-content-between">
-        <Link className="btn btn-primary" to='/secondaire/ajouter_cours_by_enseignant'>Ajouter cours</Link>
+        <Link className="btn " to='/secondaire/ajouter_cours_by_enseignant'>Ajouter cours</Link>
         <h2 className="text-center mb-4 text-primary">Liste des Cours</h2>
       </div>
       {successMessage &&
@@ -102,7 +102,7 @@ const CoursFichiers = ({ userId }) => {
       }
       {error && <p className="text-danger text-center">{error}</p>}
       <div className="table-responsive">
-        <table className="table table-bordered table-hover">
+        <table className="table  ">
           <thead className="bg-primary text-white">
             <tr>
               <th className='text-white'>#</th>
@@ -132,12 +132,12 @@ const CoursFichiers = ({ userId }) => {
                   <td>{cf.annee.name}</td>
                   <td>
                     <a
-                  className="btn btn-primary mt-2 mb-2 w-100"
+                  className="btn  mt-2 mb-2 w-100"
                   href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}>
                   
                       <i className="bi bi-download"></i> Télécharger
                     </a>
-                    <Link onClick={() => handleDelete(cf.id)} className='btn btn-danger mt-2 mb-2 w-100'>Supprimer</Link>
+                    <Link onClick={() => handleDelete(cf.id)} className='btn  mt-2 mb-2 w-100'>Supprimer</Link>
                   </td>
                 </tr>
             ) :
@@ -149,11 +149,11 @@ const CoursFichiers = ({ userId }) => {
           </tbody>
         </table>
         <div className="d-flex justify-content-between align-items-center mt-3">
-          <button className="btn btn-secondary" onClick={prevPage} disabled={currentPage === 1}>
+          <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
             Précédent
           </button>
           <span>Page {currentPage} sur {totalPages}</span>
-          <button className="btn btn-secondary" onClick={nextPage} disabled={currentPage === totalPages}>
+          <button className="btn " onClick={nextPage} disabled={currentPage === totalPages}>
             Suivant
           </button>
         </div>
@@ -166,7 +166,7 @@ const ListeCoursByEnseignant = () => {
   const userId = localStorage.getItem("userId");
   return (
     <div>
-      <div className="container-fluid position-relative bg-white d-flex p-0">
+      <div className="container-fluid position-relative  d-flex p-0">
         <SidebarLeft />
         <div className="content">
           <NavbarTop />

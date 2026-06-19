@@ -45,7 +45,7 @@ const ListeTypeTravail = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -58,7 +58,7 @@ const ListeTypeTravail = () => {
             {error ? (
               <p className="text-danger">{error}</p>
             ) : typetravails.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Type travail</th>
@@ -70,7 +70,7 @@ const ListeTypeTravail = () => {
                     <tr key={tp.id}>
                       <td>{tp.name}</td>
                       <td>
-                          <Link onClick={() => handleDelete(tp.id)} className='btn btn-danger'>Supprimer</Link>
+                          <Link onClick={() => handleDelete(tp.id)} className='btn '>Supprimer</Link>
                       </td>
                     </tr>
                   ))}

@@ -123,7 +123,7 @@ const AjouterTravailByEnseignant = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -132,7 +132,7 @@ const AjouterTravailByEnseignant = () => {
             <div className='card mb-3'>
               <div className="card-body">
                 <div className="d-flex align-items-center justify-content-between">
-                  <Link className="btn btn-primary" to='/maternelle/liste_cours_by_enseignant'>Mes cours</Link>
+                  <Link className="btn " to='/maternelle/liste_cours_by_enseignant'>Mes cours</Link>
                   <h6 className="text-center u-style-951c0e5f">Ajouter fichier cours</h6>
                 </div>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -189,7 +189,7 @@ const AjouterTravailByEnseignant = () => {
                   </div>
 
                   <button
-                    className="btn btn-primary w-100 u-style-2167c5af"
+                    className="btn  w-100 u-style-2167c5af"
                     type="submit"
                     disabled={isSubmitting}>
 

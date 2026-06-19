@@ -111,7 +111,7 @@ const AjouterTitulaire = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className='content'>
         <NavbarTop />
@@ -121,7 +121,7 @@ const AjouterTitulaire = () => {
               <div className="card mb-3">
                 <div className="card-body">
                   <div className='d-flex align-items-center justify-content-between'>
-                   <Link to='/primaire/liste_titulaire' className='btn btn-primary mt-2 mb-2'>Liste titulaires</Link>
+                   <Link to='/primaire/liste_titulaire' className='btn  mt-2 mb-2'>Liste titulaires</Link>
                    <h6 className="text-center u-style-951c0e5f">Ajouter Titulaire</h6>
                   </div>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
@@ -168,7 +168,7 @@ const AjouterTitulaire = () => {
                       </div>
 
                     <div className="d-grid">
-                      <button className={`${`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} style-fr-8eb65e9b`} type="submit"
+                      <button className={`${`btn  w-100 ${isLoading ? "loading" : ""}`} style-fr-8eb65e9b`} type="submit"
                       disabled={isLoading}>
 
                         

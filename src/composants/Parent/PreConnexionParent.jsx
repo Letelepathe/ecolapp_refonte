@@ -35,7 +35,7 @@ const PreConnexionParent = () => {
       <div className="container">
         <div className="row justify-content-center align-items-center min-vh-100 d-flex">
           <div className="col-lg-8">
-            <div className="card shadow">
+            <div className="card ">
               <div className="card-body text-center">
                 <div className="profile-block">
                   <img
@@ -73,7 +73,7 @@ const PreConnexionParent = () => {
                 <p className="text-muted">Votre compte a été créé avec succès. Nous sommes ravis de vous avoir parmi nous !</p>
                 <Link
                   to="/parent/login"
-                  className="btn btn-primary rounded-pill px-4 py-2">
+                  className="btn  rounded-pill px-4 py-2">
                   
                   Connectez-vous ici
                 </Link>

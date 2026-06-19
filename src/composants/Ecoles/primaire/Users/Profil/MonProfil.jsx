@@ -28,7 +28,7 @@ const MonProfil = () => {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
       </Helmet>
 
-      <div className="container-fluid position-relative bg-white d-flex p-0">
+      <div className="container-fluid position-relative  d-flex p-0">
   
         <SidebarLeft />
   

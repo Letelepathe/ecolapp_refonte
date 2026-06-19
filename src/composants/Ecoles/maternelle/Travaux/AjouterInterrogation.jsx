@@ -146,11 +146,11 @@ const AjouterInterrogation = () => {
                       </div>
 
                       <div className="col-lg-6 col-md-6 col-sm-6 col-6">
-                        <input type="reset" className="btn btn-danger" value="Annuler" />
+                        <input type="reset" className="btn " value="Annuler" />
                       </div>
 
                       <div className="col-lg-6 col-md-6 col-sm-6 col-6">
-                        <input className="btn btn-primary w-100" type="submit" value="Ajouter" />
+                        <input className="btn  w-100" type="submit" value="Ajouter" />
                       </div>
                     </form>
                   </div>

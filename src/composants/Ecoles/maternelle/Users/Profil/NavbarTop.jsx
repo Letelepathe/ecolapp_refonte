@@ -45,7 +45,7 @@ const NavbarTop = () => {
   };
 
   return user ?
-  <nav className="navbar my-navbar navbar-expand bg-white navbar-white px-4 py-0 u-style-9a9493a9">
+  <nav className="navbar my-navbar navbar-expand  navbar-white px-4 py-0 u-style-9a9493a9">
             <Link to="#" className="sidebar-toggler flex-shrink-0" onClick={toggleSidebar}>
                 <FaBars className="u-style-43ef163a" />
             </Link>
@@ -60,13 +60,13 @@ const NavbarTop = () => {
                 {/* Icone de profil */}
                 <div className="nav-item dropdown">
                     <Link to="/maternelle/profil_user" className="nav-link">
-                        <i className="bi bi-person-circle me-lg-2 shadow u-style-a408f68a"></i>
+                        <i className="bi bi-person-circle me-lg-2  u-style-a408f68a"></i>
                     </Link>
                 </div>
 
                 <div className="nav-item dropdown">
                     <Link to="/maternelle/forum" className="nav-link">
-                        <i className="bi bi-chat-fill me-lg-2 shadow u-style-a408f68a"></i>
+                        <i className="bi bi-chat-fill me-lg-2  u-style-a408f68a"></i>
                     </Link>
                 </div>
                

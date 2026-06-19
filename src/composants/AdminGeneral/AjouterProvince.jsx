@@ -67,7 +67,7 @@ const AjouterProvince = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -77,7 +77,7 @@ const AjouterProvince = () => {
               <div className="card mb-3">
                 <div className='container d-flex align-items-center justify-content-between py-2'>
                   <h6 className="text-center u-style-951c0e5f">Ajouter Province</h6>
-                  <Link to='/admin-general/liste_province' className='btn btn-warning text-white'>Liste Provinces</Link>
+                  <Link to='/admin-general/liste_province' className='btn  text-white'>Liste Provinces</Link>
                 </div>
                 <div className="card-body">
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
@@ -97,7 +97,7 @@ const AjouterProvince = () => {
                     </div>
 
                     <div className="d-grid">
-                      <button className="btn btn-primary" disabled={isSubmitting} type="submit">
+                      <button className="btn " disabled={isSubmitting} type="submit">
                         {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

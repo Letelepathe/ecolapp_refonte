@@ -42,12 +42,12 @@ const ListeEnseignant = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
         <div className="container mt-4">
-          <Link className="btn btn-primary mb-2" to='/maternelle/creationcompte'>Ajouter enseignant</Link>
+          <Link className="btn  mb-2" to='/maternelle/creationcompte'>Ajouter enseignant</Link>
           <h3 className="mb-0 text-primary text-center">Enseigants du maternelle</h3>
       
           <div className="table-responsive">
@@ -57,7 +57,7 @@ const ListeEnseignant = () => {
             <p className="text-success">{successMessage}</p> :
             null}
             
-            <table className="table text-start align-middle table-bordered table-hover mb-0">
+            <table className="table text-start align-middle   mb-0">
               <thead>
                 <tr className="text-dark">
                   <th>Id</th>
@@ -87,7 +87,7 @@ const ListeEnseignant = () => {
                     <td>{enseignant.sexe}</td>
                     <td>
                       <button
-                      className="btn btn-danger"
+                      className="btn "
                       onClick={() => handleDelete(enseignant.id)}>
                       
                         Supprimer

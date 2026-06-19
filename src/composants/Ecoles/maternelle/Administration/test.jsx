@@ -36,7 +36,7 @@
           </select>
           {errors.fonction && <p className="text-danger">{errors.fonction}</p>}
         </div>
-        <button type="submit" className="btn btn-primary">Ajouter Membre Effectif</button>
+        <button type="submit" className="btn ">Ajouter Membre Effectif</button>
         {successMessage && <p className="text-success mt-2">{successMessage}</p>}
         {errors.form && <p className="text-danger mt-2">{errors.form}</p>}
       </form>

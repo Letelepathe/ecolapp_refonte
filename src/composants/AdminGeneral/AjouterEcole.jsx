@@ -147,7 +147,7 @@ const AjouterEcole = () => {
 
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -157,7 +157,7 @@ const AjouterEcole = () => {
               <div className="card mb-3">
                 <div className='container d-flex align-items-center justify-content-between py-2'>
                   <h6 className="text-center u-style-951c0e5f">Ajouter École</h6>
-                  <Link to='/admin-general/liste_ecole' className='btn btn-warning text-white'>Liste Écoles</Link>
+                  <Link to='/admin-general/liste_ecole' className='btn  text-white'>Liste Écoles</Link>
                 </div>
                 <div className="card-body">
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
@@ -217,7 +217,7 @@ const AjouterEcole = () => {
                       {previewImage && <img src={previewImage} alt="Aperçu" className="mt-2 img-thumbnail u-style-cec3d5ef" />}
                     </div>
 
-                    <button className="btn btn-primary w-100" disabled={isSubmitting}>{isSubmitting ? 'Enregistrement...' : 'Enregistrer'}</button>
+                    <button className="btn  w-100" disabled={isSubmitting}>{isSubmitting ? 'Enregistrement...' : 'Enregistrer'}</button>
 
                     {successMessage && <p className="text-success mt-2 text-center">{successMessage}</p>}
                     {errorMessage && <p className="text-danger mt-2 text-center">{errorMessage}</p>}

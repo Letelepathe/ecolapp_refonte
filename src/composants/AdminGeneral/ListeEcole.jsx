@@ -56,21 +56,21 @@ const ListeEcole = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
         <div className="container">
           <div className="d-flex justify-content-between align-items-center mt-3 mb-3">
             <h6>Liste des Écoles</h6>
-            <Link to='/admin-general/ajouter_ecole' className="btn btn-primary">Ajouter école</Link>
+            <Link to='/admin-general/ajouter_ecole' className="btn ">Ajouter école</Link>
           </div>
           <div className="table-responsive">
             {successMessage && <p className="text-success">{successMessage}</p>}
             {error && <p className="text-danger">{error}</p>}
             {ecoles.length > 0 ?
             <>
-                <table className="table text-start align-middle table-bordered table-hover mb-0">
+                <table className="table text-start align-middle   mb-0">
                   <thead>
                     <tr className="text-dark">
                       <th>Id</th>
@@ -104,20 +104,20 @@ const ListeEcole = () => {
                         <td>{ecole.province_educationnelle?.province?.name}</td>
                         <td>{ecole.province_educationnelle?.name}</td>
                         <td className='d-flex justify-content-center align-ites-center'>
-                          <Link className='btn btn-warning text-white mt-1 mb-1 me-2' to={`/admin-general/creer_super_admin_ecole/${ecole.id}`}> Créer admin</Link>
-                          <Link className='btn btn-primary text-white mt-1 mb-1 me-2' to={`/ecole/choix_direction/${ecole.id}`} target='_blank' rel='noopener noreferrer'> Explorer</Link>
-                          <button onClick={() => handleDelete(ecole.id)} className='btn btn-danger mt-1 mb-1'>Supprimer</button>
+                          <Link className='btn  text-white mt-1 mb-1 me-2' to={`/admin-general/creer_super_admin_ecole/${ecole.id}`}> Créer admin</Link>
+                          <Link className='btn  text-white mt-1 mb-1 me-2' to={`/ecole/choix_direction/${ecole.id}`} target='_blank' rel='noopener noreferrer'> Explorer</Link>
+                          <button onClick={() => handleDelete(ecole.id)} className='btn  mt-1 mb-1'>Supprimer</button>
                         </td>
                       </tr>
                   )}
                   </tbody>
                 </table>
                 <div className="d-flex justify-content-between align-items-center mt-3">
-                  <button className="btn btn-secondary" onClick={prevPage} disabled={currentPage === 1}>
+                  <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
                     Précédent
                   </button>
                   <span>Page {currentPage} sur {totalPages}</span>
-                  <button className="btn btn-secondary" onClick={nextPage} disabled={currentPage === totalPages}>
+                  <button className="btn " onClick={nextPage} disabled={currentPage === totalPages}>
                     Suivant
                   </button>
                 </div>

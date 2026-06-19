@@ -22,7 +22,7 @@ const ListeMembreEffectif = () => {
     <div className="container mt-5">
       <h2 className="text-center u-style-43ef163a">Liste des Membres Effectifs</h2>
       {error && <p className="text-danger text-center">{error}</p>}
-      <table className="table table-striped mt-4">
+      <table className="table  mt-4">
         <thead>
           <tr>
             <th>Nom</th>

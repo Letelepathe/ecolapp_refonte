@@ -45,20 +45,20 @@ const ListeFonction = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
         <div className="container">
           <div className="table-responsive">
-            <Link to='/maternelle/ajouter_fonction' className='btn btn-primary mb-2 mt-2'>Ajouter fonction</Link>
+            <Link to='/maternelle/ajouter_fonction' className='btn  mb-2 mt-2'>Ajouter fonction</Link>
             {successMessage && ( 
                 <p> {successMessage} </p>
             )}
             {error ? (
               <p className="text-danger">{error}</p>
             ) : fonctions.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Fonction</th>
@@ -70,7 +70,7 @@ const ListeFonction = () => {
                     <tr key={fonction.id}>
                       <td>{fonction.name}</td>
                       <td>
-                          <Link onClick={() => handleDelete(fonction.id)} className='btn btn-danger'>Supprimer</Link>
+                          <Link onClick={() => handleDelete(fonction.id)} className='btn '>Supprimer</Link>
                       </td>
                     </tr>
                   ))}

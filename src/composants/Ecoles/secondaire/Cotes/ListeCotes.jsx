@@ -135,18 +135,18 @@ const ListeCotes = () => {
   }, [searchTerm, selectedTypeTravail, cotes]);
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
         <div className="container mt-5">
           <div className="mt-2 mb-2 justify-content-between align-items-center d-flex">
-            <Link to='/secondaire/bureau_admin' className='btn btn-warning text-white'>
+            <Link to='/secondaire/bureau_admin' className='btn  text-white'>
               <i className="bi bi-arrow-left"></i> Retour
             </Link>
             <Link
               to={`/secondaire/cote_generale?classe_id=${classeId}&periode_id=${periodeId}&cours_id=${coursId}`}
-                className="btn btn-primary"
+                className="btn "
               >
               Note générale
             </Link>
@@ -225,17 +225,17 @@ const ListeCotes = () => {
                       </td>
                       <td>
                         {editingId === cote.id ? (
-                          <button className="btn btn-success btn-sm" onClick={updateCote}>Sauvegarder</button>
+                          <button className="btn  " onClick={updateCote}>Sauvegarder</button>
                         ) : (
                           <div className="d-flex">
                             <button 
-                              className="btn btn-primary btn-sm mx-1" 
+                              className="btn   mx-1" 
                               onClick={() => { setEditingId(cote.id); setEditNote(cote.note); }}
                             >
                               Modifier
                             </button>
                             <button 
-                              className="btn btn-danger btn-sm" 
+                              className="btn  " 
                               onClick={() => deleteCote(cote.id)}
                             >
                               Supprimer

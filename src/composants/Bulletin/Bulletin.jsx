@@ -235,12 +235,12 @@ const Bulletin = () => {
                     </div>
                 </div>
                 <div className="text-center py-2 mb-2 mt-2">
-                    <button className="btn btn-primary hide-on-print u-style-eae60df9" onClick={printBulletin}>
+                    <button className="btn  hide-on-print u-style-eae60df9" onClick={printBulletin}>
                         Imprimer
                     </button>
                 </div>
                 <div className="text-center mt-2 mb-2">
-                    <Link to='/' className="btn btn-warning hide-on-print u-style-4d080e7b">Quitter</Link>
+                    <Link to='/' className="btn  hide-on-print u-style-4d080e7b">Quitter</Link>
                 </div>
                
             </div>

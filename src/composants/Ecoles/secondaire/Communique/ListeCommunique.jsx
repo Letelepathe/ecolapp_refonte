@@ -68,17 +68,17 @@ const ListeCommuniques = () => {
 
 
   return (
-    <div className='container-fluid position-relative bg-white d-flex p-0'>
+    <div className='container-fluid position-relative  d-flex p-0'>
       <SidebarLeft />
       <div className='content'>
         <NavbarTop />
         <div className="container mt-2">
           <div className='d-flex justify-content-between align-items-center'>
-           <Link to='/secondaire/lancer_communique' className='btn btn-primary mb-2 mt-2'>Lancer communiqué</Link>
+           <Link to='/secondaire/lancer_communique' className='btn  mb-2 mt-2'>Lancer communiqué</Link>
            <h6 className="text-center u-style-951c0e5f">Liste des Communiqués</h6>
           </div>
           <div classname='table-responsive'>
-            <table className="table table-bordered">
+            <table className="table ">
               <thead>
                 <tr>
                   <th>#</th>
@@ -109,7 +109,7 @@ const ListeCommuniques = () => {
                     </td>
                     <td>
                   
-                      <button className="btn btn-danger btn-sm mt-2 mb-2 w-100" onClick={() => handleDeleteConfirmation(communique)}>
+                      <button className="btn   mt-2 mb-2 w-100" onClick={() => handleDeleteConfirmation(communique)}>
                         Supprimer
                       </button>
                     </td>
@@ -132,10 +132,10 @@ const ListeCommuniques = () => {
                     <p>Voulez-vous vraiment supprimer le communiqué <strong>{selectedCommunique.title}</strong> ?</p>
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                    <button type="button" className="btn " onClick={() => setShowModal(false)}>
                       Annuler
                     </button>
-                    <button type="button" className="btn btn-danger" onClick={handleDelete}>
+                    <button type="button" className="btn " onClick={handleDelete}>
                       Supprimer
                     </button>
                   </div>

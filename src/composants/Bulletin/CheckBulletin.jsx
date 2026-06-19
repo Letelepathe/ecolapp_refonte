@@ -72,7 +72,7 @@ const CheckBulletin = () => {
                 value={matricule}
                 onChange={(e) => setMatricule(e.target.value)} />
               
-              <button type="submit" disabled={isLoading} className="btn btn-primary w-100 submit-button">
+              <button type="submit" disabled={isLoading} className="btn  w-100 submit-button">
               {isLoading ? "Traitement en cours..." : "Valider"}
               </button>
               {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}

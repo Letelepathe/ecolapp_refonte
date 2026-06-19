@@ -72,7 +72,7 @@ const QuizByEnseignant = () => {
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-lg-10 col-12">
-          <div className="card shadow-sm">
+          <div className="card ">
             <div className="card-body">
               <h4 className="text-center mb-4 u-style-951c0e5f">Mes Quiz</h4>
 
@@ -112,7 +112,7 @@ const QuizByEnseignant = () => {
 
               {!loading && !error && filteredQuizzes.length > 0 &&
               <div className="table-responsive">
-                  <table className="table table-bordered table-hover">
+                  <table className="table  ">
                     <thead className="u-style-4845b56d">
                       <tr>
                         <th className="text-white">Id</th>
@@ -130,11 +130,11 @@ const QuizByEnseignant = () => {
                           <td>{quiz.cours.name}</td>
                           <td>{new Date(quiz.created_at).toLocaleDateString()}</td>
                           <td className="d-flex justify-content-between align-items-center">
-                            <Link to={`/quiz/repondre/${quiz.id}`} target='_blank' rel='noopener noreferrer' className="btn btn-secondary btn-sm me-2">
+                            <Link to={`/quiz/repondre/${quiz.id}`} target='_blank' rel='noopener noreferrer' className="btn   me-2">
                               Faire ce quiz
                             </Link>
                             <button
-                          className="btn btn-danger btn-sm"
+                          className="btn  "
                           onClick={() => handleDelete(quiz.id)}>
                           
                               Supprimer

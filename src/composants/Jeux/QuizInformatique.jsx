@@ -49,7 +49,7 @@ const QuizInformatique = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4 shadow">
+      <div className="card p-4 ">
         <h1 className="text-center mb-4">Quiz Informatique</h1>
         <div className="text-center mb-4">
           <p className="lead">{question.texte}</p>
@@ -74,7 +74,7 @@ const QuizInformatique = () => {
               </div>
             ))}
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn ">
             Soumettre
           </button>
         </form>

@@ -34,7 +34,7 @@ const SidebarRight = () => {
   return (
     <div>
             <div className="sidebar-right pe-0 pb-0">
-                <nav className="navbar bg-white navbar-white">
+                <nav className="navbar  navbar-white">
                     <Link to='#' className="navbar-brand mx-4 mb-3">
                         <h3 className="u-style-951c0e5f">
                             <i className="icon me-2"></i>Ecole-App
@@ -43,7 +43,7 @@ const SidebarRight = () => {
                     <div className="navbar-nav w-100">
                         <div className="container">
                             <div className="col-lg-12 col-12">
-                                <div className="h-100 bg-white rounded mb-3 p-0">
+                                <div className="h-100  rounded mb-3 p-0">
                                     <div className="d-flex align-items-center justify-content-between mb-2">
                                         <p className="mb-0 text-primary">Responsables disponibles</p>
                                     </div>
@@ -63,7 +63,7 @@ const SidebarRight = () => {
                                                         <h6 className="mb-0">{admin.prenom} {admin.nom}</h6>
                                                     </div>
                                                     <span>
-                                                        <Link to={`/primaire/mon_profil/${admin.id}`} className="btn btn-primary">Voir le profil</Link>
+                                                        <Link to={`/primaire/mon_profil/${admin.id}`} className="btn ">Voir le profil</Link>
                                                     </span>
                                                 </div>
                                             </div>

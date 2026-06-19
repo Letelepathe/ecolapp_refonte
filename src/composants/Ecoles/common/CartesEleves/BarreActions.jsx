@@ -16,13 +16,13 @@ const BarreActions = ({
       <p className="text-muted mb-0">Génération seule ou groupée pour le cycle {cycle}.</p>
     </div>
     <div className="d-flex flex-wrap gap-2">
-      <button className="btn btn-outline-primary" onClick={bascResultat} disabled={!nbFiltre}>
+      <button className="btn " onClick={bascResultat} disabled={!nbFiltre}>
         {toutFiltreSel ? "Désélectionner ce résultat" : "Sélectionner ce résultat"}
       </button>
-      <button className="btn btn-secondary" onClick={viderSel} disabled={!nbSel}>
+      <button className="btn " onClick={viderSel} disabled={!nbSel}>
         Vider
       </button>
-      <button className="btn btn-primary" onClick={ouvrirApercu} disabled={!nbSel || exportPdf}>
+      <button className="btn " onClick={ouvrirApercu} disabled={!nbSel || exportPdf}>
         Générer aperçu
       </button>
     </div>

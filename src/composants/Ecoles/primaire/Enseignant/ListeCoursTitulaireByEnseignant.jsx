@@ -26,19 +26,19 @@ const ListeCoursTitulaireByEnseignant = () => {
 
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
         <SidebarLeft />
         <div className="content">
           <NavbarTop />
           <div className="container mt-4">
             <div className='d-flex justify-content-between align-items-center'>
               <h6 className="mb-4 u-style-4789709b">Liste des Cours dont vous êtes titulaire</h6>
-              <Link className="btn btn-warning text-white" to='/primaire/ajouter_cours_by_enseignant'><i className='bi bi-plus'></i> Ajouter fichier cours </Link>
-              <Link to={`/quiz/by_enseignant`} target='_blank' rel='noopener noreferrer' className="btn btn-primary me-2">Mes Quiz</Link>
+              <Link className="btn  text-white" to='/primaire/ajouter_cours_by_enseignant'><i className='bi bi-plus'></i> Ajouter fichier cours </Link>
+              <Link to={`/quiz/by_enseignant`} target='_blank' rel='noopener noreferrer' className="btn  me-2">Mes Quiz</Link>
             </div>
             {error && <p className="text-danger text-center">{error}</p>}
             <div className="table-responsive">
-              <table className="table table-bordered table-hover">
+              <table className="table  ">
                 <thead className="u-style-92f685a5">
                   <tr>
                     <th className='text-white'>#</th>
@@ -61,8 +61,8 @@ const ListeCoursTitulaireByEnseignant = () => {
                         <td>{c.cour.option.name}</td>
                         <td>{c.annee.name}</td>
                         <td className='d-flex justify-content-between align-items-center'>
-                          <Link to={`/quiz/creer/${c.cour.id}/${c.cour.name.replace(/ /g, '+')}`} target='_blank' rel='noopener noreferrer' className="btn btn-warning text-white btn-sm me-2">Créer un Quiz</Link>
-                          <Link to={`/quiz/cours/${c.cour.id}/${c.cour.name.replace(/ /g, '+')}`} target='_blank' rel='noopener noreferrer' className="btn btn-primary btn-sm me-2">Liste Quiz</Link>
+                          <Link to={`/quiz/creer/${c.cour.id}/${c.cour.name.replace(/ /g, '+')}`} target='_blank' rel='noopener noreferrer' className="btn  text-white  me-2">Créer un Quiz</Link>
+                          <Link to={`/quiz/cours/${c.cour.id}/${c.cour.name.replace(/ /g, '+')}`} target='_blank' rel='noopener noreferrer' className="btn   me-2">Liste Quiz</Link>
                         </td>
                       </tr>
                 ) :

@@ -52,7 +52,7 @@ const ChangerCodeAdmin = () => {
             <form onSubmit={handleSubmit} className="code-form mt-4 p-4">
               <button
                 type="submit"
-                className="btn btn-primary w-100 submit-button"
+                className="btn  w-100 submit-button"
                 disabled={isSubmitting} // Désactive le bouton pendant la soumission
               >
                 {isSubmitting ? 'Génération en cours...' : 'Générer'}
@@ -60,7 +60,7 @@ const ChangerCodeAdmin = () => {
               {errorMessage &&
               <p className="text-danger mt-3">
                   {errorMessage} <br />
-                  <Link to='/secondaire/bureau_admin' className='btn btn-primary'>Retour</Link>
+                  <Link to='/secondaire/bureau_admin' className='btn '>Retour</Link>
                 </p>
               }
             </form>

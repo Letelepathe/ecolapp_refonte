@@ -207,7 +207,7 @@ const MaClasse = () => {
       <Helmet>
         <title>ecolapp | Classe  </title>
       </Helmet>
-      <div className="container-fluid position-relative bg-white d-flex p-0"> 
+      <div className="container-fluid position-relative  d-flex p-0"> 
         <SidebarLeft />
         <div className="content">
           <NavbarTop />
@@ -217,7 +217,7 @@ const MaClasse = () => {
               <h4 className="text-center">Salut {user.first_name} {user.name} </h4>
               }
             </div>
-            <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+            <div className=" py-3  mt-2 u-style-59f7bcd2">
               {classe &&
               <h1 className="text-center text-primary">Classe : {classe.name}</h1>
               }
@@ -231,12 +231,12 @@ const MaClasse = () => {
                 </h3>
               }
               {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
-              <div className="bg-white py-3 shadow mt-2 mb-2 u-style-59f7bcd2">
+              <div className=" py-3  mt-2 mb-2 u-style-59f7bcd2">
                   <div className="container">
                     <h3 className="text-center">Gestion Présence élèves</h3>
                     <div className="justify-content-center aling-items-center d-flex">
-                      <Link to={`/secondaire/ajouter_presence_eleve/${id_classe}/${id_option}`} className="btn btn-primary w-50 u-style-9761b3f7">Ajouter</Link>
-                      <Link to={`/secondaire/historique_presence_eleve/${id_classe}/${id_option}`} className="btn btn-warning text-white w-50">Historique</Link>
+                      <Link to={`/secondaire/ajouter_presence_eleve/${id_classe}/${id_option}`} className="btn  w-50 u-style-9761b3f7">Ajouter</Link>
+                      <Link to={`/secondaire/historique_presence_eleve/${id_classe}/${id_option}`} className="btn  text-white w-50">Historique</Link>
                     </div>
                   </div>
                 </div>
@@ -284,10 +284,10 @@ const MaClasse = () => {
             </Swiper>
             <div className="tab-content" id="pills-tabContent">        
               <div className="tab-pane fade show active" id="cours_classe" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                <div className=" py-3  mt-2 u-style-59f7bcd2">
                   <div className="table-responsive container">
                     <h3 className="mb-4 text-primary">Cours de la Classe ({cours.length}) </h3>
-                    <table className="table table-striped">
+                    <table className="table ">
                       <thead>
                         <tr>
                           <th>#</th>
@@ -303,7 +303,7 @@ const MaClasse = () => {
                             <td>{cour.name}</td>
                             <td>{cour.ponderation}</td>
                             <td>
-                              <Link to={`/quiz/cours/${cour.id}/${cour.name.replace(/ /g, '+')}`} target='_blank' rel='noopener noreferrer' className="btn btn-primary btn-sm me-2">Liste Quiz</Link>
+                              <Link to={`/quiz/cours/${cour.id}/${cour.name.replace(/ /g, '+')}`} target='_blank' rel='noopener noreferrer' className="btn   me-2">Liste Quiz</Link>
                             </td>
                           </tr>
                         )}
@@ -313,7 +313,7 @@ const MaClasse = () => {
                 </div>
               </div>
               <div className="tab-pane fade show" id="horaires_classe" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                <div className=" py-3  mt-2 u-style-59f7bcd2">
                     <div id="recent-blog-posts" className="recent-blog-posts container">
                       <h3 className="mb-4 text-primary">Horaires</h3>
                       <div className="row">
@@ -332,11 +332,11 @@ const MaClasse = () => {
                 </div> 
               </div>
               <div className="tab-pane fade show" id="cours_fichier" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                <div className=" py-3  mt-2 u-style-59f7bcd2">
                   <div className="justify-content-between align-items-center d-flex">
                     <h6 className="text-center mb-4 text-primary">Cours en fichier ({cours_fichier.length}) </h6>
                     <button
-                      className="btn btn-warning text-white"
+                      className="btn  text-white"
                       onClick={() => {
                         setIsCoursVideoModalOpen(true);
                         setError(null);
@@ -347,7 +347,7 @@ const MaClasse = () => {
                   </div>
                   {error && <p className="text-danger text-center">{error}</p>}
                   <div className="table-responsive container">
-                    <table className="table table-bordered table-hover">
+                    <table className="table  ">
                       <thead className="bg-primary text-white">
                         <tr>
                           <th className='text-white'>#</th>
@@ -380,7 +380,7 @@ const MaClasse = () => {
                                 <td>{cf.annee.name}</td>
                                 <td>
                                   <a
-                              className="btn btn-primary"
+                              className="btn "
                               href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}>
                               
                                     <i className="bi bi-download"></i> Télécharger
@@ -400,10 +400,10 @@ const MaClasse = () => {
                 </div>
               </div>
               <div className="tab-pane fade show" id="travaux_eleve" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2 u-style-59f7bcd2">
+                <div className=" py-3  mt-2 u-style-59f7bcd2">
                   <div className="table-responsive container">
                     <h2 className="mb-4 text-primary">Liste des Travaux ({travaux.length})</h2>
-                    <table className="table table-bordered table-hover">
+                    <table className="table  ">
                       <thead className="bg-primary text-white">
                         <tr>
                           <th className='text-white'>#</th>
@@ -436,17 +436,17 @@ const MaClasse = () => {
                               <td>{travail.annee.name}</td>
                               {user && user.fonction.name === 'Elève' &&
                           <td>
-                              <a href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail.fichier}`} className="btn btn-primary w-100 mb-2 mt-2">
+                              <a href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail.fichier}`} className="btn  w-100 mb-2 mt-2">
                                 <i className="bi bi-downolad"></i> Télécharger
                               </a>
-                              <Link to={`/secondaire/deposer_travail_by_eleve/${travail.id_cours}/${travail.id}`} className="btn btn-success w-100 mb-2 mt-2">
+                              <Link to={`/secondaire/deposer_travail_by_eleve/${travail.id_cours}/${travail.id}`} className="btn  w-100 mb-2 mt-2">
                                 Déposer mon travail
                               </Link>
                               </td>
                           }
                               {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
                           <td>
-                                  <Link to={`/secondaire/liste_travaux_deposes/${travail.id}`} target="_blank" rel="noopener noreferrer" className="btn btn-warning text-white">
+                                  <Link to={`/secondaire/liste_travaux_deposes/${travail.id}`} target="_blank" rel="noopener noreferrer" className="btn  text-white">
                                     Voir travaux déposés
                                   </Link>
                                 </td>
@@ -465,10 +465,10 @@ const MaClasse = () => {
                 </div>
               </div>
               <div className="tab-pane fade show" id="eleves_classe" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div className="bg-white py-3 shadow mt-2 mb-2 u-style-59f7bcd2">
+                <div className=" py-3  mt-2 mb-2 u-style-59f7bcd2">
                   <div className="table-responsive container">
                     <h3 className="mb-4 text-primary">Liste des Élèves ({eleves.length})</h3>
-                    <table className="table table-bordered">
+                    <table className="table ">
                       <thead>
                         <tr>
                           <th>Id</th>
@@ -497,7 +497,7 @@ const MaClasse = () => {
                             <td>{eleve.sexe}</td>
                             {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
                           <td>
-                                <Link target="_blank" rel="noopener noreferrer" to={`/secondaire/consulter_resultat/${eleve.id}`} className="btn btn-primary">Résultats</Link>
+                                <Link target="_blank" rel="noopener noreferrer" to={`/secondaire/consulter_resultat/${eleve.id}`} className="btn ">Résultats</Link>
                               </td>
                           }
                           </tr>
@@ -509,7 +509,7 @@ const MaClasse = () => {
               </div>
               <div className="tab-pane fade show" id="cotes_eleves" role="tabpanel" aria-labelledby="pills-home-tab">
               {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
-                <div className="bg-white py-3 shadow mt-2 mb-2 u-style-59f7bcd2">
+                <div className=" py-3  mt-2 mb-2 u-style-59f7bcd2">
                     <div className="container">
                     {user && (user.fonction.name === 'Enseignant' || user.fonction.name === 'Enseignante' || user.fonction.name === 'Administrateur' || user.fonction.name === 'Super Administrateur' || user.fonction.name === 'Administratrice' || user.fonction.name === 'Super Administratrice') &&
                     <div className="mb-4">
@@ -548,7 +548,7 @@ const MaClasse = () => {
                               </select>
                             </div>
                             <div className="col-md-4">
-                              <button className="btn btn-primary mt-4" onClick={handleFetchCotes}>
+                              <button className="btn  mt-4" onClick={handleFetchCotes}>
                                 Voir les cotes
                               </button>
                             </div>
@@ -570,7 +570,7 @@ const MaClasse = () => {
                     {cotes.length > 0 &&
                     <div className="table-responsive mb-4">
                         <h3 className="text-primary">Cotes des élèves</h3>
-                        <table className="table table-bordered">
+                        <table className="table ">
                           <thead>
                             <tr>
                               <th>Id</th>
@@ -633,13 +633,13 @@ const MaClasse = () => {
             <div className="modal-footer justify-content-between align-items-center d-flex">
               <button
               type="button"
-              className="btn btn-secondary"
+              className="btn "
               onClick={() => setIsCoursVideoModalOpen(false)}>
               
                 Annuler
               </button>
               <button
-              className="btn btn-primary"
+              className="btn "
               onClick={handleCoursVideoSubmit}>
               
                 Valider

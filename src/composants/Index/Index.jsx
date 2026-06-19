@@ -16,7 +16,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="her container-fluid text-center justify-content-center shadow py-3"
+    <section className="her container-fluid text-center justify-content-center  py-3"
     >
       <h1 className="titre" data-aos="fade-up">ecolapp</h1>
       <p className="p" data-aos="fade-right">

@@ -76,7 +76,7 @@ const SelectionOption = () => {
                 <option value="notes">Consulter les notes</option>
                 <option value="emploi">Consulter l'emploi du temps</option>
               </select>
-              <button type="submit" className="btn btn-primary w-100 submit-button">
+              <button type="submit" className="btn  w-100 submit-button">
                 Valider
               </button>
               {responseMessage && <p className="mt-3 text-info">{responseMessage}</p>}

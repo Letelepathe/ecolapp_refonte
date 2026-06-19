@@ -45,7 +45,7 @@ const ListeSemestre = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
@@ -53,7 +53,7 @@ const ListeSemestre = () => {
           <div className="table-responsive">
             <div className='d-flex justify-content-between align-items-center'>
               <h6>Liste semestres</h6>
-              <Link to='/secondaire/ajouter_semestre' className='btn btn-primary'>Ajouter semestre</Link>
+              <Link to='/secondaire/ajouter_semestre' className='btn '>Ajouter semestre</Link>
             </div>
             {successMessage && ( 
                 <p> {successMessage} </p>
@@ -61,7 +61,7 @@ const ListeSemestre = () => {
             {error ? (
               <p className="text-danger">{error}</p>
             ) : semestres.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Semestre</th>
@@ -73,7 +73,7 @@ const ListeSemestre = () => {
                     <tr key={semestre.id}>
                       <td>{semestre.name}</td>
                       <td>
-                          <Link onClick={() => handleDelete(semestre.id)} className='btn btn-danger'>Supprimer</Link>
+                          <Link onClick={() => handleDelete(semestre.id)} className='btn '>Supprimer</Link>
                       </td>
                     </tr>
                   ))}

@@ -53,14 +53,14 @@ const ListeTravauxDeposesParEleve = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
         <div className="container mt-5">
           <h2 className="text-primary">Travaux Déposés pour le Travail #{id_travail}</h2>
           {message && <div className="alert alert-info">{message}</div>}
-          <table className="table table-bordered table-hover mt-3">
+          <table className="table   mt-3">
             <thead className="bg-primary text-white">
               <tr>
                 <th>#</th>
@@ -82,13 +82,13 @@ const ListeTravauxDeposesParEleve = () => {
                     <td>{travail.date_depot}</td>
                     <td>
                       <a
-                        className="btn btn-primary w-100 mb-2 mt-2"
+                        className="btn  w-100 mb-2 mt-2"
                         href={`https://api.ecolapp.cd/public/Travaux/DepotByEleve/${travail.fichier}`}
                       >
                         <i className="bi bi-download"></i> Télécharger
                       </a>
                       <a
-                        className="btn btn-warning text-white w-100 mb-2 mt-2"
+                        className="btn  text-white w-100 mb-2 mt-2"
                         href={`https://api.ecolapp.cd/public/Travaux/DepotByEleve/${travail.fichier}`}
                       >
                         Lire

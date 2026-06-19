@@ -26,7 +26,7 @@ const StatistiquesVentes = () => {
   console.log("Données du graphique:", data);
 
   return (
-    <div className="w-full p-4 bg-white shadow-lg rounded-lg">
+    <div className="w-full p-4   rounded-lg">
       <h2 className="text-xl font-bold mb-4">Statistiques des Ventes</h2>
       <div className="mb-6 u-style-cc65f0e8">
         <ResponsiveContainer width="100%" height={300}>

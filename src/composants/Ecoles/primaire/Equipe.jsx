@@ -23,7 +23,7 @@ const Equipe = () => {
       <div className="container">
         <div className="row gy-5">
           {admins.map((admin) =>
-          <div className="col-lg-3 col-md-6 member shadow bg-white py-2" key={admin.id}>
+          <div className="col-lg-3 col-md-6 member   py-2" key={admin.id}>
               <div>
                 <img
                 src={`https://api.ecolapp.cd/public/imgUser/${admin.file}`}
@@ -35,7 +35,7 @@ const Equipe = () => {
               <div className="member-info text-center">
                 <h4 className="u-style-43ef163a">{admin.first_name} {admin.name}</h4>
                 <span className="u-style-4789709b"></span>
-                <a href={`tel:${admin.phone}`} className="btn btn-primary w-100 mt-2">Contacter</a>
+                <a href={`tel:${admin.phone}`} className="btn  w-100 mt-2">Contacter</a>
               </div>
             </div>
           )}

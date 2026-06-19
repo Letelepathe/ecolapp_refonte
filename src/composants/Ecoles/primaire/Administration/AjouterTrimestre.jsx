@@ -64,7 +64,7 @@ const AjouterTrimestre = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -74,7 +74,7 @@ const AjouterTrimestre = () => {
               <div className="card mb-3">
                 <div className="d-flex align-items-center justify-content-between">
                  <h6 className="text-center u-style-951c0e5f">Ajouter trimestre</h6>
-                 <Link to='/primaire/liste_trimestre' className='btn btn-warning text-white'>Liste trimestres</Link>
+                 <Link to='/primaire/liste_trimestre' className='btn  text-white'>Liste trimestres</Link>
                 </div>
                 <div className="card-body">
                   
@@ -96,7 +96,7 @@ const AjouterTrimestre = () => {
                     
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                        {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

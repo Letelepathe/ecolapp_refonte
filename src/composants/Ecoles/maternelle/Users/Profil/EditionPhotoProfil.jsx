@@ -101,7 +101,7 @@ const EditionPhotoProfil = () => {
 
   return (
     <div className="ajouter-horaire-container">
-      <main className="bg-white">
+      <main className="">
         <div className="container">
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
@@ -144,7 +144,7 @@ const EditionPhotoProfil = () => {
 
                     <div className="d-grid">
                       <button
-                        className="btn btn-primary u-style-2167c5af"
+                        className="btn  u-style-2167c5af"
                         type="submit">
 
 

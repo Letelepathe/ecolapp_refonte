@@ -346,13 +346,13 @@ const Discussion = () => {
                   {comment.user_id === Number(sessionId) &&
                 <>
                       <button
-                    className="btn btn-sm btn-danger me-2 mb-3"
+                    className="btn   me-2 mb-3"
                     onClick={() => handleDeleteComment(comment.id)}>
                     
                         Supprimer
                       </button>
                       <button
-                    className="btn btn-sm btn-secondary mb-3"
+                    className="btn   mb-3"
                     onClick={() => handleEditComment(comment)}>
                     
                         Modifier
@@ -445,11 +445,11 @@ const Discussion = () => {
               
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                <button type="button" className="btn " onClick={closeModal}>
                   Annuler
                 </button>
                 <button
-                className="btn btn-primary text-white"
+                className="btn  text-white"
                 type="submit"
                 disabled={isSubmitting}>
                 

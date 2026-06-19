@@ -55,8 +55,8 @@ const ProfilAdmin = () => {
                     </div>
 
                     <div className="profile-block btn-block">
-                        <Link to="/admin-general/bureau_admin" className="btn btn-primary btn-custom"><i className="bi bi-house-door"></i> Accéder au Bureau Admin</Link>
-                        <Link to="/admin-general/deconnexion" className="btn btn-danger btn-custom"><i className="bi bi-box-arrow-right"></i> Déconnexion</Link>
+                        <Link to="/admin-general/bureau_admin" className="btn  btn-custom"><i className="bi bi-house-door"></i> Accéder au Bureau Admin</Link>
+                        <Link to="/admin-general/deconnexion" className="btn  btn-custom"><i className="bi bi-box-arrow-right"></i> Déconnexion</Link>
                     </div>
                 </div>
             </div>

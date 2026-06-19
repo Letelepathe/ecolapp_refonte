@@ -59,7 +59,7 @@ const HistoriquePresenceEleve = () => {
                        <h5>Historique des Présences</h5>
                         <Link
               to={`/secondaire/ajouter_presence_eleve/${id_classe}/${id_option}`}
-              className="btn btn-primary w-50 u-style-9761b3f7">
+              className="btn  w-50 u-style-9761b3f7">
 
               
                             Ajouter présence
@@ -99,7 +99,7 @@ const HistoriquePresenceEleve = () => {
 
                     <h3>Statistiques :</h3>
                     <div className="table-responsive">
-                        <table className="table table-bordered">
+                        <table className="table ">
                             <thead>
                                 <tr>
                                     <th>Nom</th>
@@ -121,7 +121,7 @@ const HistoriquePresenceEleve = () => {
                                         <td>
                                             <Link
                       to={`/secondaire/eleve/presence/${id_classe}/${stat.eleve_id}`}
-                      className="btn btn-info btn-sm text-white w-50">
+                      className="btn   text-white w-50">
                       
                                                 Détails
                                             </Link>
@@ -136,7 +136,7 @@ const HistoriquePresenceEleve = () => {
                     {historique.map((group, index) =>
           <div key={index} className="table-responsive">
                             <h5 className="mt-4">Date : {group.date}</h5>
-                            <table className="table table-bordered">
+                            <table className="table ">
                                 <thead>
                                     <tr>
                                         <th>Nom</th>

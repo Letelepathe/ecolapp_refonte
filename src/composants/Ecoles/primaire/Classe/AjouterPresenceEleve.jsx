@@ -115,14 +115,14 @@ const AjouterPresenceEleve = () => {
                 <NavbarTop />
                 <div className="container">
                     <div className="justify-content-between align-items-center d-flex">
-                     <Link to={`/primaire/historique_presence_eleve/${id_classe}/${id_option}`} className="btn btn-warning text-white ">Historique</Link>
+                     <Link to={`/primaire/historique_presence_eleve/${id_classe}/${id_option}`} className="btn  text-white ">Historique</Link>
                      <h5 className="my-4">Ajouter Présence des Élèves</h5>
                     </div>
                     
                     {error && <div className="alert alert-danger">{error}</div>}
                     {message && <div className="alert alert-success">{message}</div>}                   
                     <div className="table-responsive justify-content-center align-items-center">
-                        <table className="table table-bordered">
+                        <table className="table ">
                             <thead>
                                 <tr>
                                     <th>Nom</th>
@@ -177,7 +177,7 @@ const AjouterPresenceEleve = () => {
                             </tbody>
                         </table>
                         <div className="text-center justify-content-center align-items-center">
-                            <button disabled={isSubmitting} className="btn btn-primary mt-3" onClick={handleSave}>
+                            <button disabled={isSubmitting} className="btn  mt-3" onClick={handleSave}>
                             {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                             </button>
                         </div>

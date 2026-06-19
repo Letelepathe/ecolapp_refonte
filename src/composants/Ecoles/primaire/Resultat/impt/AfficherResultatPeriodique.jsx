@@ -163,17 +163,17 @@ const AfficherResultatPeriodique = () => {
                 </div>
             </div>
             <div className="text-center py-2 mb-2 mt-2">
-                <button className="btn btn-primary hide-on-print" onClick={printBulletin}>
+                <button className="btn  hide-on-print" onClick={printBulletin}>
                     Imprimer
                 </button>
             </div>
             <div className="hide-on-print text-center mb-2 mt-2 py-2">
                     {authenticated ?
-        <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/primaire/profil_user">
+        <Link className="btn  text-white  u-style-420aab4e" to="/primaire/profil_user">
                             Retour
                         </Link> :
 
-        <Link className="btn btn-warning text-white btn-sm u-style-420aab4e" to="/primaire">Quitter</Link>
+        <Link className="btn  text-white  u-style-420aab4e" to="/primaire">Quitter</Link>
         }
             </div>
         </div>);

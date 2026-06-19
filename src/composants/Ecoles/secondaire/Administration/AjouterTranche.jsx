@@ -65,7 +65,7 @@ const AjouterTranche = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -95,7 +95,7 @@ const AjouterTranche = () => {
                     
 
                     <div className="d-grid">
-                     <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                     <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                        {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

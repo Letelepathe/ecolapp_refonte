@@ -173,7 +173,7 @@ const Inscriptionprimaire = () => {
       <Helmet>
         <title>{ecole.name} | inscription</title>
       </Helmet>
-      <main className='bg-white'>
+      <main className=''>
         <div className="container">
           <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-8 col-md-12 d-flex flex-column align-items-center justify-content-center">

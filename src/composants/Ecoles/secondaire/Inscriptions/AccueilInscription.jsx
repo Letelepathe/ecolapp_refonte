@@ -56,7 +56,7 @@ const AccueilInscriptionsecondaire = () => {
                   Nous sommes ravis de vous accueillir dans notre établissement. Merci pour votre confiance !
                 </p>
                 <div className="text-center">
-                  <Link to={`/secondaire/info_eleve_inscrit_secondaire/${id}`} className="btn btn-primary ml-3">
+                  <Link to={`/secondaire/info_eleve_inscrit_secondaire/${id}`} className="btn  ml-3">
                     Voir et imprimer mon bulletin
                   </Link>
                 </div>

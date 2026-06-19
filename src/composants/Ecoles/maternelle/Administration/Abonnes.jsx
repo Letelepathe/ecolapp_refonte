@@ -23,7 +23,7 @@ const AbonnesTable = () => {
 
   return (
     <div className="container-fluid pt-4 px-4">
-      <div className="bg-white text-center rounded p-4">
+      <div className=" text-center rounded p-4">
         <div className="d-flex align-items-center justify-content-between mb-4">
           <h6 className="mb-0">Abonnés</h6>
         </div>
@@ -32,7 +32,7 @@ const AbonnesTable = () => {
           {error ? (
             <p className="text-danger">{error}</p>
           ) : (
-            <table className="table text-start align-middle table-bordered table-hover mb-0">
+            <table className="table text-start align-middle   mb-0">
               <thead>
                 <tr className="text-dark">
                   <th>Id</th>

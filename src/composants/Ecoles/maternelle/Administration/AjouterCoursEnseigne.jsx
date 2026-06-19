@@ -97,7 +97,7 @@ const AjouterCoursEnseigne = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className='content'>
         <NavbarTop />
@@ -109,7 +109,7 @@ const AjouterCoursEnseigne = () => {
                   
                   <div className='d-flex align-items-center justify-content-between'>
                    <h6 className="text-center u-style-951c0e5f">Ajouter cours et titulaire</h6>
-                   <Link to='/maternelle/liste_cours_enseigne' className='btn btn-primary mt-2 mb-2'>Liste titulaires</Link>
+                   <Link to='/maternelle/liste_cours_enseigne' className='btn  mt-2 mb-2'>Liste titulaires</Link>
                   </div>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
                   <form className="needs-validation" onSubmit={handleSubmit} noValidate>
@@ -141,7 +141,7 @@ const AjouterCoursEnseigne = () => {
                    
 
                     <div className="d-grid">
-                      <button className={`${`btn btn-primary w-100 ${isLoading ? "loading" : ""}`} style-fr-b6cd76ee`} type="submit"
+                      <button className={`${`btn  w-100 ${isLoading ? "loading" : ""}`} style-fr-b6cd76ee`} type="submit"
                       disabled={isLoading}>
 
                         

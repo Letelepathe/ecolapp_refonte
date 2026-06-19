@@ -10,13 +10,13 @@ const CartesEleves = ({ cycle, BarreGauche, NavHaut }) => {
   const etat = useCartesEleves(cycle, zoneRef);
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0 page-cartes-eleves">
+    <div className="container-fluid position-relative  d-flex p-0 page-cartes-eleves">
       <BarreGauche />
       <div className="content">
         <NavHaut />
 
         <main className="container-fluid pt-4 px-4">
-          <section className="cmd-cartes bg-white rounded p-4 shadow-sm">
+          <section className="cmd-cartes  rounded p-4 ">
             <BarreActions
               cycle={cycle}
               nbFiltre={etat.elevesFiltr.length}

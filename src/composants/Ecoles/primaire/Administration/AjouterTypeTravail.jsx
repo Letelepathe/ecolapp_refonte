@@ -66,7 +66,7 @@ const AjouterTypeTravail = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <main className="content">
         <NavbarTop />
@@ -74,7 +74,7 @@ const AjouterTypeTravail = () => {
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
-                <Link to='/primaire/liste_type_travail' className='text-center btn btn-warning text-white'>Liste type travail</Link>
+                <Link to='/primaire/liste_type_travail' className='text-center btn  text-white'>Liste type travail</Link>
                 <div className="card-body">
                   <h3 className="text-center u-style-951c0e5f">Ajouter Type travail</h3>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
@@ -95,7 +95,7 @@ const AjouterTypeTravail = () => {
                     
 
                     <div className="d-grid">
-                      <button className="btn btn-primary u-style-2167c5af" disabled={isSubmitting} type="submit">
+                      <button className="btn  u-style-2167c5af" disabled={isSubmitting} type="submit">
                         {isSubmitting ? 'Enregistrement en cours...' : 'Enregistrer'}
                       </button>
                     </div>

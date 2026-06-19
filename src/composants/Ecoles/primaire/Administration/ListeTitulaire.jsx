@@ -46,19 +46,19 @@ const ListeTitulaire = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
-        <div className="bg-white text-center rounded p-4">
+        <div className=" text-center rounded p-4">
           <div className="d-flex align-items-center justify-content-between mb-4">
             <h3 className="mb-0 text-primary text-center">Titulaires</h3>
-            <Link to='/primaire/ajouter_titulaire' className='btn btn-primary'>Ajouter titulaire</Link>
+            <Link to='/primaire/ajouter_titulaire' className='btn '>Ajouter titulaire</Link>
           </div>
           <div className="table-responsive">
             {error && <p className="text-danger">{error}</p>}
             {successMessage && <p className="text-success">{successMessage}</p>}
-            <table className="table text-start align-middle table-bordered table-hover mb-0">
+            <table className="table text-start align-middle   mb-0">
               <thead>
                 <tr className="text-dark">
                   <th>Id</th>
@@ -94,7 +94,7 @@ const ListeTitulaire = () => {
                     <td>{titulaire.annee.name}</td>
                     <td>
                       <button
-                      className="btn btn-danger btn-sm"
+                      className="btn  "
                       onClick={(e) => handleDelete(titulaire.id, e)}>
                       
                         Supprimer

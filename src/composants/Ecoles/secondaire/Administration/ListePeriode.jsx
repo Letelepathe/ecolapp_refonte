@@ -45,14 +45,14 @@ const ListePeriode = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
       <div className="content">
         <NavbarTop/>
         <div className="container">
           <div className="d-flex justify-content-between align-items-center">
             <h6>Liste périodes</h6>
-            <Link to='/secondaire/ajouter_periode' className="btn btn-primary">Ajouter Période</Link>
+            <Link to='/secondaire/ajouter_periode' className="btn ">Ajouter Période</Link>
           </div>
           <div className="table-responsive">
             
@@ -62,7 +62,7 @@ const ListePeriode = () => {
             {error ? (
               <p className="text-danger">{error}</p>
             ) : periodes.length > 0 ? (
-              <table className="table text-start align-middle table-bordered table-hover mb-0">
+              <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Période</th>
@@ -76,7 +76,7 @@ const ListePeriode = () => {
                       <td>{periode.name}</td>
                       <td>{periode.semestre.name}</td>
                       <td>
-                          <Link onClick={() => handleDelete(periode.id)} className='btn btn-danger'>Supprimer</Link>
+                          <Link onClick={() => handleDelete(periode.id)} className='btn '>Supprimer</Link>
                       </td>
                     </tr>
                   ))}

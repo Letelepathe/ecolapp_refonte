@@ -50,7 +50,7 @@ const QuizByCours = () => {
     <div className="container mt-5">
         <div className="row justify-content-center">
           <div className="col-lg-6 col-12">
-            <div className="card shadow-sm">
+            <div className="card ">
                 <div className="card-body">
                   <h4 className="text-center u-style-951c0e5f">{cours.name}</h4> 
                   <h6 className="mb-4 text-center">Liste des quiz</h6>
@@ -70,7 +70,7 @@ const QuizByCours = () => {
                       {quizzes.map((quiz) =>
                 <li key={quiz.id} className="list-group-item d-flex justify-content-between align-items-center">
                           {quiz.titre}
-                          <Link to={`/quiz/repondre/${quiz.id}`} className="btn btn-secondary btn-sm">
+                          <Link to={`/quiz/repondre/${quiz.id}`} className="btn  ">
                             Faire ce quiz
                           </Link>
                         </li>

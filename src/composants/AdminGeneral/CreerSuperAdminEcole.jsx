@@ -157,13 +157,13 @@ const CreerSuperAdminEcole = () => {
       <Helmet>
         <title>Administration générale | Création compte</title>
       </Helmet>
-      <div className="bg-white">
+      <div className="">
         <div className="container">
           <section className="row section register d-flex flex-column align-items-center justify-content-center">
             <div className="col-lg-8 col-12 card mb-3">
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
-                  <Link to='/admin-general/bureau_admin' className="btn btn-primary"><i className="bi bi-arrow-left"></i></Link>
+                  <Link to='/admin-general/bureau_admin' className="btn "><i className="bi bi-arrow-left"></i></Link>
                   <h6>Créer admin école</h6>
                 </div>
                 <h5 className='text-center'>{ecole.name}</h5>

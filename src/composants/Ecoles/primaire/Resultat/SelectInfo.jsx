@@ -24,10 +24,10 @@ const SelectInfo = () => {
   };
 
   return (
-    <div className="container-fluid position-relative bg-white d-flex p-0">
+    <div className="container-fluid position-relative  d-flex p-0">
       <div className="container">
         <section className="section d-flex flex-column align-items-center justify-content-center py-4 min-vh-100">
-          <div className="col-lg-6 col-md-8 col-12 bg-white shadow">
+          <div className="col-lg-6 col-md-8 col-12  ">
             <div className="card mb-3">
               <div className="card-body">
                 <p className="text-center u-style-951c0e5f">
