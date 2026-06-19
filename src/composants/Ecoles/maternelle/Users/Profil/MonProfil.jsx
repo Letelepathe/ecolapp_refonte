@@ -35,10 +35,7 @@ const MonProfil = () => {
         <div className="content">
           <NavbarTop />
           <div className="section">
-            
-
             <UserInfo />
-
           </div>
           <FooterUser />
         </div>

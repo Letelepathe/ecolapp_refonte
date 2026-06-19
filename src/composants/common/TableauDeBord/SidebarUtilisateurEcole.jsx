@@ -40,6 +40,12 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
       icone: FiGrid,
       to: `/${cycle}/profil_user`,
     },
+     {
+      id: "admin",
+      titre: "Administration",
+      icone: FiUser,
+      to: `/${cycle}/bureau_admin`,
+    },
   ];
 
   if (estAdmin) {
@@ -60,6 +66,7 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
       ),
     });
   }
+  
 
   if (estEnseignant) {
     menus.push(

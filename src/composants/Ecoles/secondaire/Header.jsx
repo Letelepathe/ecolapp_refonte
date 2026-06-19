@@ -95,15 +95,17 @@ const Header = () => {
         </nav>
         {authenticated ?
         <>
-            <Link className="btn-getstarted" to="/secondaire/profil_user" onClick={closeMobileNav}>
-              <i className='bi bi-person-circle'></i>
-            </Link>
-            <Link className="btn-getstarted" to="/secondaire/deconnexion" onClick={closeMobileNav}>
-              <i className='bi bi-box-arrow-right'></i>
-            </Link>
+            <div className="d-flex justify-items-between align-items-center">
+                      <Link className="btn btn-getstarted p-2" to="/maternelle/profil_user" onClick={closeMobileNav}>
+                         <i className='bi bi-person-circle'></i>
+                       </Link>
+                       <Link className="btn btn-getstarted p-2" to="/maternelle/deconnexion" onClick={closeMobileNav}>
+                         <i className='bi bi-box-arrow-right'></i>
+                       </Link>
+                   </div>
           </> :
 
-        <Link className="btn-getstarted" to="/secondaire/login" onClick={closeMobileNav}>Se connecter</Link>
+        <Link className="btn btn-getstarted p-4" to="/secondaire/login" onClick={closeMobileNav}>Se connecter</Link>
         }
       </div>
 

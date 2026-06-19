@@ -21,7 +21,7 @@ const Admins = () => {
 
   return (
     <section id="trainers" className="section trainers">
-      <div className="container">
+      <div className="mb-4 ">
         <h6 className="text-center">Admins</h6>
         <div className="row gy-5">
           {admins.map((admin) =>

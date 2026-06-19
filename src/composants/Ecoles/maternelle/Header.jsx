@@ -95,15 +95,17 @@ const Header = () => {
         </nav>
         {authenticated ?
         <>
-            <Link className="btn-getstarted" to="/maternelle/profil_user" onClick={closeMobileNav}>
+        <div className="d-flex">
+           <Link className="btn btn-getstarted p-4" to="/maternelle/profil_user" onClick={closeMobileNav}>
               <i className='bi bi-person-circle'></i>
             </Link>
-            <Link className="btn-getstarted" to="/maternelle/deconnexion" onClick={closeMobileNav}>
+            <Link className="btn btn-getstarted p-4" to="/maternelle/deconnexion" onClick={closeMobileNav}>
               <i className='bi bi-box-arrow-right'></i>
             </Link>
+        </div>
           </> :
 
-        <Link className="btn-getstarted" to="/maternelle/login" onClick={closeMobileNav}>Se connecter</Link>
+        <Link className="btn btn-getstarted p-4" to="/maternelle/login" onClick={closeMobileNav}>Se connecter</Link>
         }
       </div>
 

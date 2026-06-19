@@ -91,7 +91,7 @@ const CoursFichiers = ({ userId }) => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="mt-4 mb-4">
       <div className="d-flex align-items-center justify-content-between">
         <h5 className="text-center mb-4 text-primary">Vos ours</h5>
         <Link className="btn " to='/maternelle/ajouter_cours_by_enseignant'> <i className="bi bi-plus"></i> Ajouter cours</Link>
@@ -246,7 +246,7 @@ const TravauxEnseignant = ({ userId }) => {
 
   return (
     <div>
-       <div className="container mt-4">
+       <div className="mt-4 mb-4">
           <div className="justify-content-between align-items-center d-flex">
             <h5 className="text-center mb-4 text-primary">Vos Travaux</h5>
             <Link className="btn " to='/maternelle/ajouter_travail_by_enseignant'> <i className="bi bi-plus"></i> Ajouter travail</Link>
@@ -444,7 +444,7 @@ const ProfilUser = () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/user/count/${id}`);
         setCounts(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
       }
@@ -526,20 +526,12 @@ const ProfilUser = () => {
                 }
                             </div>
               }
-                          <div className="col-lg-6 col-12">
+                          <div className="col-lg-12 col-12">
 
                             {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
                 <>
-                                  <div className="col-12 mb-1 mt-1">
-                                    <div className="  rounded align-items-center justify-content-center p-4">
-                                     <CoursFichiers userId={user.id} />
-                                    </div>
-                                  </div>
-                                  <div className="col-12 mb-1 mt-1">
-                                    <div className="  rounded align-items-center justify-content-center p-4">
-                                     <TravauxEnseignant userId={user.id} />
-                                    </div>
-                                  </div>
+                                 <CoursFichiers userId={user.id} />
+                                 <TravauxEnseignant userId={user.id} />
                               </>
                 }
                             {user && (user.fonction.name === "Elève" || user.role === "Elève") &&
@@ -589,25 +581,16 @@ const ProfilUser = () => {
                                       </div>
                                   </div>
                                 </div>
-                                <div className="col-12 mb-1 mt-1">
-                                  <div className="  rounded align-items-center justify-content-center p-4">
-
-                                  </div>
-                                </div>
+                               
                               </>
                 }
                           </div>
-                          <div className="col-lg-6 col-12">
-                            <div className="col-12 mb-1 mt-1">
-                                <div className="  rounded align-items-center justify-content-center p-1">
-                                 <Communiques />
-                                </div>
+                          <div className="col-lg-12 col-12 mt-4">
+                            <div className="mb-3">
+                            
+                              <Communiques />
                             </div>
-                            <div className="col-12 mb-1 mt-1">
-                                <div className="  rounded align-items-center justify-content-center p-1">
-                                 <Admins />
-                                </div>
-                            </div>
+                            <Admins />
                           </div>
                         </div>
                     </div>

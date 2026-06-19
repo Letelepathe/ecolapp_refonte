@@ -84,7 +84,7 @@ const Header = () => {
               <ul>
                 <li><Link to="/maternelle" onClick={closeMobileNav}>Maternelle</Link></li>
                 <li><Link to="/primaire" onClick={closeMobileNav}>Primaire</Link></li>
-                <li><Link to="/primaire" onClick={closeMobileNav}>primaire</Link></li>
+                <li><Link to="/secondaire" onClick={closeMobileNav}>secondaire</Link></li>
               </ul>
             </li>
             <li><Link to="/primaire/contact" onClick={closeMobileNav}>Contact</Link></li>
@@ -95,15 +95,15 @@ const Header = () => {
         </nav>
         {authenticated ?
         <>
-            <Link className="btn-getstarted" to="/primaire/profil_user" onClick={closeMobileNav}>
+            <Link className="btn btn-getstarted p-4" to="/primaire/profil_user" onClick={closeMobileNav}>
               <i className='bi bi-person-circle'></i>
             </Link>
-            <Link className="btn-getstarted" to="/primaire/deconnexion" onClick={closeMobileNav}>
+            <Link className="btn btn-getstarted p-4" to="/primaire/deconnexion" onClick={closeMobileNav}>
               <i className='bi bi-box-arrow-right'></i>
             </Link>
           </> :
 
-        <Link className="btn-getstarted" to="/primaire/login" onClick={closeMobileNav}>Se connecter</Link>
+        <Link className="btn btn-getstarted p-4" to="/primaire/login" onClick={closeMobileNav}>Se connecter</Link>
         }
       </div>
 

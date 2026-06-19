@@ -6,7 +6,7 @@ import NavbarBottom from "./NavbarBottom";
 import ImageEcole from "../../static/images/image_ecole.webp";
 
 const HeroSection = () => (
-  <section className="index-hero" data-aos="fade-up">
+  <section className="index-refonte text-center" data-aos="fade-up">
     <div className="index-hero-copy">
       <h1>ecolapp</h1>
       <p>
@@ -17,8 +17,8 @@ const HeroSection = () => (
 
     <div className="index-hero-wheel" data-aos="zoom-in">
       <div className="index-wheel-dots" aria-hidden="true">
-        {Array.from({ length: 18 }, (_, index) => (
-          <span key={index} style={{ "--dot-index": index }} />
+        {Array.from({ length: 2 }, (_, index) => (
+          <span key={index} />
         ))}
       </div>
       <div className="index-hero-photo">
@@ -98,7 +98,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="bloc-index index-refonte">
+    <div className="bloc-index w-100">
       {afficherHero ? <HeroSection /> : <CardSection />}
       <NavbarBottom />
     </div>

@@ -38,7 +38,7 @@ const BarreLaterale = ({ accueil, titre = "ecolapp", sousTitre = "Administration
 
             if (menu.to) {
               return (
-                <NavLink key={menu.id} to={menu.to} className="refonte-nav-link">
+                <NavLink key={menu.id} to={menu.to} className="refonte-menu-btn">
                   <IconeMenu className="refonte-menu-icon" />
                   <span>{menu.titre}</span>
                 </NavLink>

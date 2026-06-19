@@ -71,7 +71,7 @@ const Communiques = () => {
 
   return (
     <section id="recent-blog-posts" className="recent-blog-posts">
-      <div className="container">
+      <div className="mb-4">
         <h3 className="text-primary text-center">Récents communiqués</h3>
         <Swiper
           modules={[Navigation, Pagination]}
