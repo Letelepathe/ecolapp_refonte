@@ -211,7 +211,7 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
   return (
     <BarreLaterale
       accueil={`/${cycle}/profil_user`}
-      titre="ecolapp"
+      titre="GLearn"
       sousTitre={titreCycle}
       menus={menus}
       user={utilisateur}

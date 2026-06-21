@@ -48,7 +48,7 @@ const ListeHoraire = () => {
     <div className='content'>
       <NavbarTop />
       <div className="container mt-4">
-        <Link to='/primaire/ajouter_horaire'>Ajouter horaire</Link>
+        <Link to='/primaire/ajouter_horaire' className='btn mb-2'>Ajouter horaire</Link>
         <h3 className="text-center u-style-951c0e5f">Liste des Horaires</h3>
         {successMessage &&
           <p> {successMessage} </p>

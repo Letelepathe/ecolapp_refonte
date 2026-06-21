@@ -4,6 +4,7 @@ import { creerPagesPagination } from "./Pagination";
 
 const LIGNES_PAR_PAGE = 10;
 const TABLE_SELECTOR = "table.table, table.ecolapp-table";
+const CONTROLES_ACTION_SELECTOR = "a.btn, button:not(.btn-close), input[type='button'], input[type='submit']";
 
 const supprimerClassesAnciennes = (table) => {
   table.classList.remove("table-bordered", "table-striped", "table-hover");
@@ -140,6 +141,81 @@ const preparerTableau = (table) => {
   rendrePagination(table, totalPages);
 };
 
+const texteNormalise = (texte = "") =>
+  texte
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+const estColonneAction = (cellule) => {
+  const table = cellule.closest("table");
+  const ligne = cellule.parentElement;
+  if (!table || !ligne) return false;
+
+  const index = Array.from(ligne.children).indexOf(cellule);
+  const entete = table.tHead?.rows?.[0]?.cells?.[index]?.textContent || cellule.dataset.label || "";
+  return texteNormalise(entete).startsWith("action");
+};
+
+const libelleAction = (controle, index) => {
+  const texte = controle.textContent?.replace(/\s+/g, " ").trim();
+  return controle.getAttribute("aria-label") || controle.getAttribute("title") || texte || `Action ${index + 1}`;
+};
+
+const preparerMenuActions = (cellule) => {
+  if (!estColonneAction(cellule)) return;
+
+  const controles = Array.from(cellule.querySelectorAll(CONTROLES_ACTION_SELECTOR)).filter(
+    (controle) =>
+      !controle.closest(".ecolapp-action-menu") &&
+      !controle.classList.contains("btn-close") &&
+      !controle.disabled
+  );
+
+  if (cellule.dataset.ecolappActionMenu === "ready") {
+    controles.forEach((controle) => controle.classList.add("ecolapp-action-source-control"));
+    return;
+  }
+
+  if (controles.length < 2) return;
+
+  controles.forEach((controle) => {
+    controle.classList.add("ecolapp-action-source-control");
+  });
+
+  const select = document.createElement("select");
+  select.className = "form-select ecolapp-action-menu";
+  select.setAttribute("aria-label", "Choisir une action");
+
+  const optionVide = document.createElement("option");
+  optionVide.value = "";
+  optionVide.textContent = "Actions";
+  select.appendChild(optionVide);
+
+  controles.forEach((controle, index) => {
+    const option = document.createElement("option");
+    option.value = String(index);
+    option.textContent = libelleAction(controle, index);
+    select.appendChild(option);
+  });
+
+  select.addEventListener("change", () => {
+    const index = Number(select.value);
+    if (Number.isNaN(index)) return;
+    controles[index]?.click();
+    select.value = "";
+  });
+
+  cellule.classList.add("ecolapp-action-cell");
+  cellule.append(select);
+  cellule.dataset.ecolappActionMenu = "ready";
+};
+
+const preparerMenusActions = () => {
+  document.querySelectorAll(`${TABLE_SELECTOR} tbody td`).forEach(preparerMenuActions);
+};
+
 const TableauAutoPagination = () => {
   const location = useLocation();
 
@@ -150,6 +226,7 @@ const TableauAutoPagination = () => {
     const appliquer = () => {
       enMiseAJour = true;
       document.querySelectorAll(TABLE_SELECTOR).forEach(preparerTableau);
+      preparerMenusActions();
       window.setTimeout(() => {
         enMiseAJour = false;
       }, 0);

@@ -51,7 +51,7 @@ const ListeTypeTravail = () => {
         <NavbarTop/>
         <div className="container">
           <div className="table-responsive">
-            <Link to='/secondaire/ajouter_type_travail'>Ajouter type travail </Link>
+            <Link to='/secondaire/ajouter_type_travail' className='btn mb-2'>Ajouter type travail</Link>
             {successMessage && ( 
                 <p> {successMessage} </p>
             )}

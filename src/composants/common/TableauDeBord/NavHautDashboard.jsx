@@ -2,11 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiBell, FiGrid, FiLogOut, FiMenu, FiMessageSquare, FiSearch, FiUser } from "react-icons/fi";
 
-const NavHautDashboard = ({ user, accueil, profil, deconnexion, titreCourt = "ecolapp" }) => {
+const NavHautDashboard = ({ user, accueil, profil, deconnexion, titreCourt = "GLearn" }) => {
   const bascSidebar = (event) => {
     event.preventDefault();
-    document.querySelector(".sidebar")?.classList.toggle("open");
-    document.querySelector(".content")?.classList.toggle("open");
+    const sidebar = document.querySelector(".sidebar.refonte-sidebar");
+    const content = document.querySelector(".content");
+    const estOuvert = sidebar?.classList.toggle("open");
+
+    content?.classList.toggle("open", Boolean(estOuvert));
+    document.body.classList.toggle("refonte-sidebar-open", Boolean(estOuvert));
   };
 
   const photo = user?.file ? `https://api.ecolapp.cd/public/imgUser/${user.file}` : null;

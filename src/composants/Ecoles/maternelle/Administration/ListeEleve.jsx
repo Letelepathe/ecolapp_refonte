@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
@@ -130,9 +131,12 @@ const ListeEleve = () => {
           <NavbarTop />
           <div className="container-fluid pt-4 px-4">
             <div className=" text-center rounded p-4">
-              <div className="d-flex align-items-center justify-content-between mb-4">
+              <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
                 <h6 className="mb-0">Liste des élèves</h6>
-                <div className="d-flex gap-3">
+                <Link to="/maternelle/ajouter_eleve" className="btn">
+                  Ajouter élève
+                </Link>
+                <div className="d-flex gap-3 flex-wrap">
                   <input
                     type="text"
                     className="form-control"
