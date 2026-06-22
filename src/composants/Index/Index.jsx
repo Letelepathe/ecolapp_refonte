@@ -15,9 +15,9 @@ const HeroSection = () => (
       </p>
     </div>
 
-    <div className="index-hero-wheel" data-aos="zoom-in">
+    <div className="index-hero-wheel" >
       <div className="index-wheel-dots" aria-hidden="true">
-        {Array.from({ length: 2 }, (_, index) => (
+        {Array.from({ length: 5 }, (_, index) => (
           <span key={index} />
         ))}
       </div>
@@ -93,14 +93,14 @@ const Index = () => {
       once: true,
     });
 
-    const timer = window.setTimeout(() => setAfficherHero(false), 2800);
+    const timer = window.setTimeout(() => setAfficherHero(false), 5800);
     return () => window.clearTimeout(timer);
   }, []);
 
   return (
     <div className="bloc-index w-100">
       {afficherHero ? <HeroSection /> : <CardSection />}
-      <NavbarBottom />
+      {/* <NavbarBottom /> */}
     </div>
   );
 };

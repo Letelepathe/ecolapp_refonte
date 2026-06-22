@@ -7188,6 +7188,18 @@ border: 8px solid #2563eb ;
     align-items: flex-start;
     flex-direction: column;
   }
+     .index-card-section {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3%;
+  margin-bottom: 80px;
+  /* max-width: 1180px; */
+  min-height: 200vh;
+  width: 100%;
+
+}
 }
 
 /* src/css/styles-inline-convertis.css */
@@ -7706,6 +7718,18 @@ textarea.form-control:focus {
   .login-refonte-visuel {
     min-height: 360px;
   }
+   .index-card-section {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3%;
+  margin-bottom: 50px;
+  /* max-width: 1180px; */
+  min-height: 200vh;
+  width: 100%;
+
+}
 }
 
 @media (max-width: 576px) {
@@ -7721,6 +7745,18 @@ textarea.form-control:focus {
   .login-refonte-visuel {
     display: none;
   }
+  .index-card-section {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3%;
+  margin-bottom: 55%;
+  /* max-width: 1180px; */
+  min-height: 108vh;
+  width: 100%;
+
+}
 }
 
 /* Route écoles : grille moderne, recherche et pagination */
@@ -9836,10 +9872,10 @@ input[type="reset"]:disabled {
 .index-hero-wheel {
   align-items: center;
   display: grid;
-  height: clamp(220px, 28vw, 320px);
+  height: clamp(220px, 20px, 320px);
   justify-items: center;
   position: relative;
-  width: clamp(220px, 28vw, 320px);
+  width: clamp(220px, 20px, 320px);
 }
 
 .index-hero-photo {
@@ -9875,8 +9911,8 @@ input[type="reset"]:disabled {
 
 .index-wheel-dots span {
   --angle: calc(var(--dot-index) * 20deg);
-  --radius: calc(clamp(220px, 28vw, 320px) / 2);
-  animation: indexDotPulse 1.2s ease-in-out infinite;
+  --radius: calc(clamp(220px, 10px, 320px) / 2);
+  animation: indexDotPulse 5.2s ease-in-out infinite;
   animation-delay: calc(var(--dot-index) * 0.06s);
   background: #fff;
   border-radius: 999px;
@@ -9898,7 +9934,7 @@ input[type="reset"]:disabled {
 @keyframes indexDotPulse {
   50% {
     opacity: 1;
-    scale: 1.25;
+    /* scale: 1.25; */
   }
 }
 
