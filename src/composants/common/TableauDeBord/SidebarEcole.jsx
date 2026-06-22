@@ -48,7 +48,7 @@ const SidebarEcole = ({ cycle, titreCycle }) => {
   return (
     <BarreLaterale
       accueil={`/${cycle}/bureau_admin`}
-      titre="GLearn"
+      titre="Ecolapp"
       sousTitre={titreCycle}
       menus={menusEcole(cycle)}
       user={user}
