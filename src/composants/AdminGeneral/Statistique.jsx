@@ -5,7 +5,7 @@ import {
   XAxis, YAxis, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#000'];
+const COLORS = ['#1769ff', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe'];
 
 const Statistique = () => {
   const ecole_id = localStorage.getItem('ecole_id');
@@ -47,7 +47,7 @@ const Statistique = () => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="total" fill="#FFBB28" />
+                  <Bar dataKey="total" fill="#1769ff" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -95,7 +95,7 @@ const Statistique = () => {
                     return [`${value}`, `Provinces Éducationnelles: ${educationalProvinces}`];
                   }} />
                   <Legend />
-                  <Line type="monotone" dataKey="total" stroke="#00C49F" strokeWidth={2} />
+                  <Line type="monotone" dataKey="total" stroke="#1769ff" strokeWidth={3} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -112,7 +112,7 @@ const Statistique = () => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="total" fill="#0088FE" />
+                  <Bar dataKey="total" fill="#3b82f6" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

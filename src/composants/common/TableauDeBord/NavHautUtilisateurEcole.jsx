@@ -37,7 +37,7 @@ const NavHautUtilisateurEcole = ({ cycle }) => {
       accueil={`/${cycle}/profil_user`}
       profil={`/${cycle}/mon_profil/${user.id || ""}`}
       deconnexion={`/${cycle}/deconnexion`}
-      titreCourt="GLearn"
+      titreCourt="Ecolapp"
     />
   );
 };

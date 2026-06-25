@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
+import BandeauDashboard from "../../../../common/TableauDeBord/BandeauDashboard";
 
 import Communiques from "./Communiques";
 import Admins from "./Admins";
@@ -467,6 +468,14 @@ const ProfilUser = () => {
                 <SidebarLeft />
                 <div className="content refonte-content">
                     <NavbarTop />
+                    <main className="dashboard-page profil-dashboard-main">
+                      <BandeauDashboard
+                        surtitre="Ecolapp · Espace utilisateur"
+                        titre={`Bonjour ${user?.first_name || user?.name || ""}`}
+                        description="Retrouvez vos cours, travaux, paiements et communiqués dans votre tableau de bord personnel."
+                        badge="Secondaire"
+                      />
+                    </main>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
                             {/* Bloc pour les enseignants */}

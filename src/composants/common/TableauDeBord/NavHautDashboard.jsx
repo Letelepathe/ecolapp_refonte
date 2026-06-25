@@ -1,8 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FiBell, FiGrid, FiLogOut, FiMenu, FiMessageSquare, FiSearch, FiUser } from "react-icons/fi";
+import {
+  FiBell,
+  FiChevronRight,
+  FiGrid,
+  FiLogOut,
+  FiMenu,
+  FiMessageSquare,
+  FiSearch,
+  FiUser,
+} from "react-icons/fi";
 
-const NavHautDashboard = ({ user, accueil, profil, deconnexion, titreCourt = "GLearn" }) => {
+const NavHautDashboard = ({ user, accueil, profil, deconnexion, titreCourt = "Ecolapp" }) => {
   const bascSidebar = (event) => {
     event.preventDefault();
     const sidebar = document.querySelector(".sidebar.refonte-sidebar");
@@ -29,9 +38,15 @@ const NavHautDashboard = ({ user, accueil, profil, deconnexion, titreCourt = "GL
         </Link>
       </div>
 
+      <div className="dashboard-breadcrumb d-none d-lg-flex">
+        <span>Pages</span>
+        <FiChevronRight />
+        <strong>Dashboard</strong>
+      </div>
+
       <div className="dashboard-search">
         <FiSearch />
-        <span>Rechercher...</span>
+        <input type="search" aria-label="Rechercher" placeholder="Rechercher dans Ecolapp..." />
       </div>
 
       <div className="navbar-nav align-items-center ms-auto flex-row">

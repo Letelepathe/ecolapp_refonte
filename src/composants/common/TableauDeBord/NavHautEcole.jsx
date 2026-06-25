@@ -37,7 +37,7 @@ const NavHautEcole = ({ cycle }) => {
       accueil={`/${cycle}/bureau_admin`}
       profil={`/${cycle}/mon_profil/${user.id || ""}`}
       deconnexion={`/${cycle}/deconnexion`}
-      titreCourt="GLearn"
+      titreCourt="Ecolapp"
     />
   );
 };

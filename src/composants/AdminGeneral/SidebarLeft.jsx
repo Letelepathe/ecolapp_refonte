@@ -50,7 +50,7 @@ const SidebarLeft = () => {
   return (
     <BarreLaterale
       accueil="/admin-general/bureau_admin"
-      titre="GLearn"
+      titre="Ecolapp"
       sousTitre="Admin Général"
       menus={menusAdminGeneral(peutGererAdmins)}
       user={user}

@@ -35,9 +35,9 @@ const NavbarTop = () => {
     <NavHautDashboard
       user={user}
       accueil="/admin-general/bureau_admin"
-      profil={`/admin-general/profil_admin/${user.id || ""}`}
+      profil="/admin-general/profil_admin"
       deconnexion="/admin-general/deconnexion"
-      titreCourt="GLearn"
+      titreCourt="Ecolapp"
     />
   );
 };

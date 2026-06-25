@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import { FiBookOpen, FiMessageSquare, FiUserPlus, FiUsers } from "react-icons/fi";
+import BandeauDashboard from "./BandeauDashboard";
 import CarteStat from "./CarteStat";
 import PanneauDroit from "./PanneauDroit";
 
@@ -79,12 +80,26 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
         <div className="content refonte-content">
           <NavbarTop />
           <main className="dashboard-page">
+            <BandeauDashboard
+              surtitre={`Ecolapp · Cycle ${titre}`}
+              titre={`Administration ${titre}`}
+              description="Pilotez les utilisateurs, les inscriptions, les paiements et les activités de votre école depuis un espace unique."
+              badge={`Cycle ${titre}`}
+            />
             <div className="dashboard-hero">
               <div>
                 <h1>Administration {titre}</h1>
                 <p>Bienvenue, voici ce qui se passe aujourd’hui dans votre école.</p>
               </div>
               <span className="dashboard-pill">Cycle {titre}</span>
+            </div>
+
+            <div className="dashboard-section-heading">
+              <div>
+                <span>Vue d'ensemble</span>
+                <h2>Indicateurs principaux</h2>
+              </div>
+              <span className="dashboard-live-status">Données en direct</span>
             </div>
 
             <div className="dashboard-main-grid">

@@ -218,5 +218,4 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
     />
   );
 };
-
 export default SidebarUtilisateurEcole;

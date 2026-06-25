@@ -7,6 +7,7 @@ import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import Footer from "./Footer";
 import Statistique from "./Statistique";
+import BandeauDashboard from "../common/TableauDeBord/BandeauDashboard";
 import CarteStat from "../common/TableauDeBord/CarteStat";
 import PanneauDroit from "../common/TableauDeBord/PanneauDroit";
 
@@ -83,12 +84,26 @@ const BureauAdminGeneral = () => {
         <div className="content refonte-content">
           <NavbarTop />
           <main className="dashboard-page">
+            <BandeauDashboard
+              surtitre="Ecolapp · Administration centrale"
+              titre="Administration générale"
+              description="Suivez l'ensemble des écoles, provinces et administrateurs depuis une vue claire et centralisée."
+              badge="Vue générale"
+            />
             <div className="dashboard-hero">
               <div>
                 <h1>Administration générale</h1>
                 <p>Bienvenue, voici le résumé global de la plateforme.</p>
               </div>
               <span className="dashboard-pill">Vue générale</span>
+            </div>
+
+            <div className="dashboard-section-heading">
+              <div>
+                <span>Vue d'ensemble</span>
+                <h2>Indicateurs principaux</h2>
+              </div>
+              <span className="dashboard-live-status">Données en direct</span>
             </div>
 
             <div className="dashboard-main-grid">

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { FiBookOpen, FiChevronDown, FiCircle, FiX } from "react-icons/fi";
+import { FiBookOpen, FiChevronDown, FiChevronLeft, FiCircle, FiX } from "react-icons/fi";
 
-const BarreLaterale = ({ accueil, titre = "ecolapp", sousTitre = "Administration", menus, user, logo }) => {
+const BarreLaterale = ({ accueil, titre = "Ecolapp", sousTitre = "Administration", menus, user, logo }) => {
   const [ouverts, setOuverts] = useState({ vue: true });
 
   const basc = (id) => {
@@ -15,7 +15,11 @@ const BarreLaterale = ({ accueil, titre = "ecolapp", sousTitre = "Administration
     document.body.classList.remove("refonte-sidebar-open");
   };
 
-  const photo = logo || (user?.file ? `https://api.ecolapp.cd/public/imgUser/${user.file}` : null);
+  const reduireSidebar = () => {
+    document.body.classList.toggle("refonte-sidebar-reduite");
+  };
+
+  const photo = user?.file ? `https://api.ecolapp.cd/public/imgUser/${user.file}` : logo;
   const nom = user?.first_name || user?.name || sousTitre;
   const role = user?.role || user?.fonction?.name || sousTitre;
 
@@ -27,58 +31,89 @@ const BarreLaterale = ({ accueil, titre = "ecolapp", sousTitre = "Administration
             <FiX />
           </button>
 
-          <Link to={accueil} className="refonte-brand" onClick={fermerSidebar}>
-            <span className="refonte-brand-logo">
-              <FiBookOpen />
-            </span>
-            <span>{titre}</span>
-          </Link>
+          <div className="refonte-brand-row">
+            <Link to={accueil} className="refonte-brand" onClick={fermerSidebar}>
+              <span className="refonte-brand-logo">
+                <FiBookOpen />
+              </span>
+              <span className="refonte-brand-name">{titre}</span>
+            </Link>
+            <a href="#"
+              type="button"
+              className="refonte-sidebar-toggle text-center"
+              aria-label="Réduire le menu"
+              onClick={reduireSidebar}
+            >
+              <FiChevronLeft />
+            </a>
+          </div>
 
-          <Link to={accueil} className="refonte-user-card" onClick={fermerSidebar}>
-            {photo && <img src={photo} alt="Profil" />}
-            <span>
-              <strong>{nom}</strong>
-              <span>{role}</span>
+          <Link to={accueil} className="refonte-space-switcher" onClick={fermerSidebar}>
+            <span className="refonte-space-logo">E</span>
+            <span className="refonte-space-copy">
+              <small>Mon espace</small>
+              <strong>{sousTitre}</strong>
             </span>
+            <FiChevronDown className="refonte-space-chevron" />
           </Link>
 
           <nav className="refonte-nav">
-            {menus.map((menu) => {
+            {menus.map((menu, index) => {
               const IconeMenu = menu.icone || FiCircle;
               const ouvert = Boolean(ouverts[menu.id]);
+              const groupe = menu.groupe || (index < 4 ? "Général" : "Outils");
+              const groupePrecedent =
+                index > 0 ? menus[index - 1].groupe || (index - 1 < 4 ? "Général" : "Outils") : null;
 
               if (menu.to) {
                 return (
-                  <NavLink key={menu.id} to={menu.to} className="refonte-menu-btn" onClick={fermerSidebar}>
-                    <IconeMenu className="refonte-menu-icon" />
-                    <span>{menu.titre}</span>
-                  </NavLink>
+                  <React.Fragment key={menu.id}>
+                    {groupe !== groupePrecedent && <span className="refonte-nav-label">{groupe}</span>}
+                    <NavLink to={menu.to} className="refonte-menu-btn" onClick={fermerSidebar}>
+                      <IconeMenu className="refonte-menu-icon" />
+                      <span className="refonte-menu-text">{menu.titre}</span>
+                    </NavLink>
+                  </React.Fragment>
                 );
               }
 
               return (
-                <div key={menu.id} className={`refonte-menu ${ouvert ? "ouvert" : ""}`}>
-                  <button type="button" className="refonte-menu-btn" onClick={() => basc(menu.id)}>
-                    <IconeMenu className="refonte-menu-icon" />
-                    <span>{menu.titre}</span>
-                    <FiChevronDown className="refonte-menu-chev" />
-                  </button>
-                  <div className="refonte-subnav">
-                    {menu.liens?.map((item) => {
-                      const IconeItem = item.icone || FiCircle;
+                <React.Fragment key={menu.id}>
+                  {groupe !== groupePrecedent && <span className="refonte-nav-label">{groupe}</span>}
+                  <div className={`refonte-menu ${ouvert ? "ouvert" : ""}`}>
+                    <a href="#" className="refonte-menu-btn" onClick={() => basc(menu.id)}>
+                      <IconeMenu className="refonte-menu-icon" />
+                      <span className="refonte-menu-text">{menu.titre}</span>
+                      <FiChevronDown className="refonte-menu-chev" />
+                    </a>
+                    <div className="refonte-subnav">
+                      {menu.liens?.map((item) => {
+                        const IconeItem = item.icone || FiCircle;
 
-                      return (
-                        <NavLink key={item.to} to={item.to} onClick={fermerSidebar}>
-                          <IconeItem />
-                          <span>{item.label}</span>
-                        </NavLink>
-                      );
-                    })}
+                        return (
+                          <NavLink key={item.to} to={item.to} onClick={fermerSidebar}>
+                            <IconeItem />
+                            <span>{item.label}</span>
+                          </NavLink>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
+                </React.Fragment>
               );
             })}
           </nav>
+
+          <div className="refonte-sidebar-profile">
+            <span className="refonte-nav-label">Profil</span>
+            <Link to={accueil} className="refonte-user-card" onClick={fermerSidebar}>
+              {photo && <img src={photo} alt="Profil" />}
+              <span>
+                <strong>{nom}</strong>
+                <span>{role}</span>
+              </span>
+            </Link>
+          </div>
         </div>
       </aside>
       <button
