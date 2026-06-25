@@ -29,7 +29,7 @@ const FooterRefonte = ({ cycle, ecole, variant = "site" }) => {
 
   return (
     <>
-      <footer className={`ecolapp-footer ${variant}`}>
+      <footer className={`ecolapp-footer bg-primary ${variant}`}>
         <div className="ecolapp-footer-grid">
           <div className="ecolapp-footer-brand">
             <span className="ecolapp-footer-logo">
