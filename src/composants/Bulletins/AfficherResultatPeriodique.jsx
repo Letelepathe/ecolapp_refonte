@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-// import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-// import styles from "./styles";
-import styles from '../../../common/styles';
+import styles from "./styles";
 
 import drapeau from "../../../../assets/drapeau.png";
 import embleme from "../../../../assets/embleme.png";
-import { HeroSection } from "../../common/loadBulletin";
 
 function getValidIntegerFromQuery(param, defaultValue = 0) {
     const value = new URLSearchParams(window.location.search).get(param);
@@ -21,7 +19,6 @@ const AfficherResultatPeriodique = () => {
     const [ecole, setEcole] = useState(null);
     const ecole_id = localStorage.getItem('ecole_id');
     const direction = localStorage.getItem('direction');
-      const [loading , setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -37,27 +34,12 @@ const AfficherResultatPeriodique = () => {
 
         if (ecole_id) fetchInfoEcole();
     }, [ecole_id]);
-     const [bulletinInfo , setBulletinInfo] = useState({
-                eleveInfo : null,
-                periode : [],
-                coursGroupes : [],
-                totauxExam : {},
-                totauxPeriode : {},
-                totalSemestre : {},
-                totalAnnuel : {},
-                dataSemestres : [],
-                classe :'',
-                anneeScolaire : '',
-                pourcentageExam : 0,
-                pourcentageTotal : 0,
-                pourcentageAnnuel : 0
-            });
 
-    // const [eleveInfo, setEleveInfo] = useState(null);
-    // const [classe, setClasse] = useState('');
-    // const [periode, setPeriode] = useState('');
-    // const [anneeScolaire, setAnneeScolaire] = useState('');
-    // const [coursGroupes, setCoursGroupes] = useState([]);
+    const [eleveInfo, setEleveInfo] = useState(null);
+    const [classe, setClasse] = useState('');
+    const [periode, setPeriode] = useState('');
+    const [anneeScolaire, setAnneeScolaire] = useState('');
+    const [coursGroupes, setCoursGroupes] = useState([]);
     const [errors, setErrors] = useState('');
     const [authenticated, setAuthenticated] = useState(false);
 
@@ -66,37 +48,26 @@ const AfficherResultatPeriodique = () => {
     const annee_id = getValidIntegerFromQuery('annee_id');
 
     const bareme = 2;
+
+    useEffect(() => {
         const fetchResultats = async () => {
             try {
-                setLoading(true);
                 const response = await axios.get(
                     `https://api.ecolapp.cd/api/cotegenerale/eleve/resultat/periode/${periode_id}/annee/${annee_id}/eleve/${eleve_id}/bareme/${bareme}/ecole/${ecole_id}/direction/${direction}`
                 );
 
                 if (response.data) {
-                        setBulletinInfo({
-                        ...bulletinInfo ,
-                       eleveInfo : response.data.eleve,
-                       coursGroupes : response.data.cours_groupes,
-                       classe : response.data.classe,
-                       periode : response.data.periode,
-                       anneeScolaire : response.data.annee_scolaire
-
-                    });
-                    setLoading(false);
-                    // setEleveInfo(response.data.eleve);
-                    // setClasse(response.data.classe);
-                    // setPeriode(response.data.periode);
-                    // setAnneeScolaire(response.data.annee_scolaire);
-                    // setCoursGroupes(response.data.cours_groupes || []);
+                    setEleveInfo(response.data.eleve);
+                    setClasse(response.data.classe);
+                    setPeriode(response.data.periode);
+                    setAnneeScolaire(response.data.annee_scolaire);
+                    setCoursGroupes(response.data.cours_groupes || []);
                     setErrors('');
                 } else {
                     setErrors("Les données récupérées ne sont pas valides.");
-                    setLoading(false);
                 }
             } catch (error) {
                 setErrors("Erreur lors de la récupération des résultats.");
-                setLoading(false);
             }
         };
 
@@ -104,8 +75,9 @@ const AfficherResultatPeriodique = () => {
             const userId = localStorage.getItem('userId');
             setAuthenticated(!!userId);
         };
-    useEffect(() => {
+
         checkSession();
+
         if (eleve_id && periode_id && annee_id) {
             fetchResultats();
         } else {
@@ -121,32 +93,13 @@ const AfficherResultatPeriodique = () => {
         return () => {
             document.head.removeChild(styleSheet);
         };
-    }, [bulletinInfo]);
+    }, []);
 
     const printBulletin = () => {
         window.print();
     };
 
     // Calculs statistiques de la période courante
-
-    
-      const {
-            eleveInfo,
-            coursGroupes,
-            totauxPeriode,
-            totauxExam,
-            totalSemestre,
-            classe,
-            periode,
-            anneeScolaire,
-            pourcentageExam,
-            periodes,
-            pourcentageAnnuel,
-            totalAnnuel,
-            pourcentageTotal,
-            dataSemestres,
-        } = bulletinInfo;
-  
     const stats = useMemo(() => {
         if (!coursGroupes || coursGroupes.length === 0) {
             return { totalGeneral: 0, totalObtenu: 0, pourcentage: "0.00" };
@@ -165,30 +118,19 @@ const AfficherResultatPeriodique = () => {
         return { totalGeneral, totalObtenu, pourcentage: pct.toFixed(2) };
     }, [coursGroupes]);
 
-  if(loading)
-    {
-        //suivre les chargements des données dans la requete asynchrone
-        return <div className="spinner"></div>;
-    }
-
     if (errors) {
-        //message d'erreur en cas d'echec de la requete
         return <div style={{ color: 'red', textAlign: 'center', marginTop: '20px' }}>{errors}</div>;
     }
 
-    if (!bulletinInfo.eleveInfo || !bulletinInfo.periode || !ecole || !bulletinInfo.anneeScolaire) {
-        // afficher un message lorsque les informations du bulletin de l'eleve n'est pas disponible
-        return <div style={{ color: 'red', textAlign: 'center', marginTop: '20px' }}>{'Les données ne sont pas disponible pour le moment veuillez passez ulterieurement !'}</div>;
+    if (!eleveInfo || !periode || !ecole || !anneeScolaire) {
+        return <div style={{ textAlign: 'center', marginTop: '50px' }}>Chargement...</div>;
     }
-
-
-
 
     return (
         <div style={styles.pageWrapper}>
-            {/* <Helmet> */}
+            <Helmet>
                 <title>Bulletin Périodique du Secondaire</title>
-            {/* </Helmet> */}
+            </Helmet>
 
             <div style={styles.container}>
                 

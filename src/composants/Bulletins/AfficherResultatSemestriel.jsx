@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 
 
-import styles from '../../../common/styles';
+import styles from "./styles";
 
 import drapeau from "../../../../assets/drapeau.png";
 import embleme from "../../../../assets/embleme.png";
-import { HeroSection } from "../../common/loadBulletin";
 
 function getValidIntegerFromQuery(param, defaultValue = 0) {
     const value = new URLSearchParams(window.location.search).get(param);
@@ -22,7 +21,6 @@ const AfficherBulletinSemestriel = () => {
     const [ecole, setEcole] = useState(null);
     const ecole_id = localStorage.getItem('ecole_id');
     const direction = localStorage.getItem('direction');
-    const [loading , setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -39,27 +37,15 @@ const AfficherBulletinSemestriel = () => {
         if (ecole_id) fetchInfoEcole();
     }, [ecole_id]);
       
-    // const [eleveInfo, setEleveInfo] = useState(null);
-    // const [periodes, setPeriodes] = useState([]);
-    // const [coursGroupes, setCoursGroupes] = useState({});
-    // const [totauxPeriode, setTotauxPeriode] = useState({});
-    // const [totauxExam, setTotauxExam] = useState({});
-    // const [totalSemestre, setTotalSemestre] = useState({});
-    // const [anneeScolaire, setAnneeScolaire] = useState('');
-    // const [pourcentageExam, setPourcentageExam] = useState(0);
-    // const [pourcentageTotal, setPourcentageTotal] = useState(0);
-
-    const [bulletinInfo , setBulletinInfo] = useState({
-        eleveInfo : null,
-        periodes : [],
-        coursGroupes : {},
-        totauxExam : {},
-        totauxPeriode : {},
-        totalSemestre : {},
-        anneeScolaire : '',
-        pourcentageExam : 0,
-        pourcentageTotal : 0
-    });
+    const [eleveInfo, setEleveInfo] = useState(null);
+    const [periodes, setPeriodes] = useState([]);
+    const [coursGroupes, setCoursGroupes] = useState({});
+    const [totauxPeriode, setTotauxPeriode] = useState({});
+    const [totauxExam, setTotauxExam] = useState({});
+    const [totalSemestre, setTotalSemestre] = useState({});
+    const [anneeScolaire, setAnneeScolaire] = useState('');
+    const [pourcentageExam, setPourcentageExam] = useState(0);
+    const [pourcentageTotal, setPourcentageTotal] = useState(0);
     
     const [errors, setErrors] = useState('');
     const [authenticated, setAuthenticated] = useState(false);
@@ -68,115 +54,75 @@ const AfficherBulletinSemestriel = () => {
     const semestre_id = getValidIntegerFromQuery('semestre_id');
     const annee_id = getValidIntegerFromQuery('annee_id');
     const bareme = 2;
-     const fetchResultats = async () => {
+
+    useEffect(() => {
+        const fetchResultats = async () => {
             try {
-                setLoading(true);
                 const response = await axios.get(
                     `https://api.ecolapp.cd/api/cotegenerale/eleve/resultat/semestre/${semestre_id}/annee/${annee_id}/eleve/${eleve_id}/bareme/${bareme}/ecole/${ecole_id}/direction/${direction}`
                 );
 
                 if (response.data.status === 200) {
                     const { data } = response;
-                    setBulletinInfo({
-                        ...bulletinInfo ,
-                       eleveInfo : data.eleve,
-                       periodes : data.periodes,
-                       coursGroupes : data.cours_groupes,
-                       totauxPeriode :data.totaux_periode,
-                       totauxExam :data.totaux_exam,
-                       totalSemestre : data.total_semestre,
-                       anneeScolaire : data.annee_scolaire,
-                       pourcentageExam : data.pourcentage_exam,
-                       pourcentageTotal : data.pourcentage_total
-                    });
-                    // console.log(bulletinInfo , 'tableau bulletin');
-                    // setEleveInfo(data.eleve);
-                    // setPeriodes(data.periodes);
-                    // setCoursGroupes(data.cours_groupes);
-                    // setTotauxPeriode(data.totaux_periode);
-                    // setTotauxExam(data.totaux_exam);
-                    // setTotalSemestre(data.total_semestre);
-                    // setAnneeScolaire(data.annee_scolaire);
-                    // setPourcentageExam(data.pourcentage_exam);
-                    // setPourcentageTotal(data.pourcentage_total);
-                     setLoading(false);
+                    setEleveInfo(data.eleve);
+                    setPeriodes(data.periodes);
+                    setCoursGroupes(data.cours_groupes);
+                    setTotauxPeriode(data.totaux_periode);
+                    setTotauxExam(data.totaux_exam);
+                    setTotalSemestre(data.total_semestre);
+                    setAnneeScolaire(data.annee_scolaire);
+                    setPourcentageExam(data.pourcentage_exam);
+                    setPourcentageTotal(data.pourcentage_total);
                     setErrors('');
                 } else {
                     setErrors("Les données récupérées ne sont pas valides.");
-                    setLoading(false);
                 }
             } catch (error) {
                 setErrors("Erreur lors de la récupération des résultats.");
-                setLoading(false);
-            } finally {
-                 setLoading(false);
             }
         };
-         const checkSession = () => {
+
+        const checkSession = () => {
             const userId = localStorage.getItem('userId');
             setAuthenticated(!!userId);
         };
-        
-        
-    useEffect(() => {
+
         checkSession();
+
         if (eleve_id && semestre_id && annee_id) {
             fetchResultats();
         } else {
             setErrors("Paramètres manquants.");
         }
-    }, [eleve_id, semestre_id, annee_id, ecole_id, direction ]);
+    }, [eleve_id, semestre_id, annee_id, ecole_id, direction]);
 
     useEffect(() => {
         const styleSheet = document.createElement("style");
         styleSheet.type = "text/css";
         styleSheet.innerText = "@media print { .no-print { display: none !important; } body { background: #fff; padding: 0; } }";
         document.head.appendChild(styleSheet);
-        console.log(bulletinInfo , 'eleve info bulletin');
         return () => {
             document.head.removeChild(styleSheet);
         };
-    }, [bulletinInfo]);
-  
-  const {
-            eleveInfo,
-            periodes,
-            coursGroupes,
-            totauxPeriode,
-            totauxExam,
-            totalSemestre,
-            anneeScolaire,
-            pourcentageExam,
-            pourcentageTotal,
-        } = bulletinInfo;
-
-     if(loading)
-    {
-        //suivre les chargements des données dans la requete asynchrone
-        return <div className="spinner"></div>;
-    }
+    }, []);
 
     if (errors) {
-        //message d'erreur en cas d'echec de la requete
         return <div style={{ color: 'red', textAlign: 'center', marginTop: '20px' }}>{errors}</div>;
     }
 
-
-
-    if (!bulletinInfo.eleveInfo || !bulletinInfo.periodes || Object.keys(bulletinInfo.coursGroupes).length === 0 || !ecole) {
-        return <div style={{ color: 'red', textAlign: 'center', marginTop: '20px' }}>{'Les données ne sont pas disponible pour le moment veuillez passez ulterieurement !'}</div>;
+    if (!eleveInfo || !periodes || Object.keys(coursGroupes).length === 0 || !ecole) {
+        return <div style={{ textAlign: 'center', marginTop: '50px' }}>Chargement du bulletin semestriel...</div>;
     }
 
     const printBulletin = () => {
         window.print();
     };
 
-    try{
-         return (
+    return (
         <div style={styles.pageWrapper}>
-            {/* <Helmet> */}
+            <Helmet>
                 <title>Bulletin Semestriel du Secondaire</title>
-            {/* </Helmet> */}
+            </Helmet>
 
             <div style={styles.container}>
                 
@@ -448,14 +394,6 @@ const AfficherBulletinSemestriel = () => {
             </div>
         </div>
     );
-    }catch (error) {
-        return (
-              <div style={{ textAlign: 'center', marginTop: '50px' }}>Le bulletin n'est pas disponible pour le moment , veuillez revenir ulterieurement !</div>
-        );
-    }
-
-    
-   
 };
 
 export default AfficherBulletinSemestriel;

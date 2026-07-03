@@ -4,29 +4,30 @@ import { Link } from "react-router-dom";
 import { FiBookOpen, FiInfo, FiUsers, FiZap } from "react-icons/fi";
 import NavbarBottom from "./NavbarBottom";
 import ImageEcole from "../../static/images/image_ecole.webp";
+import { HeroSection } from "../Ecoles/common/loadBulletin";
 
-const HeroSection = () => (
-  <section className="index-refonte text-center" data-aos="fade-up">
-    <div className="index-hero-copy">
-      <h1>ecolapp</h1>
-      <p>
-        <strong>ecolapp, gestion scolaire simplifiée et efficace.</strong>
-        <span>Un outil tout-en-un pour les écoles, enseignants, élèves, et parents.</span>
-      </p>
-    </div>
+//  const HeroSection = () => (
+//   <section className="index-refonte text-center" data-aos="fade-up">
+//     <div className="index-hero-copy">
+//       <h1>ecolapp</h1>
+//       <p>
+//         <strong>ecolapp, gestion scolaire simplifiée et efficace.</strong>
+//         <span>Un outil tout-en-un pour les écoles, enseignants, élèves, et parents.</span>
+//       </p>
+//     </div>
 
-    <div className="index-hero-wheel" >
-      <div className="index-wheel-dots" aria-hidden="true">
-        {Array.from({ length: 5 }, (_, index) => (
-          <span key={index} />
-        ))}
-      </div>
-      <div className="index-hero-photo">
-        <img src={ImageEcole} alt="ecolapp" />
-      </div>
-    </div>
-  </section>
-);
+//     <div className="index-hero-wheel" >
+//       <div className="index-wheel-dots" aria-hidden="true">
+//         {Array.from({ length: 5 }, (_, index) => (
+//           <span key={index} />
+//         ))}
+//       </div>
+//       <div className="index-hero-photo">
+//         <img src={ImageEcole} alt="ecolapp" />
+//       </div>
+//     </div>
+//   </section>
+// );
 
 const cartes = [
   {
