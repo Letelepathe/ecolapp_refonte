@@ -160,6 +160,7 @@ export const menusEcole = (cycle) => [
       lien(`/${cycle}/liste_paiement`, "Tous les paiements", FiList),
     ],
   },
+  
   {
     id: "structure",
     titre: "Structure scolaire",
@@ -167,7 +168,7 @@ export const menusEcole = (cycle) => [
     liens: [
       lien(`/${cycle}/liste_classe`, "Toutes les classes", FiList),
       lien(`/${cycle}/liste_section`, "Toutes les sections", FiList),
-      lien(`/${cycle}/liste_options`, "Toutes les options", FiList),
+      lien(`/${cycle}/liste_option`, "Toutes les options", FiList),
     ],
   },
   {
