@@ -43,7 +43,12 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
       icone: FiGrid,
       to: `/${cycle}/profil_user`,
     },
-
+{
+      id: "administration",
+      titre: "Administration",
+      icone: FiHome,
+      to: `/${cycle}/bureau_admin`,
+    }
   ];
 
   if (peutGererPresenceEtCartes) {
