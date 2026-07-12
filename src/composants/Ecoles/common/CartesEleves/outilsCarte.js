@@ -1,5 +1,7 @@
-export const URL_API = "https://api.ecolapp.cd/api";
-export const URL_PUBLIC = "https://api.ecolapp.cd";
+import { API_BASE_URL, PUBLIC_BASE_URL, urlPublic } from "../../../api/api";
+
+export const URL_API = API_BASE_URL;
+export const URL_PUBLIC = PUBLIC_BASE_URL;
 
 export const idEleve = (eleve) => String(eleve?.id ?? eleve?.matricule ?? "");
 
@@ -51,9 +53,9 @@ export const urlPhoto = (eleve) => {
   if (/^https?:\/\//i.test(photo)) return photo;
 
   const photoNet = String(photo).replace(/^\/+/, "");
-  if (photoNet.includes("/")) return `${URL_PUBLIC}/${photoNet}`;
+  if (photoNet.includes("/")) return urlPublic(photoNet);
 
-  return `${URL_PUBLIC}/public/Eleves/${photoNet}`;
+  return urlPublic(`public/Eleves/${photoNet}`);
 };
 
 export const txtRecherche = (eleve) =>
@@ -61,3 +63,17 @@ export const txtRecherche = (eleve) =>
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
+
+export const payloadQrEleve = (eleve, ecole) => JSON.stringify({
+  type: "eleve",
+  id: eleve?.id,
+  matricule: eleve?.matricule,
+  nom: [eleve?.name, eleve?.last_name, eleve?.first_name].filter(Boolean).join(" "),
+  ecole_id: eleve?.ecole_id || ecole?.id || localStorage.getItem("ecole_id"),
+  direction: eleve?.direction || localStorage.getItem("direction"),
+  classe_id: eleve?.classes_id || eleve?.classe?.id,
+  option_id: eleve?.options_id || eleve?.option?.id,
+});
+
+export const urlQr = (payload, taille = 112) =>
+  `https://api.qrserver.com/v1/create-qr-code/?size=${taille}x${taille}&margin=8&data=${encodeURIComponent(payload)}`;
