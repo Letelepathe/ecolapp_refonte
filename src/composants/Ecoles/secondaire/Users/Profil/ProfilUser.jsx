@@ -457,6 +457,12 @@ const ProfilUser = () => {
 
   if (isLoading) return <div className='spinner'></div>;
 
+  const normaliserRole = (valeur = "") => valeur.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  const rolesAdministration = ["administrateur", "administratrice", "super administrateur", "super administratrice", "admin", "superadmin", "super admin", "super_admin", "superdmin"];
+  const nomFonction = normaliserRole(user?.fonction?.name);
+  const nomRole = normaliserRole(user?.role);
+  const peutVoirAdministration = Boolean(user && (rolesAdministration.includes(nomFonction) || rolesAdministration.includes(nomRole)));
+
   return (
     <div className="profil-user-page refonte-shell">
             <Helmet>
@@ -479,8 +485,15 @@ const ProfilUser = () => {
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
                             {/* Bloc pour les enseignants */}
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirAdministration &&
               <>
+                                    {peutVoirAdministration && (
+                                      <div className="col-sm-6 col-md-6 col-xl-3">
+                                        <Link to="/secondaire/bureau_admin">
+                                          <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                                        </Link>
+                                      </div>
+                                    )}
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/secondaire/liste_travail_by_enseignant">
                                         <DashboardCard title="Mes travaux" count={counts.travaux_enseignant} icon="bi-pencil-square" />
@@ -524,7 +537,7 @@ const ProfilUser = () => {
                     </div>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
-                          {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                          {peutVoirAdministration &&
               <div className='col-12'>
                               <StatEnseignant id={user.id} />
                             </div>
@@ -538,7 +551,7 @@ const ProfilUser = () => {
               }
                           <div className="col-lg-12 col-12">
 
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirAdministration &&
                 <>
                                   <div className="col-12 mb-1 mt-1 mb-2">
                                     <div className=" rounded align-items-center justify-content-center p-4">
