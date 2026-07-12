@@ -59,7 +59,7 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
     });
   }
 
-  if (!estAdmin) {
+  if (estAdmin) {
     menus.push({
       id: "administration",
       titre: "Administration",
