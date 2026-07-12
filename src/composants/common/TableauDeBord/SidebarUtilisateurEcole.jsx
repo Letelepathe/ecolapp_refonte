@@ -17,6 +17,8 @@ import { menusEcole } from "./menusTableauBord";
 
 const ROLES_ADMIN = ["administrateur", "administratrice", "super administrateur", "super administratrice"];
 const ROLES_ENSEIGNANT = [...ROLES_ADMIN, "enseignant", "enseignante"];
+const ROLES_FINANCE = ["comptable", "caissier", "caissiere", "financier", "financiere"];
+const ROLES_SECRETARIAT = ["secretaire", "secrétaire", "secretariat", "secrétariat"];
 
 const lien = (to, label, icone = FiFileText) => ({ to, label, icone });
 
@@ -32,7 +34,7 @@ const obtenirRole = (utilisateur) => {
   return normaliserTexte(roleFonction || utilisateur?.role || "");
 };
 
-const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, estEnseignant, estEleve }) => {
+const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, estEnseignant, estEleve, estFinance, estSecretariat }) => {
   const menus = [
     {
       id: "profil",
@@ -40,16 +42,21 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
       icone: FiGrid,
       to: `/${cycle}/profil_user`,
     },
-     {
-      id: "admin",
-      titre: "Administration",
-      icone: FiUser,
-      to: `/${cycle}/bureau_admin`,
-    },
+
   ];
 
   if (estAdmin) {
+    menus.push({
+      id: "administration",
+      titre: "Administration",
+      icone: FiHome,
+      to: `/${cycle}/bureau_admin`,
+    });
     menus.push(...menusEcole(cycle));
+  } else if (estFinance) {
+    menus.push({ id: "finances", titre: "Mes finances", icone: FiBriefcase, liens: [lien(`/${cycle}/liste_paiement`, "Paiements", FiFileText), lien(`/${cycle}/liste_motif`, "Motifs de paiement", FiFileText), lien(`/${cycle}/liste_tranche`, "Tranches", FiFileText)] });
+  } else if (estSecretariat) {
+    menus.push({ id: "secretariat", titre: "Secrétariat", icone: FiUser, liens: [lien(`/${cycle}/liste_eleve`, "Dossiers élèves", FiUser), lien(`/${cycle}/eleve_inscrit`, "Inscriptions", FiFileText), lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiFileText), lien(`/presence-qr`, "Scanner présence", FiCheckSquare)] });
   }
 
   if (infoClasseUser?.length) {
@@ -196,6 +203,8 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
         estAdmin: ROLES_ADMIN.includes(roleUtilisateur),
         estEnseignant: ROLES_ENSEIGNANT.includes(roleUtilisateur),
         estEleve: roleUtilisateur === "eleve",
+        estFinance: ROLES_FINANCE.includes(roleUtilisateur),
+        estSecretariat: ROLES_SECRETARIAT.includes(roleUtilisateur),
       }),
     [cycle, infoClasseUser, infoEleve, roleUtilisateur]
   );

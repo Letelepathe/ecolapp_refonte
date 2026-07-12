@@ -1,22 +1,8 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import DeconnexionAvecConfirmation from '../../../../common/DeconnexionAvecConfirmation';
 
-const Deconnexion = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const logoutUser = async () => {
-      localStorage.setItem('userId', '');
-      navigate('/primaire');
-    }
-    logoutUser();
-  }, [navigate]);
-
-  return (
-    <div className="container text-center mt-5">
-      <h4>Déconnexion en cours...</h4>
-    </div>
-  );
-};
+const Deconnexion = () => (
+  <DeconnexionAvecConfirmation redirection="/primaire" champs={["userId"]} />
+);
 
 export default Deconnexion;
