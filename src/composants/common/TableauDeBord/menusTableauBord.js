@@ -98,6 +98,17 @@ export const menusEcole = (cycle) => [
       lien(`/${cycle}/suspendre_admin`, "Suspendre admin", FiSettings),
     ],
   },
+
+  {
+    id: "presences-cartes",
+    titre: "Présences & cartes",
+    icone: FiCheckSquare,
+    liens: [
+      lien(`/presence-qr`, "Scanner présences QR", FiCheckSquare),
+      lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiCreditCard),
+      lien(`/${cycle}/cartes_personnel`, "Cartes personnel QR", FiCreditCard),
+    ],
+  },
   {
     id: "cycle",
     titre: "Cycle scolaire",
