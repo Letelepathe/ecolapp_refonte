@@ -15,8 +15,8 @@ import {
 import BarreLaterale from "./BarreLaterale";
 import { menusEcole } from "./menusTableauBord";
 
-const ROLES_ADMIN = ["administrateur", "administratrice", "super administrateur", "super administratrice"];
-const ROLES_ENSEIGNANT = [...ROLES_ADMIN, "enseignant", "enseignante"];
+const ROLES_ADMIN = ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"];
+const ROLES_ENSEIGNANT = [...ROLES_ADMIN, "Enseignant", "Enseignante"];
 const ROLES_FINANCE = ["comptable", "caissier", "caissiere", "financier", "financiere"];
 const ROLES_SECRETARIAT = ["secretaire", "secrétaire", "secretariat", "secrétariat"];
 
