@@ -14,9 +14,6 @@ import {
   urlQr,
 } from "./outilsCarte";
 
-import ImgDrapeau from "../../../../static/images/drapeau.png";
-import ImgSymbole from "../../../../static/images/symb.png";
-
 const CarteEleve = ({ eleve, ecole, photosKo, photoKo }) => {
   const annee = anneeSco(eleve);
   const inscrit = [nomCls(eleve), nomOpt(eleve)].filter(Boolean).join(" ");
@@ -24,59 +21,55 @@ const CarteEleve = ({ eleve, ecole, photosKo, photoKo }) => {
   const province = infosProvince(ecole);
   const dateJour = new Date().toLocaleDateString("fr-FR");
   const payloadPresence = payloadQrEleve(eleve, ecole);
+  const nomComplet = [eleve?.name, eleve?.last_name, eleve?.first_name].filter(Boolean).join(" ");
 
   return (
-    <article className="fiche-carte-eleve">
-      <section className="bloc-carte recto-carte carte-pro">
-        <h3>ANNEE SCOLAIRE {annee}</h3>
-        <div className="contenu-recto">
-          <div className="infos-eleve-carte">
-            <div><span>Nom</span><strong>: {maj(eleve?.name)}</strong></div>
-            <div><span>Post nom</span><strong>: {maj(eleve?.last_name)}</strong></div>
-            <div><span>Prenom</span><strong>: {maj(eleve?.first_name)}</strong></div>
-            <div><span>Sexe</span><strong>: {maj(eleve?.sexe)}</strong></div>
-            <div><span>Lieu de naissance</span><strong>: {maj(eleve?.lieu_de_naissance)}</strong></div>
-            <div><span>Date de naissance</span><strong>: {eleve?.date_naissance || "-"}</strong></div>
-            <div><span>Inscrit en</span><strong>: {maj(inscrit)}</strong></div>
-            <div><span>Code Exetat</span><strong>: {eleve?.code_exetat || eleve?.code_exetat_eleve || "-"}</strong></div>
-          </div>
-          <div className="photo-eleve-carte">
-            <PhotoEleve eleve={eleve} photosKo={photosKo} photoKo={photoKo} />
-          </div>
+    <article className="fiche-carte-eleve modele-carte-scolaire modele-carte-eleve">
+      <section className="bloc-carte recto-carte carte-identite-pro carte-identite-eleve">
+        <div className="carte-identite-vague" />
+        <header className="carte-identite-entete">
+          <h2>{maj(ecole?.name || "ECOLAPP SCHOOL")}</h2>
+          <p>Carte d'élève • Année scolaire {annee}</p>
+        </header>
+
+        <div className="carte-identite-photo-rond">
+          <PhotoEleve eleve={eleve} photosKo={photosKo} photoKo={photoKo} />
         </div>
-        <div className="zone-identification-carte">
-          <div className="qr-presence-carte">
-            <img src={urlQr(payloadPresence)} alt="QR code de présence élève" crossOrigin="anonymous" />
-            <small>Scan présence</small>
-          </div>
-          <div className="sign-carte">
-            <p>Fait à {ville || "..."}, le {dateJour}</p>
-            <p>Le Chef d'Etablissement</p>
-            <strong>{chefEtab(ecole)}</strong>
-          </div>
+
+        <div className="carte-identite-infos">
+          <div><span>Reg No</span><strong>: {numCarte(eleve)}/{anneeCarte(annee)}</strong></div>
+          <div><span>Student ID</span><strong>: {eleve?.matricule || eleve?.id || "-"}</strong></div>
+          <div><span>Student Name</span><strong>: {maj(nomComplet)}</strong></div>
+          <div><span>Sexe</span><strong>: {maj(eleve?.sexe || "-")}</strong></div>
+          <div><span>Class</span><strong>: {maj(inscrit || "-")}</strong></div>
+          <div><span>Emergency Call</span><strong>: {eleve?.telephone_parent || eleve?.phone || "-"}</strong></div>
         </div>
       </section>
 
-      <section className="bloc-carte verso-carte carte-pro">
-        <div className="etat-carte">
-          <h4>REPUBLIQUE DEMOCRATIQUE DU CONGO</h4>
-          <p>Ministère de l'Enseignement Primaire Secondaire et Technique</p>
-          {province && <p className="province-carte">Province du {province}</p>}
+      <section className="bloc-carte verso-carte carte-identite-pro carte-identite-verso carte-identite-eleve">
+        <div className="carte-identite-bulle bulle-haut" />
+        <div className="carte-identite-bulle bulle-bas" />
+        <div className="carte-identite-conditions">
+          <h3>CONDITIONS D'UTILISATION</h3>
+          <ul>
+            <li>Cette carte est personnelle et doit être présentée à toute demande de l'école.</li>
+            <li>Le QR code sert au pointage des arrivées et départs journaliers.</li>
+          </ul>
         </div>
-        <div className="centre-verso">
-          <img src={ImgSymbole} alt="Symbole RDC" />
-          <div>
-            <h2>{maj(ecole?.name || "ECOLE")}</h2>
-            <h3>CARTE D'ELEVE</h3>
-            <p>N°{numCarte(eleve)}/{anneeCarte(annee)}</p>
-          </div>
-          <img src={ImgDrapeau} alt="Drapeau RDC" />
+        <div className="carte-identite-contact">
+          <p><span>École</span><strong>: {maj(ecole?.name || "-")}</strong></p>
+          <p><span>Province</span><strong>: {maj(province || "-")}</strong></p>
+          <p><span>Ville</span><strong>: {maj(ville || "-")}</strong></p>
         </div>
-        <div className="laisser-passer">
-          <strong>CARTE D'IDENTIFICATION SCOLAIRE</strong>
-          <p>Cette carte intègre un QR code personnel pour l'identification et le pointage de présence.</p>
+        <div className="carte-identite-signature">
+          <span>{chefEtab(ecole)}</span>
+          <strong>Principal</strong>
+          <small>Fait le {dateJour}</small>
         </div>
-        <strong className="ige-carte">I.G.E</strong>
+        <div className="qr-identite-grand qr-identite-eleve">
+          <img src={urlQr(payloadPresence, 150)} alt="QR code de présence élève" crossOrigin="anonymous" />
+          <small>Scanner présence</small>
+        </div>
       </section>
     </article>
   );

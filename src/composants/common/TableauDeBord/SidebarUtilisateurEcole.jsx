@@ -46,6 +46,12 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
   ];
 
   if (estAdmin) {
+    menus.push({
+      id: "administration",
+      titre: "Administration",
+      icone: FiHome,
+      to: `/${cycle}/bureau_admin`,
+    });
     menus.push(...menusEcole(cycle));
   } else if (estFinance) {
     menus.push({ id: "finances", titre: "Mes finances", icone: FiBriefcase, liens: [lien(`/${cycle}/liste_paiement`, "Paiements", FiFileText), lien(`/${cycle}/liste_motif`, "Motifs de paiement", FiFileText), lien(`/${cycle}/liste_tranche`, "Tranches", FiFileText)] });
