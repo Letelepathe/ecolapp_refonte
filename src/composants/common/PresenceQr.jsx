@@ -15,8 +15,33 @@ const parsePayload = (texte) => {
   try { return JSON.parse(texte); } catch { return { type: "inconnu", id: texte, matricule: texte, nom: texte }; }
 };
 
+const chargerHtml5Qrcode = () => new Promise((resolve, reject) => {
+  if (window.Html5Qrcode) {
+    resolve(window.Html5Qrcode);
+    return;
+  }
+
+  const scriptExistant = document.querySelector("script[data-html5-qrcode]");
+  if (scriptExistant) {
+    scriptExistant.addEventListener("load", () => resolve(window.Html5Qrcode), { once: true });
+    scriptExistant.addEventListener("error", reject, { once: true });
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = "https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js";
+  script.async = true;
+  script.dataset.html5Qrcode = "true";
+  script.onload = () => resolve(window.Html5Qrcode);
+  script.onerror = reject;
+  document.head.appendChild(script);
+});
+
 const PresenceQr = () => {
   const videoRef = useRef(null);
+  const lecteurRef = useRef(null);
+  const scannerHtml5Ref = useRef(null);
+  const dernierScanRef = useRef({ valeur: "", temps: 0 });
   const [scanManuel, setScanManuel] = useState("");
   const [presences, setPresences] = useState(lire);
   const [message, setMessage] = useState("");
@@ -43,18 +68,39 @@ const PresenceQr = () => {
     sauver(suivant); setPresences(suivant); setMessage(`${identite.nom || identite.matricule || "Utilisateur"} : ${action === "arrivee" ? "arrivée enregistrée" : "départ enregistré"}.`);
   };
 
+  const pointerDepuisCamera = (payloadTexte) => {
+    const maintenant = Date.now();
+    if (dernierScanRef.current.valeur === payloadTexte && maintenant - dernierScanRef.current.temps < 3500) return;
+    dernierScanRef.current = { valeur: payloadTexte, temps: maintenant };
+    pointer(payloadTexte);
+  };
 
   const decoderImageQr = async (fichier) => {
     if (!fichier) return;
     setErreur("");
 
-    if (!("BarcodeDetector" in window)) {
-      setErreur("Le scan automatique depuis photo n'est pas supporté par ce navigateur. Utilisez un lecteur QR USB ou collez le contenu du QR dans le champ manuel.");
-      return;
-    }
-
     setScanImage(true);
     try {
+      const Html5Qrcode = await chargerHtml5Qrcode().catch(() => null);
+      if (Html5Qrcode) {
+        const idTemporaire = `lecteur-photo-qr-${Date.now()}`;
+        const element = document.createElement("div");
+        element.id = idTemporaire;
+        element.style.display = "none";
+        document.body.appendChild(element);
+        const lecteurPhoto = new Html5Qrcode(idTemporaire);
+        const texte = await lecteurPhoto.scanFile(fichier, true);
+        await lecteurPhoto.clear().catch(() => {});
+        element.remove();
+        pointer(texte);
+        return;
+      }
+
+      if (!("BarcodeDetector" in window)) {
+        setErreur("Ce navigateur n'a pas pu charger le lecteur QR automatique. Vérifiez la connexion internet, puis réessayez avec Caméra ou Photo QR.");
+        return;
+      }
+
       const image = await createImageBitmap(fichier);
       const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
       const codes = await detector.detect(image);
@@ -98,13 +144,32 @@ const PresenceQr = () => {
     const demarrer = async () => {
       if (!camera) return;
 
+      if (lecteurRef.current) lecteurRef.current.innerHTML = "";
+
       if (!navigator.mediaDevices?.getUserMedia) {
-        setErreur("Votre navigateur ne permet pas d'ouvrir la caméra en direct. Utilisez le bouton Photo QR ou un lecteur QR USB.");
+        setErreur("Votre navigateur ne permet pas d'ouvrir la caméra en direct. Utilisez le bouton Photo QR.");
         setCamera(false);
         return;
       }
 
       try {
+        const Html5Qrcode = await chargerHtml5Qrcode().catch(() => null);
+        if (Html5Qrcode && lecteurRef.current) {
+          scannerHtml5Ref.current = new Html5Qrcode(lecteurRef.current.id);
+          await scannerHtml5Ref.current.start(
+            { facingMode: cameraMode },
+            { fps: 10, qrbox: (largeur, hauteur) => {
+              const taille = Math.floor(Math.min(largeur, hauteur) * 0.72);
+              return { width: Math.max(180, taille), height: Math.max(180, taille) };
+            } },
+            pointerDepuisCamera,
+            () => {}
+          );
+          setCameraActive(true);
+          setMessage("Caméra activée. Présentez le QR code dans le cadre.");
+          return;
+        }
+
         const contraintesVideo = {
           facingMode: { ideal: cameraMode },
           width: { ideal: 1280 },
@@ -134,7 +199,7 @@ const PresenceQr = () => {
         setMessage("Caméra activée. Présentez le QR code devant l'objectif.");
 
         if (!("BarcodeDetector" in window)) {
-          setErreur("Caméra activée, mais le décodage automatique QR n'est pas supporté par ce navigateur. Utilisez le lecteur QR USB ou collez le contenu dans le champ manuel.");
+          setErreur("Caméra activée, mais le moteur QR automatique n'est pas disponible. Utilisez Photo QR ou réessayez avec une connexion internet pour charger le lecteur compatible.");
           return;
         }
 
@@ -142,7 +207,7 @@ const PresenceQr = () => {
         interval = setInterval(async () => {
           if (!videoRef.current || videoRef.current.readyState < 2) return;
           const codes = await detector.detect(videoRef.current).catch(() => []);
-          if (codes[0]?.rawValue) pointer(codes[0].rawValue);
+          if (codes[0]?.rawValue) pointerDepuisCamera(codes[0].rawValue);
         }, 1200);
       } catch (err) {
         setCameraActive(false);
@@ -159,6 +224,9 @@ const PresenceQr = () => {
     return () => {
       clearInterval(interval);
       flux?.getTracks?.().forEach((track) => track.stop());
+      scannerHtml5Ref.current?.stop?.().catch(() => {});
+      scannerHtml5Ref.current?.clear?.().catch(() => {});
+      scannerHtml5Ref.current = null;
       setCameraActive(false);
       if (videoRef.current) videoRef.current.srcObject = null;
     };
@@ -173,7 +241,7 @@ const PresenceQr = () => {
     </section>
     {message && <div className="alert alert-success">{message}</div>}{erreur && <div className="alert alert-danger">{erreur}</div>}
     <div className="row g-3">
-      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra" : "Démarrer la caméra"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button><label className="btn btn-light border mb-0">{scanImage ? "Lecture..." : "Photo QR"}<input type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => decoderImageQr(event.target.files?.[0])} /></label></div><div className="cadre-camera-mobile"><video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark" /></div>{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Sur mobile, utilisez HTTPS pour la caméra directe ou le bouton Photo QR.</small></div></div>
+      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra" : "Démarrer la caméra"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button><label className="btn btn-light border mb-0">{scanImage ? "Lecture..." : "Photo QR"}<input type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => decoderImageQr(event.target.files?.[0])} /></label></div><div id="lecteur-qr-camera" ref={lecteurRef} className="cadre-camera-mobile"><video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark" /></div>{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Le scanner charge un lecteur QR compatible Chrome, Firefox, Edge et Safari. Sur mobile, ouvrez la page en HTTPS.</small></div></div>
       <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur USB</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <div className="table-responsive mt-4"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th></tr></thead><tbody>{presences.map((p) => <tr key={`${p.cle}-${p.arrivee}`}><td>{p.type}</td><td>{p.nom || p.matricule}</td><td>{new Date(p.arrivee).toLocaleTimeString("fr-FR")}</td><td>{p.depart ? new Date(p.depart).toLocaleTimeString("fr-FR") : "En cours"}</td></tr>)}</tbody></table></div>
