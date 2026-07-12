@@ -33,7 +33,7 @@ export const menusAdminGeneral = (peutGererAdmins = true) => {
   if (peutGererAdmins) {
     menus.push({
       id: "admins",
-      titre: "Gestion Admin",
+      titre: "Comptes & accès",
       icone: FiShield,
       liens: [
         lien("/admin-general/creer_admin_general", "Créer admin", FiUserPlus),
@@ -90,7 +90,7 @@ export const menusEcole = (cycle) => [
   },
   {
     id: "admins",
-    titre: "Gestion Admin",
+    titre: "Comptes & accès",
     icone: FiShield,
     liens: [
       lien(`/${cycle}/creer_admin`, "Créer admin", FiUserPlus),
@@ -132,7 +132,8 @@ export const menusEcole = (cycle) => [
     icone: FiUsers,
     liens: [
       lien(`/${cycle}/liste_eleve`, "Tous les élèves", FiList),
-      lien(`/${cycle}/cartes_eleves`, "Cartes élèves", FiCreditCard),
+      lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiCreditCard),
+      lien(`/presence-qr`, "Scanner présences QR", FiCheckSquare),
       lien(`/${cycle}/liste_eleve_inscrit_${cycle}`, "Élèves inscrits", FiBookOpen),
       lien(`/${cycle}/liste_motif_absence`, "Motifs absence", FiList),
       lien(`/${cycle}/liste_type_travail`, "Types travail", FiList),
@@ -150,7 +151,7 @@ export const menusEcole = (cycle) => [
   },
   {
     id: "paiement",
-    titre: "Paiement",
+    titre: "Finances & paiements",
     icone: FiCreditCard,
     liens: [
       lien(`/${cycle}/liste_motif`, "Listes motif", FiList),
@@ -173,16 +174,17 @@ export const menusEcole = (cycle) => [
   },
   {
     id: "users",
-    titre: "Utilisateurs",
+    titre: "Personnel & rôles",
     icone: FiTool,
     liens: [
       lien(`/${cycle}/liste_fonction`, "Toutes les fonctions", FiList),
       lien(`/${cycle}/membres_inscrits`, "Liste utilisateurs", FiUsers),
+      lien(`/${cycle}/cartes_personnel`, "Cartes personnel QR", FiCreditCard),
     ],
   },
   {
     id: "rapports",
-    titre: "Rapports",
+    titre: "Suivi & rapports",
     icone: FiFileText,
     liens: [
       lien(`/${cycle}/liste_paiement`, "Finances", FiCreditCard),

@@ -10,6 +10,8 @@ import {
   nomCls,
   nomOpt,
   numCarte,
+  payloadQrEleve,
+  urlQr,
 } from "./outilsCarte";
 
 import ImgDrapeau from "../../../../static/images/drapeau.png";
@@ -21,10 +23,11 @@ const CarteEleve = ({ eleve, ecole, photosKo, photoKo }) => {
   const ville = infosVille(ecole);
   const province = infosProvince(ecole);
   const dateJour = new Date().toLocaleDateString("fr-FR");
+  const payloadPresence = payloadQrEleve(eleve, ecole);
 
   return (
     <article className="fiche-carte-eleve">
-      <section className="bloc-carte recto-carte">
+      <section className="bloc-carte recto-carte carte-pro">
         <h3>ANNEE SCOLAIRE {annee}</h3>
         <div className="contenu-recto">
           <div className="infos-eleve-carte">
@@ -41,14 +44,20 @@ const CarteEleve = ({ eleve, ecole, photosKo, photoKo }) => {
             <PhotoEleve eleve={eleve} photosKo={photosKo} photoKo={photoKo} />
           </div>
         </div>
-        <div className="sign-carte">
-          <p>Fait à {ville || "..."}, le {dateJour}</p>
-          <p>Le Chef d'Etablissement</p>
-          <strong>{chefEtab(ecole)}</strong>
+        <div className="zone-identification-carte">
+          <div className="qr-presence-carte">
+            <img src={urlQr(payloadPresence)} alt="QR code de présence élève" crossOrigin="anonymous" />
+            <small>Scan présence</small>
+          </div>
+          <div className="sign-carte">
+            <p>Fait à {ville || "..."}, le {dateJour}</p>
+            <p>Le Chef d'Etablissement</p>
+            <strong>{chefEtab(ecole)}</strong>
+          </div>
         </div>
       </section>
 
-      <section className="bloc-carte verso-carte">
+      <section className="bloc-carte verso-carte carte-pro">
         <div className="etat-carte">
           <h4>REPUBLIQUE DEMOCRATIQUE DU CONGO</h4>
           <p>Ministère de l'Enseignement Primaire Secondaire et Technique</p>
@@ -64,8 +73,8 @@ const CarteEleve = ({ eleve, ecole, photosKo, photoKo }) => {
           <img src={ImgDrapeau} alt="Drapeau RDC" />
         </div>
         <div className="laisser-passer">
-          <strong>LAISSEZ PASSER</strong>
-          <p>Les autorités civiles et militaires sont priées d'apporter toute leur assistance au porteur de la présente</p>
+          <strong>CARTE D'IDENTIFICATION SCOLAIRE</strong>
+          <p>Cette carte intègre un QR code personnel pour l'identification et le pointage de présence.</p>
         </div>
         <strong className="ige-carte">I.G.E</strong>
       </section>
