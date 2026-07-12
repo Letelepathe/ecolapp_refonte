@@ -24,6 +24,7 @@ const PresenceQr = () => {
   const [sync, setSync] = useState(false);
   const [camera, setCamera] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
+  const [cameraMode, setCameraMode] = useState("environment");
 
   const stats = useMemo(() => ({ total: presences.length, ouverts: presences.filter((p) => !p.depart).length }), [presences]);
 
@@ -73,13 +74,28 @@ const PresenceQr = () => {
       }
 
       try {
-        flux = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" } },
-          audio: false,
-        });
+        const contraintesVideo = {
+          facingMode: { ideal: cameraMode },
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        };
+
+        try {
+          flux = await navigator.mediaDevices.getUserMedia({ video: contraintesVideo, audio: false });
+        } catch {
+          flux = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        }
 
         if (videoRef.current) {
+          videoRef.current.setAttribute("playsinline", "true");
+          videoRef.current.setAttribute("webkit-playsinline", "true");
+          videoRef.current.muted = true;
           videoRef.current.srcObject = flux;
+          await new Promise((resolve) => {
+            if (!videoRef.current) return resolve();
+            videoRef.current.onloadedmetadata = () => resolve();
+            setTimeout(resolve, 700);
+          });
           await videoRef.current.play?.();
         }
 
@@ -112,7 +128,7 @@ const PresenceQr = () => {
       setCameraActive(false);
       if (videoRef.current) videoRef.current.srcObject = null;
     };
-  }, [camera]);
+  }, [camera, cameraMode]);
 
   return <main className="container py-4 espace-presence-qr">
     <Helmet><title>ecolapp | Présence QR</title></Helmet>
@@ -123,7 +139,7 @@ const PresenceQr = () => {
     </section>
     {message && <div className="alert alert-success">{message}</div>}{erreur && <div className="alert alert-danger">{erreur}</div>}
     <div className="row g-3">
-      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><button className="btn mb-3" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra" : "Démarrer la caméra"}</button><video ref={videoRef} autoPlay muted playsInline className="w-100 rounded bg-dark" />{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}</div></div>
+      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra" : "Démarrer la caméra"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button></div><div className="cadre-camera-mobile"><video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark" /></div>{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}</div></div>
       <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur USB</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <div className="table-responsive mt-4"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th></tr></thead><tbody>{presences.map((p) => <tr key={`${p.cle}-${p.arrivee}`}><td>{p.type}</td><td>{p.nom || p.matricule}</td><td>{new Date(p.arrivee).toLocaleTimeString("fr-FR")}</td><td>{p.depart ? new Date(p.depart).toLocaleTimeString("fr-FR") : "En cours"}</td></tr>)}</tbody></table></div>

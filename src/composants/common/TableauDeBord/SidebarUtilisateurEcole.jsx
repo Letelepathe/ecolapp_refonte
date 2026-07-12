@@ -35,6 +35,7 @@ const obtenirRole = (utilisateur) => {
 };
 
 const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, estEnseignant, estEleve, estFinance, estSecretariat }) => {
+  const peutGererPresenceEtCartes = estAdmin || estSecretariat;
   const menus = [
     {
       id: "profil",
@@ -44,6 +45,19 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
     },
 
   ];
+
+  if (peutGererPresenceEtCartes) {
+    menus.push({
+      id: "presence-cartes",
+      titre: "Présences & cartes",
+      icone: FiCheckSquare,
+      liens: [
+        lien(`/presence-qr`, "Scanner présences QR", FiCheckSquare),
+        lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiFileText),
+        lien(`/${cycle}/cartes_personnel`, "Cartes personnel QR", FiFileText),
+      ],
+    });
+  }
 
   if (estAdmin) {
     menus.push({
@@ -56,7 +70,7 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
   } else if (estFinance) {
     menus.push({ id: "finances", titre: "Mes finances", icone: FiBriefcase, liens: [lien(`/${cycle}/liste_paiement`, "Paiements", FiFileText), lien(`/${cycle}/liste_motif`, "Motifs de paiement", FiFileText), lien(`/${cycle}/liste_tranche`, "Tranches", FiFileText)] });
   } else if (estSecretariat) {
-    menus.push({ id: "secretariat", titre: "Secrétariat", icone: FiUser, liens: [lien(`/${cycle}/liste_eleve`, "Dossiers élèves", FiUser), lien(`/${cycle}/eleve_inscrit`, "Inscriptions", FiFileText), lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiFileText), lien(`/presence-qr`, "Scanner présence", FiCheckSquare)] });
+    menus.push({ id: "secretariat", titre: "Secrétariat", icone: FiUser, liens: [lien(`/${cycle}/liste_eleve`, "Dossiers élèves", FiUser), lien(`/${cycle}/eleve_inscrit`, "Inscriptions", FiFileText)] });
   }
 
   if (infoClasseUser?.length) {

@@ -828,6 +828,7 @@ const App = () => {
                 <Route path="/secondaire/liste_eleve" element={<ListeEleveSecondaire />} />
                 <Route path="/secondaire/cartes_eleves" element={<CartesElevesSecondaire />} />
                 <Route path="/secondaire/cartes_personnel" element={<CartesPersonnelSecondaire />} />
+                <Route path="/secondaire/carte_personnelle" element={<CartesPersonnelSecondaire />} />
                 {/* Paiement */}
                 <Route path="/secondaire/ajouter_motif" element={<AjouterMotifSecondaire />} />
                 <Route path="/secondaire/liste_motif" element={<ListeMotifSecondaire />} />
@@ -1005,6 +1006,7 @@ const App = () => {
                       <Route path="/primaire/liste_eleve" element={<ListeEleveprimaire />} />
                       <Route path="/primaire/cartes_eleves" element={<CartesElevesprimaire />} />
                       <Route path="/primaire/cartes_personnel" element={<CartesPersonnelprimaire />} />
+                      <Route path="/primaire/carte_personnelle" element={<CartesPersonnelprimaire />} />
                       {/* Paiement */}
                       <Route path="/primaire/ajouter_motif" element={<AjouterMotifPrimaire />} />
                       <Route path="/primaire/liste_motif" element={<ListeMotifPrimaire />} />
@@ -1185,6 +1187,7 @@ const App = () => {
                       <Route path="/maternelle/liste_eleve" element={<ListeElevematernelle />} />
                       <Route path="/maternelle/cartes_eleves" element={<CartesElevesmaternelle />} />
                       <Route path="/maternelle/cartes_personnel" element={<CartesPersonnelmaternelle />} />
+                      <Route path="/maternelle/carte_personnelle" element={<CartesPersonnelmaternelle />} />
                       {/* Paiement */}
                       <Route path="/maternelle/ajouter_motif" element={<AjouterMotifMaternelle />} />
                       <Route path="/maternelle/liste_motif" element={<ListeMotifMaternelle />} />

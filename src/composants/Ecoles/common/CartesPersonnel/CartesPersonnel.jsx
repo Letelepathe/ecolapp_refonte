@@ -3,13 +3,14 @@ import axios from "axios";
 import { messageErreur, urlPublic } from "../../../api/api";
 import { urlQr, maj } from "../CartesEleves/outilsCarte";
 
-const payloadPersonnel = (agent) => JSON.stringify({
+const payloadPersonnel = (agent, ecole) => JSON.stringify({
   type: "personnel",
   id: agent?.id,
   matricule: agent?.matricule || agent?.email,
   nom: [agent?.name, agent?.last_name, agent?.first_name].filter(Boolean).join(" "),
   role: agent?.fonction?.name || agent?.role,
-  ecole_id: agent?.ecole_id || localStorage.getItem("ecole_id"),
+  ecole_id: agent?.ecole_id || ecole?.id || localStorage.getItem("ecole_id"),
+  ecole: ecole?.name || agent?.ecole?.name || "",
   direction: agent?.direction || localStorage.getItem("direction"),
 });
 
@@ -21,6 +22,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
   const [apercuOuvert, setApercuOuvert] = useState(false);
+  const [ecole, setEcole] = useState(null);
   const ecoleId = localStorage.getItem("ecole_id");
   const direction = localStorage.getItem("direction");
 
@@ -29,8 +31,12 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
       setChargement(true);
       setErreur("");
       try {
-        const res = await axios.get(`/user/all/ecole/${ecoleId}/direction/${direction}`);
-        setAgents(res.data.users || res.data.userAll || res.data.admins || []);
+        const [resPersonnel, resEcole] = await Promise.all([
+          axios.get(`/user/all/ecole/${ecoleId}/direction/${direction}`),
+          axios.get(`/ecole/ecole_id/${ecoleId}`).catch(() => null),
+        ]);
+        setAgents(resPersonnel.data.users || resPersonnel.data.userAll || resPersonnel.data.admins || []);
+        setEcole(resEcole?.data?.ecole || null);
       } catch (err) {
         setErreur(messageErreur(err, "Impossible de charger le personnel."));
       } finally {
@@ -52,7 +58,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
           <section className="bloc-carte recto-carte carte-identite-pro carte-identite-personnel">
             <div className="carte-identite-vague" />
             <header className="carte-identite-entete">
-              <h2>ECOLAPP</h2>
+              <h2>{maj(ecole?.name || "ECOLAPP")}</h2>
               <p>Carte professionnelle • {cycle}</p>
             </header>
             <div className="carte-identite-photo-rond">
@@ -63,6 +69,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
               <div><span>Staff ID</span><strong>: {agent.matricule || agent.email || "-"}</strong></div>
               <div><span>Staff Name</span><strong>: {maj(nomAgent(agent))}</strong></div>
               <div><span>Fonction</span><strong>: {maj(agent.fonction?.name || agent.role || "-")}</strong></div>
+              <div><span>École</span><strong>: {maj(ecole?.name || agent?.ecole?.name || "-")}</strong></div>
               <div><span>Phone</span><strong>: {agent.phone || agent.telephone || "-"}</strong></div>
               <div><span>Mail</span><strong>: {agent.email || "-"}</strong></div>
             </div>
@@ -81,13 +88,14 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
               <p><span>Phone</span><strong>: {agent.phone || agent.telephone || "-"}</strong></p>
               <p><span>Mail</span><strong>: {agent.email || "-"}</strong></p>
               <p><span>Role</span><strong>: {agent.fonction?.name || agent.role || "-"}</strong></p>
+              <p><span>École</span><strong>: {ecole?.name || agent?.ecole?.name || "-"}</strong></p>
             </div>
             <div className="carte-identite-signature">
               <span>Administration</span>
               <strong>Direction</strong>
             </div>
             <div className="qr-identite-grand qr-identite-personnel">
-              <img src={urlQr(payloadPersonnel(agent), 180)} alt="QR présence personnel" crossOrigin="anonymous" />
+              <img src={urlQr(payloadPersonnel(agent, ecole), 180)} alt="QR présence personnel" crossOrigin="anonymous" />
               <small>QR présence personnel</small>
             </div>
           </section>
@@ -136,7 +144,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
                 <div className="entete-modal-cartes">
                   <div>
                     <h5 id="titre-modal-personnel" className="mb-1">Aperçu des cartes du personnel</h5>
-                    <p className="mb-0 text-muted">{selection.length} carte(s) prête(s) à imprimer.</p>
+                    <p className="mb-0 text-muted">{selection.length} carte(s) prête(s) à imprimer pour {ecole?.name || "l’école sélectionnée"}.</p>
                   </div>
                   <button type="button" className="btn-close" aria-label="Fermer" onClick={() => setApercuOuvert(false)}></button>
                 </div>
