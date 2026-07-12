@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Helmet } from "react-helmet";
-import { FiBookOpen, FiMessageSquare, FiUserPlus, FiUsers } from "react-icons/fi";
+import { FiBookOpen, FiCreditCard, FiMessageSquare, FiUserPlus, FiUsers } from "react-icons/fi";
 import BandeauDashboard from "./BandeauDashboard";
 import CarteStat from "./CarteStat";
 import PanneauDroit from "./PanneauDroit";
@@ -12,6 +12,13 @@ const rolesAdmin = [
   "Administratrice",
   "Super Administrateur",
   "Super Administratrice",
+  "Secrétaire",
+  "Secretaire",
+  "Secrétariat",
+  "Secretariat",
+  "secrétaire",
+  "secretaire",
+  "secretariat",
 ];
 
 const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admins, ListeAbonne, Statistique }) => {
@@ -109,6 +116,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
                   <CarteStat titre="Enseignants" valeur={counts.nombre_enseignants} lien={`/${cycle}/liste_enseignant`} icone={FiUserPlus} ton="bleu" />
                   <CarteStat titre="Élèves" valeur={counts.nombre_eleves} lien={`/${cycle}/liste_eleve`} icone={FiBookOpen} ton="jaune" />
                   <CarteStat titre="Communiqués" valeur={counts.nombre_communiques} lien={`/${cycle}/liste_communique`} icone={FiMessageSquare} ton="rouge" />
+                  <CarteStat titre="Cartes personnel" valeur="QR" lien={`/${cycle}/cartes_personnel`} icone={FiCreditCard} ton="bleu" detail="Aperçu et impression" />
                 </div>
 
                 <section className="dashboard-card">
