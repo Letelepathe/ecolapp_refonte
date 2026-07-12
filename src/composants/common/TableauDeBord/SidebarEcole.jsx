@@ -10,6 +10,13 @@ const rolesAdmin = [
   "Administratrice",
   "Super Administrateur",
   "Super Administratrice",
+  "Secrétaire",
+  "Secretaire",
+  "Secrétariat",
+  "Secretariat",
+  "secrétaire",
+  "secretaire",
+  "secretariat",
 ];
 
 const SidebarEcole = ({ cycle, titreCycle }) => {
