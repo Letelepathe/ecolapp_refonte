@@ -23,6 +23,7 @@ const PresenceQr = () => {
   const [erreur, setErreur] = useState("");
   const [sync, setSync] = useState(false);
   const [camera, setCamera] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
 
   const stats = useMemo(() => ({ total: presences.length, ouverts: presences.filter((p) => !p.depart).length }), [presences]);
 
@@ -59,22 +60,58 @@ const PresenceQr = () => {
   }, [presences]);
 
   useEffect(() => {
-    let interval; let flux;
+    let interval;
+    let flux;
+
     const demarrer = async () => {
-      if (!camera || !("BarcodeDetector" in window)) return;
+      if (!camera) return;
+
+      if (!navigator.mediaDevices?.getUserMedia) {
+        setErreur("Votre navigateur ne permet pas d'ouvrir la caméra. Utilisez le champ de saisie manuelle ou un lecteur QR USB.");
+        setCamera(false);
+        return;
+      }
+
       try {
-        flux = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-        videoRef.current.srcObject = flux;
+        flux = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" } },
+          audio: false,
+        });
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = flux;
+          await videoRef.current.play?.();
+        }
+
+        setCameraActive(true);
+        setMessage("Caméra activée. Présentez le QR code devant l'objectif.");
+
+        if (!("BarcodeDetector" in window)) {
+          setErreur("Caméra activée, mais le décodage automatique QR n'est pas supporté par ce navigateur. Utilisez le lecteur QR USB ou collez le contenu dans le champ manuel.");
+          return;
+        }
+
         const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
         interval = setInterval(async () => {
-          if (!videoRef.current) return;
+          if (!videoRef.current || videoRef.current.readyState < 2) return;
           const codes = await detector.detect(videoRef.current).catch(() => []);
           if (codes[0]?.rawValue) pointer(codes[0].rawValue);
-        }, 1800);
-      } catch { setErreur("Caméra indisponible. Utilisez le champ de saisie manuelle du QR."); }
+        }, 1200);
+      } catch (err) {
+        setCameraActive(false);
+        setCamera(false);
+        setErreur("Caméra indisponible ou permission refusée. Autorisez la caméra puis réessayez, ou utilisez le champ manuel.");
+      }
     };
+
     demarrer();
-    return () => { clearInterval(interval); flux?.getTracks?.().forEach((t) => t.stop()); };
+
+    return () => {
+      clearInterval(interval);
+      flux?.getTracks?.().forEach((track) => track.stop());
+      setCameraActive(false);
+      if (videoRef.current) videoRef.current.srcObject = null;
+    };
   }, [camera]);
 
   return <main className="container py-4 espace-presence-qr">
@@ -86,7 +123,7 @@ const PresenceQr = () => {
     </section>
     {message && <div className="alert alert-success">{message}</div>}{erreur && <div className="alert alert-danger">{erreur}</div>}
     <div className="row g-3">
-      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><button className="btn mb-3" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra" : "Démarrer la caméra"}</button><video ref={videoRef} autoPlay muted playsInline className="w-100 rounded bg-dark" /></div></div>
+      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><button className="btn mb-3" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra" : "Démarrer la caméra"}</button><video ref={videoRef} autoPlay muted playsInline className="w-100 rounded bg-dark" />{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}</div></div>
       <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur USB</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <div className="table-responsive mt-4"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th></tr></thead><tbody>{presences.map((p) => <tr key={`${p.cle}-${p.arrivee}`}><td>{p.type}</td><td>{p.nom || p.matricule}</td><td>{new Date(p.arrivee).toLocaleTimeString("fr-FR")}</td><td>{p.depart ? new Date(p.depart).toLocaleTimeString("fr-FR") : "En cours"}</td></tr>)}</tbody></table></div>
