@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { messageErreur, urlPublic } from "../../../api/api";
 import { urlQr, maj } from "../CartesEleves/outilsCarte";
+import { imprimerZoneCartes } from "../../../common/impressionCartes";
 
 const payloadPersonnel = (agent, ecole) => JSON.stringify({
   type: "personnel",
@@ -47,6 +48,10 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
   }, [ecoleId, direction]);
 
   const selection = agents.filter((agent) => ids.includes(String(agent.id)));
+  const imprimerCartes = () => {
+    const zone = document.querySelector(".modal-cartes .zone-cartes-personnel") || document.querySelector(".apercu-cartes-personnel-inline .zone-cartes-personnel");
+    imprimerZoneCartes(zone, `Cartes personnel ${cycle}`);
+  };
   const basculer = (id) => setIds((valeur) => (
     valeur.includes(String(id)) ? valeur.filter((item) => item !== String(id)) : [...valeur, String(id)]
   ));
@@ -117,7 +122,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
                 <p className="text-muted">Cartes professionnelles bleues avec QR code agrandi pour le pointage.</p>
               </div>
               <button className="btn" onClick={() => setApercuOuvert(true)} disabled={!selection.length}>Aperçu des cartes</button>
-              <button className="btn" onClick={() => window.print()} disabled={!selection.length}>Imprimer la sélection</button>
+              <button className="btn" onClick={imprimerCartes} disabled={!selection.length}>Imprimer la sélection</button>
             </div>
             {chargement && <div className="alert alert-info">Chargement du personnel...</div>}
             {erreur && <div className="alert alert-danger">{erreur}</div>}
@@ -150,7 +155,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
                 </div>
                 <div className="actions-modal-cartes">
                   <button type="button" className="btn" onClick={() => setApercuOuvert(false)}>Fermer</button>
-                  <button type="button" className="btn" onClick={() => window.print()}>Imprimer</button>
+                  <button type="button" className="btn" onClick={imprimerCartes}>Imprimer</button>
                 </div>
                 <div className="corps-modal-cartes">{cartes}</div>
               </div>
