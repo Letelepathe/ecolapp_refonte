@@ -40,6 +40,7 @@ const chargerHtml5Qrcode = () => new Promise((resolve, reject) => {
 const PresenceQr = () => {
   const videoRef = useRef(null);
   const lecteurRef = useRef(null);
+  const cameraSystemeRef = useRef(null);
   const scannerHtml5Ref = useRef(null);
   const dernierScanRef = useRef({ valeur: "", temps: 0 });
   const [scanManuel, setScanManuel] = useState("");
@@ -119,6 +120,11 @@ const PresenceQr = () => {
     }
   };
 
+  const ouvrirCameraSysteme = () => {
+    setErreur("");
+    cameraSystemeRef.current?.click();
+  };
+
   const synchroniser = async () => {
     if (!presences.length) return;
     setSync(true); setErreur(""); setMessage("");
@@ -147,7 +153,7 @@ const PresenceQr = () => {
       if (lecteurRef.current) lecteurRef.current.innerHTML = "";
 
       if (!navigator.mediaDevices?.getUserMedia) {
-        setErreur("Votre navigateur ne permet pas d'ouvrir la caméra en direct. Utilisez le bouton Photo QR.");
+        setErreur("Votre navigateur ne permet pas d'ouvrir la caméra en direct. Utilisez le bouton Caméra téléphone pour passer par l'application caméra du téléphone.");
         setCamera(false);
         return;
       }
@@ -199,7 +205,7 @@ const PresenceQr = () => {
         setMessage("Caméra activée. Présentez le QR code devant l'objectif.");
 
         if (!("BarcodeDetector" in window)) {
-          setErreur("Caméra activée, mais le moteur QR automatique n'est pas disponible. Utilisez Photo QR ou réessayez avec une connexion internet pour charger le lecteur compatible.");
+          setErreur("Caméra activée, mais le moteur QR automatique n'est pas disponible. Utilisez Caméra téléphone pour passer par l'application caméra du téléphone.");
           return;
         }
 
@@ -214,8 +220,8 @@ const PresenceQr = () => {
         setCamera(false);
         const raisonHttps = window.location.protocol !== "https:" && !["localhost", "127.0.0.1"].includes(window.location.hostname);
         setErreur(raisonHttps
-          ? "Sur téléphone, la caméra directe exige HTTPS. Ouvrez l'application en HTTPS ou utilisez le bouton Photo QR."
-          : "Caméra indisponible ou permission refusée. Autorisez la caméra puis réessayez, ou utilisez Photo QR.");
+          ? "Sur téléphone, la caméra directe exige HTTPS. Ouvrez l'application en HTTPS ou utilisez le bouton Caméra téléphone."
+          : "Caméra indisponible ou permission refusée. Autorisez la caméra puis réessayez, ou utilisez Caméra téléphone.");
       }
     };
 
@@ -241,8 +247,8 @@ const PresenceQr = () => {
     </section>
     {message && <div className="alert alert-success">{message}</div>}{erreur && <div className="alert alert-danger">{erreur}</div>}
     <div className="row g-3">
-      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra" : "Démarrer la caméra"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button><label className="btn btn-light border mb-0">{scanImage ? "Lecture..." : "Photo QR"}<input type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => decoderImageQr(event.target.files?.[0])} /></label></div><div id="lecteur-qr-camera" ref={lecteurRef} className="cadre-camera-mobile"><video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark" /></div>{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Le scanner charge un lecteur QR compatible Chrome, Firefox, Edge et Safari. Sur mobile, ouvrez la page en HTTPS.</small></div></div>
-      <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur USB</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
+      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={ouvrirCameraSysteme} disabled={scanImage}>{scanImage ? "Lecture..." : "Caméra téléphone"}</button><input ref={cameraSystemeRef} type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => { decoderImageQr(event.target.files?.[0]); event.target.value = ""; }} /><button className="btn btn-light border" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra web" : "Scanner en direct"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button></div><div id="lecteur-qr-camera" ref={lecteurRef} className="cadre-camera-mobile"><video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark" /></div>{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Sur téléphone, utilisez d'abord Caméra téléphone : cela ouvre l'application caméra native puis lit le QR de la photo. Le scan en direct reste disponible en HTTPS sur les navigateurs compatibles.</small></div></div>
+      <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur externe</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <div className="table-responsive mt-4"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th></tr></thead><tbody>{presences.map((p) => <tr key={`${p.cle}-${p.arrivee}`}><td>{p.type}</td><td>{p.nom || p.matricule}</td><td>{new Date(p.arrivee).toLocaleTimeString("fr-FR")}</td><td>{p.depart ? new Date(p.depart).toLocaleTimeString("fr-FR") : "En cours"}</td></tr>)}</tbody></table></div>
   </main>;
