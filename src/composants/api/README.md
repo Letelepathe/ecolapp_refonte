@@ -15,10 +15,10 @@ src/composants/api/api.js
 ## Variables exposées
 
 - `API_BASE_URL` : URL de base des endpoints API.
-  - En local : `http://localhost:8000/api`
+  - En local : `https://api.ecolapp.cd/api`
   - En production : `https://api.ecolapp.cd/api`
 - `PUBLIC_BASE_URL` : URL de base des fichiers publics.
-  - En local : `http://localhost:8000`
+  - En local : `https://api.ecolapp.cd`
   - En production : `https://api.ecolapp.cd`
 - `api` : instance Axios avec `baseURL` déjà configurée.
 - `urlPublic(chemin)` : construit une URL publique pour les images, documents, vidéos et fichiers.
@@ -60,7 +60,7 @@ Il normalise les anciennes URLs comme :
 ```text
 https://api.ecolapp.cd/api
 https://api.ecolapp.com/api
-http://localhost:8000/api
+https://api.ecolapp.cd/api
 http://localhost/ecole-app/apis
 ```
 

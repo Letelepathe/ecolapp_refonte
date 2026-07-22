@@ -30,7 +30,7 @@ const AfficherBulletinSemestriel = () => {
     const fetchResultats = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/cotegenerale/eleve/resultat/semestre/${semestre_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`
+          `https://api.ecolapp.cd/api/cotegenerale/eleve/resultat/semestre/${semestre_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`
         );
 
         if (response.data.status === 200) {
@@ -87,129 +87,129 @@ const AfficherBulletinSemestriel = () => {
 
   return (
     <div>
-            <Helmet>
-                <title>Bulletin du Secondaire</title>
-            </Helmet>
-            <div className="bulletin-eleve">
-                <div className="bloc-bulletin">
-                    <div className="header-bulletin">
-                        <img src={ImgDrapeau} alt="Drapeau" />
-                        <div className="pays-titre">
-                            <h2>RÉPUBLIQUE DÉMOCRATIQUE DU CONGO</h2>
-                            <h2>MINISTÈRE DE L'ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE</h2>
-                        </div>
-                        <img src={ImgSymbole} alt="Symbole" />
-                    </div>
-
-                    <div className="bloc-responsive">
-                        <div className="table-info">
-                            <div>
-                                <strong>PROVINCE :</strong> Kinshasa <br /><br />
-                                <strong>VILLE :</strong> Kinshasa <br /><br />
-                                <strong>COMMUNE :</strong> Gombe <br /><br />
-                                <strong>ÉCOLE :</strong> Institut de l'Avenir <br /><br />
-                            </div>
-                            <div>
-                                <strong>ÉLÈVE :</strong> {eleveInfo.nom} {eleveInfo.prenom} <br /><br />
-                                <strong>SEXE :</strong> {eleveInfo.sexe} <br /><br />
-                                <strong>NE(E) A :</strong> Kinshasa, {eleveInfo.date_naissance}<br /><br />
-                                <strong>CLASSE :</strong> {eleveInfo.classe}<br /><br />
-                            </div>
-                        </div>
-                        <div className="bloc-2-bulletin">
-                            <span>Matricule :</span> <span>{eleveInfo.matricule}</span>
-                        </div>
-
-                        <div className="bloc-2-bulletin">
-                            <span>Classe : {eleveInfo.classe}</span>
-                            <span>Option : {eleveInfo.option}</span>
-                        </div>
-                    </div>
-
-                    <div className="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th rowSpan="2">Branches</th>
-                                    <th colSpan={periodes.length + 2}>Semestre {semestre_id}</th>
-                                </tr>
-                                <tr>
-                                    {periodes.map((periode) =>
-                  <th key={periode.id}>{periode.name}</th>
-                  )}
-                                    <th>Examen</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {Object.entries(coursGroupes).map(([ponderation, groupe]) =>
-                <React.Fragment key={ponderation}>
-                                        <tr className='bg-secondary text-white'>
-                                            <td>Max</td>
-                                            {periodes.map((periode) =>
-                    <td key={periode.id}>{groupe.max / periodes.length}</td>
-                    )}
-                                            <td>{groupe.max}</td>
-                                            <td>{groupe.max}</td>
-                                        </tr>
-                                        {groupe.cours.map((cours) =>
-                  <tr key={cours.id_cours}>
-                                                <td>{cours.nom_cours}</td>
-                                                {periodes.map((periode) =>
-                    <td key={periode.id}>
-                                                        {cours.totaux_periode && cours.totaux_periode[periode.id] ?
-                      cours.totaux_periode[periode.id].note :
-                      0}
-                                                    </td>
-                    )}
-                                                <td>{totauxExam[cours.id_cours]?.note_obtenue ?? 0}</td>
-                                                <td>{cours.total_obtenu}</td>
-                                            </tr>
-                  )}
-                                    </React.Fragment>
-                )}
-                            </tbody>
-                            <tfoot>
-                                <tr className="total-row">
-                                    <td>Total Général</td>
-                                    {periodes.map((periode) =>
-                  <td key={periode.id}>{totauxPeriode[periode.id]?.obtenu ?? 0}</td>
-                  )}
-                                    <td>{totalGeneral.exam_obtenu}</td>
-                                    <td>{totalGeneral.obtenu + totalGeneral.exam_obtenu}</td>
-                                </tr>
-                                <tr className="total-row">
-                                    <td>Pourcentage</td>
-                                    {periodes.map((periode) =>
-                  <td key={periode.id}>
-                                            {totauxPeriode[periode.id]?.max > 0 ?
-                    (totauxPeriode[periode.id]?.obtenu / totauxPeriode[periode.id]?.max * 100).toFixed(2) + "%" :
-                    "-"}
-                                        </td>
-                  )}
-                                    <td>{pourcentage.toFixed(2)}%</td>
-                                    <td>{pourcentage.toFixed(2)}%</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-                <div className="text-center py-2 mb-2 mt-2">
-                    <button className="btn  hide-on-print" onClick={printBulletin}>
-                        Imprimer
-                    </button>
-                </div>
-                <div className="hide-on-print text-center mb-2 mt-2 py-2">
-                    {authenticated ?
-          <Link className="btn  text-white  u-style-420aab4e" to="/secondaire/profil_user">
-                            Retour
-                        </Link> :
-
-          <Link className="btn  text-white  u-style-420aab4e" to="/secondaire">Quitter</Link>
-          }
-                </div>
+      <Helmet>
+        <title>Bulletin du Secondaire</title>
+      </Helmet>
+      <div className="bulletin-eleve">
+        <div className="bloc-bulletin">
+          <div className="header-bulletin">
+            <img src={ImgDrapeau} alt="Drapeau" />
+            <div className="pays-titre">
+              <h2>RÉPUBLIQUE DÉMOCRATIQUE DU CONGO</h2>
+              <h2>MINISTÈRE DE L'ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE</h2>
             </div>
-        </div>);
+            <img src={ImgSymbole} alt="Symbole" />
+          </div>
+
+          <div className="bloc-responsive">
+            <div className="table-info">
+              <div>
+                <strong>PROVINCE :</strong> Kinshasa <br /><br />
+                <strong>VILLE :</strong> Kinshasa <br /><br />
+                <strong>COMMUNE :</strong> Gombe <br /><br />
+                <strong>ÉCOLE :</strong> Institut de l'Avenir <br /><br />
+              </div>
+              <div>
+                <strong>ÉLÈVE :</strong> {eleveInfo.nom} {eleveInfo.prenom} <br /><br />
+                <strong>SEXE :</strong> {eleveInfo.sexe} <br /><br />
+                <strong>NE(E) A :</strong> Kinshasa, {eleveInfo.date_naissance}<br /><br />
+                <strong>CLASSE :</strong> {eleveInfo.classe}<br /><br />
+              </div>
+            </div>
+            <div className="bloc-2-bulletin">
+              <span>Matricule :</span> <span>{eleveInfo.matricule}</span>
+            </div>
+
+            <div className="bloc-2-bulletin">
+              <span>Classe : {eleveInfo.classe}</span>
+              <span>Option : {eleveInfo.option}</span>
+            </div>
+          </div>
+
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th rowSpan="2">Branches</th>
+                  <th colSpan={periodes.length + 2}>Semestre {semestre_id}</th>
+                </tr>
+                <tr>
+                  {periodes.map((periode) =>
+                    <th key={periode.id}>{periode.name}</th>
+                  )}
+                  <th>Examen</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(coursGroupes).map(([ponderation, groupe]) =>
+                  <React.Fragment key={ponderation}>
+                    <tr className='bg-secondary text-white'>
+                      <td>Max</td>
+                      {periodes.map((periode) =>
+                        <td key={periode.id}>{groupe.max / periodes.length}</td>
+                      )}
+                      <td>{groupe.max}</td>
+                      <td>{groupe.max}</td>
+                    </tr>
+                    {groupe.cours.map((cours) =>
+                      <tr key={cours.id_cours}>
+                        <td>{cours.nom_cours}</td>
+                        {periodes.map((periode) =>
+                          <td key={periode.id}>
+                            {cours.totaux_periode && cours.totaux_periode[periode.id] ?
+                              cours.totaux_periode[periode.id].note :
+                              0}
+                          </td>
+                        )}
+                        <td>{totauxExam[cours.id_cours]?.note_obtenue ?? 0}</td>
+                        <td>{cours.total_obtenu}</td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                )}
+              </tbody>
+              <tfoot>
+                <tr className="total-row">
+                  <td>Total Général</td>
+                  {periodes.map((periode) =>
+                    <td key={periode.id}>{totauxPeriode[periode.id]?.obtenu ?? 0}</td>
+                  )}
+                  <td>{totalGeneral.exam_obtenu}</td>
+                  <td>{totalGeneral.obtenu + totalGeneral.exam_obtenu}</td>
+                </tr>
+                <tr className="total-row">
+                  <td>Pourcentage</td>
+                  {periodes.map((periode) =>
+                    <td key={periode.id}>
+                      {totauxPeriode[periode.id]?.max > 0 ?
+                        (totauxPeriode[periode.id]?.obtenu / totauxPeriode[periode.id]?.max * 100).toFixed(2) + "%" :
+                        "-"}
+                    </td>
+                  )}
+                  <td>{pourcentage.toFixed(2)}%</td>
+                  <td>{pourcentage.toFixed(2)}%</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div className="text-center py-2 mb-2 mt-2">
+          <button className="btn  hide-on-print" onClick={printBulletin}>
+            Imprimer
+          </button>
+        </div>
+        <div className="hide-on-print text-center mb-2 mt-2 py-2">
+          {authenticated ?
+            <Link className="btn  text-white  u-style-420aab4e" to="/secondaire/profil_user">
+              Retour
+            </Link> :
+
+            <Link className="btn  text-white  u-style-420aab4e" to="/secondaire">Quitter</Link>
+          }
+        </div>
+      </div>
+    </div>);
 
 };
 

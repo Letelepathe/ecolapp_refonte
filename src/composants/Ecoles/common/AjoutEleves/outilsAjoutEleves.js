@@ -115,8 +115,9 @@ export const chargerRefsEleves = async (ecoleId, direction) => {
 export const creerEleves = async ({ eleves, userId, ecoleId, direction }) => {
   const reqs = eleves.map((eleve) => {
     const data = prepEleve({ eleve, userId, ecoleId, direction });
-  console.log('ajouter eleve prepat',data)
+    // console.log('ajouter eleve prepat', data)
     return axios.post(`https://api.ecolapp.cd/api/eleve/create`, data, {
+
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     });
@@ -137,6 +138,7 @@ export const creerEleves = async ({ eleves, userId, ecoleId, direction }) => {
       resultat.status === "fulfilled"
         ? resultat.value.data.status_msg || resultat.value.data.error_msg || "Ajout refusé par le serveur."
         : "Erreur de connexion au serveur.";
+    console.log(resultats, "resultat from backend laravel to reccord students", msg)
 
     return { ok: false, index, msg };
   });

@@ -7,8 +7,9 @@ import {
   creerEleves,
   majEleve,
   retirerEleve,
-  validerEleve } from
-"./outilsAjoutEleves";
+  validerEleve
+} from
+  "./outilsAjoutEleves";
 
 const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
   const ecoleId = localStorage.getItem("ecole_id");
@@ -40,6 +41,7 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
     const chargerRefs = async () => {
       try {
         const refs = await chargerRefsEleves(ecoleId, direction);
+        console.log(refs, "ref ecoleId and Direction to ajoutEleves")
         setClasses(refs.classes);
         setOptions(refs.options);
         setAnnees(refs.annees);
@@ -48,10 +50,10 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
 
         if (anneeActive) {
           setEleves((liste) =>
-          liste.map((eleve) => ({
-            ...eleve,
-            annee_id: eleve.annee_id || String(anneeActive.id)
-          }))
+            liste.map((eleve) => ({
+              ...eleve,
+              annee_id: eleve.annee_id || String(anneeActive.id)
+            }))
           );
         }
       } catch (erreurRefs) {
@@ -67,9 +69,9 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
 
     setEleves((liste) => majEleve(liste, index, name, value));
     setErrs((listeErrs) =>
-    listeErrs.map((err, rang) =>
-    rang === index ? { ...err, [name]: "", form: "" } : err
-    )
+      listeErrs.map((err, rang) =>
+        rang === index ? { ...err, [name]: "", form: "" } : err
+      )
     );
   };
 
@@ -85,12 +87,20 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
 
   const validerForm = () => {
     const erreurs = eleves.map((eleve) => validerEleve(eleve, ageMinimumEleve));
-    setErrs(erreurs);
+    if (erreurs.length > 0 && erreurs[0].code_parent) {
+
+      setErrs([]);
+      return true
+    } else {
+      setErrs(erreurs);
+    }
+
     return erreurs.every((erreur) => Object.keys(erreur).length === 0);
   };
 
   const envoyer = async (event) => {
     event.preventDefault();
+
     setMsgOk("");
     setMsgErr("");
 
@@ -153,17 +163,17 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
 
                   <form className="needs-validation" onSubmit={envoyer} noValidate>
                     {eleves.map((eleve, index) =>
-                    <LigneEleve
-                      key={index}
-                      eleve={eleve}
-                      index={index}
-                      classes={classes}
-                      options={options}
-                      annees={annees}
-                      err={errs[index]}
-                      peutRetirer={eleves.length > 1}
-                      majChamp={majChamp}
-                      retirer={retirer} />
+                      <LigneEleve
+                        key={index}
+                        eleve={eleve}
+                        index={index}
+                        classes={classes}
+                        options={options}
+                        annees={annees}
+                        err={errs[index]}
+                        peutRetirer={eleves.length > 1}
+                        majChamp={majChamp}
+                        retirer={retirer} />
 
                     )}
 

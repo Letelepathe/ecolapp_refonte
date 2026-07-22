@@ -3,13 +3,13 @@ import axios from "axios";
 import { Repeat, BookOpen } from "react-feather";
 const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 const hours = [
-"07h30-08h15",
-"08h15-09h00",
-"09h00-09h45",
-"10h00-10h45",
-"10h45-11h30",
-"11h30-12h15",
-"12h15-13h00"];
+  "07h30-08h15",
+  "08h15-09h00",
+  "09h00-09h45",
+  "10h00-10h45",
+  "10h45-11h30",
+  "11h30-12h15",
+  "12h15-13h00"];
 
 
 export default function Horaire() {
@@ -25,7 +25,7 @@ export default function Horaire() {
     const fetchTeachers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/horaire/${ecole_id}/${direction}`
+          `https://api.ecolapp.cd/api/horaire/${ecole_id}/${direction}`
         );
         if (response.data.success) {
           setTeachers(response.data.data);
@@ -51,11 +51,11 @@ export default function Horaire() {
     const classes = Array.from(
       new Set(
         teachers.flatMap((t) =>
-        t.subjects.flatMap((s) =>
-        s.classes.map((cl) =>
-        cl.option ? `${cl.name} (${cl.option})` : cl.name
-        )
-        )
+          t.subjects.flatMap((s) =>
+            s.classes.map((cl) =>
+              cl.option ? `${cl.name} (${cl.option})` : cl.name
+            )
+          )
         )
       )
     );
@@ -188,16 +188,16 @@ export default function Horaire() {
           </thead>
           <tbody>
             {teachers.flatMap((t) =>
-            t.subjects.flatMap((s) =>
-            s.classes.map((cl, i) =>
-            <tr key={`${t.name}-${s.name}-${i}`}>
+              t.subjects.flatMap((s) =>
+                s.classes.map((cl, i) =>
+                  <tr key={`${t.name}-${s.name}-${i}`}>
                     <td>{t.name}</td>
                     <td>{s.name}</td>
                     <td>{cl.name} {cl.option ? `(${cl.option})` : ''}</td>
                     <td>{s.weight}</td>
                   </tr>
-            )
-            )
+                )
+              )
             )}
           </tbody>
         </table>
@@ -210,14 +210,14 @@ export default function Horaire() {
       </div>
 
       {Object.keys(schedule).length > 0 &&
-      <>
+        <>
           <div className="mb-3">
             <button className="btn  no-print" onClick={handlePrint}>
               Imprimer
             </button>
           </div>
           {Object.keys(schedule).map((cls) =>
-        <div key={cls} className="mb-5 horaire-print-content">
+            <div key={cls} className="mb-5 horaire-print-content">
               <h4 className="text-primary mb-2">Classe {cls}</h4>
               <div className="table-responsive">
                 <table className="table   table-sm">
@@ -225,36 +225,36 @@ export default function Horaire() {
                     <tr>
                       <th>Jour</th>
                       {hours.map((h) =>
-                  <th key={h}>{h}</th>
-                  )}
+                        <th key={h}>{h}</th>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
                     {days.map((d) =>
-                <tr key={d}>
+                      <tr key={d}>
                         <td><b>{d}</b></td>
                         {hours.map((h) => {
-                    const cell = schedule[cls][d][h];
-                    return (
-                      <td key={h}>
+                          const cell = schedule[cls][d][h];
+                          return (
+                            <td key={h}>
                               {cell ?
-                        <>
+                                <>
                                   <div><strong>{cell.subject}</strong></div>
                                   <div className="u-style-7a459431">{cell.teacher}</div>
                                 </> :
 
-                        <span className="u-style-677f6294">-</span>
-                        }
+                                <span className="u-style-677f6294">-</span>
+                              }
                             </td>);
 
-                  })}
+                        })}
                       </tr>
-                )}
+                    )}
                   </tbody>
                 </table>
               </div>
             </div>
-        )}
+          )}
         </>
       }
     </div>);
