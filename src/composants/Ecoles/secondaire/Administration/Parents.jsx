@@ -37,6 +37,14 @@ const configurationAvecToken = () => {
     : undefined;
 };
 
+const messageErreurApi = (error, fallback) => {
+  if (error.response?.status === 405) {
+    return "La modification du parent n'est pas disponible côté API: la route actuelle autorise seulement GET/HEAD.";
+  }
+
+  return error.response?.data?.message || fallback;
+};
+
 const Parents = () => {
   const [parents, setParents] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -45,6 +53,18 @@ const Parents = () => {
   const [parentDetails, setParentDetails] = useState(null);
   const [chargementDetails, setChargementDetails] = useState(false);
   const [erreurDetails, setErreurDetails] = useState("");
+  const [modalEditionOuvert, setModalEditionOuvert] = useState(false);
+  const [chargementEdition, setChargementEdition] = useState(false);
+  const [soumissionEdition, setSoumissionEdition] = useState(false);
+  const [erreurEdition, setErreurEdition] = useState("");
+  const [messageEdition, setMessageEdition] = useState("");
+  const [formulaireEdition, setFormulaireEdition] = useState({
+    id: null,
+    nom: "",
+    postnom: "",
+    prenom: "",
+    telephone: "",
+  });
   const afficherCodeParent = parents.some((parent) => parent.code);
   const nombreColonnes = afficherCodeParent ? 7 : 6;
 
@@ -127,6 +147,90 @@ const Parents = () => {
     }
   };
 
+  const fermerModalEdition = () => {
+    setModalEditionOuvert(false);
+    setErreurEdition("");
+    setMessageEdition("");
+    setFormulaireEdition({
+      id: null,
+      nom: "",
+      postnom: "",
+      prenom: "",
+      telephone: "",
+    });
+  };
+
+  const ouvrirModalEdition = async (parentId) => {
+    setModalEditionOuvert(true);
+    setChargementEdition(true);
+    setErreurEdition("");
+    setMessageEdition("");
+
+    try {
+      // Le GET existant sert uniquement à préremplir les champs du parent.
+      // Les informations des enfants ne sont ni affichées ni modifiées ici.
+      const response = await axios.get(`${API_PARENT_DETAILS}/${parentId}`, configurationAvecToken());
+
+      if (response.data?.status === 200) {
+        const parent = response.data.parent;
+        setFormulaireEdition({
+          id: parent.id,
+          nom: parent.nom || "",
+          postnom: parent.postnom || "",
+          prenom: parent.prenom || "",
+          telephone: parent.telephone || "",
+        });
+      } else {
+        setErreurEdition(response.data?.message || "Erreur lors de la récupération du parent.");
+      }
+    } catch (error) {
+      setErreurEdition(error.response?.data?.message || "Erreur lors de la récupération du parent.");
+    } finally {
+      setChargementEdition(false);
+    }
+  };
+
+  const changerChampEdition = (event) => {
+    const { name, value } = event.target;
+    setFormulaireEdition((formulaire) => ({
+      ...formulaire,
+      [name]: value,
+    }));
+  };
+
+  const soumettreEditionParent = async (event) => {
+    event.preventDefault();
+    setErreurEdition("");
+    setMessageEdition("");
+    setSoumissionEdition(true);
+
+    try {
+      const { id, nom, postnom, prenom, telephone } = formulaireEdition;
+
+      // Endpoint demandé: PUT /api/parents/{id}. Seuls les champs du parent
+      // sont envoyés pour éviter toute modification des élèves liés.
+      const response = await axios.put(
+        `${API_PARENT_DETAILS}/${id}`,
+        { nom, postnom, prenom, telephone },
+        configurationAvecToken()
+      );
+
+      const parentModifie = response.data?.parent || response.data;
+
+      setParents((listeParents) =>
+        listeParents.map((parent) => (parent.id === id ? { ...parent, ...parentModifie } : parent))
+      );
+      setMessageEdition("Parent modifié avec succès.");
+    } catch (error) {
+      // La documentation indique PUT /api/parents/{id}, mais le backend
+      // déployé peut répondre 405 si cette méthode n'est pas encore activée.
+      // Dans ce cas, on garde le modal stable et on affiche un message lisible.
+      setErreurEdition(messageErreurApi(error, "Erreur lors de la modification du parent."));
+    } finally {
+      setSoumissionEdition(false);
+    }
+  };
+
   return (
     <div className="refonte-shell">
       <div className="container-fluid position-relative d-flex p-0 refonte-shell">
@@ -190,7 +294,11 @@ const Parents = () => {
                                     type="button"
                                     className="btn btn-sm"
                                     title={`${action} parent`}
-                                    onClick={action === "Details" ? () => chargerDetailsParent(parent.id) : undefined}
+                                    onClick={
+                                      action === "Details"
+                                        ? () => chargerDetailsParent(parent.id)
+                                        : () => ouvrirModalEdition(parent.id)
+                                    }
                                   >
                                     {action}
                                   </button>
@@ -300,6 +408,100 @@ const Parents = () => {
                     Fermer
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop show" />
+        </>
+      )}
+
+      {modalEditionOuvert && (
+        <>
+          <div className="modal show d-block" tabIndex="-1" role="dialog" aria-modal="true">
+            <div className="modal-dialog modal-dialog-centered my-4" role="document">
+              <div className="modal-content">
+                <form onSubmit={soumettreEditionParent}>
+                  <div className="modal-header">
+                    <h5 className="modal-title">Modifier le parent</h5>
+                    <button type="button" className="btn-close" aria-label="Fermer" onClick={fermerModalEdition} />
+                  </div>
+                  <div className="modal-body overflow-auto" style={{ maxHeight: "calc(100vh - 12rem)" }}>
+                    {chargementEdition ? (
+                      <p className="mb-0">Chargement...</p>
+                    ) : (
+                      <>
+                        {erreurEdition && <p className="text-danger">{erreurEdition}</p>}
+                        {messageEdition && <p className="text-success">{messageEdition}</p>}
+
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <label className="form-label" htmlFor="parent-nom">
+                              Nom
+                            </label>
+                            <input
+                              id="parent-nom"
+                              name="nom"
+                              type="text"
+                              className="form-control"
+                              value={formulaireEdition.nom}
+                              onChange={changerChampEdition}
+                              required
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label" htmlFor="parent-postnom">
+                              Postnom
+                            </label>
+                            <input
+                              id="parent-postnom"
+                              name="postnom"
+                              type="text"
+                              className="form-control"
+                              value={formulaireEdition.postnom}
+                              onChange={changerChampEdition}
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label" htmlFor="parent-prenom">
+                              Prénom
+                            </label>
+                            <input
+                              id="parent-prenom"
+                              name="prenom"
+                              type="text"
+                              className="form-control"
+                              value={formulaireEdition.prenom}
+                              onChange={changerChampEdition}
+                              required
+                            />
+                          </div>
+                          <div className="col-md-6">
+                            <label className="form-label" htmlFor="parent-telephone">
+                              Téléphone
+                            </label>
+                            <input
+                              id="parent-telephone"
+                              name="telephone"
+                              type="tel"
+                              className="form-control"
+                              value={formulaireEdition.telephone}
+                              onChange={changerChampEdition}
+                              required
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn" onClick={fermerModalEdition}>
+                      Annuler
+                    </button>
+                    <button type="submit" className="btn" disabled={chargementEdition || soumissionEdition || !formulaireEdition.id}>
+                      {soumissionEdition ? "Enregistrement..." : "Enregistrer"}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
