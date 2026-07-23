@@ -6,6 +6,10 @@ import Footer from "./Footer";
 
 const API_PARENTS_ECOLE_DIRECTION = "https://api.ecolapp.cd/api/parents/ecole-direction";
 
+// Actions visibles demandées pour chaque parent. Elles restent non destructives
+// tant qu'aucune route/API de détail, modification ou suppression n'est fournie.
+const ACTIONS_PARENT = ["Details", "Modifier"];
+
 const lireIdEcoleDepuisLocalStorage = () => {
   const valeur = localStorage.getItem("ecole_id");
   const id = Number.parseInt(valeur, 10);
@@ -25,6 +29,7 @@ const Parents = () => {
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
   const afficherCodeParent = parents.some((parent) => parent.code);
+  const nombreColonnes = afficherCodeParent ? 7 : 6;
 
   useEffect(() => {
     const chargerParents = async () => {
@@ -113,12 +118,13 @@ const Parents = () => {
                         <th>Téléphone</th>
                         {afficherCodeParent && <th>Code parent</th>}
                         <th>Élèves</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {parents.length === 0 ? (
                         <tr>
-                          <td colSpan={afficherCodeParent ? 6 : 5} className="text-center">
+                          <td colSpan={nombreColonnes} className="text-center">
                             Aucun parent trouvé.
                           </td>
                         </tr>
@@ -136,6 +142,20 @@ const Parents = () => {
                                   {eleve.name} {eleve.direction ? `(${eleve.direction})` : ""}
                                 </div>
                               ))}
+                            </td>
+                            <td>
+                              <div className="d-flex flex-wrap gap-2">
+                                {ACTIONS_PARENT.map((action) => (
+                                  <button
+                                    key={`${parent.id}-${action}`}
+                                    type="button"
+                                    className="btn btn-sm"
+                                    title={`${action} parent`}
+                                  >
+                                    {action}
+                                  </button>
+                                ))}
+                              </div>
                             </td>
                           </tr>
                         ))
