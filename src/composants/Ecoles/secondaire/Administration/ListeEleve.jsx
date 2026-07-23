@@ -123,6 +123,15 @@ const ListeEleve = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
+  const handleActionChange = (eleveId, event) => {
+    const action = event.target.value;
+    event.target.value = "";
+
+    if (action === "supprimer") {
+      handleDelete(eleveId);
+    }
+  };
+
   return (
     <div>
       <div className="container-fluid position-relative  d-flex p-0">
@@ -206,12 +215,17 @@ const ListeEleve = () => {
                             <td>{eleve.option.name}</td>
                             <td>{eleve.annee.name}</td>
                             <td>
-                              <button
-                                className="btn "
-                                onClick={() => handleDelete(eleve.id)}
+                              <select
+                                className="form-select form-select-sm"
+                                defaultValue=""
+                                onChange={(event) => handleActionChange(eleve.id, event)}
                               >
-                                Supprimer
-                              </button>
+                                <option value="" disabled>
+                                  Actions
+                                </option>
+                                <option value="modifier">Modifier</option>
+                                <option value="supprimer">Supprimer</option>
+                              </select>
                             </td>
                           </tr>
                         ))}
