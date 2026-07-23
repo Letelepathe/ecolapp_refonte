@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
-import { messageErreur } from "../api/api";
+import { API_BASE_URL, messageErreur } from "../api/api";
 
 const cleDuJour = () => `ecolapp_presences_${new Date().toISOString().slice(0, 10)}`;
 const lire = () => {
@@ -43,8 +43,12 @@ const PresenceQr = () => {
   const cameraSystemeRef = useRef(null);
   const scannerHtml5Ref = useRef(null);
   const dernierScanRef = useRef({ valeur: "", temps: 0 });
+  const presencesRef = useRef(lire());
   const [scanManuel, setScanManuel] = useState("");
-  const [presences, setPresences] = useState(lire);
+  const [presences, setPresences] = useState(presencesRef.current);
+  const [eleves, setEleves] = useState([]);
+  const [rechercheEleve, setRechercheEleve] = useState("");
+  const [chargementEleves, setChargementEleves] = useState(true);
   const [message, setMessage] = useState("");
   const [erreur, setErreur] = useState("");
   const [sync, setSync] = useState(false);
@@ -54,19 +58,77 @@ const PresenceQr = () => {
   const [scanImage, setScanImage] = useState(false);
 
   const stats = useMemo(() => ({ total: presences.length, ouverts: presences.filter((p) => !p.depart).length }), [presences]);
+  const presencesElevesParId = useMemo(() => new Map(
+    presences
+      .filter((presence) => presence.type === "eleve")
+      .map((presence) => [String(presence.id || presence.eleve_id), presence])
+  ), [presences]);
+  const elevesFiltres = useMemo(() => {
+    const recherche = rechercheEleve.trim().toLowerCase();
+    if (!recherche) return eleves;
+    return eleves.filter((eleve) =>
+      [eleve.name, eleve.last_name, eleve.first_name, eleve.matricule, eleve.classe?.name, eleve.option?.name]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(recherche)
+    );
+  }, [eleves, rechercheEleve]);
 
-  const pointer = (payloadTexte) => {
+  const payloadEleve = (eleve) => JSON.stringify({
+    type: "eleve",
+    id: eleve.id,
+    matricule: eleve.matricule,
+    nom: [eleve.name, eleve.last_name, eleve.first_name].filter(Boolean).join(" "),
+    ecole_id: eleve.ecole_id || localStorage.getItem("ecole_id"),
+    direction: eleve.direction || localStorage.getItem("direction"),
+    classe_id: eleve.classes_id || eleve.classe?.id,
+    option_id: eleve.options_id || eleve.option?.id,
+  });
+
+  const enregistrerElevesApi = async (identites) => {
+    const donnees = identites.map((identite) => ({
+      ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"),
+      direction: identite.direction || localStorage.getItem("direction"),
+      eleve_id: identite.id || identite.eleve_id,
+      date_presence: identite.date_presence || new Date().toISOString().slice(0, 10),
+      present: 1,
+      motif_absence: null,
+    }));
+
+    return axios.post(`${API_BASE_URL}/presences/create`, { presences: donnees });
+  };
+
+  const mettreAJourPresences = (valeur) => {
+    presencesRef.current = valeur;
+    sauver(valeur);
+    setPresences(valeur);
+  };
+
+  const pointer = async (payloadTexte) => {
     setErreur("");
     const identite = parsePayload(payloadTexte.trim());
     if (!identite.id && !identite.matricule) { setErreur("QR code invalide ou incomplet."); return; }
     const maintenant = new Date().toISOString();
     const cle = `${identite.type || "personnel"}-${identite.id || identite.matricule}`;
     let action = "arrivee";
-    const suivant = [...presences];
+    const suivant = [...presencesRef.current];
     const index = suivant.findIndex((p) => p.cle === cle && !p.depart);
     if (index >= 0) { suivant[index] = { ...suivant[index], depart: maintenant }; action = "depart"; }
-    else { suivant.push({ cle, ...identite, arrivee: maintenant, depart: null, date_presence: maintenant.slice(0, 10), ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"), direction: identite.direction || localStorage.getItem("direction") }); }
-    sauver(suivant); setPresences(suivant); setMessage(`${identite.nom || identite.matricule || "Utilisateur"} : ${action === "arrivee" ? "arrivée enregistrée" : "départ enregistré"}.`);
+    else { suivant.push({ cle, ...identite, arrivee: maintenant, depart: null, date_presence: maintenant.slice(0, 10), ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"), direction: identite.direction || localStorage.getItem("direction"), synchronise: false }); }
+    mettreAJourPresences(suivant);
+    setMessage(`${identite.nom || identite.matricule || "Utilisateur"} : ${action === "arrivee" ? "arrivée enregistrée" : "départ enregistré"}.`);
+
+    if (action === "arrivee" && identite.type === "eleve") {
+      try {
+        const reponse = await enregistrerElevesApi([{ ...identite, date_presence: maintenant.slice(0, 10) }]);
+        if (Number(reponse.data?.status) === 200) {
+          mettreAJourPresences(presencesRef.current.map((presence) => presence.cle === cle ? { ...presence, synchronise: true } : presence));
+        }
+      } catch (err) {
+        setErreur(messageErreur(err, "La présence est conservée localement et sera renvoyée avec le bouton Synchroniser."));
+      }
+    }
   };
 
   const pointerDepuisCamera = (payloadTexte) => {
@@ -126,15 +188,54 @@ const PresenceQr = () => {
   };
 
   const synchroniser = async () => {
-    if (!presences.length) return;
+    const presencesEleves = presencesRef.current.filter((presence) => presence.type === "eleve" && !presence.synchronise);
+    if (!presencesEleves.length) {
+      setMessage("Toutes les présences élèves sont déjà synchronisées. Les pointages du personnel restent conservés localement car aucune route Laravel personnel n'existe dans ce front.");
+      return;
+    }
     setSync(true); setErreur(""); setMessage("");
     try {
-      await axios.post("/presences/qr/synchroniser", { presences });
-      setMessage("Présences de la journée synchronisées avec la base de données.");
+      const reponse = await enregistrerElevesApi(presencesEleves);
+      if (Number(reponse.data?.status) !== 200) throw new Error(reponse.data?.message || "Synchronisation refusée");
+      const cles = new Set(presencesEleves.map((presence) => presence.cle));
+      mettreAJourPresences(presencesRef.current.map((presence) => cles.has(presence.cle) ? { ...presence, synchronise: true } : presence));
+      setMessage("Présences élèves synchronisées avec la route Laravel existante /presences/create.");
     } catch (err) {
       setErreur(messageErreur(err, "La synchronisation automatique a échoué. Les données restent conservées localement."));
     } finally { setSync(false); }
   };
+
+  useEffect(() => {
+    const chargerEleves = async () => {
+      const ecoleId = localStorage.getItem("ecole_id");
+      const direction = localStorage.getItem("direction");
+      if (!ecoleId || !direction) {
+        setChargementEleves(false);
+        return;
+      }
+
+      setChargementEleves(true);
+      try {
+        let page = 1;
+        let dernierePage = 1;
+        const liste = [];
+        do {
+          const reponse = await axios.get(`${API_BASE_URL}/eleve/ecole/${ecoleId}/direction/${direction}?page=${page}`);
+          const pagination = reponse.data?.eleve || {};
+          liste.push(...(Array.isArray(pagination.data) ? pagination.data : []));
+          dernierePage = Number(pagination.last_page || 1);
+          page += 1;
+        } while (page <= dernierePage);
+        setEleves(liste);
+      } catch (err) {
+        setErreur(messageErreur(err, "Impossible de charger la liste des élèves."));
+      } finally {
+        setChargementEleves(false);
+      }
+    };
+
+    chargerEleves();
+  }, []);
 
   useEffect(() => {
     const maintenant = new Date();
@@ -251,6 +352,31 @@ const PresenceQr = () => {
       <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur externe</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <div className="table-responsive mt-4"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th></tr></thead><tbody>{presences.map((p) => <tr key={`${p.cle}-${p.arrivee}`}><td>{p.type}</td><td>{p.nom || p.matricule}</td><td>{new Date(p.arrivee).toLocaleTimeString("fr-FR")}</td><td>{p.depart ? new Date(p.depart).toLocaleTimeString("fr-FR") : "En cours"}</td></tr>)}</tbody></table></div>
+    <section className="card p-3 mt-4">
+      <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <div><h5 className="mb-1">Liste des élèves et présences du jour</h5><small className="text-muted">Cette liste utilise la route élèves déjà présente dans le projet.</small></div>
+        <input className="form-control w-auto" value={rechercheEleve} onChange={(event) => setRechercheEleve(event.target.value)} placeholder="Rechercher un élève" />
+      </div>
+      {chargementEleves ? <div className="alert alert-info">Chargement des élèves...</div> : (
+        <div className="table-responsive">
+          <table className="table align-middle">
+            <thead><tr><th>Élève</th><th>Classe / option</th><th>Présent aujourd'hui</th><th>Synchronisation Laravel</th></tr></thead>
+            <tbody>
+              {elevesFiltres.map((eleve) => {
+                const presence = presencesElevesParId.get(String(eleve.id));
+                return <tr key={eleve.id}>
+                  <td>{[eleve.name, eleve.last_name, eleve.first_name].filter(Boolean).join(" ") || eleve.matricule}</td>
+                  <td>{eleve.classe?.name || "-"} {eleve.option?.name || ""}</td>
+                  <td><input type="checkbox" checked={Boolean(presence && !presence.depart)} onChange={() => pointer(payloadEleve(eleve))} aria-label={`Pointer ${eleve.name || "l'élève"}`} /></td>
+                  <td>{presence ? (presence.synchronise ? "Enregistrée" : "En attente") : "Non pointé"}</td>
+                </tr>;
+              })}
+              {!elevesFiltres.length && <tr><td colSpan="4" className="text-center text-muted">Aucun élève trouvé.</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   </main>;
 };
 export default PresenceQr;

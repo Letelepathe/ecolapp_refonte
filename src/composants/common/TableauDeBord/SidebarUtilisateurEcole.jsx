@@ -15,11 +15,6 @@ import {
 import BarreLaterale from "./BarreLaterale";
 import { menusEcole } from "./menusTableauBord";
 
-const ROLES_ADMIN = ["administrateur", "administratrice", "super Administrateur", "super Administratrice"];
-const ROLES_ENSEIGNANT = [...ROLES_ADMIN, "enseignant", "enseignante"];
-const ROLES_FINANCE = ["comptable", "caissier", "caissiere", "financier", "financiere"];
-const ROLES_SECRETARIAT = ["secretaire", "secrétaire", "secretariat", "secrétariat"];
-
 const lien = (to, label, icone = FiFileText) => ({ to, label, icone });
 
 const normaliserTexte = (valeur = "") =>
@@ -27,15 +22,21 @@ const normaliserTexte = (valeur = "") =>
     .toString()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+    .toLowerCase()
+    .trim();
 
-const obtenirRole = (utilisateur) => {
-  const roleFonction = utilisateur?.fonction?.name || "";
-  return normaliserTexte(roleFonction || utilisateur?.role || "");
-};
+const obtenirRoles = (utilisateur) => [
+  utilisateur?.fonction?.name,
+  utilisateur?.role?.name,
+  utilisateur?.role,
+  utilisateur?.type,
+].filter(Boolean).map(normaliserTexte);
+
+const correspondAUnRole = (roles, termes) =>
+  roles.some((role) => termes.some((terme) => role === terme || role.includes(terme)));
 
 const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, estEnseignant, estEleve, estFinance, estSecretariat }) => {
-  const peutGererPresenceEtCartes = estAdmin || estSecretariat;
+  const peutGererPresenceEtCartes = estAdmin || estSecretariat || estEnseignant || estFinance;
   const menus = [
     {
       id: "profil",
@@ -43,12 +44,7 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
       icone: FiGrid,
       to: `/${cycle}/profil_user`,
     },
-{
-      id: "administration",
-      titre: "Administration",
-      icone: FiHome,
-      to: `/${cycle}/bureau_admin`,
-    }
+
   ];
 
   if (peutGererPresenceEtCartes) {
@@ -57,7 +53,7 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
       titre: "Présences & cartes",
       icone: FiCheckSquare,
       liens: [
-        lien(`/presence-qr`, "Scanner présences QR", FiCheckSquare),
+        lien(`/presence-qr`, "Présences du jour & scan QR", FiCheckSquare),
         lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiFileText),
         lien(`/${cycle}/cartes_personnel`, "Cartes personnel QR", FiFileText),
       ],
@@ -181,11 +177,11 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
       try {
         const reponseUtilisateur = await axios.get(`https://api.ecolapp.cd/api/user/${idUtilisateur}`);
         const donneesUtilisateur = reponseUtilisateur.data.user;
-        const roleUtilisateur = obtenirRole(donneesUtilisateur);
+        const rolesUtilisateur = obtenirRoles(donneesUtilisateur);
 
         setUtilisateur(donneesUtilisateur);
 
-        if (roleUtilisateur === "eleve") {
+        if (correspondAUnRole(rolesUtilisateur, ["eleve"])) {
           try {
             const reponseEleve = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${idUtilisateur}`);
             setInfoEleve(reponseEleve.data.eleve_info);
@@ -194,7 +190,7 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
           }
         }
 
-        if (ROLES_ENSEIGNANT.includes(roleUtilisateur)) {
+        if (correspondAUnRole(rolesUtilisateur, ["enseignant", "enseignante", "administrateur", "administratrice", "admin"])) {
           try {
             const reponseClasse = await axios.get(`https://api.ecolapp.cd/api/titulaire/classe/${idUtilisateur}`);
             setInfoClasseUser(reponseClasse.data?.classe || []);
@@ -212,20 +208,25 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
     chargerDonnees();
   }, [idUtilisateur]);
 
-  const roleUtilisateur = obtenirRole(utilisateur);
+  const rolesUtilisateur = obtenirRoles(utilisateur);
+  const estAdmin = correspondAUnRole(rolesUtilisateur, ["administrateur", "administratrice", "admin", "superadmin", "super admin", "super_admin"]);
+  const estEnseignant = estAdmin || correspondAUnRole(rolesUtilisateur, ["enseignant", "enseignante", "professeur", "professeure"]);
+  const estEleve = correspondAUnRole(rolesUtilisateur, ["eleve"]);
+  const estFinance = correspondAUnRole(rolesUtilisateur, ["comptable", "caissier", "caissiere", "financier", "financiere"]);
+  const estSecretariat = correspondAUnRole(rolesUtilisateur, ["secretaire", "secretariat"]);
   const menus = useMemo(
     () =>
       creerMenusUtilisateur({
         cycle,
         infoClasseUser,
         infoEleve,
-        estAdmin: ROLES_ADMIN.includes(roleUtilisateur),
-        estEnseignant: ROLES_ENSEIGNANT.includes(roleUtilisateur),
-        estEleve: roleUtilisateur === "eleve",
-        estFinance: ROLES_FINANCE.includes(roleUtilisateur),
-        estSecretariat: ROLES_SECRETARIAT.includes(roleUtilisateur),
+        estAdmin,
+        estEnseignant,
+        estEleve,
+        estFinance,
+        estSecretariat,
       }),
-    [cycle, infoClasseUser, infoEleve, roleUtilisateur]
+    [cycle, infoClasseUser, infoEleve, estAdmin, estEnseignant, estEleve, estFinance, estSecretariat]
   );
 
   if (chargement) {

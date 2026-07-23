@@ -4,12 +4,20 @@ import { messageErreur, urlPublic } from "../../../api/api";
 import { urlQr, maj } from "../CartesEleves/outilsCarte";
 import { imprimerZoneCartes } from "../../../common/impressionCartes";
 
+const normaliserRole = (valeur = "") => valeur.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+const roleAgent = (agent) => agent?.fonction?.name || agent?.role?.name || agent?.role || "Personnel";
+const estEnseignant = (agent) => {
+  const role = normaliserRole(roleAgent(agent));
+  return role.includes("enseignant") || role.includes("professeur") || role.includes("titulaire");
+};
+
 const payloadPersonnel = (agent, ecole) => JSON.stringify({
-  type: "personnel",
+  type: estEnseignant(agent) ? "enseignant" : "personnel",
   id: agent?.id,
+  user_id: agent?.id,
   matricule: agent?.matricule || agent?.email,
   nom: [agent?.name, agent?.last_name, agent?.first_name].filter(Boolean).join(" "),
-  role: agent?.fonction?.name || agent?.role,
+  role: roleAgent(agent),
   ecole_id: agent?.ecole_id || ecole?.id || localStorage.getItem("ecole_id"),
   ecole: ecole?.name || agent?.ecole?.name || "",
   direction: agent?.direction || localStorage.getItem("direction"),
@@ -59,12 +67,12 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
   const cartes = (
     <section className="zone-cartes zone-cartes-personnel mt-4">
       {selection.length ? selection.map((agent) => (
-        <article className="fiche-carte-eleve modele-carte-scolaire modele-carte-personnel" key={agent.id}>
+        <article className={`fiche-carte-eleve modele-carte-scolaire modele-carte-personnel ${estEnseignant(agent) ? "modele-carte-enseignant" : ""}`} key={agent.id}>
           <section className="bloc-carte recto-carte carte-identite-pro carte-identite-personnel">
             <div className="carte-identite-vague" />
             <header className="carte-identite-entete">
               <h2>{maj(ecole?.name || "ECOLAPP")}</h2>
-              <p>Carte professionnelle • {cycle}</p>
+              <p>{estEnseignant(agent) ? "Carte enseignant" : "Carte professionnelle"} • {cycle}</p>
             </header>
             <div className="carte-identite-photo-rond">
               {agent.file ? <img src={urlPublic(`public/imgUser/${agent.file}`)} alt="Personnel" /> : <strong>PHOTO</strong>}
@@ -73,7 +81,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
               <div><span>Reg No</span><strong>: {String(agent.id || "-").padStart(4, "0")}</strong></div>
               <div><span>Staff ID</span><strong>: {agent.matricule || agent.email || "-"}</strong></div>
               <div><span>Staff Name</span><strong>: {maj(nomAgent(agent))}</strong></div>
-              <div><span>Fonction</span><strong>: {maj(agent.fonction?.name || agent.role || "-")}</strong></div>
+              <div><span>Fonction</span><strong>: {maj(roleAgent(agent))}</strong></div>
               <div><span>École</span><strong>: {maj(ecole?.name || agent?.ecole?.name || "-")}</strong></div>
               <div><span>Phone</span><strong>: {agent.phone || agent.telephone || "-"}</strong></div>
               <div><span>Mail</span><strong>: {agent.email || "-"}</strong></div>
@@ -92,7 +100,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
             <div className="carte-identite-contact">
               <p><span>Phone</span><strong>: {agent.phone || agent.telephone || "-"}</strong></p>
               <p><span>Mail</span><strong>: {agent.email || "-"}</strong></p>
-              <p><span>Role</span><strong>: {agent.fonction?.name || agent.role || "-"}</strong></p>
+              <p><span>Role</span><strong>: {roleAgent(agent)}</strong></p>
               <p><span>École</span><strong>: {ecole?.name || agent?.ecole?.name || "-"}</strong></p>
             </div>
             <div className="carte-identite-signature">
@@ -100,8 +108,8 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
               <strong>Direction</strong>
             </div>
             <div className="qr-identite-grand qr-identite-personnel">
-              <img src={urlQr(payloadPersonnel(agent, ecole), 180)} alt="QR présence personnel" crossOrigin="anonymous" />
-              <small>QR présence personnel</small>
+              <img src={urlQr(payloadPersonnel(agent, ecole), 180)} alt={`QR présence ${estEnseignant(agent) ? "enseignant" : "personnel"}`} crossOrigin="anonymous" />
+              <small>QR présence {estEnseignant(agent) ? "enseignant" : "personnel"}</small>
             </div>
           </section>
         </article>
@@ -133,7 +141,7 @@ const CartesPersonnel = ({ cycle, BarreGauche, NavHaut }) => {
                   <tr key={agent.id}>
                     <td><input type="checkbox" checked={ids.includes(String(agent.id))} onChange={() => basculer(agent.id)} /></td>
                     <td>{nomAgent(agent)}</td>
-                    <td>{agent.fonction?.name || agent.role}</td>
+                    <td>{roleAgent(agent)}</td>
                     <td>{agent.email}</td>
                   </tr>
                 ))}</tbody>

@@ -104,7 +104,7 @@ export const menusEcole = (cycle) => [
     titre: "Présences & cartes",
     icone: FiCheckSquare,
     liens: [
-      lien(`/presence-qr`, "Scanner présences QR", FiCheckSquare),
+      lien(`/presence-qr`, "Présences du jour & scan QR", FiCheckSquare),
       lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiCreditCard),
       lien(`/${cycle}/cartes_personnel`, "Cartes personnel QR", FiCreditCard),
     ],
@@ -144,7 +144,7 @@ export const menusEcole = (cycle) => [
     liens: [
       lien(`/${cycle}/liste_eleve`, "Tous les élèves", FiList),
       lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiCreditCard),
-      lien(`/presence-qr`, "Scanner présences QR", FiCheckSquare),
+      lien(`/presence-qr`, "Présences du jour & scan QR", FiCheckSquare),
       lien(`/${cycle}/liste_eleve_inscrit_${cycle}`, "Élèves inscrits", FiBookOpen),
       lien(`/${cycle}/liste_motif_absence`, "Motifs absence", FiList),
       lien(`/${cycle}/liste_type_travail`, "Types travail", FiList),
