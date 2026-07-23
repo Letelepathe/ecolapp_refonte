@@ -24,6 +24,7 @@ const Parents = () => {
   const [parents, setParents] = useState([]);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
+  const afficherCodeParent = parents.some((parent) => parent.code);
 
   useEffect(() => {
     const chargerParents = async () => {
@@ -110,13 +111,14 @@ const Parents = () => {
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Téléphone</th>
+                        {afficherCodeParent && <th>Code parent</th>}
                         <th>Élèves</th>
                       </tr>
                     </thead>
                     <tbody>
                       {parents.length === 0 ? (
                         <tr>
-                          <td colSpan="5" className="text-center">
+                          <td colSpan={afficherCodeParent ? 6 : 5} className="text-center">
                             Aucun parent trouvé.
                           </td>
                         </tr>
@@ -127,6 +129,7 @@ const Parents = () => {
                             <td>{parent.nom}</td>
                             <td>{parent.prenom}</td>
                             <td>{parent.telephone}</td>
+                            {afficherCodeParent && <td>{parent.code || ""}</td>}
                             <td>
                               {parent.eleves?.map((eleve) => (
                                 <div key={eleve.id}>
