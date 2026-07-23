@@ -11,7 +11,7 @@ import {
 } from
   "./outilsAjoutEleves";
 
-const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
+const AjoutEleves = ({ BarreGauche, NavHaut, lienListe, rechercheParentActive = false }) => {
   const ecoleId = localStorage.getItem("ecole_id");
   const direction = localStorage.getItem("direction");
   const userId = localStorage.getItem("userId");
@@ -173,7 +173,8 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe }) => {
                         err={errs[index]}
                         peutRetirer={eleves.length > 1}
                         majChamp={majChamp}
-                        retirer={retirer} />
+                        retirer={retirer}
+                        rechercheParentActive={rechercheParentActive} />
 
                     )}
 
