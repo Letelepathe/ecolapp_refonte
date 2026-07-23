@@ -5,6 +5,7 @@ import NavbarTop from "./NavbarTop";
 import Footer from "./Footer";
 
 const API_PARENTS_ECOLE_DIRECTION = "https://api.ecolapp.cd/api/parents/ecole-direction";
+const API_PARENT_DETAILS = "https://api.ecolapp.cd/api/parents";
 
 // Actions visibles demandées pour chaque parent. Elles restent non destructives
 // tant qu'aucune route/API de détail, modification ou suppression n'est fournie.
@@ -24,10 +25,26 @@ const lireIdEcoleDepuisUser = (user) => {
 
 const lireDirectionDepuisLocalStorage = () => localStorage.getItem("direction") || "3";
 
+const configurationAvecToken = () => {
+  const token = localStorage.getItem("auth_token");
+
+  return token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : undefined;
+};
+
 const Parents = () => {
   const [parents, setParents] = useState([]);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
+  const [modalDetailsOuvert, setModalDetailsOuvert] = useState(false);
+  const [parentDetails, setParentDetails] = useState(null);
+  const [chargementDetails, setChargementDetails] = useState(false);
+  const [erreurDetails, setErreurDetails] = useState("");
   const afficherCodeParent = parents.some((parent) => parent.code);
   const nombreColonnes = afficherCodeParent ? 7 : 6;
 
@@ -57,20 +74,13 @@ const Parents = () => {
           return;
         }
 
-        const token = localStorage.getItem("auth_token");
         const response = await axios.post(
           API_PARENTS_ECOLE_DIRECTION,
           {
             ecole_id: ecoleId,
             direction: lireDirectionDepuisLocalStorage(),
           },
-          token
-            ? {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            : undefined
+          configurationAvecToken()
         );
 
         if (response.data?.status === 200) {
@@ -87,6 +97,35 @@ const Parents = () => {
 
     chargerParents();
   }, []);
+
+  const fermerModalDetails = () => {
+    setModalDetailsOuvert(false);
+    setParentDetails(null);
+    setErreurDetails("");
+  };
+
+  const chargerDetailsParent = async (parentId) => {
+    setModalDetailsOuvert(true);
+    setParentDetails(null);
+    setErreurDetails("");
+    setChargementDetails(true);
+
+    try {
+      // Endpoint demandé: GET /api/parents/{id}. Le modal affiche uniquement
+      // les champs renvoyés par cette réponse, sans créer de données côté UI.
+      const response = await axios.get(`${API_PARENT_DETAILS}/${parentId}`, configurationAvecToken());
+
+      if (response.data?.status === 200) {
+        setParentDetails(response.data.parent);
+      } else {
+        setErreurDetails(response.data?.message || "Erreur lors de la récupération des détails du parent.");
+      }
+    } catch (error) {
+      setErreurDetails(error.response?.data?.message || "Erreur lors de la récupération des détails du parent.");
+    } finally {
+      setChargementDetails(false);
+    }
+  };
 
   return (
     <div className="refonte-shell">
@@ -151,6 +190,7 @@ const Parents = () => {
                                     type="button"
                                     className="btn btn-sm"
                                     title={`${action} parent`}
+                                    onClick={action === "Details" ? () => chargerDetailsParent(parent.id) : undefined}
                                   >
                                     {action}
                                   </button>
@@ -169,6 +209,103 @@ const Parents = () => {
           <Footer />
         </div>
       </div>
+
+      {modalDetailsOuvert && (
+        <>
+          <div className="modal show d-block" tabIndex="-1" role="dialog" aria-modal="true">
+            <div className="modal-dialog modal-lg modal-dialog-centered my-4" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Détails du parent</h5>
+                  <button type="button" className="btn-close" aria-label="Fermer" onClick={fermerModalDetails} />
+                </div>
+                <div className="modal-body overflow-auto" style={{ maxHeight: "calc(100vh - 12rem)" }}>
+                  {chargementDetails ? (
+                    <p className="mb-0">Chargement...</p>
+                  ) : erreurDetails ? (
+                    <p className="text-danger mb-0">{erreurDetails}</p>
+                  ) : parentDetails ? (
+                    <>
+                      <div className="row g-3 mb-4">
+                        <div className="col-md-6">
+                          <div className="border rounded p-3 h-100">
+                            <small className="text-muted">Nom</small>
+                            <p className="mb-0">{parentDetails.nom}</p>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="border rounded p-3 h-100">
+                            <small className="text-muted">Postnom</small>
+                            <p className="mb-0">{parentDetails.postnom || ""}</p>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="border rounded p-3 h-100">
+                            <small className="text-muted">Prénom</small>
+                            <p className="mb-0">{parentDetails.prenom}</p>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="border rounded p-3 h-100">
+                            <small className="text-muted">Téléphone</small>
+                            <p className="mb-0">{parentDetails.telephone}</p>
+                          </div>
+                        </div>
+                        {parentDetails.code && (
+                          <div className="col-md-6">
+                            <div className="border rounded p-3 h-100">
+                              <small className="text-muted">Code parent</small>
+                              <p className="mb-0">{parentDetails.code}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <h6 className="mb-3">Élèves liés</h6>
+                      <div className="table-responsive border rounded pb-2" style={{ overflowX: "scroll", scrollbarGutter: "stable" }}>
+                        <table className="table table-sm text-start align-middle mb-0" style={{ minWidth: "900px" }}>
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Nom</th>
+                              <th>Classe</th>
+                              <th>Option</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {parentDetails.eleves?.length ? (
+                              parentDetails.eleves.map((eleve) => (
+                                <tr key={eleve.id}>
+                                  <td>{eleve.id}</td>
+                                  <td>{eleve.name}</td>
+                                  <td>{eleve.classe?.nom || ""}</td>
+                                  <td>{eleve.option?.nom || ""}</td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan="4" className="text-center">
+                                  Aucun élève lié.
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn" onClick={fermerModalDetails}>
+                    Fermer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop show" />
+        </>
+      )}
     </div>
   );
 };
