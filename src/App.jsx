@@ -103,6 +103,7 @@ import AjouterMembreEffectifSecondaire from './composants/Ecoles/secondaire/Admi
 import ListeMembreEffectifSecondaire from './composants/Ecoles/secondaire/Administration/ListeMembreEffectif';
 // Eleves du secondaire
 import AjouterEleveSecondaire from './composants/Ecoles/secondaire/Administration/AjouterEleve';
+import ModifierEleveSecondaire from './composants/Ecoles/secondaire/Administration/ModifierEleve';
 import ListeEleveSecondaire from './composants/Ecoles/secondaire/Administration/ListeEleve';
 import CartesElevesSecondaire from './composants/Ecoles/secondaire/Administration/CartesEleves';
 import CartesPersonnelSecondaire from './composants/Ecoles/secondaire/Administration/CartesPersonnel';
@@ -827,6 +828,7 @@ const App = () => {
                 <Route path="/secondaire/liste_membre_effectif" element={<ListeMembreEffectifSecondaire />} />
                 {/* Eleves du secondaire */}
                 <Route path="/secondaire/ajouter_eleve" element={<AjouterEleveSecondaire />} />
+                <Route path="/secondaire/modifier_eleve/:id" element={<ModifierEleveSecondaire />} />
                 <Route path="/secondaire/liste_eleve" element={<ListeEleveSecondaire />} />
                 <Route path="/secondaire/cartes_eleves" element={<CartesElevesSecondaire />} />
                 <Route path="/secondaire/cartes_personnel" element={<CartesPersonnelSecondaire />} />
