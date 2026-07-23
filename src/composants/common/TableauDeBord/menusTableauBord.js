@@ -82,6 +82,16 @@ const periodeCycle = (cycle) =>
     : lien(`/${cycle}/liste_trimestre`, "Tous les trimestres", FiList);
 
 export const menusEcole = (cycle) => [
+  ...(cycle === "secondaire"
+    ? [
+        {
+          id: "parents",
+          titre: "Parents",
+          icone: FiUsers,
+          to: `/${cycle}/parents`,
+        },
+      ]
+    : []),
   {
     id: "vue",
     titre: "Vue générale",
