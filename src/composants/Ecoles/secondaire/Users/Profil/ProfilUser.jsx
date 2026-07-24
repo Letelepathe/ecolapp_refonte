@@ -461,6 +461,12 @@ const ProfilUser = () => {
 
   const peutVoirEnseignement = estRoleEnseignant(user);
 
+  const normaliserRole = (valeur = "") => valeur.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  const rolesAdministration = ["administrateur", "administratrice", "super administrateur", "super administratrice", "admin", "superadmin", "super admin", "super_admin", "superdmin"];
+  const nomFonction = normaliserRole(user?.fonction?.name);
+  const nomRole = normaliserRole(user?.role);
+  const peutVoirAdministration = Boolean(user && (rolesAdministration.includes(nomFonction) || rolesAdministration.includes(nomRole)));
+
   return (
     <div className="profil-user-page refonte-shell">
             <Helmet>
@@ -482,9 +488,21 @@ const ProfilUser = () => {
                     </main>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
+                            <div className="col-sm-6 col-md-6 col-xl-3">
+                              <Link to="/secondaire/bureau_admin">
+                                <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                              </Link>
+                            </div>
                             {/* Bloc pour les enseignants */}
                             {peutVoirEnseignement &&
               <>
+                                    {peutVoirAdministration && (
+                                      <div className="col-sm-6 col-md-6 col-xl-3">
+                                        <Link to="/secondaire/bureau_admin">
+                                          <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                                        </Link>
+                                      </div>
+                                    )}
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/secondaire/liste_travail_by_enseignant">
                                         <DashboardCard title="Mes travaux" count={counts.travaux_enseignant} icon="bi-pencil-square" />
