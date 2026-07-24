@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
+import EcranChargement from '../../../../common/EcranChargement';
+import { estRoleAdministration, estRoleEnseignant } from '../../../../common/permissionsRoles';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -455,7 +457,11 @@ const ProfilUser = () => {
     fetchCounts();
   }, [id, navigate]);
 
-  if (isLoading) return <div className='spinner'></div>;
+  if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
+
+  // Conserve les options historiques du profil pour les comptes administratifs,
+  // tout en les affichant également aux véritables enseignants.
+  const peutVoirEnseignement = estRoleEnseignant(user) || estRoleAdministration(user);
 
   return (
     <div className="profil-user-page refonte-shell">
@@ -479,7 +485,7 @@ const ProfilUser = () => {
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
                             {/* Bloc pour les enseignants */}
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirEnseignement &&
               <>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/secondaire/liste_travail_by_enseignant">
@@ -524,7 +530,7 @@ const ProfilUser = () => {
                     </div>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
-                          {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                          {peutVoirEnseignement &&
               <div className='col-12'>
                               <StatEnseignant id={user.id} />
                             </div>
@@ -538,7 +544,7 @@ const ProfilUser = () => {
               }
                           <div className="col-lg-12 col-12">
 
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirEnseignement &&
                 <>
                                   <div className="col-12 mb-1 mt-1 mb-2">
                                     <div className=" rounded align-items-center justify-content-center p-4">
