@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import EcranChargement from '../../../../common/EcranChargement';
 import { estRoleAdministration, estRoleEnseignant } from '../../../../common/permissionsRoles';
+import { messageErreur } from '../../../../api/api';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -424,7 +425,7 @@ const ProfilUser = () => {
         setUser(userData);
 
         // If user is 'Elève', fetch additional info
-        if (userData.fonction.name === "Elève") {
+        if (userData.fonction?.name === "Elève") {
           setIsLoadingEleveInfo(true);
           try {
             const eleveResponse = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${id}`);
@@ -436,8 +437,8 @@ const ProfilUser = () => {
           }
         }
 
-      } catch {
-        setError("");
+      } catch (erreurChargement) {
+        setError(messageErreur(erreurChargement, "Impossible de charger votre profil utilisateur."));
       } finally {
         setIsLoading(false);
       }
@@ -458,6 +459,7 @@ const ProfilUser = () => {
   }, [id, navigate]);
 
   if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
+  if (error || !user) return <EcranChargement erreur={error || "Votre profil utilisateur est introuvable."} onReessayer={() => window.location.reload()} />;
 
   const peutVoirEnseignement = estRoleEnseignant(user) || estRoleAdministration(user);
 
@@ -515,7 +517,7 @@ const ProfilUser = () => {
                                 </>
               }
                             {/* Bloc pour les élèves */}
-                            {user && user.fonction.name === "Elève" &&
+                            {user && user.fonction?.name === "Elève" &&
               <>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/primaire/liste_travail_by_eleve">
@@ -544,7 +546,7 @@ const ProfilUser = () => {
                               <StatEnseignant id={user.id} />
                             </div>
               }
-                          {user && (user.fonction.name === "Elève" || user.role === "Elève") &&
+                          {user && (user.fonction?.name === "Elève" || user.role === "Elève") &&
               <div className='col-12'>
                               {!isLoadingEleveInfo && eleveInfo &&
                 <StatEleve id={`${eleveInfo.id}`} />
@@ -567,7 +569,7 @@ const ProfilUser = () => {
                                   </div>
                               </>
                 }
-                            {user && (user.fonction.name === "Elève" || user.role === "Elève") &&
+                            {user && (user.fonction?.name === "Elève" || user.role === "Elève") &&
                 <>
                                 
                                 <div className="col-12 mb-1 mt-1">
