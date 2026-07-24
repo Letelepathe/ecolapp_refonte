@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
@@ -9,6 +9,7 @@ import ConfirmModal from "./ConfirmModal";
 const ListeEleve = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
+  const navigate = useNavigate();
 
   const [eleves, setEleves] = useState([]);
   const [filteredEleves, setFilteredEleves] = useState([]);
@@ -129,6 +130,11 @@ const ListeEleve = () => {
 
     if (action === "supprimer") {
       handleDelete(eleveId);
+      return;
+    }
+
+    if (action === "modifier") {
+      navigate(`/secondaire/modifier_eleve/${eleveId}`);
     }
   };
 
