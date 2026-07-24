@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 import './css/style-uniforme.css';
 import TableauAutoPagination from './composants/common/Tableau/TableauAutoPagination';
+import PresenceQr from './composants/common/PresenceQr';
 
 
 // Index
@@ -103,6 +104,7 @@ import ListeMembreEffectifSecondaire from './composants/Ecoles/secondaire/Admini
 import AjouterEleveSecondaire from './composants/Ecoles/secondaire/Administration/AjouterEleve';
 import ListeEleveSecondaire from './composants/Ecoles/secondaire/Administration/ListeEleve';
 import CartesElevesSecondaire from './composants/Ecoles/secondaire/Administration/CartesEleves';
+import CartesPersonnelSecondaire from './composants/Ecoles/secondaire/Administration/CartesPersonnel';
 // Paiement secondaire
 import AjouterMotifSecondaire from './composants/Ecoles/secondaire/Administration/AjouterMotif';
 import ListeMotifSecondaire from './composants/Ecoles/secondaire/Administration/ListeMotif';
@@ -291,6 +293,7 @@ import ListeMembreEffectifprimaire from './composants/Ecoles/primaire/Administra
 import AjouterEleveprimaire from './composants/Ecoles/primaire/Administration/AjouterEleve';
 import ListeEleveprimaire from './composants/Ecoles/primaire/Administration/ListeEleve';
 import CartesElevesprimaire from './composants/Ecoles/primaire/Administration/CartesEleves';
+import CartesPersonnelprimaire from './composants/Ecoles/primaire/Administration/CartesPersonnel';
 // Paiement primaire
 import AjouterMotifPrimaire from './composants/Ecoles/primaire/Administration/AjouterMotif';
 import ListeMotifPrimaire from './composants/Ecoles/primaire/Administration/ListeMotif';
@@ -475,6 +478,7 @@ import ListeMembreEffectifmaternelle from './composants/Ecoles/maternelle/Admini
 import AjouterElevematernelle from './composants/Ecoles/maternelle/Administration/AjouterEleve';
 import ListeElevematernelle from './composants/Ecoles/maternelle/Administration/ListeEleve';
 import CartesElevesmaternelle from './composants/Ecoles/maternelle/Administration/CartesEleves';
+import CartesPersonnelmaternelle from './composants/Ecoles/maternelle/Administration/CartesPersonnel';
 // Paiement maternelle
 import AjouterMotifMaternelle from './composants/Ecoles/maternelle/Administration/AjouterMotif';
 import ListeMotifMaternelle from './composants/Ecoles/maternelle/Administration/ListeMotif';
@@ -667,6 +671,7 @@ const App = () => {
       <Routes>
          {/* Index */}
           <Route path="/h" element={<Horaire/>} />
+          <Route path="/presence-qr" element={<PresenceQr />} />
            <Route path="/" element={<Index/>} />
           <Route path="*" element={<NotFound/>} />
           <Route path="/apropos" element={<Apropos />} />
@@ -822,6 +827,8 @@ const App = () => {
                 <Route path="/secondaire/ajouter_eleve" element={<AjouterEleveSecondaire />} />
                 <Route path="/secondaire/liste_eleve" element={<ListeEleveSecondaire />} />
                 <Route path="/secondaire/cartes_eleves" element={<CartesElevesSecondaire />} />
+                <Route path="/secondaire/cartes_personnel" element={<CartesPersonnelSecondaire />} />
+                <Route path="/secondaire/carte_personnelle" element={<CartesPersonnelSecondaire />} />
                 {/* Paiement */}
                 <Route path="/secondaire/ajouter_motif" element={<AjouterMotifSecondaire />} />
                 <Route path="/secondaire/liste_motif" element={<ListeMotifSecondaire />} />
@@ -998,6 +1005,8 @@ const App = () => {
                       <Route path="/primaire/ajouter_eleve" element={<AjouterEleveprimaire />} />
                       <Route path="/primaire/liste_eleve" element={<ListeEleveprimaire />} />
                       <Route path="/primaire/cartes_eleves" element={<CartesElevesprimaire />} />
+                      <Route path="/primaire/cartes_personnel" element={<CartesPersonnelprimaire />} />
+                      <Route path="/primaire/carte_personnelle" element={<CartesPersonnelprimaire />} />
                       {/* Paiement */}
                       <Route path="/primaire/ajouter_motif" element={<AjouterMotifPrimaire />} />
                       <Route path="/primaire/liste_motif" element={<ListeMotifPrimaire />} />
@@ -1177,6 +1186,8 @@ const App = () => {
                       <Route path="/maternelle/ajouter_eleve" element={<AjouterElevematernelle />} />
                       <Route path="/maternelle/liste_eleve" element={<ListeElevematernelle />} />
                       <Route path="/maternelle/cartes_eleves" element={<CartesElevesmaternelle />} />
+                      <Route path="/maternelle/cartes_personnel" element={<CartesPersonnelmaternelle />} />
+                      <Route path="/maternelle/carte_personnelle" element={<CartesPersonnelmaternelle />} />
                       {/* Paiement */}
                       <Route path="/maternelle/ajouter_motif" element={<AjouterMotifMaternelle />} />
                       <Route path="/maternelle/liste_motif" element={<ListeMotifMaternelle />} />
