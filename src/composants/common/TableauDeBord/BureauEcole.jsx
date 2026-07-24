@@ -6,6 +6,7 @@ import { FiBookOpen, FiCreditCard, FiMessageSquare, FiUserPlus, FiUsers } from "
 import BandeauDashboard from "./BandeauDashboard";
 import CarteStat from "./CarteStat";
 import PanneauDroit from "./PanneauDroit";
+import EcranChargement from "../EcranChargement";
 
 const rolesAdmin = [
   "Administrateur",
@@ -26,6 +27,10 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
   const direction = localStorage.getItem("direction");
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [chargementUser, setChargementUser] = useState(true);
+  const [chargementStats, setChargementStats] = useState(true);
+  const [erreurChargement, setErreurChargement] = useState("");
+  const [tentative, setTentative] = useState(0);
   const id = localStorage.getItem("userId");
   const [counts, setCounts] = useState({
     nombre_utilisateurs: 0,
@@ -48,7 +53,9 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
           }
         }
       } catch (erreur) {
-        console.error("Erreur lors de la récupération des informations utilisateur :", erreur);
+        setErreurChargement("Les informations de votre compte ne répondent pas pour le moment.");
+      } finally {
+        setChargementUser(false);
       }
     };
 
@@ -58,7 +65,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
     }
 
     chargerUser();
-  }, [cycle, id, navigate]);
+  }, [cycle, id, navigate, tentative]);
 
   useEffect(() => {
     const chargerStats = async () => {
@@ -68,14 +75,17 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
         );
         setCounts(response.data);
       } catch (erreur) {
-        console.error("Erreur lors de la récupération des données :", erreur);
+        setErreurChargement("Les données du tableau de bord n’ont pas pu être chargées.");
+      } finally {
+        setChargementStats(false);
       }
     };
 
     chargerStats();
-  }, [ecoleId, direction]);
+  }, [ecoleId, direction, tentative]);
 
-  if (!user) return <div className="spinner"></div>;
+  if (chargementUser || chargementStats) return <EcranChargement />;
+  if (erreurChargement || !user) return <EcranChargement erreur={erreurChargement || "Votre session utilisateur est introuvable."} onReessayer={() => { setErreurChargement(""); setChargementUser(true); setChargementStats(true); setTentative((valeur) => valeur + 1); }} />;
 
   return (
     <div className="refonte-shell">
