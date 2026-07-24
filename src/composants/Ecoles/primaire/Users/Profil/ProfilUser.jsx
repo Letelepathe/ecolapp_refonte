@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import EcranChargement from '../../../../common/EcranChargement';
 import { estRoleAdministration, estRoleEnseignant } from '../../../../common/permissionsRoles';
-import { messageErreur } from '../../../../api/api';
+import { API_BASE_URL, messageErreur } from '../../../../api/api';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -372,6 +372,7 @@ const ProfilUser = () => {
   }, [userId]);
 
   const renderFileEleve = (file) => {
+    if (!file) return <div>Aucun fichier trouvé</div>;
     const fileExtension = file.split('.').pop().toLowerCase();
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
@@ -420,12 +421,28 @@ const ProfilUser = () => {
       setIsLoading(true);
       try {
         // Fetch user info
-        const userResponse = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
-        const userData = userResponse.data.user;
+        let userData = null;
+        const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
+
+        if (id) {
+          try {
+            const userResponse = await axios.get(`${API_BASE_URL}/user/${id}`, { headers });
+            userData = userResponse.data?.user || userResponse.data;
+          } catch {
+            userData = null;
+          }
+        }
+
+        if (!userData?.id) {
+          const userResponse = await axios.get(`${API_BASE_URL}/user`, { headers });
+          userData = userResponse.data?.user || userResponse.data;
+        }
+
+        if (!userData?.id) throw new Error("Profil utilisateur introuvable.");
         setUser(userData);
 
         // If user is 'Elève', fetch additional info
-        if (userData.fonction?.name === "Elève") {
+        if (userData.fonction?.name === "Elève" || userData.role === "Elève") {
           setIsLoadingEleveInfo(true);
           try {
             const eleveResponse = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${id}`);
@@ -596,7 +613,7 @@ const ProfilUser = () => {
                                             {travaux_eleve.map((travail_eleve, index) =>
                             <tr key={travail_eleve.id}>
                                                 <td>{index + 1}</td>
-                                                <td>{travail_eleve.cour.name}</td>
+                                                <td>{travail_eleve.cour?.name || '-'}</td>
                                                 <td>{travail_eleve.description}</td>
                                                 <td>{renderFileEleve(travail_eleve.fichier)}</td>
                                                 <td>{travail_eleve.date_depot}</td>
