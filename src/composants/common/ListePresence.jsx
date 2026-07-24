@@ -18,7 +18,8 @@ const ListePresence = () => {
   const [presences, setPresences] = useState({});
   const [recherche, setRecherche] = useState("");
   const [chargement, setChargement] = useState(true);
-  const [enregistrement, setEnregistrement] = useState(false);
+  const [enregistrementParEleve, setEnregistrementParEleve] = useState({});
+  const [synchronises, setSynchronises] = useState({});
   const [erreur, setErreur] = useState("");
   const [message, setMessage] = useState("");
 
@@ -60,28 +61,30 @@ const ListePresence = () => {
     [id]: { ...actuelles[id], ...changement },
   }));
 
-  const enregistrer = async () => {
+  const enregistrerPresence = async (eleve, present, motifAbsence = null) => {
+    const precedente = presences[eleve.id];
+    modifier(eleve.id, { present, motif_absence: present ? null : motifAbsence });
+    setEnregistrementParEleve((etat) => ({ ...etat, [eleve.id]: true }));
     setErreur(""); setMessage("");
-    if (eleves.some((eleve) => typeof presences[eleve.id]?.present !== "boolean")) {
-      setErreur("Cochez Présent ou Absent pour chaque élève."); return;
-    }
-    if (eleves.some((eleve) => presences[eleve.id].present === false && !presences[eleve.id].motif_absence)) {
-      setErreur("Sélectionnez un motif pour chaque élève absent."); return;
-    }
-    const donnees = eleves.map((eleve) => ({
-      ecole_id: ecoleId, direction, eleve_id: eleve.id,
-      date_presence: new Date().toISOString().slice(0, 10),
-      present: presences[eleve.id].present ? 1 : 0,
-      motif_absence: presences[eleve.id].motif_absence || null,
-    }));
-    setEnregistrement(true);
     try {
-      const reponse = await axios.post(`${API_BASE_URL}/presences/create`, { presences: donnees });
+      const reponse = await axios.post(`${API_BASE_URL}/presences/create`, { presences: [{
+        ecole_id: ecoleId,
+        direction,
+        eleve_id: eleve.id,
+        date_presence: new Date().toISOString().slice(0, 10),
+        present: present ? 1 : 0,
+        motif_absence: motifAbsence || null,
+      }] });
       if (Number(reponse.data?.status) !== 200) throw new Error(reponse.data?.message || "Enregistrement refusé");
-      setMessage("Liste de présence enregistrée avec succès.");
+      setSynchronises((etat) => ({ ...etat, [eleve.id]: true }));
+      setMessage(`${nomComplet(eleve)} a été marqué ${present ? "présent" : "absent"}.`);
     } catch (error) {
-      setErreur(messageErreur(error, "Impossible d’enregistrer les présences."));
-    } finally { setEnregistrement(false); }
+      setPresences((etat) => ({ ...etat, [eleve.id]: precedente || {} }));
+      setSynchronises((etat) => ({ ...etat, [eleve.id]: false }));
+      setErreur(messageErreur(error, `Impossible d’enregistrer la présence de ${nomComplet(eleve)}.`));
+    } finally {
+      setEnregistrementParEleve((etat) => ({ ...etat, [eleve.id]: false }));
+    }
   };
 
   if (chargement) return <EcranChargement titre="Chargement de la liste de présence" />;
@@ -93,11 +96,10 @@ const ListePresence = () => {
       {erreur && <div className="alert alert-danger">{erreur}</div>}{message && <div className="alert alert-success">{message}</div>}
       <section className="card p-3">
         <div className="d-flex flex-wrap justify-content-between gap-2 mb-3"><h5>Présences du jour</h5><input className="form-control w-auto" value={recherche} onChange={(e) => setRecherche(e.target.value)} placeholder="Rechercher un élève" /></div>
-        <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Élève</th><th>Classe / option</th><th>Présent</th><th>Absent</th><th>Motif</th></tr></thead><tbody>
-          {elevesFiltres.map((eleve) => { const presence = presences[eleve.id] || {}; return <tr key={eleve.id}><td>{nomComplet(eleve)}</td><td>{eleve.classe?.name || "-"} {eleve.option?.name || ""}</td><td><input type="checkbox" checked={presence.present === true} onChange={() => modifier(eleve.id, { present: true, motif_absence: null })} /></td><td><input type="checkbox" checked={presence.present === false} onChange={() => modifier(eleve.id, { present: false })} /></td><td><select className="form-select" disabled={presence.present !== false} value={presence.motif_absence || ""} onChange={(e) => modifier(eleve.id, { motif_absence: e.target.value })}><option value="">Sélectionner</option>{motifs.map((motif) => <option key={motif.id} value={motif.id}>{motif.name}</option>)}</select></td></tr>; })}
-          {!elevesFiltres.length && <tr><td colSpan="5" className="text-center text-muted">Aucun élève trouvé.</td></tr>}
+        <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Élève</th><th>Classe / option</th><th>Présent</th><th>Absent</th><th>Motif</th><th>Synchronisation</th></tr></thead><tbody>
+          {elevesFiltres.map((eleve) => { const presence = presences[eleve.id] || {}; const encours = enregistrementParEleve[eleve.id]; return <tr key={eleve.id}><td>{nomComplet(eleve)}</td><td>{eleve.classe?.name || "-"} {eleve.option?.name || ""}</td><td><input type="checkbox" disabled={encours} checked={presence.present === true} onChange={() => enregistrerPresence(eleve, true)} /></td><td><input type="checkbox" disabled={encours} checked={presence.present === false} onChange={() => modifier(eleve.id, { present: false })} /></td><td><select className="form-select" disabled={presence.present !== false || encours} value={presence.motif_absence || ""} onChange={(e) => { const motif = e.target.value; modifier(eleve.id, { motif_absence: motif }); if (motif) enregistrerPresence(eleve, false, motif); }}><option value="">Sélectionner</option>{motifs.map((motif) => <option key={motif.id} value={motif.id}>{motif.name}</option>)}</select></td><td>{encours ? "Synchronisation..." : synchronises[eleve.id] ? "Synchronisée" : "Non enregistrée"}</td></tr>; })}
+          {!elevesFiltres.length && <tr><td colSpan="6" className="text-center text-muted">Aucun élève trouvé.</td></tr>}
         </tbody></table></div>
-        <button className="btn align-self-start" disabled={enregistrement || !eleves.length} onClick={enregistrer}>{enregistrement ? "Enregistrement..." : "Enregistrer"}</button>
       </section>
     </main>
   </div>;

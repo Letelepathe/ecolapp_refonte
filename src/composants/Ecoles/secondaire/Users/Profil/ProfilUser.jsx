@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
 import EcranChargement from '../../../../common/EcranChargement';
-import { estRoleEnseignant } from '../../../../common/permissionsRoles';
+import { estRoleAdministration, estRoleEnseignant } from '../../../../common/permissionsRoles';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -459,13 +459,9 @@ const ProfilUser = () => {
 
   if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
 
-  const peutVoirEnseignement = estRoleEnseignant(user);
-
-  const normaliserRole = (valeur = "") => valeur.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-  const rolesAdministration = ["administrateur", "administratrice", "super administrateur", "super administratrice", "admin", "superadmin", "super admin", "super_admin", "superdmin"];
-  const nomFonction = normaliserRole(user?.fonction?.name);
-  const nomRole = normaliserRole(user?.role);
-  const peutVoirAdministration = Boolean(user && (rolesAdministration.includes(nomFonction) || rolesAdministration.includes(nomRole)));
+  // Conserve les options historiques du profil pour les comptes administratifs,
+  // tout en les affichant également aux véritables enseignants.
+  const peutVoirEnseignement = estRoleEnseignant(user) || estRoleAdministration(user);
 
   return (
     <div className="profil-user-page refonte-shell">
