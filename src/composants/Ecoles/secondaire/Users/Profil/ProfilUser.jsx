@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
+import EcranChargement from '../../../../common/EcranChargement';
+import { estRoleEnseignant } from '../../../../common/permissionsRoles';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -455,7 +457,9 @@ const ProfilUser = () => {
     fetchCounts();
   }, [id, navigate]);
 
-  if (isLoading) return <div className='spinner'></div>;
+  if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
+
+  const peutVoirEnseignement = estRoleEnseignant(user);
 
   const normaliserRole = (valeur = "") => valeur.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
   const rolesAdministration = ["administrateur", "administratrice", "super administrateur", "super administratrice", "admin", "superadmin", "super admin", "super_admin", "superdmin"];
@@ -490,7 +494,7 @@ const ProfilUser = () => {
                               </Link>
                             </div>
                             {/* Bloc pour les enseignants */}
-                            {peutVoirAdministration &&
+                            {peutVoirEnseignement &&
               <>
                                     {peutVoirAdministration && (
                                       <div className="col-sm-6 col-md-6 col-xl-3">
@@ -542,7 +546,7 @@ const ProfilUser = () => {
                     </div>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
-                          {peutVoirAdministration &&
+                          {peutVoirEnseignement &&
               <div className='col-12'>
                               <StatEnseignant id={user.id} />
                             </div>
@@ -556,7 +560,7 @@ const ProfilUser = () => {
               }
                           <div className="col-lg-12 col-12">
 
-                            {peutVoirAdministration &&
+                            {peutVoirEnseignement &&
                 <>
                                   <div className="col-12 mb-1 mt-1 mb-2">
                                     <div className=" rounded align-items-center justify-content-center p-4">

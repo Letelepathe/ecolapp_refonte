@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import './css/style-uniforme.css';
 import TableauAutoPagination from './composants/common/Tableau/TableauAutoPagination';
 import PresenceQr from './composants/common/PresenceQr';
+import ListePresence from './composants/common/ListePresence';
 
 
 // Index
@@ -672,6 +673,7 @@ const App = () => {
          {/* Index */}
           <Route path="/h" element={<Horaire/>} />
           <Route path="/presence-qr" element={<PresenceQr />} />
+          <Route path="/:cycle/liste_presence" element={<ListePresence />} />
            <Route path="/" element={<Index/>} />
           <Route path="*" element={<NotFound/>} />
           <Route path="/apropos" element={<Apropos />} />

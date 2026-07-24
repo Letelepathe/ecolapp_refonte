@@ -13,7 +13,6 @@ import {
   FiUser,
 } from "react-icons/fi";
 import BarreLaterale from "./BarreLaterale";
-import { menusEcole } from "./menusTableauBord";
 
 const lien = (to, label, icone = FiFileText) => ({ to, label, icone });
 
@@ -36,7 +35,6 @@ const correspondAUnRole = (roles, termes) =>
   roles.some((role) => termes.some((terme) => role === terme || role.includes(terme)));
 
 const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, estEnseignant, estEleve, estFinance, estSecretariat }) => {
-  const peutGererPresenceEtCartes = estAdmin || estSecretariat || estEnseignant || estFinance;
   const menus = [
     {
       id: "profil",
@@ -67,7 +65,6 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
       icone: FiHome,
       to: `/${cycle}/bureau_admin`,
     });
-    menus.push(...menusEcole(cycle));
   } else if (estFinance) {
     menus.push({ id: "finances", titre: "Mes finances", icone: FiBriefcase, liens: [lien(`/${cycle}/liste_paiement`, "Paiements", FiFileText), lien(`/${cycle}/liste_motif`, "Motifs de paiement", FiFileText), lien(`/${cycle}/liste_tranche`, "Tranches", FiFileText)] });
   } else if (estSecretariat) {

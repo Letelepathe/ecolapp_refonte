@@ -46,9 +46,6 @@ const PresenceQr = () => {
   const presencesRef = useRef(lire());
   const [scanManuel, setScanManuel] = useState("");
   const [presences, setPresences] = useState(presencesRef.current);
-  const [eleves, setEleves] = useState([]);
-  const [rechercheEleve, setRechercheEleve] = useState("");
-  const [chargementEleves, setChargementEleves] = useState(true);
   const [message, setMessage] = useState("");
   const [erreur, setErreur] = useState("");
   const [sync, setSync] = useState(false);
@@ -58,33 +55,7 @@ const PresenceQr = () => {
   const [scanImage, setScanImage] = useState(false);
 
   const stats = useMemo(() => ({ total: presences.length, ouverts: presences.filter((p) => !p.depart).length }), [presences]);
-  const presencesElevesParId = useMemo(() => new Map(
-    presences
-      .filter((presence) => presence.type === "eleve")
-      .map((presence) => [String(presence.id || presence.eleve_id), presence])
-  ), [presences]);
-  const elevesFiltres = useMemo(() => {
-    const recherche = rechercheEleve.trim().toLowerCase();
-    if (!recherche) return eleves;
-    return eleves.filter((eleve) =>
-      [eleve.name, eleve.last_name, eleve.first_name, eleve.matricule, eleve.classe?.name, eleve.option?.name]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(recherche)
-    );
-  }, [eleves, rechercheEleve]);
-
-  const payloadEleve = (eleve) => JSON.stringify({
-    type: "eleve",
-    id: eleve.id,
-    matricule: eleve.matricule,
-    nom: [eleve.name, eleve.last_name, eleve.first_name].filter(Boolean).join(" "),
-    ecole_id: eleve.ecole_id || localStorage.getItem("ecole_id"),
-    direction: eleve.direction || localStorage.getItem("direction"),
-    classe_id: eleve.classes_id || eleve.classe?.id,
-    option_id: eleve.options_id || eleve.option?.id,
-  });
+  const presencesEnAttente = useMemo(() => presences.filter((presence) => !presence.synchronise), [presences]);
 
   const enregistrerElevesApi = async (identites) => {
     const donnees = identites.map((identite) => ({
@@ -199,43 +170,11 @@ const PresenceQr = () => {
       if (Number(reponse.data?.status) !== 200) throw new Error(reponse.data?.message || "Synchronisation refusée");
       const cles = new Set(presencesEleves.map((presence) => presence.cle));
       mettreAJourPresences(presencesRef.current.map((presence) => cles.has(presence.cle) ? { ...presence, synchronise: true } : presence));
-      setMessage("Présences élèves synchronisées avec la route Laravel existante /presences/create.");
+      setMessage("Présences élèves synchronisées avec succès.");
     } catch (err) {
       setErreur(messageErreur(err, "La synchronisation automatique a échoué. Les données restent conservées localement."));
     } finally { setSync(false); }
   };
-
-  useEffect(() => {
-    const chargerEleves = async () => {
-      const ecoleId = localStorage.getItem("ecole_id");
-      const direction = localStorage.getItem("direction");
-      if (!ecoleId || !direction) {
-        setChargementEleves(false);
-        return;
-      }
-
-      setChargementEleves(true);
-      try {
-        let page = 1;
-        let dernierePage = 1;
-        const liste = [];
-        do {
-          const reponse = await axios.get(`${API_BASE_URL}/eleve/ecole/${ecoleId}/direction/${direction}?page=${page}`);
-          const pagination = reponse.data?.eleve || {};
-          liste.push(...(Array.isArray(pagination.data) ? pagination.data : []));
-          dernierePage = Number(pagination.last_page || 1);
-          page += 1;
-        } while (page <= dernierePage);
-        setEleves(liste);
-      } catch (err) {
-        setErreur(messageErreur(err, "Impossible de charger la liste des élèves."));
-      } finally {
-        setChargementEleves(false);
-      }
-    };
-
-    chargerEleves();
-  }, []);
 
   useEffect(() => {
     const maintenant = new Date();
@@ -351,31 +290,12 @@ const PresenceQr = () => {
       <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={ouvrirCameraSysteme} disabled={scanImage}>{scanImage ? "Lecture..." : "Caméra téléphone"}</button><input ref={cameraSystemeRef} type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => { decoderImageQr(event.target.files?.[0]); event.target.value = ""; }} /><button className="btn btn-light border" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra web" : "Scanner en direct"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button></div><div id="lecteur-qr-camera" ref={lecteurRef} className="cadre-camera-mobile"><video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark" /></div>{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Sur téléphone, utilisez d'abord Caméra téléphone : cela ouvre l'application caméra native puis lit le QR de la photo. Le scan en direct reste disponible en HTTPS sur les navigateurs compatibles.</small></div></div>
       <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur externe</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
-    <div className="table-responsive mt-4"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th></tr></thead><tbody>{presences.map((p) => <tr key={`${p.cle}-${p.arrivee}`}><td>{p.type}</td><td>{p.nom || p.matricule}</td><td>{new Date(p.arrivee).toLocaleTimeString("fr-FR")}</td><td>{p.depart ? new Date(p.depart).toLocaleTimeString("fr-FR") : "En cours"}</td></tr>)}</tbody></table></div>
     <section className="card p-3 mt-4">
-      <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-        <div><h5 className="mb-1">Liste des élèves et présences du jour</h5><small className="text-muted">Cette liste utilise la route élèves déjà présente dans le projet.</small></div>
-        <input className="form-control w-auto" value={rechercheEleve} onChange={(event) => setRechercheEleve(event.target.value)} placeholder="Rechercher un élève" />
-      </div>
-      {chargementEleves ? <div className="alert alert-info">Chargement des élèves...</div> : (
-        <div className="table-responsive">
-          <table className="table align-middle">
-            <thead><tr><th>Élève</th><th>Classe / option</th><th>Présent aujourd'hui</th><th>Synchronisation Laravel</th></tr></thead>
-            <tbody>
-              {elevesFiltres.map((eleve) => {
-                const presence = presencesElevesParId.get(String(eleve.id));
-                return <tr key={eleve.id}>
-                  <td>{[eleve.name, eleve.last_name, eleve.first_name].filter(Boolean).join(" ") || eleve.matricule}</td>
-                  <td>{eleve.classe?.name || "-"} {eleve.option?.name || ""}</td>
-                  <td><input type="checkbox" checked={Boolean(presence && !presence.depart)} onChange={() => pointer(payloadEleve(eleve))} aria-label={`Pointer ${eleve.name || "l'élève"}`} /></td>
-                  <td>{presence ? (presence.synchronise ? "Enregistrée" : "En attente") : "Non pointé"}</td>
-                </tr>;
-              })}
-              {!elevesFiltres.length && <tr><td colSpan="4" className="text-center text-muted">Aucun élève trouvé.</td></tr>}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <h5>Présences en attente de synchronisation</h5>
+      <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th><th>Synchronisation</th></tr></thead><tbody>
+        {presencesEnAttente.map((presence) => <tr key={`${presence.cle}-${presence.arrivee}`}><td>{presence.type}</td><td>{presence.nom || presence.matricule}</td><td>{new Date(presence.arrivee).toLocaleTimeString("fr-FR")}</td><td>{presence.depart ? new Date(presence.depart).toLocaleTimeString("fr-FR") : "En cours"}</td><td>En attente</td></tr>)}
+        {!presencesEnAttente.length && <tr><td colSpan="5" className="text-center text-muted">Aucune présence en attente.</td></tr>}
+      </tbody></table></div>
     </section>
   </main>;
 };
