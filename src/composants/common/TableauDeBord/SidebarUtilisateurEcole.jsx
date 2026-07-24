@@ -45,6 +45,19 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
 
   ];
 
+  if (peutGererPresenceEtCartes) {
+    menus.push({
+      id: "presence-cartes",
+      titre: "Présences & cartes",
+      icone: FiCheckSquare,
+      liens: [
+        lien(`/presence-qr`, "Présences du jour & scan QR", FiCheckSquare),
+        lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiFileText),
+        lien(`/${cycle}/cartes_personnel`, "Cartes personnel QR", FiFileText),
+      ],
+    });
+  }
+
   if (estAdmin) {
     menus.push({
       id: "administration",
