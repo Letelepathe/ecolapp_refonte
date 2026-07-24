@@ -38,10 +38,13 @@ const ProfilUtilisateurEcole = () => {
   if (erreur || !utilisateur) return <EcranChargement erreur={erreur || "Profil utilisateur introuvable."} onReessayer={() => setTentative((valeur) => valeur + 1)} />;
 
   const photo = utilisateur.file ? urlPublic(`imgUser/${utilisateur.file}`) : "";
+  const fonction = utilisateur.fonction?.name
+    || utilisateur.role?.name
+    || (typeof utilisateur.role === "string" ? utilisateur.role : "Non renseignée");
   const lignes = [
     ["Nom", utilisateur.name], ["Postnom", utilisateur.last_name], ["Prénom", utilisateur.first_name],
     ["Sexe", utilisateur.sexe], ["E-mail", utilisateur.email], ["Téléphone", utilisateur.phone],
-    ["Adresse", utilisateur.address], ["Fonction", utilisateur.fonction?.name || utilisateur.role?.name || utilisateur.role],
+    ["Adresse", utilisateur.address], ["Fonction", fonction],
   ];
 
   return <div>
