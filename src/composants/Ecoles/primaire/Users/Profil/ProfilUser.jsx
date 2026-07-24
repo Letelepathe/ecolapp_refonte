@@ -478,7 +478,8 @@ const ProfilUser = () => {
   if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
   if (error || !user) return <EcranChargement erreur={error || "Votre profil utilisateur est introuvable."} onReessayer={() => window.location.reload()} />;
 
-  const peutVoirEnseignement = estRoleEnseignant(user) || estRoleAdministration(user);
+  const peutVoirAdministration = estRoleAdministration(user);
+  const peutVoirEnseignement = estRoleEnseignant(user);
 
   return (
     <div className="profil-user-page refonte-shell">
@@ -501,11 +502,13 @@ const ProfilUser = () => {
                     </main>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
-                            <div className="col-sm-6 col-md-6 col-xl-3">
-                              <Link to="/primaire/bureau_admin">
-                                <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
-                              </Link>
-                            </div>
+                            {peutVoirAdministration &&
+                              <div className="col-sm-6 col-md-6 col-xl-3">
+                                <Link to="/primaire/bureau_admin">
+                                  <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                                </Link>
+                              </div>
+                            }
                             {/* Bloc pour les enseignants */}
                             {peutVoirEnseignement &&
               <>
