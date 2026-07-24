@@ -186,11 +186,22 @@ const PresenceQr = () => {
   useEffect(() => {
     let interval;
     let flux;
+    let annule = false;
+
+    const arreterLecteurHtml5 = async () => {
+      const lecteur = scannerHtml5Ref.current;
+      scannerHtml5Ref.current = null;
+      if (!lecteur) return;
+      try {
+        if (lecteur.isScanning) await lecteur.stop();
+      } catch {
+        // Le lecteur peut déjà être arrêté par le navigateur.
+      }
+      try { await lecteur.clear(); } catch { /* Le conteneur est peut-être déjà vide. */ }
+    };
 
     const demarrer = async () => {
       if (!camera) return;
-
-      if (lecteurRef.current) lecteurRef.current.innerHTML = "";
 
       if (!navigator.mediaDevices?.getUserMedia) {
         setErreur("Votre navigateur ne permet pas d'ouvrir la caméra en direct. Utilisez le bouton Caméra téléphone pour passer par l'application caméra du téléphone.");
@@ -200,6 +211,7 @@ const PresenceQr = () => {
 
       try {
         const Html5Qrcode = await chargerHtml5Qrcode().catch(() => null);
+        if (annule || !camera) return;
         if (Html5Qrcode && lecteurRef.current) {
           scannerHtml5Ref.current = new Html5Qrcode(lecteurRef.current.id);
           await scannerHtml5Ref.current.start(
@@ -211,6 +223,10 @@ const PresenceQr = () => {
             pointerDepuisCamera,
             () => {}
           );
+          if (annule) {
+            await arreterLecteurHtml5();
+            return;
+          }
           setCameraActive(true);
           setMessage("Caméra activée. Présentez le QR code dans le cadre.");
           return;
@@ -226,6 +242,11 @@ const PresenceQr = () => {
           flux = await navigator.mediaDevices.getUserMedia({ video: contraintesVideo, audio: false });
         } catch {
           flux = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        }
+
+        if (annule) {
+          flux?.getTracks?.().forEach((track) => track.stop());
+          return;
         }
 
         if (videoRef.current) {
@@ -256,6 +277,7 @@ const PresenceQr = () => {
           if (codes[0]?.rawValue) pointerDepuisCamera(codes[0].rawValue);
         }, 1200);
       } catch (err) {
+        if (annule) return;
         setCameraActive(false);
         setCamera(false);
         const raisonHttps = window.location.protocol !== "https:" && !["localhost", "127.0.0.1"].includes(window.location.hostname);
@@ -268,12 +290,10 @@ const PresenceQr = () => {
     demarrer();
 
     return () => {
+      annule = true;
       clearInterval(interval);
       flux?.getTracks?.().forEach((track) => track.stop());
-      scannerHtml5Ref.current?.stop?.().catch(() => {});
-      scannerHtml5Ref.current?.clear?.().catch(() => {});
-      scannerHtml5Ref.current = null;
-      setCameraActive(false);
+      arreterLecteurHtml5();
       if (videoRef.current) videoRef.current.srcObject = null;
     };
   }, [camera, cameraMode]);
@@ -287,7 +307,7 @@ const PresenceQr = () => {
     </section>
     {message && <div className="alert alert-success">{message}</div>}{erreur && <div className="alert alert-danger">{erreur}</div>}
     <div className="row g-3">
-      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={ouvrirCameraSysteme} disabled={scanImage}>{scanImage ? "Lecture..." : "Caméra téléphone"}</button><input ref={cameraSystemeRef} type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => { decoderImageQr(event.target.files?.[0]); event.target.value = ""; }} /><button className="btn btn-light border" onClick={() => setCamera((v) => !v)}>{camera ? "Arrêter la caméra web" : "Scanner en direct"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button></div><div id="lecteur-qr-camera" ref={lecteurRef} className="cadre-camera-mobile"><video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark" /></div>{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Sur téléphone, utilisez d'abord Caméra téléphone : cela ouvre l'application caméra native puis lit le QR de la photo. Le scan en direct reste disponible en HTTPS sur les navigateurs compatibles.</small></div></div>
+      <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={ouvrirCameraSysteme} disabled={scanImage}>{scanImage ? "Lecture..." : "Caméra téléphone"}</button><input ref={cameraSystemeRef} type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => { decoderImageQr(event.target.files?.[0]); event.target.value = ""; }} /><button className="btn btn-light border" onClick={() => { setCameraActive(false); setCamera((v) => !v); }}>{camera ? "Arrêter la caméra web" : "Scanner en direct"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button></div><div id="lecteur-qr-camera" ref={lecteurRef} className="cadre-camera-mobile" />{camera && !scannerHtml5Ref.current && <video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark cadre-camera-mobile" />}{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Sur téléphone, utilisez d'abord Caméra téléphone : cela ouvre l'application caméra native puis lit le QR de la photo. Le scan en direct reste disponible en HTTPS sur les navigateurs compatibles.</small></div></div>
       <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur externe</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <section className="card p-3 mt-4">
