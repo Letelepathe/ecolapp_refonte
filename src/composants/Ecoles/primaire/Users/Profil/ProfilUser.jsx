@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
+import EcranChargement from '../../../../common/EcranChargement';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -455,7 +456,13 @@ const ProfilUser = () => {
     fetchCounts();
   }, [id, navigate]);
 
-  if (isLoading) return <div className='spinner'></div>;
+  if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
+
+  const normaliserRole = (valeur = "") => valeur.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  const rolesAdministration = ["administrateur", "administratrice", "super administrateur", "super administratrice", "admin", "superadmin", "super admin", "super_admin", "superdmin"];
+  const nomFonction = normaliserRole(user?.fonction?.name);
+  const nomRole = normaliserRole(user?.role);
+  const peutVoirAdministration = Boolean(user && (rolesAdministration.includes(nomFonction) || rolesAdministration.includes(nomRole)));
 
   const normaliserRole = (valeur = "") => valeur.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
   const rolesAdministration = ["administrateur", "administratrice", "super administrateur", "super administratrice", "admin", "superadmin", "super admin", "super_admin", "superdmin"];

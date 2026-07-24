@@ -20,7 +20,10 @@ const rolesAdmin = [
 ];
 
 const SidebarEcole = ({ cycle, titreCycle }) => {
-  const [user, setUser] = useState(null);
+  const utilisateurEnCache = (() => {
+    try { return JSON.parse(sessionStorage.getItem("ecolapp_dashboard_user") || "null"); } catch { return null; }
+  })();
+  const [user, setUser] = useState(utilisateurEnCache);
   const id = localStorage.getItem("userId");
   const navigate = useNavigate();
 
@@ -32,6 +35,7 @@ const SidebarEcole = ({ cycle, titreCycle }) => {
         if (response.data.status === 200) {
           const userApi = response.data.user;
           setUser(userApi);
+          sessionStorage.setItem("ecolapp_dashboard_user", JSON.stringify(userApi));
 
           if (!rolesAdmin.includes(userApi.fonction?.name) && !rolesAdmin.includes(userApi.role)) {
             navigate(`/${cycle}/login`);

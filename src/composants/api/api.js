@@ -30,7 +30,101 @@ export const urlPublic = (chemin = "") => {
 
 export const api = axios.create({ baseURL: API_BASE_URL });
 
+// Limite côté navigateur : elle lisse les rafales sans modifier les routes Laravel.
+// Les requêtes déjà parties restent plafonnées et les suivantes attendent dans une file FIFO.
+export const CONFIGURATION_RATE_LIMITER = Object.freeze({
+  requetesSimultanees: 6,
+  intervalleEntreDepartsMs: 120,
+  attenteMaximaleMs: 30000,
+});
+
+let requetesActives = 0;
+let dernierDepart = 0;
+let minuteurFile = null;
+const fileRequetes = [];
+
+const programmerFile = (delai = 0) => {
+  if (minuteurFile !== null) return;
+  minuteurFile = setTimeout(() => {
+    minuteurFile = null;
+    traiterFile();
+  }, delai);
+};
+
+const traiterFile = () => {
+  while (fileRequetes.length && fileRequetes[0].signal?.aborted) {
+    const annulee = fileRequetes.shift();
+    clearTimeout(annulee.expiration);
+    annulee.reject(new axios.CanceledError("Requête annulée avant son envoi."));
+  }
+
+  if (!fileRequetes.length || requetesActives >= CONFIGURATION_RATE_LIMITER.requetesSimultanees) return;
+
+  const attente = Math.max(
+    0,
+    CONFIGURATION_RATE_LIMITER.intervalleEntreDepartsMs - (Date.now() - dernierDepart)
+  );
+  if (attente > 0) {
+    programmerFile(attente);
+    return;
+  }
+
+  const suivante = fileRequetes.shift();
+  clearTimeout(suivante.expiration);
+  requetesActives += 1;
+  dernierDepart = Date.now();
+  suivante.resolve();
+  programmerFile(CONFIGURATION_RATE_LIMITER.intervalleEntreDepartsMs);
+};
+
+const attendreAutorisation = (signal) => new Promise((resolve, reject) => {
+  if (signal?.aborted) {
+    reject(new axios.CanceledError("Requête annulée avant son envoi."));
+    return;
+  }
+
+  const entree = { resolve, reject, signal, expiration: null };
+  entree.expiration = setTimeout(() => {
+    const index = fileRequetes.indexOf(entree);
+    if (index >= 0) fileRequetes.splice(index, 1);
+    reject(new Error("Trop de requêtes sont en attente. Veuillez réessayer dans quelques instants."));
+  }, CONFIGURATION_RATE_LIMITER.attenteMaximaleMs);
+  fileRequetes.push(entree);
+  traiterFile();
+});
+
+const libererRequete = (config) => {
+  if (!config?.ecolappRateLimiterAcquis) return;
+  config.ecolappRateLimiterAcquis = false;
+  requetesActives = Math.max(0, requetesActives - 1);
+  traiterFile();
+};
+
+const installerRateLimiter = (client) => {
+  client.interceptors.request.use(async (config) => {
+    // Permet ponctuellement d'exclure une requête non-API avec { ecolappRateLimiter: false }.
+    if (config.ecolappRateLimiter === false) return config;
+    await attendreAutorisation(config.signal);
+    config.ecolappRateLimiterAcquis = true;
+    return config;
+  });
+  client.interceptors.response.use(
+    (response) => {
+      libererRequete(response.config);
+      return response;
+    },
+    (error) => {
+      libererRequete(error?.config);
+      return Promise.reject(error);
+    }
+  );
+};
+
+let configurationInstallee = false;
+
 export const installerConfigurationApi = () => {
+  if (configurationInstallee) return;
+  configurationInstallee = true;
   axios.defaults.baseURL = API_BASE_URL;
   axios.interceptors.request.use((config) => ({
     ...config,
@@ -40,4 +134,6 @@ export const installerConfigurationApi = () => {
     (response) => response,
     (error) => Promise.reject({ ...error, friendlyMessage: messageErreur(error) })
   );
+  installerRateLimiter(axios);
+  installerRateLimiter(api);
 };
