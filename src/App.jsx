@@ -66,6 +66,7 @@ import EditionProfilSecondaire from './composants/Ecoles/secondaire/Users/Profil
 // Administration secondaire
 import CodeAdminSecondaire from './composants/Ecoles/secondaire/Administration/CodeAdmin';
 import BureauAdminSecondaire from './composants/Ecoles/secondaire/Administration/BureauAdmin';
+import ParentsSecondaire from './composants/Ecoles/secondaire/Administration/Parents';
 import CreerAdminSecondaire from './composants/Ecoles/secondaire/Administration/CreerAdmin';
 import CreerSuperAdminSecondaire from './composants/Ecoles/secondaire/Administration/CreerSuperAdmin';
 import SuspendreAdminSecondaire from './composants/Ecoles/secondaire/Administration/SuspendreAdmin';
@@ -794,6 +795,7 @@ const App = () => {
                 {/* Administration secondaire */}
                 <Route path="/secondaire/code_admin" element={<CodeAdminSecondaire />} />
                 <Route path="/secondaire/bureau_admin" element={<BureauAdminSecondaire/>} />
+                <Route path="/secondaire/parents" element={<ParentsSecondaire />} />
                 <Route path="/secondaire/creer_admin" element={<CreerAdminSecondaire />} />
                 <Route path="/secondaire/creer_super_admin" element={<CreerSuperAdminSecondaire />} />
                 <Route path="/secondaire/suspendre_admin" element={<SuspendreAdminSecondaire />} />

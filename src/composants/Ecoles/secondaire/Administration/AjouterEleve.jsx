@@ -9,6 +9,7 @@ const AjouterEleve = () => (
     BarreGauche={SidebarLeft}
     NavHaut={NavbarTop}
     lienListe="/secondaire/liste_eleve"
+    rechercheParentActive
   />
   // <InscriptionEleveSecondaire />
 );

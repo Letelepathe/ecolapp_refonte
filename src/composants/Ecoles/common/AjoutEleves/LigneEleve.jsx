@@ -1,6 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer }) =>
+const API_RECHERCHE_PARENTS = "https://api.ecolapp.cd/api/parents/search";
+
+const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer, rechercheParentActive = false }) => {
+  const [parentsTrouves, setParentsTrouves] = useState([]);
+  const [chargementParents, setChargementParents] = useState(false);
+  const [erreurParents, setErreurParents] = useState("");
+
+  useEffect(() => {
+    if (!rechercheParentActive) return undefined;
+
+    const keyword = String(eleve.code_parent || "").trim();
+
+    if (keyword.length < 3) {
+      setParentsTrouves([]);
+      setErreurParents("");
+      setChargementParents(false);
+      return undefined;
+    }
+
+    setChargementParents(true);
+    setErreurParents("");
+
+    // Recherche parent avec debounce: l'appel API ne part qu'après une pause
+    // de saisie et seulement à partir de 3 caractères, comme demandé.
+    const timer = setTimeout(async () => {
+      try {
+        const response = await axios.get(API_RECHERCHE_PARENTS, {
+          params: { keyword },
+        });
+
+        if (response.data?.status === 200) {
+          setParentsTrouves(response.data.parents || []);
+        } else {
+          setParentsTrouves([]);
+          setErreurParents(response.data?.message || "Aucun parent trouvé.");
+        }
+      } catch (error) {
+        setParentsTrouves([]);
+        setErreurParents(error.response?.data?.message || "Erreur lors de la recherche du parent.");
+      } finally {
+        setChargementParents(false);
+      }
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [eleve.code_parent, rechercheParentActive]);
+
+  const choisirParent = (parent) => {
+    majChamp(index, {
+      target: {
+        name: "code_parent",
+        value: parent.code || "",
+      },
+    });
+    setParentsTrouves([]);
+    setErreurParents("");
+  };
+
+  return (
   <div className="border rounded p-3 mb-3 bg-light">
     <div className="d-flex justify-content-between align-items-center mb-2">
       <h6 className="mb-0 u-style-04aba780">
@@ -56,8 +115,28 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
       </div>
       <div className="col-lg-6 col-12">
         <label>Code parent</label>
-        <input type="text" name="code_parent" className="form-control" value={eleve.code_parent} onChange={(event) => majChamp(index, event)} />
+        <input type="text" name="code_parent" className="form-control" value={eleve.code_parent} onChange={(event) => majChamp(index, event)} autoComplete="off" />
         {err.code_parent && <p className="text-danger">{err.code_parent}</p>}
+        {rechercheParentActive && chargementParents && <small className="text-muted">Recherche...</small>}
+        {rechercheParentActive && erreurParents && !chargementParents && <small className="text-danger">{erreurParents}</small>}
+        {rechercheParentActive && parentsTrouves.length > 0 && (
+          <div className="list-group mt-1">
+            {parentsTrouves.map((parent) => (
+              <button
+                key={parent.id}
+                type="button"
+                className="list-group-item list-group-item-action"
+                onClick={() => choisirParent(parent)}
+              >
+                <span className="fw-semibold">{parent.code}</span>
+                <span className="ms-2">
+                  {parent.nom} {parent.postnom} {parent.prenom}
+                </span>
+                <small className="text-muted ms-2">{parent.telephone}</small>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <div className="col-lg-4 col-12">
         <label>Année scolaire</label>
@@ -94,7 +173,9 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         <textarea name="description" className="form-control" value={eleve.description} onChange={(event) => majChamp(index, event)} />
       </div>
     </div>
-  </div>;
+  </div>
+  );
+};
 
 
 export default LigneEleve;
