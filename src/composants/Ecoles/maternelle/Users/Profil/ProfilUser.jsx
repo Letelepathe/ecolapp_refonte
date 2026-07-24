@@ -484,9 +484,21 @@ const ProfilUser = () => {
                     </main>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
+                            <div className="col-sm-6 col-md-6 col-xl-3">
+                              <Link to="/maternelle/bureau_admin">
+                                <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                              </Link>
+                            </div>
                             {/* Bloc pour les enseignants */}
                             {peutVoirEnseignement &&
               <>
+                                    {peutVoirAdministration && (
+                                      <div className="col-sm-6 col-md-6 col-xl-3">
+                                        <Link to="/maternelle/bureau_admin">
+                                          <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                                        </Link>
+                                      </div>
+                                    )}
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/maternelle/liste_travail_by_enseignant">
                                         <DashboardCard title="Mes travaux" count={counts.travaux_enseignant} icon="bi-pencil-square" />
