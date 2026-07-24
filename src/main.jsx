@@ -3,12 +3,13 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import { register } from './serviceWorkerRegistration'; 
 import { installerConfigurationApi } from './composants/api/api';
+import LimiteErreur from './composants/common/LimiteErreur';
 
 installerConfigurationApi();
 
 createRoot(document.getElementById('app')).render(
   <StrictMode>
-    <App />
+    <LimiteErreur><App /></LimiteErreur>
   </StrictMode>
 );
 
