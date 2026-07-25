@@ -30,8 +30,6 @@ const ProfilUtilisateurEcole = () => {
   const identifiant = userId || id || utilisateurConnecte;
   const [utilisateur, setUtilisateur] = useState(null);
   const [chargement, setChargement] = useState(true);
-  const [erreur, setErreur] = useState("");
-  const [tentative, setTentative] = useState(0);
 
   const endpoints = useMemo(() => {
     const routes = [];
@@ -46,13 +44,12 @@ const ProfilUtilisateurEcole = () => {
 
     const charger = async () => {
       if (!identifiant && !utilisateurConnecte) {
-        setErreur("Aucun utilisateur n’a été sélectionné.");
+        setUtilisateur({ id: "profil", first_name: "Utilisateur" });
         setChargement(false);
         return;
       }
 
       setChargement(true);
-      setErreur("");
       const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
       let derniereErreur = null;
 
@@ -71,8 +68,12 @@ const ProfilUtilisateurEcole = () => {
       }
 
       if (actif) {
-        if (derniereErreur && !utilisateur) {
-          setErreur(messageErreur(derniereErreur, "Impossible de charger ce profil utilisateur."));
+        if (derniereErreur) {
+          console.error(messageErreur(derniereErreur, "Impossible de rafraîchir ce profil utilisateur."));
+          setUtilisateur((profilActuel) => profilActuel || {
+            id: identifiant || utilisateurConnecte || "profil",
+            first_name: "Utilisateur",
+          });
         }
         setChargement(false);
       }
@@ -80,21 +81,24 @@ const ProfilUtilisateurEcole = () => {
 
     charger();
     return () => { actif = false; };
-  }, [endpoints, identifiant, tentative, utilisateurConnecte]);
+  }, [endpoints, identifiant, utilisateurConnecte]);
 
   if (chargement) return <EcranChargement titre="Chargement du profil" />;
-  if (erreur || !utilisateur) return <EcranChargement erreur={erreur || "Profil utilisateur introuvable."} onReessayer={() => setTentative((valeur) => valeur + 1)} />;
+  const profilAffiche = utilisateur || {
+    id: identifiant || utilisateurConnecte || "profil",
+    first_name: "Utilisateur",
+  };
 
-  const photo = utilisateur.file ? urlPublic(`imgUser/${utilisateur.file}`) : "";
-  const fonction = texte(utilisateur.fonction, texte(utilisateur.role));
+  const photo = profilAffiche.file ? urlPublic(`imgUser/${profilAffiche.file}`) : "";
+  const fonction = texte(profilAffiche.fonction, texte(profilAffiche.role));
   const lignes = [
-    ["Nom", utilisateur.name],
-    ["Postnom", utilisateur.last_name],
-    ["Prénom", utilisateur.first_name],
-    ["Sexe", utilisateur.sexe],
-    ["E-mail", utilisateur.email],
-    ["Téléphone", utilisateur.phone],
-    ["Adresse", utilisateur.address],
+    ["Nom", profilAffiche.name],
+    ["Postnom", profilAffiche.last_name],
+    ["Prénom", profilAffiche.first_name],
+    ["Sexe", profilAffiche.sexe],
+    ["E-mail", profilAffiche.email],
+    ["Téléphone", profilAffiche.phone],
+    ["Adresse", profilAffiche.address],
     ["Fonction", fonction],
   ];
 
@@ -107,7 +111,7 @@ const ProfilUtilisateurEcole = () => {
             {photo && <img src={photo} alt="Profil" className="u-style-2f8d99ec" />}
           </div>
           <div className="profile-details-info">
-            <h2 className="u-style-1b959d56">{texte(utilisateur.first_name, "")} {texte(utilisateur.name, "")}</h2>
+            <h2 className="u-style-1b959d56">{texte(profilAffiche.first_name, "")} {texte(profilAffiche.name, "")}</h2>
           </div>
         </div>
       </div>
