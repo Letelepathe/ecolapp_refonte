@@ -1,0 +1,129 @@
+import React, { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { API_BASE_URL, messageErreur, urlPublic } from "../api/api";
+import EcranChargement from "./EcranChargement";
+
+const texte = (valeur, defaut = "Non renseigné") => {
+  if (valeur === null || valeur === undefined || valeur === "") return defaut;
+  if (typeof valeur === "object") return valeur.name || valeur.libelle || valeur.titre || defaut;
+  return valeur;
+};
+
+const ligneProfil = (libelle, valeur) => (
+  <React.Fragment key={libelle}>
+    <div className="row">
+      <div className="col-sm-3"><h6 className="mb-0">{libelle}</h6></div>
+      <div className="col-sm-9">
+        <p className="text-muted mb-0">
+          {libelle === "E-mail" && valeur ? <a href={`mailto:${valeur}`}>{valeur}</a> : texte(valeur)}
+        </p>
+      </div>
+    </div>
+    <hr />
+  </React.Fragment>
+);
+
+const ProfilUtilisateurEcole = () => {
+  const { userId, id } = useParams();
+  const utilisateurConnecte = localStorage.getItem("userId");
+  const identifiant = userId || id || utilisateurConnecte;
+  const [utilisateur, setUtilisateur] = useState(null);
+  const [chargement, setChargement] = useState(true);
+
+  const endpoints = useMemo(() => {
+    const routes = [];
+    if (identifiant && identifiant !== "userid") routes.push(`${API_BASE_URL}/user/${identifiant}`);
+    if (utilisateurConnecte && utilisateurConnecte === identifiant) routes.unshift(`${API_BASE_URL}/user`);
+    if (!routes.includes(`${API_BASE_URL}/user`)) routes.push(`${API_BASE_URL}/user`);
+    return routes;
+  }, [identifiant, utilisateurConnecte]);
+
+  useEffect(() => {
+    let actif = true;
+
+    const charger = async () => {
+      if (!identifiant && !utilisateurConnecte) {
+        setUtilisateur({ id: "profil", first_name: "Utilisateur" });
+        setChargement(false);
+        return;
+      }
+
+      setChargement(true);
+      const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
+      let derniereErreur = null;
+
+      for (const endpoint of endpoints) {
+        try {
+          const reponse = await axios.get(endpoint, { headers });
+          const donnees = reponse.data?.user || reponse.data;
+          if (donnees?.id) {
+            if (actif) setUtilisateur(donnees);
+            derniereErreur = null;
+            break;
+          }
+        } catch (error) {
+          derniereErreur = error;
+        }
+      }
+
+      if (actif) {
+        if (derniereErreur) {
+          console.error(messageErreur(derniereErreur, "Impossible de rafraîchir ce profil utilisateur."));
+          setUtilisateur((profilActuel) => profilActuel || {
+            id: identifiant || utilisateurConnecte || "profil",
+            first_name: "Utilisateur",
+          });
+        }
+        setChargement(false);
+      }
+    };
+
+    charger();
+    return () => { actif = false; };
+  }, [endpoints, identifiant, utilisateurConnecte]);
+
+  if (chargement) return <EcranChargement titre="Chargement du profil" />;
+  const profilAffiche = utilisateur || {
+    id: identifiant || utilisateurConnecte || "profil",
+    first_name: "Utilisateur",
+  };
+
+  const photo = profilAffiche.file ? urlPublic(`imgUser/${profilAffiche.file}`) : "";
+  const fonction = texte(profilAffiche.fonction, texte(profilAffiche.role));
+  const lignes = [
+    ["Nom", profilAffiche.name],
+    ["Postnom", profilAffiche.last_name],
+    ["Prénom", profilAffiche.first_name],
+    ["Sexe", profilAffiche.sexe],
+    ["E-mail", profilAffiche.email],
+    ["Téléphone", profilAffiche.phone],
+    ["Adresse", profilAffiche.address],
+    ["Fonction", fonction],
+  ];
+
+  return (
+    <div>
+      <div className="profile">
+        <div className="profile-cover" />
+        <div className="profile-details">
+          <div className="profile-image">
+            {photo && <img src={photo} alt="Profil" className="u-style-2f8d99ec" />}
+          </div>
+          <div className="profile-details-info">
+            <h2 className="u-style-1b959d56">{texte(profilAffiche.first_name, "")} {texte(profilAffiche.name, "")}</h2>
+          </div>
+        </div>
+      </div>
+      <div className="container-fluid">
+        <div className="tab-content" id="pills-tabContent">
+          <div className="tab-pane fade show active" id="apropos" role="tabpanel" aria-labelledby="pills-home-tab">
+            {lignes.map(([libelle, valeur]) => ligneProfil(libelle, valeur))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProfilUtilisateurEcole;
