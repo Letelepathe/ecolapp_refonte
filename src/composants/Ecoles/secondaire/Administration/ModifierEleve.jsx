@@ -112,7 +112,7 @@ const ModifierEleve = () => {
         direction,
       };
 
-      await axios.put(`${URL_API}/eleve/${id}`, data, {
+      await axios.put(`${URL_API}/eleve/edit/${id}`, data, {
         headers: { "Content-Type": "application/json" },
       });
 
