@@ -6,6 +6,7 @@ import Footer from "./Footer";
 
 const API_PARENTS_ECOLE_DIRECTION = "https://api.ecolapp.cd/api/parents/ecole-direction";
 const API_PARENT_DETAILS = "https://api.ecolapp.cd/api/parents";
+const API_PARENT_UPDATE = "https://api.ecolapp.cd/api/parents/edit";
 
 // Actions visibles demandées pour chaque parent. Elles restent non destructives
 // tant qu'aucune route/API de détail, modification ou suppression n'est fournie.
@@ -39,7 +40,7 @@ const configurationAvecToken = () => {
 
 const messageErreurApi = (error, fallback) => {
   if (error.response?.status === 405) {
-    return "La modification du parent n'est pas disponible côté API: la route actuelle autorise seulement GET/HEAD.";
+    return "La modification du parent n'est pas disponible sur cette route API.";
   }
 
   return error.response?.data?.message || fallback;
@@ -207,10 +208,10 @@ const Parents = () => {
     try {
       const { id, nom, postnom, prenom, telephone } = formulaireEdition;
 
-      // Endpoint demandé: PUT /api/parents/{id}. Seuls les champs du parent
-      // sont envoyés pour éviter toute modification des élèves liés.
+      // Le backend local déclare l'update sur /api/parents/edit/{id}.
+      // Seuls les champs du parent sont envoyés pour éviter toute modification des élèves liés.
       const response = await axios.put(
-        `${API_PARENT_DETAILS}/${id}`,
+        `${API_PARENT_UPDATE}/${id}`,
         { nom, postnom, prenom, telephone },
         configurationAvecToken()
       );
@@ -221,6 +222,7 @@ const Parents = () => {
         listeParents.map((parent) => (parent.id === id ? { ...parent, ...parentModifie } : parent))
       );
       setMessageEdition("Parent modifié avec succès.");
+      setTimeout(fermerModalEdition, 700);
     } catch (error) {
       // La documentation indique PUT /api/parents/{id}, mais le backend
       // déployé peut répondre 405 si cette méthode n'est pas encore activée.
