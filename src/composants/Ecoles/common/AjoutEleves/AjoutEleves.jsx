@@ -114,7 +114,7 @@ const AjoutEleves = ({ BarreGauche, NavHaut, lienListe, rechercheParentActive = 
       const refus = resultats.filter((resultat) => !resultat.ok);
 
       if (ajoutes.length > 0) {
-        setMsgOk(`${ajoutes.length} élève(s) ajouté(s) avec succès. Ces lignes ne seront pas renvoyées.`);
+        setMsgOk(`${ajoutes.length} élève${ajoutes.length > 1 ? "s" : ""} ajouté${ajoutes.length > 1 ? "s" : ""} avec succès.`);
       }
 
       if (refus.length > 0) {
