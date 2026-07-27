@@ -3,6 +3,18 @@ import axios from "axios";
 
 const API_RECHERCHE_PARENTS = "https://api.ecolapp.cd/api/parents/search";
 
+const configurationAvecToken = () => {
+  const token = localStorage.getItem("auth_token");
+
+  return token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : {};
+};
+
 const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer, rechercheParentActive = false }) => {
   const [parentsTrouves, setParentsTrouves] = useState([]);
   const [chargementParents, setChargementParents] = useState(false);
@@ -28,6 +40,7 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
     const timer = setTimeout(async () => {
       try {
         const response = await axios.get(API_RECHERCHE_PARENTS, {
+          ...configurationAvecToken(),
           params: { keyword },
         });
 
