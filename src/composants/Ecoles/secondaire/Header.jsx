@@ -96,10 +96,10 @@ const Header = () => {
         {authenticated ?
         <>
             <div className="d-flex justify-items-between align-items-center">
-                      <Link className="btn btn-getstarted p-2" to="/maternelle/profil_user" onClick={closeMobileNav}>
+                      <Link className="btn btn-getstarted p-2" to="/secondaire/profil_user" onClick={closeMobileNav}>
                          <i className='bi bi-person-circle'></i>
                        </Link>
-                       <Link className="btn btn-getstarted p-2" to="/maternelle/deconnexion" onClick={closeMobileNav}>
+                       <Link className="btn btn-getstarted p-2" to="/secondaire/deconnexion" onClick={closeMobileNav}>
                          <i className='bi bi-box-arrow-right'></i>
                        </Link>
                    </div>
