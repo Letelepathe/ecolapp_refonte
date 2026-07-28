@@ -265,3 +265,14 @@ jour de juin 2026 ont uniquement été lus afin d'ajuster le contrat proposé.
 - Une description `null` provenant de la base est maintenant affichée comme
   absente au lieu de provoquer un écran blanc.
 - Affichage d'un message utilisateur lorsque le chargement initial échoue.
+
+# Type d'élève dans la modification secondaire
+
+- Chargement des types d'élèves via le service partagé dans le formulaire de
+  modification.
+- Conservation du type existant et sélection du type par défaut uniquement
+  lorsqu'aucune affectation n'existe.
+- Enregistrement de l'affectation annuelle par l'API dédiée après la mise à jour
+  des informations de l'élève.
+- Réutilisation du composant `LigneEleve` pour éviter un second champ de
+  sélection spécifique à la modification.

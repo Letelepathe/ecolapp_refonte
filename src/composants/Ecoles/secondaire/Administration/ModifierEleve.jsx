@@ -9,6 +9,11 @@ import {
   majEleve,
   validerEleve,
 } from "../../common/AjoutEleves/outilsAjoutEleves";
+import {
+  attribuerTypeEleve,
+  creerContexteTypesEleves,
+  listerTypesEleves,
+} from "../../../../services/typesEleves/typesElevesService";
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 
@@ -20,13 +25,26 @@ const messageErreurApi = (error, fallback) => {
   return error.response?.data?.message || error.response?.data?.error_msg || fallback;
 };
 
-const normaliserEleve = (eleve, ecoleId, direction, codeParent = "") => ({
+const normaliserEleve = (
+  eleve,
+  ecoleId,
+  direction,
+  codeParent = "",
+  typeEleveParDefautId = ""
+) => ({
   ...creerEleveVide(ecoleId, direction),
   ...eleve,
   classes_id: String(eleve.classes_id || eleve.classe?.id || ""),
   options_id: String(eleve.options_id || eleve.option?.id || ""),
   annee_id: String(eleve.annee_id || eleve.annee?.id || ""),
   code_parent: eleve.code_parent || codeParent,
+  type_eleve_id: String(
+    eleve.type_eleve_id ||
+      eleve.type_eleve?.id ||
+      eleve.typeEleve?.id ||
+      typeEleveParDefautId ||
+      ""
+  ),
 });
 
 const ModifierEleve = () => {
@@ -40,6 +58,7 @@ const ModifierEleve = () => {
   const [classes, setClasses] = useState([]);
   const [options, setOptions] = useState([]);
   const [annees, setAnnees] = useState([]);
+  const [typesEleves, setTypesEleves] = useState([]);
   const [err, setErr] = useState({});
   const [msgOk, setMsgOk] = useState("");
   const [msgErr, setMsgErr] = useState("");
@@ -52,9 +71,11 @@ const ModifierEleve = () => {
       setMsgErr("");
 
       try {
-        const [refs, responseEleve] = await Promise.all([
+        const contexteTypes = creerContexteTypesEleves();
+        const [refs, responseEleve, types] = await Promise.all([
           chargerRefsEleves(ecoleId, direction),
           axios.get(`${URL_API}/eleve/${id}`),
+          listerTypesEleves(contexteTypes),
         ]);
 
         const eleveApi = responseEleve.data?.eleve;
@@ -72,7 +93,18 @@ const ModifierEleve = () => {
         setClasses(refs.classes);
         setOptions(refs.options);
         setAnnees(refs.annees);
-        setEleve(normaliserEleve(eleveApi || {}, ecoleId, direction, codeParent));
+        setTypesEleves(types);
+        const typeParDefaut =
+          types.find((type) => type.estTypeParDefaut) || types[0] || null;
+        setEleve(
+          normaliserEleve(
+            eleveApi || {},
+            ecoleId,
+            direction,
+            codeParent,
+            typeParDefaut?.id
+          )
+        );
       } catch (error) {
         setMsgErr("Erreur lors du chargement de l'élève.");
       } finally {
@@ -115,6 +147,15 @@ const ModifierEleve = () => {
       await axios.put(`${URL_API}/eleve/edit/${id}`, data, {
         headers: { "Content-Type": "application/json" },
       });
+      if (eleve.type_eleve_id && eleve.annee_id) {
+        await attribuerTypeEleve(creerContexteTypesEleves(), {
+          eleveId: id,
+          anneeId: eleve.annee_id,
+          typeEleveId: eleve.type_eleve_id,
+          attribuePar: userId,
+          source: "modification_admin",
+        });
+      }
 
       setMsgOk("Élève modifié avec succès.");
       setTimeout(() => navigate("/secondaire/liste_eleve"), 600);
@@ -151,6 +192,8 @@ const ModifierEleve = () => {
                         classes={classes}
                         options={options}
                         annees={annees}
+                        typesEleves={typesEleves}
+                        afficherOption
                         err={err}
                         peutRetirer={false}
                         majChamp={majChamp}
