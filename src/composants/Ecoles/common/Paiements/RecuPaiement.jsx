@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import LogoEcoleApp from "../../../../static/images/logo_ecolapp.jpg";
+import {
+  obtenirEcolePaiement,
+  obtenirUrlLogoEcole,
+} from "../../../../services/ecoles/ecoleAssets";
 
 const texte = (...valeurs) =>
   valeurs.find(
@@ -34,13 +38,26 @@ const formatMontant = (paiement) => {
 
 const RecuPaiement = React.forwardRef(({ paiement }, ref) => {
   const eleve = paiement?.eleve || {};
-  const ecole = paiement?.ecole || eleve?.ecole || {};
+  const ecole = obtenirEcolePaiement(paiement) || {};
+  const logoEcole = useMemo(
+    () => obtenirUrlLogoEcole(ecole, LogoEcoleApp),
+    [ecole?.id, ecole?.photo_profil]
+  );
+  const [logoAffiche, setLogoAffiche] = useState(logoEcole);
+
+  useEffect(() => {
+    setLogoAffiche(logoEcole);
+  }, [logoEcole]);
 
   return (
     <article ref={ref} className="recu-financier">
       <header className="recu-financier__entete">
         <div className="recu-financier__marque">
-          <img src={LogoEcoleApp} alt="Ecolapp" />
+          <img
+            src={logoAffiche}
+            alt={`Logo ${texte(ecole.name, ecole.nom, "Ecolapp")}`}
+            onError={() => setLogoAffiche(LogoEcoleApp)}
+          />
           <div>
             <strong>{texte(ecole.name, ecole.nom, "ECOLAPP")}</strong>
             <span>Gestion scolaire et financière</span>

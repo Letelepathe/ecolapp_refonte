@@ -17,9 +17,59 @@ const attendreImages = async (documentImpression) => {
       return new Promise((resolve) => {
         image.onload = resolve;
         image.onerror = resolve;
+        setTimeout(resolve, 5000);
       });
     })
   );
+};
+
+const attendreFeuillesStyle = async (documentImpression) => {
+  const feuilles = Array.from(
+    documentImpression.querySelectorAll('link[rel="stylesheet"]')
+  );
+
+  await Promise.all(
+    feuilles.map(
+      (feuille) =>
+        new Promise((resolve) => {
+          if (feuille.sheet) {
+            resolve();
+            return;
+          }
+          feuille.addEventListener("load", resolve, { once: true });
+          feuille.addEventListener("error", resolve, { once: true });
+          setTimeout(resolve, 5000);
+        })
+    )
+  );
+};
+
+const attendreMiseEnPage = (fenetre) =>
+  new Promise((resolve) => {
+    fenetre.requestAnimationFrame(() => {
+      fenetre.requestAnimationFrame(() => setTimeout(resolve, 100));
+    });
+  });
+
+const clonerAvecStylesCalcules = (zone) => {
+  const clone = zone.cloneNode(true);
+  const sources = [zone, ...zone.querySelectorAll("*")];
+  const destinations = [clone, ...clone.querySelectorAll("*")];
+
+  sources.forEach((source, index) => {
+    const destination = destinations[index];
+    const styles = window.getComputedStyle(source);
+
+    Array.from(styles).forEach((propriete) => {
+      destination.style.setProperty(
+        propriete,
+        styles.getPropertyValue(propriete),
+        styles.getPropertyPriority(propriete)
+      );
+    });
+  });
+
+  return clone;
 };
 
 const attendreDocument = (fenetre) =>
@@ -62,6 +112,7 @@ export const imprimerDocument = async (
 
   const titreSecurise = echapperHtml(titre);
   const classeSecurisee = echapperHtml(classeDocument);
+  const zoneImpression = clonerAvecStylesCalcules(zone);
   fenetre.document.open();
   fenetre.document.write(`<!doctype html>
 <html lang="fr">
@@ -102,7 +153,7 @@ export const imprimerDocument = async (
 </head>
 <body>
   <main class="document-impression ${classeSecurisee}">
-    ${zone.outerHTML}
+    ${zoneImpression.outerHTML}
   </main>
 </body>
 </html>`);
@@ -110,8 +161,10 @@ export const imprimerDocument = async (
 
   try {
     await attendreDocument(fenetre);
+    await attendreFeuillesStyle(fenetre.document);
     await fenetre.document.fonts?.ready;
     await attendreImages(fenetre.document);
+    await attendreMiseEnPage(fenetre);
     fenetre.focus();
     fenetre.addEventListener("afterprint", () => fenetre.close(), {
       once: true,
