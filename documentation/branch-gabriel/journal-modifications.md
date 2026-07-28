@@ -258,3 +258,10 @@ jour de juin 2026 ont uniquement été lus afin d'ajuster le contrat proposé.
 - Correction de la normalisation des champs Laravel `id` et `montant`.
 - Correction de la confirmation d'inscription : le type est d'abord enregistré
   sur l'inscription, puis la route historique crée l'élève en conservant ce type.
+
+# Tolérance des descriptions nulles
+
+- Normalisation centralisée des textes du formulaire des types d'élèves.
+- Une description `null` provenant de la base est maintenant affichée comme
+  absente au lieu de provoquer un écran blanc.
+- Affichage d'un message utilisateur lorsque le chargement initial échoue.

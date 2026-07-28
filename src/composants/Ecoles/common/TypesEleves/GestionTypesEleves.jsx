@@ -16,8 +16,10 @@ const formulaireVide = {
   estTypeParDefaut: false,
 };
 
+const normaliserTexte = (valeur) => String(valeur ?? "").trim();
+
 const descriptionCourte = (description = "", limite = 110) => {
-  const texte = description.trim();
+  const texte = normaliserTexte(description);
   return texte.length > limite
     ? `${texte.slice(0, limite).trim()}…`
     : texte || "—";
@@ -43,7 +45,12 @@ const GestionTypesEleves = ({ BarreGauche, NavHaut }) => {
   };
 
   useEffect(() => {
-    recharger();
+    recharger().catch(() => {
+      setTypes([]);
+      setErreur(
+        "Impossible de charger les types d'élèves. Veuillez réessayer."
+      );
+    });
   }, []);
 
   const fermerFormulaire = () => {
@@ -70,7 +77,8 @@ const GestionTypesEleves = ({ BarreGauche, NavHaut }) => {
     setMessage("");
     setErreur("");
 
-    if (!formulaire.nom.trim()) {
+    const nom = normaliserTexte(formulaire.nom);
+    if (!nom) {
       setErreur("Le nom du type d'élève est requis.");
       return;
     }
@@ -79,8 +87,8 @@ const GestionTypesEleves = ({ BarreGauche, NavHaut }) => {
     try {
       await enregistrerTypeEleve(contexte, {
         ...formulaire,
-        nom: formulaire.nom.trim(),
-        description: formulaire.description.trim(),
+        nom,
+        description: normaliserTexte(formulaire.description),
       });
       await recharger();
       fermerFormulaire();
