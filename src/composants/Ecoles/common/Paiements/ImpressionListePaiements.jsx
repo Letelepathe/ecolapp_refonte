@@ -6,6 +6,7 @@ import {
 } from "../../../common/impressionDocuments";
 import { api } from "../../../api/api";
 import { obtenirUrlLogoEcole } from "../../../../services/ecoles/ecoleAssets";
+import EtatFinancierGlobal from "./EtatFinancierGlobal";
 
 const valeur = (objet, chemin, defaut = "—") =>
   chemin.split(".").reduce((resultat, cle) => resultat?.[cle], objet) ?? defaut;
@@ -173,6 +174,7 @@ const ImpressionListePaiements = ({ paiements = [], titre }) => {
       <button className="btn mb-3" type="button" onClick={() => setOuvert(true)}>
         <i className="bi bi-printer me-1"></i> Imprimer la liste
       </button>
+      <EtatFinancierGlobal />
 
       {ouvert && (
         <div
