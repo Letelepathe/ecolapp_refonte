@@ -9,8 +9,10 @@ const echapperHtml = (valeur = "") =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 
-const attendreImages = async (documentImpression) => {
-  const images = Array.from(documentImpression.images || []);
+const attendreImages = async (conteneur) => {
+  const images = Array.from(
+    conteneur.images || conteneur.querySelectorAll?.("img") || []
+  );
   await Promise.all(
     images.map((image) => {
       if (image.complete) return Promise.resolve();
@@ -205,6 +207,7 @@ export const telechargerDocumentPdf = async (
     orientation = "portrait",
     format = "a4",
     marge = 10,
+    pagination = false,
   } = {}
 ) => {
   if (!zone) {
@@ -214,6 +217,7 @@ export const telechargerDocumentPdf = async (
 
   try {
     await document.fonts?.ready;
+    await attendreImages(zone);
     const toile = await html2canvas(zone, {
       backgroundColor: "#ffffff",
       scale: Math.min(3, Math.max(2, window.devicePixelRatio || 2)),
@@ -226,23 +230,32 @@ export const telechargerDocumentPdf = async (
     const hauteurPage = pdf.internal.pageSize.getHeight();
     const largeurMax = largeurPage - marge * 2;
     const hauteurMax = hauteurPage - marge * 2;
-    const ratio = Math.min(
-      largeurMax / toile.width,
-      hauteurMax / toile.height
-    );
+    const ratio = pagination
+      ? largeurMax / toile.width
+      : Math.min(largeurMax / toile.width, hauteurMax / toile.height);
     const largeur = toile.width * ratio;
     const hauteur = toile.height * ratio;
     const gauche = (largeurPage - largeur) / 2;
-    const haut = (hauteurPage - hauteur) / 2;
+    const image = toile.toDataURL("image/png");
 
-    pdf.addImage(
-      toile.toDataURL("image/png"),
-      "PNG",
-      gauche,
-      haut,
-      largeur,
-      hauteur
-    );
+    if (pagination && hauteur > hauteurMax) {
+      const nombrePages = Math.ceil(hauteur / hauteurMax);
+
+      for (let page = 0; page < nombrePages; page += 1) {
+        if (page > 0) pdf.addPage();
+        pdf.addImage(
+          image,
+          "PNG",
+          gauche,
+          marge - page * hauteurMax,
+          largeur,
+          hauteur
+        );
+      }
+    } else {
+      const haut = (hauteurPage - hauteur) / 2;
+      pdf.addImage(image, "PNG", gauche, haut, largeur, hauteur);
+    }
     pdf.save(nomFichier.endsWith(".pdf") ? nomFichier : `${nomFichier}.pdf`);
     return true;
   } catch {
