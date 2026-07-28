@@ -22,7 +22,13 @@ const messageErreurApi = (error, fallback) => {
     return "La modification de l'élève n'est pas disponible côté API: la route actuelle autorise seulement GET/HEAD.";
   }
 
-  return error.response?.data?.message || error.response?.data?.error_msg || fallback;
+  return (
+    error.response?.data?.errors?.code_parent?.[0] ||
+    error.response?.data?.errorsList?.code_parent?.[0] ||
+    error.response?.data?.message ||
+    error.response?.data?.error_msg ||
+    fallback
+  );
 };
 
 const normaliserEleve = (

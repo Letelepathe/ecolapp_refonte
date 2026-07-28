@@ -134,7 +134,13 @@ const Parents = () => {
     try {
       // Endpoint demandé: GET /api/parents/{id}. Le modal affiche uniquement
       // les champs renvoyés par cette réponse, sans créer de données côté UI.
-      const response = await axios.get(`${API_PARENT_DETAILS}/${parentId}`, configurationAvecToken());
+      const response = await axios.get(`${API_PARENT_DETAILS}/${parentId}`, {
+        ...configurationAvecToken(),
+        params: {
+          ecole_id: lireIdEcoleDepuisLocalStorage(),
+          direction: lireDirectionDepuisLocalStorage(),
+        },
+      });
 
       if (response.data?.status === 200) {
         setParentDetails(response.data.parent);
@@ -388,8 +394,8 @@ const Parents = () => {
                                 <tr key={eleve.id}>
                                   <td>{eleve.id}</td>
                                   <td>{eleve.name}</td>
-                                  <td>{eleve.classe?.nom || ""}</td>
-                                  <td>{eleve.option?.nom || ""}</td>
+                                  <td>{eleve.classe?.name || eleve.classe?.nom || ""}</td>
+                                  <td>{eleve.option?.name || eleve.option?.nom || ""}</td>
                                 </tr>
                               ))
                             ) : (
