@@ -1,4 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
+import StatutFinancierEleve from "../../common/TypesEleves/StatutFinancierEleve";
+import SituationPaiementEleve from "../../common/TypesEleves/SituationPaiementEleve";
+import useTranchesParMotif from "../../common/Tranches/useTranchesParMotif";
+import DepassementTrancheModal from "../../common/Paiements/DepassementTrancheModal";
+import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
+import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import SidebarLeft from "../Administration/SidebarLeft";
@@ -33,6 +39,11 @@ const AjouterPaiement = () => {
   const [receipt, setReceipt] = useState(null);
   const receiptRef = useRef(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [trancheCalculee, setTrancheCalculee] = useState(null);
+  const [situationPaiement, setSituationPaiement] = useState(null);
+  const [depassementOuvert, setDepassementOuvert] = useState(false);
+  const [reportSuivant, setReportSuivant] = useState(null);
+  const tranchesDuMotif = useTranchesParMotif(tranches, formData.motifs_id);
 
 
   useEffect(() => {
@@ -90,7 +101,11 @@ const AjouterPaiement = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "motifs_id" ? { tranches_id: "" } : {}),
+    }));
   };
 
   const validateForm = () => {
@@ -101,8 +116,9 @@ const AjouterPaiement = () => {
     if (!formData.mode_id) newErrors.mode_id = "Le mode de paiement est requis.";
     if (!formData.tranches_id) newErrors.tranche_id = "La tranche est requise.";
     if (!formData.motifs_id) newErrors.motif_id = "Le motif est requis.";
-
-
+    if (trancheCalculee?.applicable === false) {
+      newErrors.tranche_id = "Cette tranche n'est pas applicable à ce type d'élève.";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -113,6 +129,14 @@ const AjouterPaiement = () => {
 
   if (!validateForm()) {
     setIsLoading(false); 
+    return;
+  }
+  if (
+    trancheCalculee &&
+    Number(formData.montant) > Number(trancheCalculee.reste)
+  ) {
+    setDepassementOuvert(true);
+    setIsLoading(false);
     return;
   }
 
@@ -147,7 +171,18 @@ const AjouterPaiement = () => {
       }
   
       // Réinitialiser le formulaire
-      setFormData({
+      const prochaineTranche = reportSuivant?.prochaineTranche;
+      if (prochaineTranche) {
+        setFormData((courant) => ({
+          ...courant,
+          montant: String(Number(reportSuivant.excedent)),
+          tranches_id: String(prochaineTranche.id),
+        }));
+        setSuccessMessage(
+          `Paiement enregistré. La tranche « ${prochaineTranche.nom} » est préparée avec le montant restant. Vérifiez puis confirmez le paiement suivant.`
+        );
+      } else {
+        setFormData({
         montant: "",
         devises_id: "",
         mode_id : "", 
@@ -157,7 +192,9 @@ const AjouterPaiement = () => {
         users_id: userId, 
         ecole_id : ecole_id,
         direction : direction,
-      });
+        });
+      }
+      setReportSuivant(null);
   
       setErrors({});
     } else {
@@ -182,17 +219,15 @@ const AjouterPaiement = () => {
 
 
   const printReceipt = () => {
-    const printContents = receiptRef.current.innerHTML;
-    const originalContents = document.body.innerHTML;
-
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
-    window.location.reload(); // Recharge la page après impression
+    imprimerRecuPaiement(receiptRef.current, receipt?.id);
   };
 
   return (
     <div className="container-fluid position-relative  d-flex p-0">
+      <ApercuRecuPaiement
+        paiement={receipt}
+        onFermer={() => setReceipt(null)}
+      />
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -229,6 +264,7 @@ const AjouterPaiement = () => {
                             ))}
                           </ul>
                           {errors.eleve_id && <p className="text-danger">{errors.eleve_id}</p>}
+                          <StatutFinancierEleve eleveId={formData.eleves_id} />
                         </div>
                       </div>
                       <div className="col-lg-4 col-12">
@@ -279,23 +315,6 @@ const AjouterPaiement = () => {
                           {errors.mode_id && <p className="text-danger">{errors.mode_id}</p>}
                         </div>
                         <div className="mb-3">
-                          <label>Tranche</label>
-                          <select
-                            name="tranches_id"
-                            className="form-control"
-                            value={formData.tranches_id}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Sélectionner une tranche</option>
-                            {tranches.map((tranche) => (
-                              <option key={tranche.id} value={tranche.id}>
-                                {tranche.name} 
-                              </option>
-                            ))}
-                          </select>
-                          {errors.tranche_id && <p className="text-danger">{errors.tranche_id}</p>}
-                        </div>
-                        <div className="mb-3">
                           <label>Motif</label>
                           <select
                             name="motifs_id"
@@ -312,6 +331,61 @@ const AjouterPaiement = () => {
                           </select>
                           {errors.motif_id && <p className="text-danger">{errors.motif_id}</p>}
                         </div>
+                        <div className="mb-3">
+                          <label>Tranche</label>
+                          <select
+                            name="tranches_id"
+                            className="form-control"
+                            value={formData.tranches_id}
+                            onChange={handleInputChange}
+                            disabled={!formData.motifs_id}
+                          >
+                            <option value="">Sélectionner une tranche</option>
+                            {tranchesDuMotif.map((tranche) => (
+                              <option key={tranche.id} value={tranche.id}>
+                                {tranche.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.tranche_id && <p className="text-danger">{errors.tranche_id}</p>}
+                        </div>
+                        <SituationPaiementEleve
+                          eleveId={formData.eleves_id}
+                          motifId={formData.motifs_id}
+                          trancheId={formData.tranches_id}
+                          motifs={motifs}
+                          tranches={tranches}
+                          onTrancheCalculee={setTrancheCalculee}
+                          onSituationCalculee={setSituationPaiement}
+                        />
+                        {depassementOuvert && (
+                          <DepassementTrancheModal
+                            montantSaisi={formData.montant}
+                            trancheSelectionnee={trancheCalculee}
+                            lignes={situationPaiement?.lignes || []}
+                            devise={situationPaiement?.devise || ""}
+                            onAnnuler={() => setDepassementOuvert(false)}
+                            onAjuster={() => {
+                              setFormData((courant) => ({
+                                ...courant,
+                                montant: String(trancheCalculee.reste),
+                              }));
+                              setReportSuivant(null);
+                              setDepassementOuvert(false);
+                            }}
+                            onPreparerSuivante={(report) => {
+                              setFormData((courant) => ({
+                                ...courant,
+                                montant: String(trancheCalculee.reste),
+                              }));
+                              setReportSuivant(report);
+                              setDepassementOuvert(false);
+                              setSuccessMessage(
+                                "Le montant de la tranche courante est ajusté. Cliquez sur « Ajouter paiement » pour l'enregistrer et préparer la suivante."
+                              );
+                            }}
+                          />
+                        )}
                         
                         <button className={`btn  w-100 ${isLoading ? "loading" : ""}`} type="submit"
                           disabled={isLoading}
@@ -389,4 +463,3 @@ const AjouterPaiement = () => {
 };
 
 export default AjouterPaiement;
-  

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import SelectTypeEleve from "../TypesEleves/SelectTypeEleve";
 
 const API_RECHERCHE_PARENTS = "https://api.ecolapp.cd/api/parents/search";
 
@@ -15,7 +16,20 @@ const configurationAvecToken = () => {
     : {};
 };
 
-const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer, rechercheParentActive = false }) => {
+const LigneEleve = ({
+  eleve,
+  index,
+  classes,
+  options,
+  annees,
+  typesEleves = [],
+  afficherOption = true,
+  err = {},
+  peutRetirer,
+  majChamp,
+  retirer,
+  rechercheParentActive = false,
+}) => {
   const [parentsTrouves, setParentsTrouves] = useState([]);
   const [chargementParents, setChargementParents] = useState(false);
   const [erreurParents, setErreurParents] = useState("");
@@ -171,7 +185,7 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         </select>
         {err.classes_id && <p className="text-danger">{err.classes_id}</p>}
       </div>
-      <div className="col-lg-4 col-12">
+      {afficherOption && <div className="col-lg-4 col-12">
         <label>Option</label>
         <select name="options_id" className="form-control" value={eleve.options_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une option</option>
@@ -180,6 +194,18 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
           )}
         </select>
         {err.options_id && <p className="text-danger">{err.options_id}</p>}
+      </div>}
+      <div className="col-12">
+        <SelectTypeEleve
+          types={typesEleves}
+          value={eleve.type_eleve_id}
+          name={`type-eleve-${index}`}
+          onChange={(event) =>
+            majChamp(index, {
+              target: { name: "type_eleve_id", value: event.target.value },
+            })
+          }
+        />
       </div>
       <div className="col-12">
         <label>Description</label>

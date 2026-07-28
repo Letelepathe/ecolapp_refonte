@@ -10,6 +10,7 @@ const AjouterEleve = () => (
     NavHaut={NavbarTop}
     lienListe="/secondaire/liste_eleve"
     rechercheParentActive
+    cycle="secondaire"
   />
   // <InscriptionEleveSecondaire />
 );

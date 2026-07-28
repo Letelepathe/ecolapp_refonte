@@ -17,6 +17,7 @@ import {
   FiUserPlus,
   FiUsers,
 } from "react-icons/fi";
+import { obtenirConfigCycle } from "../../../config/cyclesScolaires";
 
 const lien = (to, label, icone = FiList) => ({ to, label, icone });
 
@@ -81,7 +82,19 @@ const periodeCycle = (cycle) =>
     ? lien(`/${cycle}/liste_semestre`, "Tous les semestres", FiList)
     : lien(`/${cycle}/liste_trimestre`, "Tous les trimestres", FiList);
 
-export const menusEcole = (cycle) => [
+export const menusEcole = (cycle) => {
+  const config = obtenirConfigCycle(cycle);
+  const liensStructure = [
+    lien(`/${cycle}/liste_classe`, config.libelles.classes, FiList),
+    ...(config.utiliseSections
+      ? [lien(`/${cycle}/liste_section`, "Toutes les sections", FiList)]
+      : []),
+    ...(config.utiliseOptions
+      ? [lien(`/${cycle}/liste_option`, "Toutes les options", FiList)]
+      : []),
+  ];
+
+  return [
   ...(cycle === "secondaire"
     ? [
         {
@@ -126,7 +139,9 @@ export const menusEcole = (cycle) => [
     liens: [
       lien(`/${cycle}/liste_annee_scolaire`, "Toutes les années", FiList),
       periodeCycle(cycle),
-      lien(`/${cycle}/liste_periode`, "Toutes les périodes", FiList),
+      ...(config.utilisePeriodes
+        ? [lien(`/${cycle}/liste_periode`, "Toutes les périodes", FiList)]
+        : []),
     ],
   },
   {
@@ -144,7 +159,7 @@ export const menusEcole = (cycle) => [
     icone: FiUsers,
     liens: [
       lien(`/${cycle}/liste_enseignant`, "Tous les enseignants", FiList),
-      lien(`/${cycle}/liste_titulaire`, "Tous les titulaires", FiList),
+      lien(`/${cycle}/liste_titulaire`, config.libelles.titulaire, FiList),
     ],
   },
   {
@@ -153,20 +168,22 @@ export const menusEcole = (cycle) => [
     icone: FiUsers,
     liens: [
       lien(`/${cycle}/liste_eleve`, "Tous les élèves", FiList),
+      lien(`/${cycle}/types_eleves`, "Types d'élèves", FiSettings),
       lien(`/${cycle}/cartes_eleves`, "Cartes élèves QR", FiCreditCard),
       lien(`/presence-qr`, "Scanner présences QR", FiCheckSquare),
       lien(`/${cycle}/liste_eleve_inscrit_${cycle}`, "Élèves inscrits", FiBookOpen),
+      lien(`/${cycle}/inscription_en_attente`, "Inscriptions en attente", FiFileText),
       lien(`/${cycle}/liste_motif_absence`, "Motifs absence", FiList),
-      lien(`/${cycle}/liste_type_travail`, "Types travail", FiList),
+      lien(`/${cycle}/liste_type_travail`, "Types de travaux", FiList),
     ],
   },
   {
     id: "cours",
-    titre: "Cours & horaires",
+    titre: `${config.libelles.cours} & horaires`,
     icone: FiBookOpen,
     liens: [
-      lien(`/${cycle}/liste_cours`, "Tous les cours", FiList),
-      lien(`/${cycle}/liste_cours_enseigne`, "Cours & titulaires", FiList),
+      lien(`/${cycle}/liste_cours`, `Toutes les ${config.libelles.cours.toLowerCase()}`, FiList),
+      lien(`/${cycle}/liste_cours_enseigne`, `${config.libelles.cours} & enseignants`, FiList),
       ...(cycle === "secondaire" ? [lien(`/${cycle}/generer_horaire`, "Générer horaire", FiCalendar)] : []),
     ],
   },
@@ -176,7 +193,7 @@ export const menusEcole = (cycle) => [
     icone: FiCreditCard,
     liens: [
       lien(`/${cycle}/liste_motif`, "Listes motif", FiList),
-      lien(`/${cycle}/liste_tranche`, "Listes tranche", FiList),
+      lien(`/${cycle}/liste_tranche`, "Tranches & montants", FiList),
       lien(`/${cycle}/liste_mode_paiement`, "Tous les modes", FiList),
       lien(`/${cycle}/liste_devise`, "Listes devise", FiList),
       lien(`/${cycle}/liste_paiement`, "Tous les paiements", FiList),
@@ -187,11 +204,7 @@ export const menusEcole = (cycle) => [
     id: "structure",
     titre: "Structure scolaire",
     icone: FiLayers,
-    liens: [
-      lien(`/${cycle}/liste_classe`, "Toutes les classes", FiList),
-      lien(`/${cycle}/liste_section`, "Toutes les sections", FiList),
-      lien(`/${cycle}/liste_option`, "Toutes les options", FiList),
-    ],
+    liens: liensStructure,
   },
   {
     id: "users",
@@ -213,4 +226,5 @@ export const menusEcole = (cycle) => [
       lien(`/${cycle}/liste_horaire`, "Horaires", FiCheckSquare),
     ],
   },
-];
+  ];
+};

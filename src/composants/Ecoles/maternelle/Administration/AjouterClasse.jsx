@@ -74,10 +74,13 @@ const AjouterClasse = () => {
           <section className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
-                <Link to='/maternelle/liste_classe' className='btn  mb-2 mt-2'>Liste classe</Link>
+                <Link to='/maternelle/liste_classe' className='btn  mb-2 mt-2'>Niveaux maternels</Link>
                 <div className="card-body">
-                  <h3 className="text-center u-style-951c0e5f">Ajouter Classe</h3>
-                  <p className="text-center">Veuillez remplir le champ ci-dessous pour ajouter une classe.</p>
+                  <h3 className="text-center u-style-951c0e5f">Ajouter un niveau maternel</h3>
+                  <p className="text-center">
+                    Utilisez l'une des trois années officielles et, si nécessaire, une division :
+                    « 1re année maternelle - A ».
+                  </p>
 
                   <form onSubmit={handleSubmit}>
                     <div className="mb-3">

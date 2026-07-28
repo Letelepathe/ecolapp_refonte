@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAgeMinimumEleveError } from "../validationAgeEleve";
+import { getAgeEleveError } from "../validationAgeEleve";
 
 export const URL_API = "https://api.ecolapp.cd/api";
 
@@ -11,7 +11,6 @@ export const champsReq = [
   "date_naissance",
   "lieu_de_naissance",
   "adresse",
-  "code_parent",
   "annee_id",
   "classes_id",
   "options_id",
@@ -77,11 +76,12 @@ export const creerEleveVide = (ecoleId, direction) => ({
   options_id: "",
   users_id: "",
   annee_id: "",
+  type_eleve_id: "",
   ecole_id: ecoleId,
   direction,
 });
 
-export const validerEleve = (eleve, ageMinimumEleve) => {
+export const validerEleve = (eleve, ageMinimumEleve, ageMaximumEleve) => {
   const err = {};
 
   champsReq.forEach((champ) => {
@@ -90,7 +90,11 @@ export const validerEleve = (eleve, ageMinimumEleve) => {
     }
   });
 
-  const erreurAge = getAgeMinimumEleveError(eleve.date_naissance, ageMinimumEleve);
+  const erreurAge = getAgeEleveError(
+    eleve.date_naissance,
+    ageMinimumEleve,
+    ageMaximumEleve
+  );
   if (erreurAge) {
     err.date_naissance = erreurAge;
   }
@@ -130,6 +134,11 @@ export const creerEleves = async ({ eleves, userId, ecoleId, direction }) => {
       return {
         ok: true,
         index,
+        eleveId:
+          resultat.value.data.eleve?.id ||
+          resultat.value.data.eleve_id ||
+          resultat.value.data.last_id ||
+          null,
         msg: resultat.value.data.status_msg || "Élève ajouté avec succès.",
       };
     }

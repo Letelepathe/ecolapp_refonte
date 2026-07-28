@@ -104,6 +104,7 @@ import ListeMembreEffectifSecondaire from './composants/Ecoles/secondaire/Admini
 // Eleves du secondaire
 import AjouterEleveSecondaire from './composants/Ecoles/secondaire/Administration/AjouterEleve';
 import ModifierEleveSecondaire from './composants/Ecoles/secondaire/Administration/ModifierEleve';
+import TypesElevesSecondaire from './composants/Ecoles/secondaire/Administration/TypesEleves';
 import ListeEleveSecondaire from './composants/Ecoles/secondaire/Administration/ListeEleve';
 import CartesElevesSecondaire from './composants/Ecoles/secondaire/Administration/CartesEleves';
 import CartesPersonnelSecondaire from './composants/Ecoles/secondaire/Administration/CartesPersonnel';
@@ -293,6 +294,7 @@ import AjouterMembreEffectifprimaire from './composants/Ecoles/primaire/Administ
 import ListeMembreEffectifprimaire from './composants/Ecoles/primaire/Administration/ListeMembreEffectif';
 // Eleves du primaire
 import AjouterEleveprimaire from './composants/Ecoles/primaire/Administration/AjouterEleve';
+import TypesElevesPrimaire from './composants/Ecoles/primaire/Administration/TypesEleves';
 import ListeEleveprimaire from './composants/Ecoles/primaire/Administration/ListeEleve';
 import CartesElevesprimaire from './composants/Ecoles/primaire/Administration/CartesEleves';
 import CartesPersonnelprimaire from './composants/Ecoles/primaire/Administration/CartesPersonnel';
@@ -478,6 +480,7 @@ import AjouterMembreEffectifmaternelle from './composants/Ecoles/maternelle/Admi
 import ListeMembreEffectifmaternelle from './composants/Ecoles/maternelle/Administration/ListeMembreEffectif';
 // Eleves du maternelle
 import AjouterElevematernelle from './composants/Ecoles/maternelle/Administration/AjouterEleve';
+import TypesElevesMaternelle from './composants/Ecoles/maternelle/Administration/TypesEleves';
 import ListeElevematernelle from './composants/Ecoles/maternelle/Administration/ListeEleve';
 import CartesElevesmaternelle from './composants/Ecoles/maternelle/Administration/CartesEleves';
 import CartesPersonnelmaternelle from './composants/Ecoles/maternelle/Administration/CartesPersonnel';
@@ -829,6 +832,7 @@ const App = () => {
                 {/* Eleves du secondaire */}
                 <Route path="/secondaire/ajouter_eleve" element={<AjouterEleveSecondaire />} />
                 <Route path="/secondaire/modifier_eleve/:id" element={<ModifierEleveSecondaire />} />
+                <Route path="/secondaire/types_eleves" element={<TypesElevesSecondaire />} />
                 <Route path="/secondaire/liste_eleve" element={<ListeEleveSecondaire />} />
                 <Route path="/secondaire/cartes_eleves" element={<CartesElevesSecondaire />} />
                 <Route path="/secondaire/cartes_personnel" element={<CartesPersonnelSecondaire />} />
@@ -1007,6 +1011,7 @@ const App = () => {
                       <Route path="/primaire/liste_membre_effectif" element={<ListeMembreEffectifprimaire />} />
                       {/* Eleves du primaire */}
                       <Route path="/primaire/ajouter_eleve" element={<AjouterEleveprimaire />} />
+                      <Route path="/primaire/types_eleves" element={<TypesElevesPrimaire />} />
                       <Route path="/primaire/liste_eleve" element={<ListeEleveprimaire />} />
                       <Route path="/primaire/cartes_eleves" element={<CartesElevesprimaire />} />
                       <Route path="/primaire/cartes_personnel" element={<CartesPersonnelprimaire />} />
@@ -1188,6 +1193,7 @@ const App = () => {
                       <Route path="/maternelle/liste_membre_effectif" element={<ListeMembreEffectifmaternelle />} />
                       {/* Eleves du maternelle */}
                       <Route path="/maternelle/ajouter_eleve" element={<AjouterElevematernelle />} />
+                      <Route path="/maternelle/types_eleves" element={<TypesElevesMaternelle />} />
                       <Route path="/maternelle/liste_eleve" element={<ListeElevematernelle />} />
                       <Route path="/maternelle/cartes_eleves" element={<CartesElevesmaternelle />} />
                       <Route path="/maternelle/cartes_personnel" element={<CartesPersonnelmaternelle />} />

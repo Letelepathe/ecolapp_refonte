@@ -10,7 +10,7 @@ const SelectInfo = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedOption) {
-      setErrors("Veuillez sélectionner une option !");
+      setErrors("Veuillez sélectionner un bilan !");
       return;
     }
     setErrors('');
@@ -31,21 +31,21 @@ const SelectInfo = () => {
             <div className="card mb-3">
               <div className="card-body">
                 <p className="text-center u-style-951c0e5f">
-                  Sélectionnez une option de consultation
+                  Consulter le suivi des compétences
                 </p>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="option">Type de résultat</label>
+                    <label htmlFor="option">Type de bilan</label>
                     <select
                       id="option"
                       className="form-control"
                       value={selectedOption}
                       onChange={(e) => setSelectedOption(e.target.value)}>
                       
-                      <option value="">-- Sélectionner une option --</option>
-                      <option value="periodique">Résultats périodiques</option>
-                      <option value="semestriel">Résultats semestriels</option>
-                      <option value="annuel">Résultats Annuels</option>
+                      <option value="">-- Sélectionner un bilan --</option>
+                      <option value="periodique">Suivi continu des activités</option>
+                      <option value="semestriel">Bilan trimestriel des compétences</option>
+                      <option value="annuel">Bilan annuel des compétences</option>
                     </select>
                   </div>
                   {errors && <p className="text-danger">{errors}</p>}

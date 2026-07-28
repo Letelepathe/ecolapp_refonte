@@ -66,7 +66,7 @@ const ListePeriode = () => {
                 <thead>
                   <tr className="text-dark">
                     <th>Période</th>
-                    <th>Semestre</th>
+                    <th>Trimestre</th>
                     <th>Action</th>
                   </tr>
                 </thead>
