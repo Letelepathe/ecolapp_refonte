@@ -46,7 +46,7 @@ const Header = () => {
     const checkSession = () => {
       const userId = localStorage.getItem('userId');
       const Direction = localStorage.getItem('direction');
-      if (user && userId && Number(Direction) === 3 && user.ecole_id === Number(ecole_id)) {
+      if (user && userId && Number(Direction) === 2 && user.ecole_id === Number(ecole_id)) {
         setAuthenticated(true);
       } else {
         setAuthenticated(false);
