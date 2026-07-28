@@ -13,9 +13,7 @@ const ListeEleve = () => {
   const [eleves, setEleves] = useState([]);
   const [filteredEleves, setFilteredEleves] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [options, setOptions] = useState([]);
   const [selectedClasse, setSelectedClasse] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -40,41 +38,33 @@ const ListeEleve = () => {
     }
   };
 
-  const fetchClassesAndOptions = async () => {
+  const fetchClasses = async () => {
     try {
-      const [classesResponse, optionsResponse] = await Promise.all([
-        axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`),
-        axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`),
-      ]);
-
+      const classesResponse = await axios.get(
+        `https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`
+      );
       setClasses(classesResponse.data.classesAll);
-      setOptions(optionsResponse.data.optionAll);
     } catch (error) {
-      setError("Erreur lors de la récupération des classes ou options.");
+      setError("Erreur lors de la récupération des classes.");
     }
   };
 
   useEffect(() => {
     fetchEleves(currentPage);
-    fetchClassesAndOptions();
+    fetchClasses();
   }, [currentPage, ecole_id, direction]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-    filterEleves(e.target.value, selectedClasse, selectedOption);
+    filterEleves(e.target.value, selectedClasse);
   };
 
   const handleClasseChange = (e) => {
     setSelectedClasse(e.target.value);
-    filterEleves(searchQuery, e.target.value, selectedOption);
+    filterEleves(searchQuery, e.target.value);
   };
 
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-    filterEleves(searchQuery, selectedClasse, e.target.value);
-  };
-
-  const filterEleves = (query, classe, option) => {
+  const filterEleves = (query, classe) => {
     const filtered = eleves.filter((eleve) => {
       const matchesQuery =
         query === "" ||
@@ -83,9 +73,7 @@ const ListeEleve = () => {
         (eleve.last_name && eleve.last_name.toLowerCase().includes(query.toLowerCase()));
 
       const matchesClasse = classe === "" || eleve.classe?.id === parseInt(classe);
-      const matchesOption = option === "" || eleve.option?.id === parseInt(option);
-
-      return matchesQuery && matchesClasse && matchesOption;
+      return matchesQuery && matchesClasse;
     });
 
     setFilteredEleves(filtered);
@@ -156,18 +144,6 @@ const ListeEleve = () => {
                       </option>
                     ))}
                   </select>
-                  <select
-                    className="form-select"
-                    value={selectedOption}
-                    onChange={handleOptionChange}
-                  >
-                    <option value="">Toutes les options</option>
-                    {options.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
                 </div>
               </div>
 
@@ -188,7 +164,6 @@ const ListeEleve = () => {
                           <th>Prénom</th>
                           <th>Description</th>
                           <th>Classe</th>
-                          <th>Option</th>
                           <th>Année Scolaire</th>
                           <th>Action</th>
                         </tr>
@@ -203,7 +178,6 @@ const ListeEleve = () => {
                             <td>{eleve.first_name}</td>
                             <td>{eleve.description}</td>
                             <td>{eleve.classe.name}</td>
-                            <td>{eleve.option.name}</td>
                             <td>{eleve.annee.name}</td>
                             <td>
                               <button

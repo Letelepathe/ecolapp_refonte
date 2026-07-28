@@ -1,6 +1,7 @@
 import React from "react";
+import SelectTypeEleve from "../TypesEleves/SelectTypeEleve";
 
-const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer }) =>
+const LigneEleve = ({ eleve, index, classes, options, annees, typesEleves = [], afficherOption = true, err = {}, peutRetirer, majChamp, retirer }) =>
   <div className="border rounded p-3 mb-3 bg-light">
     <div className="d-flex justify-content-between align-items-center mb-2">
       <h6 className="mb-0 u-style-04aba780">
@@ -79,7 +80,7 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         </select>
         {err.classes_id && <p className="text-danger">{err.classes_id}</p>}
       </div>
-      <div className="col-lg-4 col-12">
+      {afficherOption && <div className="col-lg-4 col-12">
         <label>Option</label>
         <select name="options_id" className="form-control" value={eleve.options_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une option</option>
@@ -88,8 +89,20 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
           )}
         </select>
         {err.options_id && <p className="text-danger">{err.options_id}</p>}
-      </div>
+      </div>}
       <div className="col-12">
+        <SelectTypeEleve
+          types={typesEleves}
+          value={eleve.type_eleve_id}
+          name={`type-eleve-${index}`}
+          onChange={(event) =>
+            majChamp(index, {
+              target: { name: "type_eleve_id", value: event.target.value },
+            })
+          }
+        />
+      </div>
+      <div className="col-12 mt-3">
         <label>Description</label>
         <textarea name="description" className="form-control" value={eleve.description} onChange={(event) => majChamp(index, event)} />
       </div>

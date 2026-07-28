@@ -44,7 +44,7 @@ const AjouterPeriode = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.periode = "La periode est requise";
-    if (!formData.semestre_id) newErrors.periode = "Le semestre est requis";
+    if (!formData.semestre_id) newErrors.periode = "Le trimestre est requis";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -111,9 +111,9 @@ const AjouterPeriode = () => {
                     </div>
 
                     <div className="mb-3">
-                      <label htmlFor="semestre_id">Semestre</label>
+                      <label htmlFor="semestre_id">Trimestre</label>
                       <select name="semestre_id" className="form-control" value={formData.semestre_id} onChange={handleInputChange} required>
-                        <option value="">Sélectionner un semestre</option>
+                        <option value="">Sélectionner un trimestre</option>
                         {semestres.map((semestre) =>
                         <option key={semestre.id} value={semestre.id}>{semestre.name}</option>
                         )}

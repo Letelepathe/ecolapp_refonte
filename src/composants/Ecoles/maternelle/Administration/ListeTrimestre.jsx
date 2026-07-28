@@ -64,7 +64,7 @@ const ListeTrimestre = () => {
               <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
-                    <th>Semestre</th>
+                    <th>Trimestre</th>
                     <th>Action</th>
                   </tr>
                 </thead>

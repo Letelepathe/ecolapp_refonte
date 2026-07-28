@@ -12502,3 +12502,190 @@ button[class="refonte-menu-btn"]{
     justify-content: center;
   }
 }
+/* Reçu financier commun : aperçu, impression et téléchargement PDF. */
+.apercu-recu-financier .modal-content {
+  width: min(940px, calc(100vw - 28px));
+  max-height: calc(100vh - 28px);
+  overflow: auto;
+}
+
+.apercu-recu-financier__zone {
+  padding: 22px;
+  border-radius: 12px;
+  background: #eef2f7;
+}
+
+.recu-financier {
+  width: min(100%, 760px);
+  min-height: 920px;
+  margin: 0 auto;
+  padding: 42px;
+  color: #172033;
+  background: #fff;
+  border: 1px solid #dce3ec;
+  border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 12px 34px rgba(23, 32, 51, 0.12);
+}
+
+.recu-financier__entete,
+.recu-financier__pied {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.recu-financier__entete {
+  padding-bottom: 26px;
+  border-bottom: 3px solid #2166f3;
+}
+
+.recu-financier__marque {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.recu-financier__marque img {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.recu-financier__marque strong,
+.recu-financier__marque span,
+.recu-financier__numero span,
+.recu-financier__numero strong {
+  display: block;
+}
+
+.recu-financier__marque strong {
+  color: #164ec0;
+  font-size: 20px;
+}
+
+.recu-financier__marque span,
+.recu-financier__identite span,
+.recu-financier__ligne span,
+.recu-financier__pied span {
+  color: #657089;
+  font-size: 13px;
+}
+
+.recu-financier__numero {
+  text-align: right;
+}
+
+.recu-financier__numero span {
+  color: #164ec0;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.recu-financier__numero strong {
+  margin: 5px 0 8px;
+  font-size: 18px;
+}
+
+.recu-financier__numero em {
+  display: inline-block;
+  padding: 5px 12px;
+  color: #14743e;
+  background: #dff6e8;
+  border-radius: 999px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.recu-financier__identite {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 28px;
+  margin: 30px 0;
+  padding: 24px;
+  background: #f6f8fc;
+  border-radius: 10px;
+}
+
+.recu-financier__identite strong {
+  display: block;
+  margin-top: 5px;
+}
+
+.recu-financier__details {
+  overflow: hidden;
+  border: 1px solid #dce3ec;
+  border-radius: 10px;
+}
+
+.recu-financier__ligne {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e7ebf1;
+}
+
+.recu-financier__ligne:last-child {
+  border-bottom: 0;
+}
+
+.recu-financier__total {
+  color: #fff;
+  background: #2166f3;
+}
+
+.recu-financier__total span {
+  color: #dfe9ff;
+}
+
+.recu-financier__total strong {
+  font-size: 22px;
+}
+
+.recu-financier__pied {
+  align-items: flex-end;
+  margin-top: 48px;
+}
+
+.recu-financier__pied strong {
+  display: block;
+  margin-top: 6px;
+}
+
+.recu-financier__signature {
+  width: 210px;
+  min-height: 72px;
+  padding-top: 50px;
+  text-align: center;
+  border-bottom: 1px solid #172033;
+}
+
+.recu-financier__note {
+  margin: 42px 0 0;
+  color: #7a8498;
+  font-size: 11px;
+  text-align: center;
+}
+
+@media (max-width: 680px) {
+  .apercu-recu-financier__zone { padding: 8px; }
+  .recu-financier { min-height: 0; padding: 22px; }
+  .recu-financier__entete,
+  .recu-financier__pied { flex-direction: column; }
+  .recu-financier__numero { text-align: left; }
+  .recu-financier__identite { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .recu-financier {
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}

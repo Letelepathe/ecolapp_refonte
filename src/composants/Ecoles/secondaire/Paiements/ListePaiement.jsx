@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import SidebarLeft from "../Administration/SidebarLeft";
 import NavbarTop from "../Administration/NavbarTop";
 import LogoEcoleApp from '../../../../static/images/logo_ecolapp.jpg';
+import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
+import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
 
 const ListePaiement = () => {
   const ecole_id = localStorage.getItem('ecole_id'); 
@@ -150,11 +152,15 @@ const ListePaiement = () => {
   };
 
   const printReceipt = () => {
-    window.print();
+    imprimerRecuPaiement(receiptRef.current, selectedReceipt?.id);
   };
 
   return (
     <div className="container-fluid position-relative  d-flex p-0">
+      <ApercuRecuPaiement
+        paiement={selectedReceipt}
+        onFermer={() => setSelectedReceipt(null)}
+      />
       <SidebarLeft />
       <div className="content">
         <NavbarTop />

@@ -1,6 +1,3 @@
-export const AGE_MINIMUM_ELEVE_MESSAGE =
-  "La date de naissance d'un élève doit correspondre à au moins 3 ans pour la maternelle et 5 ans pour le primaire.";
-
 export const getAgeMinimumEleveError = (dateNaissance, ageMinimum) => {
   if (!dateNaissance) {
     return "Date de naissance requise";
@@ -30,8 +27,34 @@ export const getAgeMinimumEleveError = (dateNaissance, ageMinimum) => {
   );
 
   if (birthDate > minimumBirthDate) {
-    return AGE_MINIMUM_ELEVE_MESSAGE;
+    return `L'enfant doit avoir au moins ${ageMinimum} ans pour ce cycle.`;
   }
 
   return "";
+};
+
+export const getAgeEleveError = (
+  dateNaissance,
+  ageMinimum,
+  ageMaximum = null
+) => {
+  const erreurMinimum = getAgeMinimumEleveError(dateNaissance, ageMinimum);
+  if (erreurMinimum) return erreurMinimum;
+
+  if (!ageMaximum) return "";
+
+  const [year, month, day] = dateNaissance.split("-").map(Number);
+  const birthDate = new Date(year, month - 1, day);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const anniversairePasse =
+    today.getMonth() > birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() &&
+      today.getDate() >= birthDate.getDate());
+
+  if (!anniversairePasse) age -= 1;
+
+  return age > ageMaximum
+    ? `La maternelle accueille les enfants de ${ageMinimum} à ${ageMaximum} ans.`
+    : "";
 };
