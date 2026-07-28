@@ -5,11 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import ConfirmModal from "./ConfirmModal";
+import {
+  obtenirNomTypeEleve,
+  useTypesEleves,
+} from "../../../../services/typesEleves/useTypesEleves";
 
 const ListeEleve = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
   const navigate = useNavigate();
+  const typesEleves = useTypesEleves();
 
   const [eleves, setEleves] = useState([]);
   const [filteredEleves, setFilteredEleves] = useState([]);
@@ -204,6 +209,7 @@ const ListeEleve = () => {
                           <th>Description</th>
                           <th>Classe</th>
                           <th>Option</th>
+                          <th>Type d'élève</th>
                           <th>Année Scolaire</th>
                           <th>Action</th>
                         </tr>
@@ -219,6 +225,7 @@ const ListeEleve = () => {
                             <td>{eleve.description}</td>
                             <td>{eleve.classe.name}</td>
                             <td>{eleve.option.name}</td>
+                            <td>{obtenirNomTypeEleve(eleve, typesEleves)}</td>
                             <td>{eleve.annee.name}</td>
                             <td>
                               <select

@@ -7,6 +7,7 @@ import NavbarTop from "../Administration/NavbarTop";
 import LogoEcoleApp from '../../../../static/images/logo_ecolapp.jpg';
 import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
 import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
+import ImpressionListePaiements from "../../common/Paiements/ImpressionListePaiements";
 
 
 const PaiementEnOrdre = () => {
@@ -148,6 +149,10 @@ const PaiementEnOrdre = () => {
             <Link to="/maternelle/ajouter_paiement" className="btn  mb-3">
               <i className="bi bi-plus"></i> Ajouter paiement
             </Link>
+            <ImpressionListePaiements
+              paiements={paiements}
+              titre="Paiements en ordre"
+            />
           </div>
           <div className="justify-content-between align-items-center d-flex">
             

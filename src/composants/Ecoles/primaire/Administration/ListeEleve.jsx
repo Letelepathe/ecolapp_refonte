@@ -5,8 +5,13 @@ import { Link } from "react-router-dom";
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import ConfirmModal from "./ConfirmModal";
+import {
+  obtenirNomTypeEleve,
+  useTypesEleves,
+} from "../../../../services/typesEleves/useTypesEleves";
 
 const ListeEleve = () => {
+  const typesEleves = useTypesEleves();
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
 
@@ -164,6 +169,7 @@ const ListeEleve = () => {
                           <th>Prénom</th>
                           <th>Description</th>
                           <th>Classe</th>
+                          <th>Type d'élève</th>
                           <th>Année Scolaire</th>
                           <th>Action</th>
                         </tr>
@@ -178,6 +184,7 @@ const ListeEleve = () => {
                             <td>{eleve.first_name}</td>
                             <td>{eleve.description}</td>
                             <td>{eleve.classe.name}</td>
+                            <td>{obtenirNomTypeEleve(eleve, typesEleves)}</td>
                             <td>{eleve.annee.name}</td>
                             <td>
                               <button
