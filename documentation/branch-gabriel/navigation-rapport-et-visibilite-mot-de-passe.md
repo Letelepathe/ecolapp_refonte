@@ -18,3 +18,9 @@
 ## Backend
 
 Aucune nouvelle API ni modification de base de données n’est nécessaire pour ces changements d’interface. Le rapport utilise l’API d’état financier déjà intégrée.
+
+## Impression financière
+
+- Les impressions financières sont préparées sous forme de pages visuelles stables avant l’ouverture du dialogue système. Cela évite les aperçus blancs provoqués par des styles, polices ou images encore en chargement.
+- Les documents longs sont découpés automatiquement selon le format et l’orientation demandés.
+- Les listes « en ordre », « avec dettes » et l’état financier global utilisent un pied partagé avec date d’édition, zones de signature et cachet.

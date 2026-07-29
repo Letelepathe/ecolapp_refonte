@@ -7,6 +7,7 @@ import {
 import { api } from "../../../api/api";
 import { obtenirUrlLogoEcole } from "../../../../services/ecoles/ecoleAssets";
 import EtatFinancierGlobal from "./EtatFinancierGlobal";
+import PiedDocumentFinancier from "./PiedDocumentFinancier";
 
 const valeur = (objet, chemin, defaut = "—") =>
   chemin.split(".").reduce((resultat, cle) => resultat?.[cle], objet) ?? defaut;
@@ -290,6 +291,7 @@ const ImpressionListePaiements = ({ paiements = [], titre }) => {
                       </div>
                     ))}
                   </div>
+                  <PiedDocumentFinancier />
                 </div>
               </div>
               <div className="modal-footer">

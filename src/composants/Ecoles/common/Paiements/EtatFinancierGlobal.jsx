@@ -6,6 +6,7 @@ import {
   telechargerDocumentPdf,
 } from "../../../common/impressionDocuments";
 import { obtenirUrlLogoEcole } from "../../../../services/ecoles/ecoleAssets";
+import PiedDocumentFinancier from "./PiedDocumentFinancier";
 
 const DECoupages = [
   ["annee", "Année scolaire"],
@@ -279,6 +280,9 @@ const EtatFinancierGlobal = ({ className = "btn mb-3" }) => {
                         </div>
                       </section>
                     ))}
+                    <PiedDocumentFinancier
+                      signatures={["Service financier", "Chef d’établissement"]}
+                    />
                   </div>
                 )}
               </div>

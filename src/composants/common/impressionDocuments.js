@@ -25,54 +25,12 @@ const attendreImages = async (conteneur) => {
   );
 };
 
-const attendreFeuillesStyle = async (documentImpression) => {
-  const feuilles = Array.from(
-    documentImpression.querySelectorAll('link[rel="stylesheet"]')
-  );
-
-  await Promise.all(
-    feuilles.map(
-      (feuille) =>
-        new Promise((resolve) => {
-          if (feuille.sheet) {
-            resolve();
-            return;
-          }
-          feuille.addEventListener("load", resolve, { once: true });
-          feuille.addEventListener("error", resolve, { once: true });
-          setTimeout(resolve, 5000);
-        })
-    )
-  );
-};
-
 const attendreMiseEnPage = (fenetre) =>
   new Promise((resolve) => {
     fenetre.requestAnimationFrame(() => {
       fenetre.requestAnimationFrame(() => setTimeout(resolve, 100));
     });
   });
-
-const clonerAvecStylesCalcules = (zone) => {
-  const clone = zone.cloneNode(true);
-  const sources = [zone, ...zone.querySelectorAll("*")];
-  const destinations = [clone, ...clone.querySelectorAll("*")];
-
-  sources.forEach((source, index) => {
-    const destination = destinations[index];
-    const styles = window.getComputedStyle(source);
-
-    Array.from(styles).forEach((propriete) => {
-      destination.style.setProperty(
-        propriete,
-        styles.getPropertyValue(propriete),
-        styles.getPropertyPriority(propriete)
-      );
-    });
-  });
-
-  return clone;
-};
 
 const attendreDocument = (fenetre) =>
   new Promise((resolve) => {
@@ -84,10 +42,66 @@ const attendreDocument = (fenetre) =>
     setTimeout(resolve, 1500);
   });
 
-const stylesDeLaPage = () =>
-  Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
-    .map((element) => element.outerHTML)
-    .join("\n");
+const dimensionsPage = (format, orientation) => {
+  const formats = {
+    A4: [210, 297],
+    A5: [148, 210],
+    LETTER: [216, 279],
+  };
+  const dimensions = formats[String(format).toUpperCase()] || formats.A4;
+  return orientation === "landscape" ? [...dimensions].reverse() : dimensions;
+};
+
+const margeEnMillimetres = (marge) => {
+  const valeur = Number.parseFloat(String(marge));
+  return Number.isFinite(valeur) ? valeur : 10;
+};
+
+const capturerPages = async (zone, { format, orientation, marge }) => {
+  await document.fonts?.ready;
+  await attendreImages(zone);
+
+  const toile = await html2canvas(zone, {
+    backgroundColor: "#ffffff",
+    scale: Math.min(2.5, Math.max(2, window.devicePixelRatio || 2)),
+    useCORS: true,
+    allowTaint: false,
+    logging: false,
+  });
+  const [largeurPage, hauteurPage] = dimensionsPage(format, orientation);
+  const margeMm = margeEnMillimetres(marge);
+  const largeurUtile = Math.max(1, largeurPage - margeMm * 2);
+  const hauteurUtile = Math.max(1, hauteurPage - margeMm * 2);
+  const hauteurSegment = Math.max(
+    1,
+    Math.floor(toile.width * (hauteurUtile / largeurUtile)),
+  );
+  const pages = [];
+
+  for (let haut = 0; haut < toile.height; haut += hauteurSegment) {
+    const hauteur = Math.min(hauteurSegment, toile.height - haut);
+    const page = document.createElement("canvas");
+    page.width = toile.width;
+    page.height = hauteur;
+    const contexte = page.getContext("2d");
+    contexte.fillStyle = "#ffffff";
+    contexte.fillRect(0, 0, page.width, page.height);
+    contexte.drawImage(
+      toile,
+      0,
+      haut,
+      toile.width,
+      hauteur,
+      0,
+      0,
+      toile.width,
+      hauteur,
+    );
+    pages.push(page.toDataURL("image/png"));
+  }
+
+  return pages;
+};
 
 export const imprimerDocument = async (
   zone,
@@ -112,18 +126,18 @@ export const imprimerDocument = async (
     return false;
   }
 
-  const titreSecurise = echapperHtml(titre);
-  const classeSecurisee = echapperHtml(classeDocument);
-  const zoneImpression = clonerAvecStylesCalcules(zone);
-  fenetre.document.open();
-  fenetre.document.write(`<!doctype html>
+  try {
+    const pages = await capturerPages(zone, { format, orientation, marge });
+    const titreSecurise = echapperHtml(titre);
+    const classeSecurisee = echapperHtml(classeDocument);
+    fenetre.document.open();
+    fenetre.document.write(`<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <base href="${echapperHtml(document.baseURI)}" />
   <title>${titreSecurise}</title>
-  ${stylesDeLaPage()}
   <style>
     * {
       box-sizing: border-box;
@@ -131,40 +145,36 @@ export const imprimerDocument = async (
       print-color-adjust: exact !important;
     }
     html, body { margin: 0; padding: 0; background: #fff; }
-    body { padding: ${marge}; }
     .document-impression {
       width: 100%;
-      max-width: 100%;
       margin: 0 auto;
-      visibility: visible !important;
     }
-    .document-impression,
-    .document-impression * { visibility: visible !important; }
-    .hide-on-print,
-    .no-print,
-    button { display: none !important; }
+    .page-impression {
+      width: 100%;
+      break-after: page;
+      page-break-after: always;
+    }
+    .page-impression:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+    .page-impression img { display: block; width: 100%; height: auto; }
     @page { size: ${format} ${orientation}; margin: ${marge}; }
-    @media print {
-      body { padding: 0; }
-      .document-impression {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-    }
   </style>
 </head>
 <body>
   <main class="document-impression ${classeSecurisee}">
-    ${zoneImpression.outerHTML}
+    ${pages
+      .map(
+        (page, index) =>
+          `<section class="page-impression"><img src="${page}" alt="Page ${index + 1} du document" /></section>`,
+      )
+      .join("")}
   </main>
 </body>
 </html>`);
-  fenetre.document.close();
-
-  try {
+    fenetre.document.close();
     await attendreDocument(fenetre);
-    await attendreFeuillesStyle(fenetre.document);
-    await fenetre.document.fonts?.ready;
     await attendreImages(fenetre.document);
     await attendreMiseEnPage(fenetre);
     fenetre.focus();
@@ -173,7 +183,8 @@ export const imprimerDocument = async (
     });
     fenetre.print();
     return true;
-  } catch {
+  } catch (erreur) {
+    console.error("Préparation de l'impression impossible", erreur);
     fenetre.close();
     window.alert(
       "L'impression n'a pas pu être préparée. Rechargez la page puis réessayez."
