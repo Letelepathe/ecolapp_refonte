@@ -3,6 +3,7 @@ import axios from "axios";
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import Footer from "./Footer";
+import ModalElevesParent from "../../common/Parents/ModalElevesParent";
 
 const API_PARENTS_ECOLE_DIRECTION = "https://api.ecolapp.cd/api/parents/ecole-direction";
 const API_PARENT_DETAILS = "https://api.ecolapp.cd/api/parents";
@@ -46,8 +47,17 @@ const messageErreurApi = (error, fallback) => {
   return error.response?.data?.message || fallback;
 };
 
+const elevePrincipal = (eleves = []) =>
+  eleves.find(
+    (eleve) =>
+      Number(eleve.status) === 1 ||
+      Number(eleve.inscription?.status) === 1 ||
+      Number(eleve.inscription?.active) === 1
+  ) || eleves[0];
+
 const Parents = () => {
   const [parents, setParents] = useState([]);
+  const [parentEleves, setParentEleves] = useState(null);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
   const [modalDetailsOuvert, setModalDetailsOuvert] = useState(false);
@@ -260,7 +270,7 @@ const Parents = () => {
                 <p className="text-danger mb-0">{erreur}</p>
               ) : (
                 <div className="table-responsive">
-                  <table className="table text-start align-middle mb-0">
+                  <table className="table parents-table text-start align-middle mb-0">
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -280,7 +290,9 @@ const Parents = () => {
                           </td>
                         </tr>
                       ) : (
-                        parents.map((parent) => (
+                        parents.map((parent) => {
+                          const premierEleve = elevePrincipal(parent.eleves);
+                          return (
                           <tr key={parent.id}>
                             <td>{parent.id}</td>
                             <td>{parent.nom}</td>
@@ -288,11 +300,23 @@ const Parents = () => {
                             <td>{parent.telephone}</td>
                             {afficherCodeParent && <td>{parent.code || ""}</td>}
                             <td>
-                              {parent.eleves?.map((eleve) => (
-                                <div key={eleve.id}>
-                                  {eleve.name} {eleve.direction ? `(${eleve.direction})` : ""}
+                              {parent.eleves?.length ? (
+                                <div className="parent-eleves-resume">
+                                  <span title={premierEleve.name}>
+                                    {premierEleve.name}
+                                    {premierEleve.direction ? ` (${premierEleve.direction})` : ""}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    className="parent-eleves-lien"
+                                    onClick={() => setParentEleves(parent)}
+                                  >
+                                    Voir les enfants ({parent.eleves.length})
+                                  </button>
                                 </div>
-                              ))}
+                              ) : (
+                                <span className="text-muted">Aucun enfant lié</span>
+                              )}
                             </td>
                             <td>
                               <div className="d-flex flex-wrap gap-2">
@@ -314,7 +338,8 @@ const Parents = () => {
                               </div>
                             </td>
                           </tr>
-                        ))
+                          );
+                        })
                       )}
                     </tbody>
                   </table>
@@ -325,6 +350,8 @@ const Parents = () => {
           <Footer />
         </div>
       </div>
+
+      <ModalElevesParent parent={parentEleves} onFermer={() => setParentEleves(null)} />
 
       {modalDetailsOuvert && (
         <>

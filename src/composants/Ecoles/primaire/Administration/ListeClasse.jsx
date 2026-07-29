@@ -46,7 +46,7 @@ const ListeClasse = () => {
   return (
     <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft />
-      <div className="content">
+      <div className="content liste-reference-page liste-classe-page">
         <NavbarTop />
         <div className="container">
           <section className="section">

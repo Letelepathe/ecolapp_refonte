@@ -183,13 +183,13 @@ const PaiementEnOrdre = () => {
               Paiements avec dettes
             </button>
           </div>
-          <div className="table-responsive hide-on-print">
+          <div className="filtres-paiements hide-on-print">
             
             {error && <p className="text-danger">{error}</p>}
 
             {/* Sélection de la classe */}
             <select
-              className="form-select mb-3"
+              className="form-select"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
@@ -202,7 +202,7 @@ const PaiementEnOrdre = () => {
             </select>
 
             <select
-                className="form-select mb-3"
+                className="form-select"
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
             >
@@ -217,12 +217,14 @@ const PaiementEnOrdre = () => {
             {/* Barre de recherche */}
             <input
               type="text"
-              className="form-control mb-3"
+              className="form-control recherche-paiements"
               placeholder="Rechercher par nom, postnom, prénom, matricule ou année..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
 
+          </div>
+          <div className="table-responsive hide-on-print">
             {filteredPaiements.length > 0 ? (
               <table className="table text-start align-middle   mb-0">
                 <thead>

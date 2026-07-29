@@ -166,13 +166,13 @@ const ListePaiement = () => {
       <div className="content">
         <NavbarTop />
         <section className="container mt-3   py-3">
-          <div className="justify-content-between align-items-center d-flex">
+          <div className="entete-liste-paiements justify-content-between align-items-center d-flex">
             <h2 className="text-primary text-center">Liste des paiements</h2>
             <Link to="/secondaire/ajouter_paiement" className="btn  mb-3">
               <i className="bi bi-plus"></i> Ajouter paiement
             </Link>
           </div>
-          <div className="justify-content-between align-items-center d-flex">
+          <div className="actions-paiements justify-content-between align-items-center d-flex">
             <button
               className="btn "
               onClick={() => {
@@ -193,13 +193,13 @@ const ListePaiement = () => {
             </button>
             <EtatFinancierGlobal className="btn" />
           </div>
-          <div className="table-responsive hide-on-print">
+          <div className="filtres-paiements hide-on-print">
             
             {error && <p className="text-danger">{error}</p>}
 
             {/* Sélection de la classe */}
             <select
-              className="form-select mb-3"
+              className="form-select"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
@@ -212,7 +212,7 @@ const ListePaiement = () => {
             </select>
 
             <select
-                className="form-select mb-3"
+                className="form-select"
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
             >
@@ -227,12 +227,14 @@ const ListePaiement = () => {
             {/* Barre de recherche */}
             <input
               type="text"
-              className="form-control mb-3"
+              className="form-control recherche-paiements"
               placeholder="Rechercher par nom, postnom, prénom, matricule ou année..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
 
+          </div>
+          <div className="table-responsive hide-on-print">
             {filteredPaiements.length > 0 ? (
               <table className="table text-start align-middle   mb-0">
                 <thead>

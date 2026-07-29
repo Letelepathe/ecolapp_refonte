@@ -131,18 +131,21 @@ const EtatFinancierGlobal = ({ className = "btn mb-3" }) => {
       </button>
 
       {ouvert && (
-        <div className="modal d-block" role="dialog" aria-modal="true" style={{ backgroundColor: "rgba(0,0,0,.45)" }}>
+        <div className="modal d-block apercu-rapport-financier" role="dialog" aria-modal="true" style={{ backgroundColor: "rgba(0,0,0,.45)" }}>
           <div className="modal-dialog modal-xl modal-dialog-scrollable">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">État financier global</h5>
+                <div>
+                  <h5 className="modal-title">Aperçu de l’état financier global</h5>
+                  <p className="text-muted mb-0 mt-1">Les filtres configurent le rapport. Seule la page blanche sera imprimée.</p>
+                </div>
                 <button className="btn-close" type="button" aria-label="Fermer" onClick={() => setOuvert(false)} />
               </div>
               <div className="modal-body">
                 {chargementRefs ? (
                   <p>Chargement des filtres…</p>
                 ) : (
-                  <div className="row g-3 mb-3 hide-on-print">
+                  <div className="configuration-rapport-financier row g-3 mb-3 hide-on-print">
                     <div className="col-md-3">
                       <label className="form-label">Année scolaire</label>
                       <select className="form-select" name="annee_id" value={filtres.annee_id} onChange={modifierFiltre}>
@@ -199,8 +202,8 @@ const EtatFinancierGlobal = ({ className = "btn mb-3" }) => {
                 {erreur && <div className="alert alert-danger">{erreur}</div>}
 
                 {rapport && (
-                  <div ref={documentRef} className="bg-white p-3">
-                    <header className="d-flex justify-content-between align-items-start border-bottom border-primary border-2 pb-3 mb-3">
+                  <div ref={documentRef} className="document-financier apercu-rapport-financier__document bg-white p-3">
+                    <header className="document-financier__entete d-flex justify-content-between align-items-start border-bottom border-primary border-2 pb-3 mb-3">
                       <div className="d-flex gap-3 align-items-center">
                         <img
                           src={obtenirUrlLogoEcole(ecole, LogoEcoleApp)}

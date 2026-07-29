@@ -47,7 +47,7 @@ const ListeDevise = () => {
   return (
     <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
-      <div className="content">
+      <div className="content liste-devise-page">
         <NavbarTop/>
         <div className="container">
           <div className="table-responsive">

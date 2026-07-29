@@ -421,6 +421,182 @@ a:hover {
   }
 }
 
+/* Ajustements responsifs communs sans modifier l'identité visuelle. */
+.content,
+.content .container,
+.content .container-fluid,
+.content .section,
+.content .card,
+.content .card-body,
+.modal-content,
+.custom-modal > .modal-content {
+  min-width: 0;
+}
+
+.content img,
+.modal img,
+.custom-modal img {
+  max-width: 100%;
+}
+
+.content .d-flex.justify-content-between,
+.actions-paiements,
+.modal-footer,
+.custom-modal .modal-footer {
+  flex-wrap: wrap;
+}
+
+.actions-paiements {
+  gap: 10px;
+}
+
+.actions-paiements > .btn {
+  flex: 1 1 180px;
+  margin: 0 !important;
+  white-space: normal;
+}
+
+.modal .modal-content,
+.custom-modal > .modal-content {
+  max-height: calc(100dvh - 36px);
+}
+
+.modal-body,
+.custom-modal > .modal-content {
+  overscroll-behavior: contain;
+}
+
+.modal-body {
+  overflow-y: auto;
+}
+
+.custom-modal > .modal-content {
+  overflow-y: auto;
+}
+
+.modal-footer > .btn,
+.custom-modal .modal-footer > .btn {
+  white-space: normal;
+}
+
+.document-financier,
+.document-financier * {
+  min-width: 0;
+}
+
+.document-financier__entete > *,
+.recu-financier__entete > *,
+.recu-financier__ligne > * {
+  overflow-wrap: anywhere;
+}
+
+.pied-document-financier__contenu,
+.pied-document-financier__signatures {
+  flex-wrap: wrap;
+}
+
+.pied-document-financier__signature {
+  flex: 1 1 150px;
+  max-width: 210px;
+}
+
+@media (max-width: 768px) {
+  .modal.fade.show,
+  .modal.show.d-block,
+  .custom-modal {
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .modal-dialog {
+    margin: auto;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer,
+  .custom-modal > .modal-content > .modal-title,
+  .custom-modal > .modal-content > :not(.modal-title):not(.modal-footer):not(button),
+  .custom-modal .modal-footer {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .document-financier__entete {
+    flex-direction: column;
+  }
+
+  .document-financier__entete .text-end {
+    width: 100%;
+    text-align: left !important;
+  }
+
+  .pied-document-financier__contenu,
+  .pied-document-financier__signatures {
+    width: 100%;
+  }
+
+  .pied-document-financier__signatures {
+    justify-content: flex-start !important;
+    gap: 18px !important;
+  }
+
+  .apercu-recu-financier .modal-content {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 20px);
+  }
+}
+
+@media (max-width: 576px) {
+  .content form .row > [class*="col-"],
+  .modal form .row > [class*="col-"],
+  .custom-modal form .row > [class*="col-"] {
+    width: 100%;
+  }
+
+  .content .input-group {
+    flex-wrap: nowrap;
+  }
+
+  .content .input-group > .form-control {
+    min-width: 0;
+  }
+
+  .actions-paiements > .btn,
+  .modal-footer > .btn,
+  .custom-modal .modal-footer > .btn {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .recu-financier {
+    padding: 18px;
+  }
+
+  .recu-financier__marque,
+  .recu-financier__ligne {
+    align-items: flex-start;
+  }
+
+  .recu-financier__marque {
+    flex-direction: column;
+  }
+
+  .recu-financier__ligne {
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+  }
+
+  .recu-financier__signature {
+    width: min(210px, 100%);
+  }
+
+  .pied-document-financier__signature {
+    max-width: none;
+  }
+}
+
 /* src/composants/Ecoles/Ecoles.css */
 .bloc-ecole-3{
   margin-top: 0;
@@ -12705,5 +12881,632 @@ button[class="refonte-menu-btn"]{
     border: 0;
     border-radius: 0;
     box-shadow: none;
+  }
+}
+
+/* Bureau d'administration : cartes fluides sans débordement. */
+.dashboard-page,
+.dashboard-main-grid,
+.dashboard-main-grid > *,
+.dashboard-card,
+.dashboard-stat-link,
+.dashboard-stat {
+  min-width: 0;
+}
+
+.dashboard-page .dashboard-stat-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+}
+
+.dashboard-page .dashboard-stat-link,
+.dashboard-page .dashboard-stat {
+  width: 100%;
+  max-width: 100%;
+}
+
+.dashboard-page .dashboard-stat-heading,
+.dashboard-page .dashboard-stat h3,
+.dashboard-page .dashboard-stat p,
+.dashboard-page .dashboard-action > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-page .dashboard-section-heading {
+  flex-wrap: wrap;
+}
+
+.dashboard-page .chart-wrapper,
+.dashboard-page .chart-wrapper-2,
+.dashboard-page .chart-container,
+.dashboard-page canvas,
+.dashboard-page svg {
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .dashboard-page .dashboard-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-page .dashboard-stat {
+    height: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  .dashboard-page .dashboard-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pages du cycle scolaire : petits tableaux réellement adaptatifs. */
+.cycle-scolaire-page > .container,
+.cycle-scolaire-page > .section {
+  width: 100%;
+}
+
+.cycle-scolaire-page .section > [class*="col-"] {
+  width: min(100%, 860px);
+  max-width: 860px;
+  padding-right: 14px;
+  padding-left: 14px;
+}
+
+.cycle-scolaire-page .table-responsive {
+  width: 100%;
+}
+
+.cycle-scolaire-page table.table {
+  width: 100%;
+  min-width: 0;
+  table-layout: auto;
+}
+
+.cycle-scolaire-page table.table th,
+.cycle-scolaire-page table.table td {
+  overflow-wrap: anywhere;
+}
+
+.cycle-scolaire-page table.table td:last-child {
+  width: 1%;
+  min-width: 110px;
+  white-space: nowrap;
+}
+
+/* Générateur d'horaires : navigation compacte et contenu contenu dans l'écran. */
+.page-generer-horaire {
+  width: 100%;
+  max-width: 1480px;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.horaire-actions {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.horaire-retour {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: auto;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #dce6f4;
+  border-radius: 8px;
+  color: #1769ff;
+  background: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 5px 14px rgba(23, 105, 255, 0.08);
+}
+
+.horaire-retour:hover {
+  color: #0b57d0;
+  border-color: #b8cff5;
+  background: #f6f9ff;
+}
+
+.page-generer-horaire .table-responsive {
+  width: 100%;
+}
+
+.page-generer-horaire h2 {
+  flex-wrap: wrap;
+  font-size: clamp(1.05rem, 3vw, 1.5rem);
+}
+
+@media (max-width: 576px) {
+  .cycle-scolaire-page table.table td:last-child {
+    min-width: 90px;
+  }
+
+  .cycle-scolaire-page table.table .btn {
+    width: auto !important;
+    white-space: normal;
+  }
+
+  .page-generer-horaire {
+    margin-top: 14px !important;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+/* Liste des devises : l'action reste dans sa colonne visible. */
+.liste-devise-page > .container {
+  width: 100%;
+  max-width: 860px;
+}
+
+.liste-devise-page table.table {
+  width: 100%;
+  min-width: 0;
+  table-layout: auto;
+}
+
+.liste-devise-page table.table th:last-child,
+.liste-devise-page table.table td:last-child {
+  width: 1%;
+  min-width: 110px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Liste des paiements : actions et filtres compacts avant le tableau. */
+.entete-liste-paiements,
+.actions-paiements {
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.entete-liste-paiements {
+  flex-wrap: wrap;
+}
+
+.entete-liste-paiements .btn {
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.actions-paiements {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.actions-paiements > .btn {
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+}
+
+.filtres-paiements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid #e5ebf3;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.filtres-paiements > .alert,
+.filtres-paiements > .text-danger {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.filtres-paiements .recherche-paiements {
+  order: -1;
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .actions-paiements {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .actions-paiements > .btn:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .filtres-paiements .recherche-paiements {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .entete-liste-paiements {
+    align-items: stretch !important;
+  }
+
+  .entete-liste-paiements .btn,
+  .actions-paiements > .btn {
+    width: 100% !important;
+  }
+
+  .actions-paiements,
+  .filtres-paiements {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-paiements > .btn:last-child {
+    grid-column: auto;
+  }
+
+  .filtres-paiements .recherche-paiements {
+    grid-column: auto;
+  }
+}
+
+/* Petites listes de référence : colonnes stables et action toujours alignée. */
+.liste-reference-page > .container {
+  width: 100%;
+  max-width: 960px;
+}
+
+.liste-reference-page .table-responsive {
+  width: 100%;
+}
+
+.liste-reference-page table.table {
+  display: table;
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.liste-reference-page table.table thead {
+  display: table-header-group;
+}
+
+.liste-reference-page table.table tbody {
+  display: table-row-group;
+}
+
+.liste-reference-page table.table tr {
+  display: table-row;
+}
+
+.liste-reference-page table.table th,
+.liste-reference-page table.table td {
+  display: table-cell;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  vertical-align: middle;
+}
+
+.liste-reference-page table.table th:last-child,
+.liste-reference-page table.table td:last-child {
+  width: 125px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.liste-classe-page table.table th:first-child,
+.liste-classe-page table.table td:first-child {
+  width: 72px;
+}
+
+.liste-reference-page table.table td:last-child .btn {
+  width: auto !important;
+  max-width: 100%;
+  white-space: normal;
+}
+
+@media (max-width: 480px) {
+  .liste-reference-page table.table th:last-child,
+  .liste-reference-page table.table td:last-child {
+    width: 98px;
+  }
+
+  .liste-classe-page table.table th:first-child,
+  .liste-classe-page table.table td:first-child {
+    width: 48px;
+  }
+
+  .liste-reference-page table.table th,
+  .liste-reference-page table.table td {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+}
+
+/* Tableau Membres du dashboard : contenu utile visible sur petit écran. */
+.dashboard-members,
+.dashboard-members > div,
+.dashboard-members .table-responsive {
+  width: 100%;
+  min-width: 0;
+}
+
+.dashboard-members__table {
+  width: 100%;
+}
+
+.dashboard-members__table td:nth-child(4) a {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .dashboard-members > .text-center.rounded.p-4 {
+    padding: 12px !important;
+  }
+
+  .dashboard-members__entete {
+    gap: 10px;
+    margin-bottom: 12px !important;
+  }
+
+  .dashboard-members__entete .btn {
+    width: auto !important;
+    flex: 0 0 auto;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  table.dashboard-members__table {
+    display: table;
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .dashboard-members__table thead {
+    display: table-header-group;
+  }
+
+  .dashboard-members__table tbody {
+    display: table-row-group;
+  }
+
+  .dashboard-members__table tr {
+    display: table-row;
+  }
+
+  .dashboard-members__table th,
+  .dashboard-members__table td {
+    display: table-cell;
+    min-width: 0 !important;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+
+  .dashboard-members__table th:nth-child(1),
+  .dashboard-members__table td:nth-child(1),
+  .dashboard-members__table th:nth-child(5),
+  .dashboard-members__table td:nth-child(5),
+  .dashboard-members__table th:nth-child(6),
+  .dashboard-members__table td:nth-child(6) {
+    display: none;
+  }
+
+  .dashboard-members__table th:nth-child(2),
+  .dashboard-members__table td:nth-child(2) {
+    width: 54px;
+    padding-right: 6px !important;
+    padding-left: 8px !important;
+  }
+
+  .dashboard-members__table th:nth-child(3),
+  .dashboard-members__table td:nth-child(3) {
+    width: 42%;
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboard-members__entete {
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+
+  .dashboard-members__entete .btn {
+    align-self: stretch;
+  }
+}
+
+/* La carte Membres suit la même largeur que les cartes Admins du dashboard. */
+@media (max-width: 1200px) {
+  .dashboard-members-section,
+  .dashboard-members-section > .container-fluid,
+  .dashboard-members-section .row,
+  .dashboard-members-section .row > [class*="col-"] {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .dashboard-members-section > .container-fluid {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .dashboard-members-section .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .dashboard-members-section .row > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .dashboard-members > .text-center.rounded.p-4 {
+    padding: 14px !important;
+  }
+}
+
+/* Liste des parents et consultation progressive de leurs enfants. */
+.parents-table .parent-eleves-resume {
+  display: grid;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.parents-table .parent-eleves-resume > span {
+  display: block;
+  max-width: 240px;
+  overflow: hidden;
+  color: #334057;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.parents-table .parent-eleves-resume .btn {
+  width: fit-content;
+  margin: 0 !important;
+}
+
+.parent-eleves-lien {
+  width: fit-content;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #1769ff;
+  background: transparent;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.parent-eleves-lien:hover {
+  color: #0b57d0;
+  text-decoration: underline;
+}
+
+.parent-eleves-lien:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid #1769ff;
+  outline-offset: 3px;
+}
+
+/* Aperçus des rapports financiers, distincts des reçus individuels. */
+.apercu-rapport-financier .modal-dialog.modal-xl {
+  width: min(1180px, calc(100vw - 32px));
+  max-width: 1180px;
+}
+
+.apercu-rapport-financier .modal-content {
+  display: flex;
+  max-height: calc(100dvh - 32px);
+  flex-direction: column;
+}
+
+.apercu-rapport-financier .modal-header {
+  order: 1;
+  flex: 0 0 auto;
+}
+
+.apercu-rapport-financier .modal-header p {
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.apercu-rapport-financier .modal-footer {
+  order: 2;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  border-top: 0 !important;
+  border-bottom: 1px solid #e9eef5;
+}
+
+.apercu-rapport-financier .modal-body {
+  order: 3;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px;
+  background: #eef2f7;
+}
+
+.configuration-rapport-financier {
+  margin: 0 0 16px !important;
+  padding: 14px;
+  border: 1px solid #e1e7f0;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.apercu-rapport-financier__document {
+  width: 100%;
+  min-height: 520px;
+  margin: 0 auto;
+  border: 1px solid #dce3ec;
+  border-radius: 8px;
+  box-shadow: 0 12px 34px rgba(23, 32, 51, 0.09);
+}
+
+.apercu-rapport-financier__document > .table-responsive,
+.apercu-rapport-financier__document section > .table-responsive {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .apercu-rapport-financier .modal-dialog.modal-xl {
+    width: calc(100vw - 20px);
+    margin: 0 auto;
+  }
+
+  .apercu-rapport-financier .modal-content {
+    max-height: calc(100dvh - 20px);
+  }
+
+  .apercu-rapport-financier .modal-body {
+    padding: 10px;
+  }
+
+  .configuration-rapport-financier {
+    padding: 12px;
+  }
+
+  .apercu-rapport-financier__document {
+    min-height: 0;
+    padding: 14px !important;
+  }
+}
+
+.pagination-eleves-parent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pagination-eleves-parent span {
+  color: #657089;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.modal-eleves-parent table.table {
+  min-width: 560px;
+}
+
+@media (max-width: 576px) {
+  .modal-eleves-parent .modal-dialog {
+    width: 100%;
+  }
+
+  .pagination-eleves-parent {
+    justify-content: space-between;
+  }
+
+  .pagination-eleves-parent .btn {
+    width: auto !important;
   }
 }

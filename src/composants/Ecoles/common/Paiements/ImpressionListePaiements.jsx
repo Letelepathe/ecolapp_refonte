@@ -179,7 +179,7 @@ const ImpressionListePaiements = ({ paiements = [], titre }) => {
 
       {ouvert && (
         <div
-          className="modal d-block"
+          className="modal d-block apercu-rapport-financier"
           role="dialog"
           aria-modal="true"
           aria-label={`Impression : ${titre}`}
@@ -188,11 +188,14 @@ const ImpressionListePaiements = ({ paiements = [], titre }) => {
           <div className="modal-dialog modal-xl modal-dialog-scrollable">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{titre}</h5>
+                <div>
+                  <h5 className="modal-title">Aperçu : {titre}</h5>
+                  <p className="text-muted mb-0 mt-1">Configurez la liste, puis vérifiez le document avant impression.</p>
+                </div>
                 <button className="btn-close" type="button" aria-label="Fermer" onClick={() => setOuvert(false)} />
               </div>
               <div className="modal-body">
-                <div className="row g-3 mb-3 hide-on-print">
+                <div className="configuration-rapport-financier row g-3 mb-3 hide-on-print">
                   <div className="col-md-4">
                     <label className="form-label">Classe</label>
                     <select className="form-select" value={classe} onChange={(event) => setClasse(event.target.value)}>
@@ -230,8 +233,8 @@ const ImpressionListePaiements = ({ paiements = [], titre }) => {
 
                 {erreur && <div className="alert alert-danger">{erreur}</div>}
 
-                <div ref={documentRef} className="p-3 bg-white">
-                  <div className="d-flex justify-content-between align-items-start gap-3 border-bottom border-primary border-2 pb-3 mb-3">
+                <div ref={documentRef} className="document-financier apercu-rapport-financier__document p-3 bg-white">
+                  <div className="document-financier__entete d-flex justify-content-between align-items-start gap-3 border-bottom border-primary border-2 pb-3 mb-3">
                     <div className="d-flex align-items-center gap-3">
                       <img
                         src={logoEcole}
