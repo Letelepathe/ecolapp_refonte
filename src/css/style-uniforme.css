@@ -7610,6 +7610,24 @@ textarea.form-control:focus {
   color: #94a3b8;
 }
 
+.login-refonte-afficher {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--ecolapp-bleu);
+  cursor: pointer;
+}
+
+.login-refonte-afficher:focus-visible {
+  outline: 2px solid var(--ecolapp-bleu);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
 .login-refonte-erreur {
   margin: 7px 0 0;
   color: #dc2626;

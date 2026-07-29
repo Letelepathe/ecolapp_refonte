@@ -7,6 +7,7 @@ import NavbarTop from "../Administration/NavbarTop";
 import LogoEcoleApp from '../../../../static/images/logo_ecolapp.jpg';
 import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
 import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
+import EtatFinancierGlobal from "../../common/Paiements/EtatFinancierGlobal";
 
 const ListePaiement = () => {
   const ecole_id = localStorage.getItem('ecole_id'); 
@@ -190,6 +191,7 @@ const ListePaiement = () => {
             >
               Paiements avec dettes
             </button>
+            <EtatFinancierGlobal className="btn" />
           </div>
           <div className="table-responsive hide-on-print">
             

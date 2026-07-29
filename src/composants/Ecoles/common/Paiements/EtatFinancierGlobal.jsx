@@ -21,7 +21,7 @@ const DECoupages = [
 const nombre = (valeur) =>
   Number(valeur || 0).toLocaleString("fr-FR", { maximumFractionDigits: 2 });
 
-const EtatFinancierGlobal = () => {
+const EtatFinancierGlobal = ({ className = "btn mb-3" }) => {
   const [ouvert, setOuvert] = useState(false);
   const [chargementRefs, setChargementRefs] = useState(false);
   const [generation, setGeneration] = useState(false);
@@ -124,7 +124,7 @@ const EtatFinancierGlobal = () => {
 
   return (
     <>
-      <button className="btn mb-3" type="button" onClick={() => setOuvert(true)}>
+      <button className={className} type="button" onClick={() => setOuvert(true)}>
         <i className="bi bi-file-earmark-spreadsheet me-1"></i>
         État financier global
       </button>
