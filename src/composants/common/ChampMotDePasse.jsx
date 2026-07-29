@@ -4,8 +4,8 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 const ChampMotDePasse = forwardRef(
   (
     {
-      conteneurClassName = "input-group",
-      boutonClassName = "btn btn-outline-secondary",
+      conteneurClassName = "champ-mot-de-passe",
+      boutonClassName = "champ-mot-de-passe__bouton",
       sansConteneur = false,
       ...proprietes
     },

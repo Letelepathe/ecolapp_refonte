@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import { useNavigate, Link } from 'react-router-dom';
+import PhotoProfilOptionnelle from '../common/PhotoProfilOptionnelle';
 
 const InscriptionParent = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ const InscriptionParent = () => {
 
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
-      form.append(key, formData[key]);
+      if (formData[key] !== null && formData[key] !== '') form.append(key, formData[key]);
     });
 
     try {
@@ -192,13 +193,12 @@ const InscriptionParent = () => {
                     </div>
 
                     <div className="col-12">
-                      <label>Photo (optionnelle)</label>
-                      <input
-                        type="file"
-                        name="photo"
-                        className="form-control"
-                        onChange={handleFileChange} />
-                      
+                      <PhotoProfilOptionnelle
+                        fichier={formData.photo}
+                        sexe={formData.sexe}
+                        onChange={handleFileChange}
+                        label="Photo du parent"
+                      />
                     </div>
 
                     <div className="col-12 mt-3">

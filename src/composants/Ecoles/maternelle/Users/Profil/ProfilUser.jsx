@@ -92,16 +92,16 @@ const CoursFichiers = ({ userId }) => {
   };
 
   return (
-    <div className="mt-4 mb-4">
-      <div className="d-flex align-items-center justify-content-between">
-        <h5 className="text-center mb-4 text-primary">Vos ours</h5>
+    <div className="mt-4 mb-4 espace-utilisateur-section">
+      <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <h5 className="text-center mb-4 text-primary">Vos cours</h5>
         <Link className="btn " to='/maternelle/ajouter_cours_by_enseignant'> <i className="bi bi-plus"></i> Ajouter cours</Link>
       </div>
       {successMessage &&
       <p>{successMessage}</p>
       }
       {error && <p className="text-danger text-center">{error}</p>}
-      <div className="table-responsive">
+      <div className="table-responsive espace-utilisateur-table">
         <table className="table  ">
           <thead className="bg-primary text-white">
             <tr>
@@ -156,7 +156,7 @@ const CoursFichiers = ({ userId }) => {
           </tbody>
 
         </table>
-        <div className="d-flex justify-content-between align-items-center mt-3">
+        <div className="espace-utilisateur-pagination mt-3">
           <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
             Précédent
           </button>
@@ -247,8 +247,8 @@ const TravauxEnseignant = ({ userId }) => {
 
   return (
     <div>
-       <div className="mt-4 mb-4">
-          <div className="justify-content-between align-items-center d-flex">
+       <div className="mt-4 mb-4 espace-utilisateur-section">
+          <div className="justify-content-between align-items-center d-flex flex-wrap gap-2">
             <h5 className="text-center mb-4 text-primary">Vos Travaux</h5>
             <Link className="btn " to='/maternelle/ajouter_travail_by_enseignant'> <i className="bi bi-plus"></i> Ajouter travail</Link>
           </div>
@@ -256,7 +256,7 @@ const TravauxEnseignant = ({ userId }) => {
         <p>{successMessage}</p>
         }
           {error && <p className="text-danger text-center">{error}</p>}
-          <div className="table-responsive">
+          <div className="table-responsive espace-utilisateur-table">
             <table className="table  ">
               <thead className="bg-primary text-white">
                 <tr>
@@ -310,7 +310,7 @@ const TravauxEnseignant = ({ userId }) => {
               }
               </tbody>
             </table>
-            <div className="d-flex justify-content-between align-items-center mt-3">
+            <div className="espace-utilisateur-pagination mt-3">
               <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
                 Précédent
               </button>
