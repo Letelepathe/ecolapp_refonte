@@ -421,6 +421,20 @@ a:hover {
   }
 }
 
+.gestion-utilisateurs { min-width: 0; }
+.gestion-utilisateurs__filtres { display: flex; flex-wrap: wrap; gap: .75rem; }
+.gestion-utilisateurs__filtres .form-control { width: auto; min-width: 210px; flex: 1 1 260px; }
+.gestion-utilisateurs__table { min-width: 920px; }
+.gestion-utilisateurs__table td small { display: block; color: #667085; }
+.gestion-utilisateurs__avatar { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; overflow: hidden; color: #1769ff; background: #eaf2ff; border-radius: 50%; }
+.gestion-utilisateurs__avatar.femme { color: #b53c85; background: #fff0f8; }
+.gestion-utilisateurs__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.gestion-utilisateurs__actions { display: flex; flex-wrap: wrap; gap: .4rem; }
+.gestion-utilisateurs__actions .btn { display: inline-flex; width: auto !important; align-items: center; gap: .3rem; margin: 0; white-space: nowrap; }
+.gestion-utilisateurs__modal { overflow-y: auto; background: rgba(15, 23, 42, .58); }
+.gestion-utilisateurs__modal .modal-content { max-height: calc(100vh - 2rem); overflow-y: auto; }
+.gestion-utilisateurs__modal .modal-footer .btn { width: auto !important; }
+
 /* Mon espace et champs de profil partagés. */
 .espace-utilisateur-section {
   width: 100%;
