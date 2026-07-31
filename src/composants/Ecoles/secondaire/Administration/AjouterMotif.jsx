@@ -71,11 +71,11 @@ const AjouterMotif = () => {
         setFormData({ name: '', montant: '', devise_id: '', ecole_id: ecole_id, direction: direction });
 
       } else {
-        setErrorMessage(response.data.erroList);
+        setErrorMessage(response.data.error_msg || Object.values(response.data.errorsList || {}).flat()[0] || "Impossible d'ajouter le motif.");
         console.log(response.data);
       }
     } catch (error) {
-      setErrorMessage("Erreur de connexion au serveur.");
+      setErrorMessage(error.response?.data?.error_msg || Object.values(error.response?.data?.errorsList || {}).flat()[0] || "Erreur de connexion au serveur.");
     } finally {
       setIsSubmitting(false);
     }
