@@ -421,6 +421,11 @@ a:hover {
   }
 }
 
+.changer-mot-de-passe { width: min(100% - 2rem, 980px); margin: 0 auto 2rem; }
+.changer-mot-de-passe__ouvrir { display: inline-flex; width: auto !important; align-items: center; gap: .45rem; }
+.changer-mot-de-passe__modal { overflow-y: auto; background: rgba(15, 23, 42, .58); }
+.changer-mot-de-passe__modal .modal-footer .btn { width: auto !important; }
+
 .gestion-utilisateurs { min-width: 0; }
 .gestion-utilisateurs__filtres { display: flex; flex-wrap: wrap; gap: .75rem; }
 .gestion-utilisateurs__filtres .form-control { width: auto; min-width: 210px; flex: 1 1 260px; }
