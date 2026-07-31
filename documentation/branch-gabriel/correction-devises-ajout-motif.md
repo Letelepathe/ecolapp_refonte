@@ -12,4 +12,10 @@ La valeur contrôlée du sélecteur utilise désormais la propriété correcte `
 
 - seules les devises de l’établissement et du cycle connectés sont proposées ;
 - la devise choisie reste visible dans le formulaire ;
-- aucune modification du backend ou de la base de données n’est nécessaire.
+- aucune modification de la structure de la base de données n’est nécessaire.
+
+## Correction backend complémentaire
+
+`DevisesController::store` applique maintenant l’unicité du nom dans le périmètre de l’école et de la direction. Une devise précédemment désactivée est réactivée au lieu de créer un doublon. Une nouvelle devise reçoit explicitement le statut actif `1`.
+
+Quand aucune devise active n’existe, le formulaire d’ajout d’un motif affiche un lien direct vers **Ajouter une devise**.

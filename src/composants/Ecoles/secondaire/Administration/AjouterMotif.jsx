@@ -140,6 +140,10 @@ const AjouterMotif = () => {
                               </option>
                         )}
                       </select>
+                          {devises.length === 0 &&
+                            <p className="small text-warning mt-2 mb-0">
+                              Aucune devise active. <Link to="/secondaire/ajouter_devise">Ajouter une devise</Link>
+                            </p>}
                           {errors.devise_id && <p className="text-danger">{errors.devise_id}</p>}
                     </div>
 
