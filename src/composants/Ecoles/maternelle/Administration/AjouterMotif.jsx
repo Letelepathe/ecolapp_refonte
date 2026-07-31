@@ -23,14 +23,14 @@ const AjouterMotif = () => {
   useEffect(() => {
     const fetchDevises = async () => {
       try {
-        const response = await axios.get('https://api.ecolapp.cd/api/devise/direction/3');
-        setDevises(response.data.deviseAll);
+        const response = await axios.get(`https://api.ecolapp.cd/api/devise/ecole/${ecole_id}/direction/${direction}`);
+        setDevises(Array.isArray(response.data?.deviseAll) ? response.data.deviseAll : []);
       } catch {
         console.log("Erreur lors de la récupération des devises");
       }
     };
     fetchDevises();
-  }, []);
+  }, [ecole_id, direction]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -130,7 +130,7 @@ const AjouterMotif = () => {
                       <select
                         name="devise_id"
                         className="form-control"
-                        value={formData.devises_id}
+                        value={formData.devise_id}
                         onChange={handleInputChange}>
                         
                         <option value="">Sélectionner une devise</option>
