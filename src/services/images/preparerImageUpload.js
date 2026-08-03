@@ -27,7 +27,7 @@ const convertirCanvas = (canvas, type, qualite) =>
 
 export const preparerImageUpload = async (
   fichier,
-  { tailleMax = 2 * 1024 * 1024, dimensionMax = 1600 } = {}
+  { tailleMax = 900 * 1024, dimensionMax = 1600 } = {}
 ) => {
   if (!fichier) return null;
   if (EXTENSIONS_HEIC.test(fichier.name) || /image\/(heic|heif)/i.test(fichier.type)) {
@@ -41,17 +41,23 @@ export const preparerImageUpload = async (
   const image = await chargerImage(fichier);
   const ratio = Math.min(1, dimensionMax / Math.max(image.naturalWidth, image.naturalHeight));
   const canvas = document.createElement("canvas");
-  canvas.width = Math.max(1, Math.round(image.naturalWidth * ratio));
-  canvas.height = Math.max(1, Math.round(image.naturalHeight * ratio));
+  const largeurInitiale = Math.max(1, Math.round(image.naturalWidth * ratio));
+  const hauteurInitiale = Math.max(1, Math.round(image.naturalHeight * ratio));
+  canvas.width = largeurInitiale;
+  canvas.height = hauteurInitiale;
   const contexte = canvas.getContext("2d");
   if (!contexte) throw new Error("La compression n’est pas disponible sur ce téléphone.");
-  contexte.drawImage(image, 0, 0, canvas.width, canvas.height);
-
   const typeSortie = fichier.type === "image/webp" ? "image/webp" : "image/jpeg";
   let blob;
-  for (const qualite of [0.86, 0.76, 0.66, 0.56]) {
-    blob = await convertirCanvas(canvas, typeSortie, qualite);
-    if (blob.size <= tailleMax) break;
+  for (const facteur of [1, 0.85, 0.7]) {
+    canvas.width = Math.max(1, Math.round(largeurInitiale * facteur));
+    canvas.height = Math.max(1, Math.round(hauteurInitiale * facteur));
+    contexte.drawImage(image, 0, 0, canvas.width, canvas.height);
+    for (const qualite of [0.84, 0.72, 0.6, 0.5]) {
+      blob = await convertirCanvas(canvas, typeSortie, qualite);
+      if (blob.size <= tailleMax) break;
+    }
+    if (blob?.size <= tailleMax) break;
   }
   if (!blob || blob.size > tailleMax) {
     throw new Error("La photo reste trop volumineuse après compression. Choisissez une image plus petite.");
