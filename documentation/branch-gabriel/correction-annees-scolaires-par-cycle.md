@@ -26,3 +26,5 @@ Corps attendu :
 ```
 
 Une même année peut être créée dans plusieurs écoles ou directions, mais pas deux fois dans la même école et la même direction.
+
+La direction envoyée à l’API respecte le schéma historique : maternelle `1`, primaire `2`, secondaire `3`. Les noms de cycles restent utilisés uniquement dans les routes du frontend.

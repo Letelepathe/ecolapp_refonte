@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { obtenirDirectionCycle } from "../../../../services/cycles/cyclesScolaires";
 
 const API = "https://api.ecolapp.cd/api";
 const messageApi = (error, fallback) => error?.status_msg || error?.response?.data?.status_msg || error?.response?.data?.message || error?.response?.data?.error_msg || fallback;
 
 const ListeAnneesScolaires = ({ BarreGauche, NavHaut, cycle }) => {
   const ecoleId = localStorage.getItem("ecole_id");
+  const direction = obtenirDirectionCycle(cycle);
   const [annees, setAnnees] = useState([]);
   const [erreur, setErreur] = useState("");
   const [message, setMessage] = useState("");
@@ -16,14 +18,14 @@ const ListeAnneesScolaires = ({ BarreGauche, NavHaut, cycle }) => {
   const charger = useCallback(async () => {
     setChargement(true);
     try {
-      const response = await axios.get(`${API}/annee/ecole/${ecoleId}/direction/${cycle}`);
+      const response = await axios.get(`${API}/annee/ecole/${ecoleId}/direction/${direction}`);
       setAnnees(Array.isArray(response.data?.anneeAll) ? response.data.anneeAll : []);
     } catch (error) {
       setErreur(messageApi(error, "Impossible de charger les années scolaires."));
     } finally {
       setChargement(false);
     }
-  }, [ecoleId, cycle]);
+  }, [ecoleId, direction]);
 
   useEffect(() => { charger(); }, [charger]);
 
@@ -33,7 +35,7 @@ const ListeAnneesScolaires = ({ BarreGauche, NavHaut, cycle }) => {
     setMessage("");
     try {
       const url = action === "activer"
-        ? `${API}/annee/activer/ecole/${ecoleId}/annee/${annee.id}/direction/${cycle}`
+        ? `${API}/annee/activer/ecole/${ecoleId}/annee/${annee.id}/direction/${direction}`
         : `${API}/annee/delete/${annee.id}`;
       const response = await axios.get(url);
       if (Number(response.data?.status) !== 200) throw response.data;

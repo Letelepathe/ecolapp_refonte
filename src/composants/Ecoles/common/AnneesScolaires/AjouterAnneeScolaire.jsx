@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { obtenirDirectionCycle } from "../../../../services/cycles/cyclesScolaires";
 
 const API = "https://api.ecolapp.cd/api";
 
@@ -47,7 +48,7 @@ const AjouterAnneeScolaire = ({ BarreGauche, NavHaut, cycle }) => {
       const response = await axios.post(`${API}/annee/create`, {
         name,
         ecole_id: ecoleId,
-        direction: cycle,
+        direction: obtenirDirectionCycle(cycle),
       });
 
       if (Number(response.data?.status) !== 200) {
