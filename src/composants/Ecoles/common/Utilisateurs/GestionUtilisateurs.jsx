@@ -2,11 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FiEdit2, FiUser, FiUserCheck, FiUserX, FiX } from "react-icons/fi";
+import { preparerImageUpload } from "../../../../services/images/preparerImageUpload";
 
 const API = "https://api.ecolapp.cd/api";
 const estActif = (utilisateur) => String(utilisateur.status) === "0";
 
 const messageApi = (error, fallback) =>
+  Object.values(error.response?.data?.errors || error.response?.data?.errorsList || {}).flat().find(Boolean) ||
   error.response?.data?.message || error.response?.data?.error_msg || fallback;
 
 const GestionUtilisateurs = ({ cycle, SidebarLeft, NavbarTop }) => {
@@ -25,6 +27,8 @@ const GestionUtilisateurs = ({ cycle, SidebarLeft, NavbarTop }) => {
   const [erreur, setErreur] = useState("");
   const [chargement, setChargement] = useState(true);
   const [traitement, setTraitement] = useState(false);
+  const [photoEnPreparation, setPhotoEnPreparation] = useState(false);
+  const [erreurPhoto, setErreurPhoto] = useState("");
 
   const charger = useCallback(async () => {
     setChargement(true);
@@ -54,7 +58,9 @@ const GestionUtilisateurs = ({ cycle, SidebarLeft, NavbarTop }) => {
     });
   }, [utilisateurs, filtre, recherche]);
 
-  const ouvrirModification = (utilisateur) => setSelection({
+  const ouvrirModification = (utilisateur) => {
+    setErreurPhoto("");
+    setSelection({
     id: utilisateur.id,
     name: utilisateur.name || "",
     last_name: utilisateur.last_name || "",
@@ -65,10 +71,34 @@ const GestionUtilisateurs = ({ cycle, SidebarLeft, NavbarTop }) => {
     address: utilisateur.address || "",
     fonction_id: utilisateur.fonction_id || "",
     file: null,
-  });
+    });
+  };
+
+  const choisirPhoto = async (event) => {
+    const input = event.target;
+    const fichier = input.files?.[0] || null;
+    setErreurPhoto("");
+    if (!fichier) {
+      setSelection((courant) => ({ ...courant, file: null }));
+      return;
+    }
+
+    setPhotoEnPreparation(true);
+    try {
+      const photo = await preparerImageUpload(fichier);
+      setSelection((courant) => ({ ...courant, file: photo }));
+    } catch (error) {
+      input.value = "";
+      setSelection((courant) => ({ ...courant, file: null }));
+      setErreurPhoto(error.message || "Cette photo ne peut pas être utilisée.");
+    } finally {
+      setPhotoEnPreparation(false);
+    }
+  };
 
   const modifier = async (event) => {
     event.preventDefault();
+    if (photoEnPreparation) return;
     setTraitement(true);
     setErreur("");
     try {
@@ -146,7 +176,7 @@ const GestionUtilisateurs = ({ cycle, SidebarLeft, NavbarTop }) => {
         {[['name','Nom'],['last_name','Postnom'],['first_name','Prénom'],['email','Email'],['phone','Téléphone'],['address','Adresse']].map(([name,label]) => <div className="col-md-6" key={name}><label>{label}</label><input type={name === 'email' ? 'email' : 'text'} className="form-control" value={selection[name]} onChange={(e) => setSelection({...selection,[name]:e.target.value})} required={['name','last_name','first_name','email'].includes(name)} /></div>)}
         <div className="col-md-6"><label>Sexe</label><select className="form-control" value={selection.sexe} onChange={(e) => setSelection({...selection,sexe:e.target.value})}><option>Homme</option><option>Femme</option></select></div>
         <div className="col-md-6"><label>Fonction</label><select className="form-control" value={selection.fonction_id} onChange={(e) => setSelection({...selection,fonction_id:e.target.value})}><option value="">Sélectionner</option>{fonctions.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}</select></div>
-        <div className="col-12"><label>Nouvelle photo <span className="text-muted">(optionnelle)</span></label><input type="file" className="form-control" accept="image/png,image/jpeg,image/webp" onChange={(e) => setSelection({...selection,file:e.target.files[0] || null})} /></div>
+        <div className="col-12"><label>Nouvelle photo <span className="text-muted">(optionnelle)</span></label><input type="file" className="form-control" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" onChange={choisirPhoto} disabled={photoEnPreparation} />{photoEnPreparation && <small className="text-muted d-block mt-1">Optimisation de la photo…</small>}{selection.file && !photoEnPreparation && <small className="text-success d-block mt-1">Photo prête ({Math.ceil(selection.file.size / 1024)} Ko).</small>}{erreurPhoto && <div className="text-danger mt-1" role="alert">{erreurPhoto}</div>}</div>
       </div></div><div className="modal-footer"><button type="button" className="btn" onClick={() => setSelection(null)}>Annuler</button><button className="btn" disabled={traitement}>{traitement ? "Enregistrement…" : "Enregistrer"}</button></div></form></div></div>}
 
       {confirmation && <div className="modal d-block gestion-utilisateurs__modal" role="dialog" aria-modal="true"><div className="modal-dialog modal-dialog-centered"><div className="modal-content"><div className="modal-header"><h5>{estActif(confirmation) ? "Désactiver" : "Réactiver"} l’utilisateur</h5><button type="button" className="btn-close" onClick={() => setConfirmation(null)} /></div><div className="modal-body">Confirmer l’action pour <strong>{confirmation.name} {confirmation.last_name}</strong> ? {estActif(confirmation) && "Ses sessions seront fermées, mais ses données seront conservées."}</div><div className="modal-footer"><button className="btn" onClick={() => setConfirmation(null)}>Annuler</button><button className="btn" disabled={traitement} onClick={changerStatut}>Confirmer</button></div></div></div></div>}
