@@ -106,5 +106,5 @@ export const choisirOptionCompatibilite = (options = [], cycle) => {
       nom.includes("generale")
     );
   });
-  return optionNeutre?.id || "";
+  return optionNeutre?.id || options[0]?.id || "";
 };

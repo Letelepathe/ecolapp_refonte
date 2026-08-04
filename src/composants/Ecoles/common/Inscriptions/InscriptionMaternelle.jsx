@@ -61,6 +61,7 @@ const InscriptionMaternelle = ({ routeSucces }) => {
   const config = obtenirConfigCycle("maternelle");
   const [ecole, setEcole] = useState(null);
   const [classes, setClasses] = useState([]);
+  const [options, setOptions] = useState([]);
   const [formData, setFormData] = useState(() => creerFormulaire(ecoleId, direction));
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
@@ -86,13 +87,15 @@ const InscriptionMaternelle = ({ routeSucces }) => {
           axios.get(`${API}/classe/ecole/${ecoleId}/direction/${direction}`),
           axios.get(`${API}/option/ecole/${ecoleId}/direction/${direction}`),
         ]);
+        const optionsCycle = optionsResponse.data.optionAll || [];
         const optionId = choisirOptionCompatibilite(
-          optionsResponse.data.optionAll || [],
+          optionsCycle,
           "maternelle"
         );
 
         setEcole(ecoleResponse.data.ecole);
         setClasses(classesResponse.data.classesAll || []);
+        setOptions(optionsCycle);
         setFormData((current) => ({ ...current, options_id: optionId || "" }));
       } catch {
         setErrors({ form: "Impossible de charger la configuration de l'école." });
@@ -125,7 +128,7 @@ const InscriptionMaternelle = ({ routeSucces }) => {
     if (erreurAge) prochainesErreurs.date_naissance = erreurAge;
     if (!formData.options_id) {
       prochainesErreurs.form =
-        "Configuration maternelle incomplète : créez l'option technique « Sans option - Maternelle ».";
+        "L'école doit d'abord configurer une option pour la maternelle. Contactez l'administration.";
     }
     if (!formData.terms) prochainesErreurs.terms = "Veuillez confirmer l'exactitude des informations.";
 
@@ -149,7 +152,7 @@ const InscriptionMaternelle = ({ routeSucces }) => {
       });
 
       if (response.data.status !== 200) {
-        setErrors({ form: response.data.errorList || "Inscription refusée par le serveur." });
+        setErrors({ form: response.data.error_msg || response.data.errorsList || "Inscription refusée par le serveur." });
         return;
       }
 
@@ -158,7 +161,7 @@ const InscriptionMaternelle = ({ routeSucces }) => {
     } catch (error) {
       setErrors({
         form:
-          error.response?.data?.errorList ||
+          error.response?.data?.error_msg ||
           "Erreur de connexion lors de l'inscription.",
       });
     } finally {
@@ -248,7 +251,15 @@ const InscriptionMaternelle = ({ routeSucces }) => {
                       </div>
                     </div>
 
-                    <button className="btn btn-white w-100 mt-4" type="submit" disabled={isLoading}>
+                    <div className="mt-3">
+                      <label htmlFor="options_id">Option / programme pédagogique</label>
+                      <select id="options_id" className="form-control" value={formData.options_id} disabled>
+                        {!options.length && <option value="">Aucune option configurée</option>}
+                        {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
+                      </select>
+                      <small className="text-muted">Définie par l'administration pour ce cycle.</small>
+                    </div>
+                    <button className="btn btn-white w-100 mt-4" type="submit" disabled={isLoading || !formData.options_id}>
                       {isLoading ? "Inscription en cours..." : "Soumettre la demande"}
                     </button>
                     {message && <p className="text-success text-center mt-2">{message}</p>}

@@ -30,6 +30,13 @@ const RightSidebar = ({ isRightSidebarOpen, setIsRightSidebarOpen }) => {
     { path: "/maternelle/liste_cours", label: "Toutes les activités", icon: "bi-list-check" }]
 
   }
+  ,{
+    title: "Programmes pédagogiques", icon: "bi-diagram-3-fill",
+    links: [
+      { path: "/maternelle/ajouter_option", label: "Ajouter une option", icon: "bi-plus-circle-fill" },
+      { path: "/maternelle/liste_option", label: "Liste des options", icon: "bi-list-check" }
+    ]
+  }
   // Ajoute d'autres sections ici selon les besoins
   ];
 

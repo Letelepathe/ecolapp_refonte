@@ -36,6 +36,7 @@ const InscriptionPrimaire = () => {
   const navigate = useNavigate();
   const [ecole, setEcole] = useState(null);
   const [classes, setClasses] = useState([]);
+  const [options, setOptions] = useState([]);
   const [formulaire, setFormulaire] = useState(() =>
     creerFormulaire(ecoleId, direction)
   );
@@ -53,6 +54,7 @@ const InscriptionPrimaire = () => {
         const options = reponseOptions.data.optionAll || [];
         setEcole(reponseEcole.data.ecole);
         setClasses(reponseClasses.data.classesAll || []);
+        setOptions(options);
         setFormulaire((courant) => ({
           ...courant,
           options_id: String(
@@ -108,7 +110,7 @@ const InscriptionPrimaire = () => {
     if (erreurAge) nouvelles.date_naissance = erreurAge;
     if (!formulaire.options_id) {
       nouvelles.form =
-        "L'école doit disposer d'une option interne « Sans option - Primaire ».";
+        "L'école doit d'abord configurer une option pour le primaire. Contactez l'administration.";
     }
     if (!formulaire.terms) {
       nouvelles.terms = "Vous devez certifier les informations fournies";
@@ -286,7 +288,15 @@ const InscriptionPrimaire = () => {
                     </div>
 
                     {erreurs.form && <div className="alert alert-danger mt-3">{erreurs.form}</div>}
-                    <button type="submit" className="btn w-100 mt-4" disabled={chargement}>
+                    <div className="mt-3">
+                      <label htmlFor="options_id">Option / programme</label>
+                      <select id="options_id" className="form-control" value={formulaire.options_id} disabled>
+                        {!options.length && <option value="">Aucune option configurée</option>}
+                        {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
+                      </select>
+                      <small className="text-muted">Définie par l'administration pour ce cycle.</small>
+                    </div>
+                    <button type="submit" className="btn w-100 mt-4" disabled={chargement || !formulaire.options_id}>
                       {chargement ? "Envoi en cours…" : "Soumettre la demande"}
                     </button>
                   </form>
