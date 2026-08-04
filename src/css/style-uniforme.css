@@ -746,6 +746,51 @@ a:hover {
   }
 }
 
+/* Confirmation d'inscription : corps défilable, actions toujours visibles. */
+.custom-modal.confirmation-inscription-modal {
+  padding: 18px;
+  overflow-y: auto;
+}
+
+.confirmation-inscription-modal > .modal-content {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 680px);
+  max-height: calc(100dvh - 36px);
+  overflow: hidden;
+}
+
+.confirmation-inscription-modal > .modal-content > .modal-header,
+.confirmation-inscription-modal > .modal-content > .modal-footer {
+  flex: 0 0 auto;
+}
+
+.confirmation-inscription-modal > .modal-content > .modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 576px), (max-height: 620px) {
+  .custom-modal.confirmation-inscription-modal {
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .confirmation-inscription-modal > .modal-content {
+    max-height: calc(100dvh - 20px);
+  }
+
+  .confirmation-inscription-modal > .modal-content > .modal-footer {
+    flex-wrap: wrap;
+  }
+
+  .confirmation-inscription-modal > .modal-content > .modal-footer .btn {
+    flex: 1 1 160px;
+  }
+}
+
 /* src/composants/Ecoles/Ecoles.css */
 .bloc-ecole-3{
   margin-top: 0;
