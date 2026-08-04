@@ -336,6 +336,15 @@ const GestionTranches = ({
         throw new Error("Identifiant de tranche absent");
       }
 
+      if (formulaire.trancheId) {
+        const reponseNom = await axios.put(`${API}/tranche/edit/${trancheId}`, {
+          name: formulaire.nom.trim(),
+        });
+        if (Number(reponseNom.data?.status) !== 200) {
+          throw new Error("Le nom de la tranche n'a pas été modifié.");
+        }
+      }
+
       await enregistrerConfigurationTranche(contexteReglements, {
         ...formulaire,
         trancheId,
@@ -534,7 +543,6 @@ const GestionTranches = ({
                     id="nom-tranche"
                     className="form-control"
                     value={formulaire.nom}
-                    disabled={Boolean(formulaire.trancheId)}
                     onChange={(event) =>
                       setFormulaire((courant) => ({
                         ...courant,
