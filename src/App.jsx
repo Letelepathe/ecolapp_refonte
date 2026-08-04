@@ -294,6 +294,7 @@ import AjouterMembreEffectifprimaire from './composants/Ecoles/primaire/Administ
 import ListeMembreEffectifprimaire from './composants/Ecoles/primaire/Administration/ListeMembreEffectif';
 // Eleves du primaire
 import AjouterEleveprimaire from './composants/Ecoles/primaire/Administration/AjouterEleve';
+import ModifierEleveprimaire from './composants/Ecoles/primaire/Administration/ModifierEleve';
 import TypesElevesPrimaire from './composants/Ecoles/primaire/Administration/TypesEleves';
 import ListeEleveprimaire from './composants/Ecoles/primaire/Administration/ListeEleve';
 import CartesElevesprimaire from './composants/Ecoles/primaire/Administration/CartesEleves';
@@ -480,6 +481,7 @@ import AjouterMembreEffectifmaternelle from './composants/Ecoles/maternelle/Admi
 import ListeMembreEffectifmaternelle from './composants/Ecoles/maternelle/Administration/ListeMembreEffectif';
 // Eleves du maternelle
 import AjouterElevematernelle from './composants/Ecoles/maternelle/Administration/AjouterEleve';
+import ModifierElevematernelle from './composants/Ecoles/maternelle/Administration/ModifierEleve';
 import TypesElevesMaternelle from './composants/Ecoles/maternelle/Administration/TypesEleves';
 import ListeElevematernelle from './composants/Ecoles/maternelle/Administration/ListeEleve';
 import CartesElevesmaternelle from './composants/Ecoles/maternelle/Administration/CartesEleves';
@@ -1011,6 +1013,7 @@ const App = () => {
                       <Route path="/primaire/liste_membre_effectif" element={<ListeMembreEffectifprimaire />} />
                       {/* Eleves du primaire */}
                       <Route path="/primaire/ajouter_eleve" element={<AjouterEleveprimaire />} />
+                      <Route path="/primaire/modifier_eleve/:id" element={<ModifierEleveprimaire />} />
                       <Route path="/primaire/types_eleves" element={<TypesElevesPrimaire />} />
                       <Route path="/primaire/liste_eleve" element={<ListeEleveprimaire />} />
                       <Route path="/primaire/cartes_eleves" element={<CartesElevesprimaire />} />
@@ -1193,6 +1196,7 @@ const App = () => {
                       <Route path="/maternelle/liste_membre_effectif" element={<ListeMembreEffectifmaternelle />} />
                       {/* Eleves du maternelle */}
                       <Route path="/maternelle/ajouter_eleve" element={<AjouterElevematernelle />} />
+                      <Route path="/maternelle/modifier_eleve/:id" element={<ModifierElevematernelle />} />
                       <Route path="/maternelle/types_eleves" element={<TypesElevesMaternelle />} />
                       <Route path="/maternelle/liste_eleve" element={<ListeElevematernelle />} />
                       <Route path="/maternelle/cartes_eleves" element={<CartesElevesmaternelle />} />

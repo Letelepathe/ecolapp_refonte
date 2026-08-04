@@ -89,9 +89,11 @@ export const menusEcole = (cycle) => {
     ...(config.utiliseSections
       ? [lien(`/${cycle}/liste_section`, "Toutes les sections", FiList)]
       : []),
-    ...(config.utiliseOptions
-      ? [lien(`/${cycle}/liste_option`, "Toutes les options", FiList)]
-      : []),
+    lien(
+      `/${cycle}/liste_option`,
+      cycle === "secondaire" ? "Toutes les options" : "Options / programmes",
+      FiList
+    ),
   ];
 
   return [

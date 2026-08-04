@@ -187,6 +187,9 @@ const ListeEleve = () => {
                             <td>{obtenirNomTypeEleve(eleve, typesEleves)}</td>
                             <td>{eleve.annee.name}</td>
                             <td>
+                              <Link className="btn me-2" to={`/maternelle/modifier_eleve/${eleve.id}`}>
+                                Modifier
+                              </Link>
                               <button
                                 className="btn "
                                 onClick={() => handleDelete(eleve.id)}
