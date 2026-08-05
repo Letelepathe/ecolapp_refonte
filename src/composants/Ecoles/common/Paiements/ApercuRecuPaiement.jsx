@@ -4,10 +4,19 @@ import {
   telechargerDocumentPdf,
 } from "../../../common/impressionDocuments";
 import RecuPaiement from "./RecuPaiement";
+import {
+  FORMATS_RECU_PAIEMENT,
+  lireFormatRecuPrefere,
+  memoriserFormatRecu,
+  obtenirFormatRecu,
+} from "../../../../services/impression/formatsRecuPaiement";
 
 const ApercuRecuPaiement = ({ paiement, onFermer }) => {
   const recuRef = useRef(null);
   const [telechargement, setTelechargement] = useState(false);
+  const ecoleId = paiement?.ecole_id || paiement?.ecole?.id || localStorage.getItem("ecole_id");
+  const [formatId, setFormatId] = useState(() => lireFormatRecuPrefere(ecoleId));
+  const format = obtenirFormatRecu(formatId);
 
   if (!paiement) return null;
 
@@ -16,8 +25,9 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
     await telechargerDocumentPdf(recuRef.current, {
       nomFichier: `recu-paiement-${paiement.id || "sans-numero"}.pdf`,
       orientation: "portrait",
-      format: "a4",
-      marge: 12,
+      format: format.formatPdf,
+      marge: format.margeMm,
+      centrerVerticalement: !format.compact,
     });
     setTelechargement(false);
   };
@@ -47,7 +57,28 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
           />
         </header>
 
-        <div className="actions-modal-cartes d-flex flex-wrap justify-content-end gap-2 my-3">
+        <div className="actions-modal-cartes d-flex flex-wrap align-items-end justify-content-between gap-2 my-3">
+          <div className="format-recu-paiement">
+            <label htmlFor="format-recu-paiement">Format d'impression</label>
+            <select
+              id="format-recu-paiement"
+              className="form-select"
+              value={formatId}
+              onChange={(event) => {
+                const suivant = event.target.value;
+                setFormatId(suivant);
+                memoriserFormatRecu(ecoleId, suivant);
+              }}
+            >
+              {FORMATS_RECU_PAIEMENT.map((option) => (
+                <option key={option.id} value={option.id}>{option.libelle}</option>
+              ))}
+            </select>
+            {format.compact && (
+              <small className="text-muted">Sur téléphone, choisissez ensuite le service d'impression Bluetooth.</small>
+            )}
+          </div>
+          <div className="d-flex flex-wrap justify-content-end gap-2">
           <button
             type="button"
             className="btn btn-outline-secondary"
@@ -59,7 +90,7 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
             type="button"
             className="btn"
             onClick={() =>
-              imprimerRecuPaiement(recuRef.current, paiement.id)
+              imprimerRecuPaiement(recuRef.current, paiement.id, format)
             }
           >
             Imprimer
@@ -72,10 +103,11 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
           >
             {telechargement ? "Préparation…" : "Télécharger"}
           </button>
+          </div>
         </div>
 
         <div className="apercu-recu-financier__zone">
-          <RecuPaiement ref={recuRef} paiement={paiement} />
+          <RecuPaiement ref={recuRef} paiement={paiement} formatId={formatId} />
         </div>
       </div>
     </div>

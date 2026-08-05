@@ -43,9 +43,14 @@ const attendreDocument = (fenetre) =>
   });
 
 const dimensionsPage = (format, orientation) => {
+  if (Array.isArray(format) && format.length === 2) {
+    const dimensions = format.map(Number);
+    return orientation === "landscape" ? [...dimensions].reverse() : dimensions;
+  }
   const formats = {
     A4: [210, 297],
     A5: [148, 210],
+    A6: [105, 148],
     LETTER: [216, 279],
   };
   const dimensions = formats[String(format).toUpperCase()] || formats.A4;
@@ -111,6 +116,7 @@ export const imprimerDocument = async (
     format = "A4",
     marge = "10mm",
     classeDocument = "",
+    taillePage = null,
   } = {}
 ) => {
   if (!zone) {
@@ -159,7 +165,7 @@ export const imprimerDocument = async (
       page-break-after: auto;
     }
     .page-impression img { display: block; width: 100%; height: auto; }
-    @page { size: ${format} ${orientation}; margin: ${marge}; }
+    @page { size: ${taillePage || (Array.isArray(format) ? `${format[0]}mm ${format[1]}mm` : `${format} ${orientation}`)}; margin: ${marge}; }
   </style>
 </head>
 <body>
@@ -193,12 +199,13 @@ export const imprimerDocument = async (
   }
 };
 
-export const imprimerRecuPaiement = (zone, numero) =>
+export const imprimerRecuPaiement = (zone, numero, profil = {}) =>
   imprimerDocument(zone, {
     titre: numero ? `Reçu de paiement ${numero}` : "Reçu de paiement",
     orientation: "portrait",
-    format: "A4",
-    marge: "12mm",
+    format: profil.formatPdf || "A4",
+    taillePage: profil.tailleCss || "A4",
+    marge: `${profil.margeMm ?? 12}mm`,
     classeDocument: "document-recu-paiement",
   });
 
@@ -219,6 +226,7 @@ export const telechargerDocumentPdf = async (
     format = "a4",
     marge = 10,
     pagination = false,
+    centrerVerticalement = true,
   } = {}
 ) => {
   if (!zone) {
@@ -264,7 +272,7 @@ export const telechargerDocumentPdf = async (
         );
       }
     } else {
-      const haut = (hauteurPage - hauteur) / 2;
+      const haut = centrerVerticalement ? (hauteurPage - hauteur) / 2 : marge;
       pdf.addImage(image, "PNG", gauche, haut, largeur, hauteur);
     }
     pdf.save(nomFichier.endsWith(".pdf") ? nomFichier : `${nomFichier}.pdf`);

@@ -746,6 +746,228 @@ a:hover {
   }
 }
 
+/* Formats de reçu sélectionnés dans l'aperçu de paiement. */
+.format-recu-paiement {
+  flex: 1 1 210px;
+  max-width: 280px;
+}
+
+.format-recu-paiement label,
+.format-recu-paiement small {
+  display: block;
+}
+
+.format-recu-paiement small {
+  margin-top: 5px;
+  line-height: 1.35;
+}
+
+.recu-financier.recu-financier--a5 {
+  width: min(100%, 560px);
+  min-height: 790px;
+  padding: 32px;
+}
+
+.recu-financier.recu-financier--a6 {
+  width: min(100%, 397px);
+  min-height: 560px;
+  padding: 20px;
+}
+
+.recu-financier--a6 .recu-financier__entete {
+  gap: 12px;
+  padding-bottom: 16px;
+}
+
+.recu-financier--a6 .recu-financier__marque img {
+  width: 42px;
+  height: 42px;
+}
+
+.recu-financier--a6 .recu-financier__marque strong {
+  font-size: 15px;
+}
+
+.recu-financier--a6 .recu-financier__identite {
+  gap: 12px;
+  margin: 18px 0;
+  padding: 14px;
+}
+
+.recu-financier--a6 .recu-financier__ligne {
+  padding: 11px 13px;
+}
+
+.recu-financier--a6 .recu-financier__pied {
+  margin-top: 24px;
+}
+
+.recu-financier--a6 .recu-financier__note {
+  margin-top: 20px;
+}
+
+.recu-financier.recu-financier--pos58,
+.recu-financier.recu-financier--pos80 {
+  min-height: 0;
+  padding: 10px;
+  color: #111;
+  border: 1px solid #111;
+  border-radius: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: none;
+}
+
+.recu-financier.recu-financier--pos58 { width: min(100%, 219px); }
+.recu-financier.recu-financier--pos80 { width: min(100%, 302px); padding: 13px; }
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete,
+.recu-financier--pos58 .recu-financier__pied,
+.recu-financier--pos80 .recu-financier__pied {
+  flex-direction: column;
+  gap: 9px;
+}
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete {
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #111;
+}
+
+.recu-financier--pos58 .recu-financier__marque,
+.recu-financier--pos80 .recu-financier__marque {
+  gap: 8px;
+}
+
+.recu-financier--pos58 .recu-financier__marque img,
+.recu-financier--pos80 .recu-financier__marque img {
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+  filter: grayscale(1);
+}
+
+.recu-financier--pos58 .recu-financier__marque strong,
+.recu-financier--pos80 .recu-financier__marque strong {
+  color: #111;
+  font-size: 11px;
+}
+
+.recu-financier--pos58 .recu-financier__marque span,
+.recu-financier--pos80 .recu-financier__marque span,
+.recu-financier--pos58 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos58 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos58 .recu-financier__ligne span,
+.recu-financier--pos80 .recu-financier__ligne span,
+.recu-financier--pos58 .recu-financier__pied span,
+.recu-financier--pos80 .recu-financier__pied span {
+  color: #222;
+  font-size: 8px;
+}
+
+.recu-financier--pos58 .recu-financier__numero,
+.recu-financier--pos80 .recu-financier__numero {
+  text-align: left;
+}
+
+.recu-financier--pos58 .recu-financier__numero strong,
+.recu-financier--pos80 .recu-financier__numero strong {
+  margin: 2px 0 4px;
+  font-size: 11px;
+}
+
+.recu-financier--pos58 .recu-financier__numero em,
+.recu-financier--pos80 .recu-financier__numero em {
+  padding: 2px 6px;
+  color: #111;
+  background: transparent;
+  border: 1px solid #111;
+  font-size: 8px;
+}
+
+.recu-financier--pos58 .recu-financier__identite,
+.recu-financier--pos80 .recu-financier__identite {
+  grid-template-columns: 1fr;
+  gap: 7px;
+  margin: 10px 0;
+  padding: 8px;
+  background: #fff;
+  border: 1px dashed #777;
+  border-radius: 0;
+  font-size: 9px;
+}
+
+.recu-financier--pos58 .recu-financier__identite strong,
+.recu-financier--pos80 .recu-financier__identite strong {
+  margin-top: 1px;
+}
+
+.recu-financier--pos58 .recu-financier__details,
+.recu-financier--pos80 .recu-financier__details {
+  border-color: #111;
+  border-radius: 0;
+}
+
+.recu-financier--pos58 .recu-financier__ligne,
+.recu-financier--pos80 .recu-financier__ligne {
+  flex-direction: row;
+  gap: 6px;
+  padding: 6px;
+  border-color: #999;
+  font-size: 9px;
+}
+
+.recu-financier--pos58 .recu-financier__ligne strong,
+.recu-financier--pos80 .recu-financier__ligne strong {
+  text-align: right;
+}
+
+.recu-financier--pos58 .recu-financier__total,
+.recu-financier--pos80 .recu-financier__total {
+  color: #fff;
+  background: #111;
+}
+
+.recu-financier--pos58 .recu-financier__total span,
+.recu-financier--pos80 .recu-financier__total span {
+  color: #fff;
+}
+
+.recu-financier--pos58 .recu-financier__total strong,
+.recu-financier--pos80 .recu-financier__total strong {
+  font-size: 12px;
+}
+
+.recu-financier--pos58 .recu-financier__pied,
+.recu-financier--pos80 .recu-financier__pied {
+  align-items: stretch;
+  margin-top: 12px;
+  font-size: 9px;
+}
+
+.recu-financier--pos58 .recu-financier__signature,
+.recu-financier--pos80 .recu-financier__signature {
+  width: 100%;
+  min-height: 35px;
+  padding-top: 22px;
+  border-color: #111;
+}
+
+.recu-financier--pos58 .recu-financier__note,
+.recu-financier--pos80 .recu-financier__note {
+  margin-top: 12px;
+  color: #222;
+  font-size: 7px;
+}
+
+@media (max-width: 576px) {
+  .format-recu-paiement { max-width: none; }
+  .actions-modal-cartes > div:last-child { width: 100%; }
+  .actions-modal-cartes > div:last-child .btn { flex: 1 1 auto; }
+}
+
 /* Confirmation d'inscription : corps défilable, actions toujours visibles. */
 .custom-modal.confirmation-inscription-modal {
   padding: 18px;

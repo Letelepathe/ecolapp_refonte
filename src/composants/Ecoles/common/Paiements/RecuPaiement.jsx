@@ -36,7 +36,7 @@ const formatMontant = (paiement) => {
   return `${montant}${devise === "—" ? "" : ` ${devise}`}`;
 };
 
-const RecuPaiement = React.forwardRef(({ paiement }, ref) => {
+const RecuPaiement = React.forwardRef(({ paiement, formatId = "a4" }, ref) => {
   const eleve = paiement?.eleve || {};
   const ecole = obtenirEcolePaiement(paiement) || {};
   const logoEcole = useMemo(
@@ -50,7 +50,7 @@ const RecuPaiement = React.forwardRef(({ paiement }, ref) => {
   }, [logoEcole]);
 
   return (
-    <article ref={ref} className="recu-financier">
+    <article ref={ref} className={`recu-financier recu-financier--${formatId}`}>
       <header className="recu-financier__entete">
         <div className="recu-financier__marque">
           <img
