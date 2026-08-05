@@ -810,11 +810,7 @@ a:hover {
 .recu-financier.recu-financier--pos80 {
   min-height: 0;
   padding: 10px;
-  color: #111;
-  border: 1px solid #111;
-  border-radius: 0;
   font-family: Arial, Helvetica, sans-serif;
-  box-shadow: none;
 }
 
 .recu-financier.recu-financier--pos58 { width: min(100%, 219px); }
@@ -831,7 +827,6 @@ a:hover {
 .recu-financier--pos58 .recu-financier__entete,
 .recu-financier--pos80 .recu-financier__entete {
   padding-bottom: 10px;
-  border-bottom: 1px dashed #111;
 }
 
 .recu-financier--pos58 .recu-financier__marque,
@@ -843,13 +838,10 @@ a:hover {
 .recu-financier--pos80 .recu-financier__marque img {
   width: 32px;
   height: 32px;
-  border-radius: 3px;
-  filter: grayscale(1);
 }
 
 .recu-financier--pos58 .recu-financier__marque strong,
 .recu-financier--pos80 .recu-financier__marque strong {
-  color: #111;
   font-size: 11px;
 }
 
@@ -863,7 +855,6 @@ a:hover {
 .recu-financier--pos80 .recu-financier__ligne span,
 .recu-financier--pos58 .recu-financier__pied span,
 .recu-financier--pos80 .recu-financier__pied span {
-  color: #222;
   font-size: 8px;
 }
 
@@ -881,9 +872,6 @@ a:hover {
 .recu-financier--pos58 .recu-financier__numero em,
 .recu-financier--pos80 .recu-financier__numero em {
   padding: 2px 6px;
-  color: #111;
-  background: transparent;
-  border: 1px solid #111;
   font-size: 8px;
 }
 
@@ -893,9 +881,6 @@ a:hover {
   gap: 7px;
   margin: 10px 0;
   padding: 8px;
-  background: #fff;
-  border: 1px dashed #777;
-  border-radius: 0;
   font-size: 9px;
 }
 
@@ -904,35 +889,17 @@ a:hover {
   margin-top: 1px;
 }
 
-.recu-financier--pos58 .recu-financier__details,
-.recu-financier--pos80 .recu-financier__details {
-  border-color: #111;
-  border-radius: 0;
-}
-
 .recu-financier--pos58 .recu-financier__ligne,
 .recu-financier--pos80 .recu-financier__ligne {
   flex-direction: row;
   gap: 6px;
   padding: 6px;
-  border-color: #999;
   font-size: 9px;
 }
 
 .recu-financier--pos58 .recu-financier__ligne strong,
 .recu-financier--pos80 .recu-financier__ligne strong {
   text-align: right;
-}
-
-.recu-financier--pos58 .recu-financier__total,
-.recu-financier--pos80 .recu-financier__total {
-  color: #fff;
-  background: #111;
-}
-
-.recu-financier--pos58 .recu-financier__total span,
-.recu-financier--pos80 .recu-financier__total span {
-  color: #fff;
 }
 
 .recu-financier--pos58 .recu-financier__total strong,
@@ -952,13 +919,11 @@ a:hover {
   width: 100%;
   min-height: 35px;
   padding-top: 22px;
-  border-color: #111;
 }
 
 .recu-financier--pos58 .recu-financier__note,
 .recu-financier--pos80 .recu-financier__note {
   margin-top: 12px;
-  color: #222;
   font-size: 7px;
 }
 

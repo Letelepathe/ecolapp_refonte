@@ -10,7 +10,7 @@
 
 Le format se choisit dans la modal d'aperçu du reçu. La préférence est mémorisée dans le navigateur pour chaque école et s'applique à l'impression comme au PDF téléchargé.
 
-Les formats POS utilisent une présentation compacte, contrastée et adaptée aux imprimantes thermiques. Les formats papier conservent la présentation administrative du reçu avec des dimensions adaptées.
+Les formats POS conservent l'identité visuelle du reçu administratif : couleurs, logo, badge, blocs et hiérarchie. Seules la largeur, la disposition et les dimensions sont adaptées au rouleau. Une imprimante thermique monochrome convertira elle-même les couleurs en nuances de gris.
 
 ## Impression Bluetooth sur téléphone
 
