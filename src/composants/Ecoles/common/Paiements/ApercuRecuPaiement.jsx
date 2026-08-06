@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { api } from "../../../api/api";
 import {
   imprimerRecuPaiement,
   telechargerDocumentPdf,
@@ -14,9 +15,72 @@ import {
 const ApercuRecuPaiement = ({ paiement, onFermer }) => {
   const recuRef = useRef(null);
   const [telechargement, setTelechargement] = useState(false);
+  const [paiementAvecAgent, setPaiementAvecAgent] = useState(paiement);
+  const [utilisateurImprimeur, setUtilisateurImprimeur] = useState(null);
   const ecoleId = paiement?.ecole_id || paiement?.ecole?.id || localStorage.getItem("ecole_id");
   const [formatId, setFormatId] = useState(() => lireFormatRecuPrefere(ecoleId));
   const format = obtenirFormatRecu(formatId);
+
+  useEffect(() => {
+    let actif = true;
+    setPaiementAvecAgent(paiement);
+
+    const userId = paiement?.users_id ?? paiement?.user_id ?? paiement?.user?.id;
+    const agentDejaCharge = paiement?.user || paiement?.utilisateur || paiement?.agent;
+
+    if (!paiement || agentDejaCharge || !userId) {
+      return () => {
+        actif = false;
+      };
+    }
+
+    api.get(`/user/${userId}`)
+      .then(({ data }) => {
+        if (!actif || !data?.user) return;
+        setPaiementAvecAgent((courant) => ({ ...courant, user: data.user }));
+      })
+      .catch(() => {
+        // Le reçu reste imprimable, sans attribuer l'encaissement à l'imprimeur.
+      });
+
+    return () => {
+      actif = false;
+    };
+  }, [paiement]);
+
+  useEffect(() => {
+    let actif = true;
+    const imprimeurId = localStorage.getItem("userId");
+
+    if (!imprimeurId) {
+      setUtilisateurImprimeur(null);
+      return () => {
+        actif = false;
+      };
+    }
+
+    const agentEncaissement =
+      paiement?.user || paiement?.utilisateur || paiement?.agent;
+
+    if (String(agentEncaissement?.id) === String(imprimeurId)) {
+      setUtilisateurImprimeur(agentEncaissement);
+      return () => {
+        actif = false;
+      };
+    }
+
+    api.get(`/user/${imprimeurId}`)
+      .then(({ data }) => {
+        if (actif) setUtilisateurImprimeur(data?.user || null);
+      })
+      .catch(() => {
+        if (actif) setUtilisateurImprimeur(null);
+      });
+
+    return () => {
+      actif = false;
+    };
+  }, [paiement]);
 
   if (!paiement) return null;
 
@@ -107,7 +171,12 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
         </div>
 
         <div className="apercu-recu-financier__zone">
-          <RecuPaiement ref={recuRef} paiement={paiement} formatId={formatId} />
+          <RecuPaiement
+            ref={recuRef}
+            paiement={paiementAvecAgent || paiement}
+            imprimeur={utilisateurImprimeur}
+            formatId={formatId}
+          />
         </div>
       </div>
     </div>

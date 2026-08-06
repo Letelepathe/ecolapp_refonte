@@ -36,7 +36,20 @@ const formatMontant = (paiement) => {
   return `${montant}${devise === "—" ? "" : ` ${devise}`}`;
 };
 
-const RecuPaiement = React.forwardRef(({ paiement, formatId = "a4" }, ref) => {
+const obtenirNomUtilisateur = (utilisateur, valeurParDefaut) => {
+  if (!utilisateur) return valeurParDefaut;
+
+  return [
+    utilisateur.name ?? utilisateur.nom,
+    utilisateur.last_name ?? utilisateur.postnom,
+    utilisateur.first_name ?? utilisateur.prenom,
+  ]
+    .filter(Boolean)
+    .join(" ") || valeurParDefaut;
+};
+
+const RecuPaiement = React.forwardRef(
+  ({ paiement, imprimeur, formatId = "a4" }, ref) => {
   const eleve = paiement?.eleve || {};
   const ecole = obtenirEcolePaiement(paiement) || {};
   const logoEcole = useMemo(
@@ -44,6 +57,16 @@ const RecuPaiement = React.forwardRef(({ paiement, formatId = "a4" }, ref) => {
     [ecole?.id, ecole?.photo_profil]
   );
   const [logoAffiche, setLogoAffiche] = useState(logoEcole);
+  const agentEncaissement =
+    paiement?.user || paiement?.utilisateur || paiement?.agent;
+  const nomAgentEncaissement = obtenirNomUtilisateur(
+    agentEncaissement,
+    "Agent non précisé"
+  );
+  const nomImprimeur = obtenirNomUtilisateur(
+    imprimeur,
+    "Utilisateur non identifié"
+  );
 
   useEffect(() => {
     setLogoAffiche(logoEcole);
@@ -120,8 +143,14 @@ const RecuPaiement = React.forwardRef(({ paiement, formatId = "a4" }, ref) => {
         <div>
           <span>Date du paiement</span>
           <strong>{formatDate(paiement?.created_at)}</strong>
+          <span className="recu-financier__libelle-imprimeur">Imprimé par</span>
+          <strong>{nomImprimeur}</strong>
         </div>
         <div className="recu-financier__signature">
+          <span>Perçu par</span>
+          <strong className="recu-financier__agent">
+            {nomAgentEncaissement}
+          </strong>
           <span>Signature / Cachet</span>
         </div>
       </footer>
@@ -131,7 +160,8 @@ const RecuPaiement = React.forwardRef(({ paiement, formatId = "a4" }, ref) => {
       </p>
     </article>
   );
-});
+  }
+);
 
 RecuPaiement.displayName = "RecuPaiement";
 

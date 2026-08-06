@@ -917,8 +917,8 @@ a:hover {
 .recu-financier--pos58 .recu-financier__signature,
 .recu-financier--pos80 .recu-financier__signature {
   width: 100%;
-  min-height: 35px;
-  padding-top: 22px;
+  min-height: 52px;
+  padding-top: 8px;
 }
 
 .recu-financier--pos58 .recu-financier__note,
@@ -13230,12 +13230,27 @@ button[class="refonte-menu-btn"]{
   margin-top: 6px;
 }
 
+.recu-financier__pied .recu-financier__libelle-imprimeur {
+  display: block;
+  margin-top: 14px;
+}
+
 .recu-financier__signature {
   width: 210px;
-  min-height: 72px;
-  padding-top: 50px;
+  min-height: 82px;
+  padding-top: 12px;
   text-align: center;
   border-bottom: 1px solid #172033;
+}
+
+.recu-financier__signature span,
+.recu-financier__signature strong {
+  display: block;
+}
+
+.recu-financier__signature .recu-financier__agent {
+  margin: 5px 0 12px;
+  overflow-wrap: anywhere;
 }
 
 .recu-financier__note {

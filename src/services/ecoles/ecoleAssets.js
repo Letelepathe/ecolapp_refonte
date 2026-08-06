@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../../composants/api/api";
 
-export const obtenirEcolePaiement = (paiement = {}) =>
-  paiement.ecole || paiement.eleve?.ecole || null;
+export const obtenirEcolePaiement = (paiement) =>
+  paiement?.ecole || paiement?.eleve?.ecole || null;
 
 export const obtenirUrlLogoEcole = (ecole, logoParDefaut) => {
   const ecoleId = Number(ecole?.id);
