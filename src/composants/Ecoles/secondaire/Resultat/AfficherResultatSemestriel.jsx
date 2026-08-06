@@ -10,7 +10,7 @@ import styles from '../../../common/styles';
 
 import drapeau from "../../../../assets/drapeau.png";
 import embleme from "../../../../assets/embleme.png";
-import { HeroSection } from "../../common/loadBulletin";
+import  HeroSection  from "../../common/HeroSection";
 
 function getValidIntegerFromQuery(param, defaultValue = 0) {
     const value = new URLSearchParams(window.location.search).get(param);

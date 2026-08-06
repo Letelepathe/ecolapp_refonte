@@ -1,7 +1,7 @@
 
 import ImageEcole from "../../../static/images/image_ecole.webp"
 // import './css/style-uniforme.css';
-export const HeroSection = ({ecolename ="ecolapp" ,
+const HeroSection = ({ecolename ="ecolapp" ,
      titre="ecolapp, gestion scolaire simplifiée et efficace." ,
      sousTitre ="Un outil tout-en-un pour les écoles, enseignants, élèves, et parents."}) => (
   <section className="index-refonte bg-primary text-center" data-aos="fade-up">
@@ -25,3 +25,5 @@ export const HeroSection = ({ecolename ="ecolapp" ,
     </div>
   </section>
 );
+
+export default HeroSection;

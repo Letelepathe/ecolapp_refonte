@@ -8,7 +8,7 @@ installerConfigurationApi();
 
 createRoot(document.getElementById('app')).render(
   <StrictMode>
-    <LimiteErreur><App /></LimiteErreur>
+    <App />
   </StrictMode>
 );
 
