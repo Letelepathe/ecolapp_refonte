@@ -4,19 +4,25 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
+import EcranChargement from "../../../common/EcranChargement";
 
 const Inscriptionmaternelle = () => {
   const [ecole, setEcole] = useState(null);
+  const [requetesInitiales, setRequetesInitiales] = useState(3);
+  const [erreurInitiale, setErreurInitiale] = useState("");
+  const requeteInitialeTerminee = () => setRequetesInitiales((nombre) => Math.max(0, nombre - 1));
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
 
   useEffect(() => {
     const fetchInfoEcole = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${ecole_id}`);
+        const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${ecole_id}`, { timeout: 15000 });
         setEcole(response.data.ecole);
       } catch (error) {
-        console.error("Erreur lors de la récupération des informations:", error);
+        setErreurInitiale("Les informations de l’école sont momentanément indisponibles.");
+      } finally {
+        requeteInitialeTerminee();
       }
     };
 
@@ -54,21 +60,25 @@ const Inscriptionmaternelle = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`);
+        const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`, { timeout: 15000 });
         setOptions(response.data.optionAll);
         console.log(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des options:", error);
+        setErreurInitiale("Les options d’inscription n’ont pas pu être chargées.");
+      } finally {
+        requeteInitialeTerminee();
       }
     };
 
     const fetchClasses = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`);
+        const response = await axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`, { timeout: 15000 });
         setClasses(response.data.classesAll);
         console.log(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des classes:", error);
+        setErreurInitiale("Les classes d’inscription n’ont pas pu être chargées.");
+      } finally {
+        requeteInitialeTerminee();
       }
     };
 
@@ -162,11 +172,8 @@ const Inscriptionmaternelle = () => {
     }
   };
 
-  if (!ecole) {
-    return (
-      <div className="spinner"></div>);
-
-  }
+  if (requetesInitiales > 0) return <EcranChargement titre="Préparation du formulaire d’inscription" message="Nous chargeons l’école, les classes et les options disponibles." />;
+  if (erreurInitiale || !ecole) return <EcranChargement erreur={erreurInitiale || "Le formulaire d’inscription est indisponible."} onReessayer={() => window.location.reload()} />;
 
   return (
     <div>
