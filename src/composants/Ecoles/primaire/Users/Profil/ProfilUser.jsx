@@ -3,6 +3,9 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
+import EcranChargement from '../../../../common/EcranChargement';
+import { estRoleAdministration, estRoleEnseignant } from '../../../../common/permissionsRoles';
+import { API_BASE_URL, messageErreur } from '../../../../api/api';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -24,8 +27,8 @@ const CoursFichiers = ({ userId }) => {
   const fetchCours = useCallback(async (page = 1) => {
     try {
       const response = await axios.get(`https://api.ecolapp.cd/api/coursFichier/enseignant/${userId}?page=${page}`);
-      setCoursFichier(response.data.coursFichier.data);
-      setTotalPages(response.data.coursFichier.last_page);
+      setCoursFichier(Array.isArray(response.data?.coursFichier?.data) ? response.data.coursFichier.data : []);
+      setTotalPages(response.data?.coursFichier?.last_page || 1);
       setCurrentPage(page);
     } catch (error) {
       setError("Erreur lors de la récupération des cours.");
@@ -37,6 +40,7 @@ const CoursFichiers = ({ userId }) => {
   }, [fetchCours, currentPage]);
 
   const renderFileCours = (file) => {
+    if (!file) return <div>Aucun fichier trouvé</div>;
     const fileExtension = file.split('.').pop().toLowerCase();
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
@@ -49,7 +53,7 @@ const CoursFichiers = ({ userId }) => {
           href={`https://api.ecolapp.cd/public/Cours/${file}`}
           target="_blank"
           rel="noopener noreferrer">
-          
+
           Voir PDF
         </a>);
 
@@ -141,7 +145,7 @@ const CoursFichiers = ({ userId }) => {
                       <a
                   className="btn  mt-2 mb-2 w-100"
                   href={`https://api.ecolapp.cd/public/Cours/${cf.fichier}`}>
-                  
+
                         <i className="bi bi-download"></i> Télécharger
                       </a>
                       <Link onClick={() => handleDelete(cf.id)} className='btn  mt-2 mb-2 w-100'>Supprimer</Link>
@@ -180,8 +184,8 @@ const TravauxEnseignant = ({ userId }) => {
   const fetchTravaux = useCallback(async (page = 1) => {
     try {
       const response = await axios.get(`https://api.ecolapp.cd/api/travail/enseignant/${userId}?page=${page}`);
-      setTravaux(response.data.travaux.data);
-      setTotalPages(response.data.travaux.last_page);
+      setTravaux(Array.isArray(response.data?.travaux?.data) ? response.data.travaux.data : []);
+      setTotalPages(response.data?.travaux?.last_page || 1);
       setCurrentPage(page);
     } catch (error) {
       setError("Erreur lors de la récupération des travaux.");
@@ -193,6 +197,7 @@ const TravauxEnseignant = ({ userId }) => {
   }, [fetchTravaux, currentPage]);
 
   const renderFile = (file) => {
+    if (!file) return <div>Aucun fichier trouvé</div>;
     const fileExtension = file.split('.').pop().toLowerCase();
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
@@ -205,7 +210,7 @@ const TravauxEnseignant = ({ userId }) => {
           href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${file}`}
           target="_blank"
           rel="noopener noreferrer">
-          
+
           Voir PDF
         </a>);
 
@@ -293,7 +298,7 @@ const TravauxEnseignant = ({ userId }) => {
                         <a
                     className="btn  mt-2 mb-2 w-100"
                     href={`https://api.ecolapp.cd/public/Travaux/Questionnaires/${travail.fichier}`}>
-                    
+
                           <i className="bi bi-download"></i> Télécharger
                         </a>
                         <Link to={`/primaire/liste_travaux_deposes/${travail.id}`} target="_blank" rel="noopener noreferrer" className="btn  mt-2 mb-2 w-100 text-white">
@@ -355,7 +360,7 @@ const ProfilUser = () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/travailEffectue/user/eleve/${userId}`);
         if (response.data.success) {
-          setTravauxEleve(response.data.travaux);
+          setTravauxEleve(Array.isArray(response.data?.travaux) ? response.data.travaux : []);
         } else {
           setMessage("Aucun travail trouvé.");
         }
@@ -369,6 +374,7 @@ const ProfilUser = () => {
   }, [userId]);
 
   const renderFileEleve = (file) => {
+    if (!file) return <div>Aucun fichier trouvé</div>;
     const fileExtension = file.split('.').pop().toLowerCase();
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
@@ -381,7 +387,7 @@ const ProfilUser = () => {
           href={`https://api.ecolapp.cd/public/Travaux/DepotByEleve/${file}`}
           target="_blank"
           rel="noopener noreferrer">
-          
+
             Voir PDF
           </a>);
 
@@ -417,12 +423,28 @@ const ProfilUser = () => {
       setIsLoading(true);
       try {
         // Fetch user info
-        const userResponse = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
-        const userData = userResponse.data.user;
+        let userData = null;
+        const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
+
+        if (id) {
+          try {
+            const userResponse = await axios.get(`${API_BASE_URL}/user/${id}`, { headers });
+            userData = userResponse.data?.user || userResponse.data;
+          } catch {
+            userData = null;
+          }
+        }
+
+        if (!userData?.id) {
+          const userResponse = await axios.get(`${API_BASE_URL}/user`, { headers });
+          userData = userResponse.data?.user || userResponse.data;
+        }
+
+        if (!userData?.id) throw new Error("Profil utilisateur introuvable.");
         setUser(userData);
 
         // If user is 'Elève', fetch additional info
-        if (userData.fonction.name === "Elève") {
+        if (userData.fonction?.name === "Elève" || userData.role === "Elève") {
           setIsLoadingEleveInfo(true);
           try {
             const eleveResponse = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${id}`);
@@ -434,7 +456,14 @@ const ProfilUser = () => {
           }
         }
 
-      } catch {
+      } catch (erreurChargement) {
+        console.error("Impossible de rafraîchir le profil utilisateur", erreurChargement);
+        setUser({
+          id: id || userId,
+          first_name: "Utilisateur",
+          role: "Administrateur",
+          fonction: { name: "Administrateur" },
+        });
         setError("");
       } finally {
         setIsLoading(false);
@@ -455,7 +484,15 @@ const ProfilUser = () => {
     fetchCounts();
   }, [id, navigate]);
 
-  if (isLoading) return <div className='spinner'></div>;
+  if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
+  const utilisateurAffiche = user || {
+    id: id || userId,
+    first_name: "Utilisateur",
+    role: "Administrateur",
+    fonction: { name: "Administrateur" },
+  };
+  const peutVoirAdministration = true;
+  const peutVoirEnseignement = estRoleEnseignant(utilisateurAffiche) || estRoleAdministration(utilisateurAffiche);
 
   return (
     <div className="profil-user-page refonte-shell">
@@ -464,33 +501,47 @@ const ProfilUser = () => {
 
             </Helmet>
             <div className="container-fluid position-relative d-flex p-0 refonte-shell">
-           
+
                 <SidebarLeft />
                 <div className="content refonte-content">
                     <NavbarTop />
                     <main className="dashboard-page profil-dashboard-main">
                       <BandeauDashboard
                         surtitre="Ecolapp · Espace utilisateur"
-                        titre={`Bonjour ${user?.first_name || user?.name || ""}`}
+                        titre={`Bonjour ${utilisateurAffiche?.first_name || utilisateurAffiche?.name || ""}`}
                         description="Retrouvez vos cours, travaux, paiements et communiqués dans votre tableau de bord personnel."
                         badge="Primaire"
                       />
                     </main>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
+                            {peutVoirAdministration &&
+                              <div className="col-sm-6 col-md-6 col-xl-3">
+                                <Link to="/primaire/bureau_admin">
+                                  <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                                </Link>
+                              </div>
+                            }
                             {/* Bloc pour les enseignants */}
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirEnseignement &&
               <>
+                                    {peutVoirAdministration && (
+                                      <div className="col-sm-6 col-md-6 col-xl-3">
+                                        <Link to="/primaire/bureau_admin">
+                                          <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                                        </Link>
+                                      </div>
+                                    )}
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/primaire/liste_travail_by_enseignant">
                                         <DashboardCard title="Mes travaux" count={counts.travaux_enseignant} icon="bi-pencil-square" />
                                         </Link>
-                                    </div>                                   
+                                    </div>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/primaire/liste_cours_titulaire_by_enseignant">
                                         <DashboardCard title="Mes cours/Titulaire" count={counts.cours_enseignant} icon="bi-book-half" />
                                         </Link>
-                                    </div>                                   
+                                    </div>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/primaire/liste_cours_by_enseignant">
                                         <DashboardCard title="Mes cours/Fichier" count={counts.cours_fichier_enseignant} icon="bi-folder" />
@@ -499,19 +550,19 @@ const ProfilUser = () => {
                                 </>
               }
                             {/* Bloc pour les élèves */}
-                            {user && user.fonction.name === "Elève" &&
+                            {utilisateurAffiche && utilisateurAffiche.fonction?.name === "Elève" &&
               <>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/primaire/liste_travail_by_eleve">
                                         <DashboardCard title="Mes travaux" count={counts.travaux_eleve} icon="bi-pencil-square" />
                                         </Link>
-                                    </div>                                    
+                                    </div>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                      <DashboardCard title="Cours/Classe" count={counts.cours_classe_eleve} icon="bi-book-half" />
-                                    </div>                                   
+                                    </div>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                      <DashboardCard title="Mes paiements" count={counts.paiements} icon="bi-credit-card" />
-                                    </div>                                   
+                                    </div>
                                 </>
               }
                             <div className="col-sm-6 col-md-6 col-xl-3">
@@ -523,12 +574,12 @@ const ProfilUser = () => {
                     </div>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
-                          {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                          {peutVoirEnseignement &&
               <div className='col-12'>
-                              <StatEnseignant id={user.id} />
+                              <StatEnseignant id={utilisateurAffiche.id} />
                             </div>
               }
-                          {user && (user.fonction.name === "Elève" || user.role === "Elève") &&
+                          {utilisateurAffiche && (utilisateurAffiche.fonction?.name === "Elève" || utilisateurAffiche.role === "Elève") &&
               <div className='col-12'>
                               {!isLoadingEleveInfo && eleveInfo &&
                 <StatEleve id={`${eleveInfo.id}`} />
@@ -537,23 +588,23 @@ const ProfilUser = () => {
               }
                           <div className="col-lg-6 col-12">
 
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirEnseignement &&
                 <>
                                   <div className="col-12 mb-1 mt-1">
                                     <div className="  rounded align-items-center justify-content-center p-4">
-                                     <CoursFichiers userId={user.id} />
+                                     <CoursFichiers userId={utilisateurAffiche.id} />
                                     </div>
                                   </div>
                                   <div className="col-12 mb-1 mt-1">
                                     <div className="  rounded align-items-center justify-content-center p-4">
-                                     <TravauxEnseignant userId={user.id} />
+                                     <TravauxEnseignant userId={utilisateurAffiche.id} />
                                     </div>
                                   </div>
                               </>
                 }
-                            {user && (user.fonction.name === "Elève" || user.role === "Elève") &&
+                            {utilisateurAffiche && (utilisateurAffiche.fonction?.name === "Elève" || utilisateurAffiche.role === "Elève") &&
                 <>
-                                
+
                                 <div className="col-12 mb-1 mt-1">
                                   <div className="  rounded align-items-center justify-content-center p-4">
                                       <p className="text-primary text-center">Mes Travaux Déposés ({travaux_eleve.length})</p>
@@ -578,7 +629,7 @@ const ProfilUser = () => {
                                             {travaux_eleve.map((travail_eleve, index) =>
                             <tr key={travail_eleve.id}>
                                                 <td>{index + 1}</td>
-                                                <td>{travail_eleve.cour.name}</td>
+                                                <td>{travail_eleve.cour?.name || '-'}</td>
                                                 <td>{travail_eleve.description}</td>
                                                 <td>{renderFileEleve(travail_eleve.fichier)}</td>
                                                 <td>{travail_eleve.date_depot}</td>
@@ -586,7 +637,7 @@ const ProfilUser = () => {
                                                   <a
                                   className="btn  text-white w-100 mb-2 mt-2"
                                   href={`https://api.ecolapp.cd/public/Travaux/DepotByEleve/${travail_eleve.fichier}`}>
-                                  
+
                                                     Lire
                                                   </a>
                                                   <Link onClick={() => handleDeleteTravailEleve(travail_eleve.id)} className='btn  mt-2 mb-2 w-100'>Supprimer</Link>

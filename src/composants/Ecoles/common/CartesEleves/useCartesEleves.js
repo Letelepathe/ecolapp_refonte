@@ -3,6 +3,7 @@ import axios from "axios";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { URL_API, idEleve, nomCls, nomOpt, txtRecherche } from "./outilsCarte";
+import { imprimerZoneCartes } from "../../../common/impressionCartes";
 
 export const useCartesEleves = (cycle, zoneRef) => {
   const ecoleId = localStorage.getItem("ecole_id");
@@ -124,7 +125,7 @@ export const useCartesEleves = (cycle, zoneRef) => {
   };
 
   const impCartes = () => {
-    window.print();
+    imprimerZoneCartes(zoneRef.current, `Cartes élèves ${cycle}`);
   };
 
   const telechPdf = async () => {

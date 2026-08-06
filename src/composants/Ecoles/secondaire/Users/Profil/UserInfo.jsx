@@ -42,21 +42,21 @@ const UserInfo = () => {
     <div>
             <div className="profile">
                 <div className="profile-cover">
-                    
+
                 </div>
                 <div className="profile-details">
                     <div className="profile-image">
                         <img src={`https://api.ecolapp.cd/public/imgUser/${user.file}`} alt="Profil" className="u-style-2f8d99ec" />
-                       
+
                     </div>
                     <div className="profile-details-info">
                         <h2 className="u-style-1b959d56">{user.first_name} {user.name}</h2>
-                      
+
                     </div>
                 </div>
             </div>
             <div className="container-fluid">
-                
+
 
                 <div className="tab-content" id="pills-tabContent">
                     <div className="tab-pane fade show active" id="apropos" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -88,18 +88,18 @@ const UserInfo = () => {
                             <div className="col-sm-3"><h6 className="mb-0">Téléphone</h6></div>
                             <div className="col-sm-9"><p className="text-muted mb-0">{user.phone}</p></div>
                         </div>
-                       
+
                         <div className="row">
                             <div className="col-sm-3"><h6 className="mb-0">Adresse</h6></div>
                             <div className="col-sm-9"><p className="text-muted mb-0">{user.address}</p></div>
                         </div>
                         <hr />
-                        
+
                         <hr />
-                        
+
                     </div>
 
-                   
+
                 </div>
             </div>
         </div>);
