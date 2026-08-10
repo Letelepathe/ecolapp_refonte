@@ -8,8 +8,6 @@ export const champsReq = [
   "first_name",
   "last_name",
   "sexe",
-  "date_naissance",
-  "lieu_de_naissance",
   "adresse",
   "annee_id",
   "classes_id",
@@ -50,6 +48,8 @@ const enIntSiNum = (valeur) => {
 const prepEleve = ({ eleve, userId, ecoleId, direction }) => {
   const data = {
     ...eleve,
+    date_naissance: eleve.date_naissance || null,
+    lieu_de_naissance: eleve.lieu_de_naissance?.trim() || null,
     users_id: userId,
     ecole_id: ecoleId,
     direction,
@@ -90,13 +90,15 @@ export const validerEleve = (eleve, ageMinimumEleve, ageMaximumEleve) => {
     }
   });
 
-  const erreurAge = getAgeEleveError(
-    eleve.date_naissance,
-    ageMinimumEleve,
-    ageMaximumEleve
-  );
-  if (erreurAge) {
-    err.date_naissance = erreurAge;
+  if (eleve.date_naissance) {
+    const erreurAge = getAgeEleveError(
+      eleve.date_naissance,
+      ageMinimumEleve,
+      ageMaximumEleve
+    );
+    if (erreurAge) {
+      err.date_naissance = erreurAge;
+    }
   }
 
   return err;

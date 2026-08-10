@@ -4,6 +4,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
+import {
+  getAgeMinimumEleveError,
+  getErreurPourcentageFacultatif,
+  normaliserChampFacultatif,
+  normaliserPourcentageFacultatif,
+} from '../../common/validationAgeEleve';
 
 const InscriptionEleveSecondaire = () => {
   const [ecole, setEcole] = useState(null);
@@ -89,13 +95,13 @@ const InscriptionEleveSecondaire = () => {
     if (!formData.name) newErrors.name = "Nom requis";
     if (!formData.first_name) newErrors.first_name = "Prénom requis";
     if (!formData.last_name) newErrors.last_name = "Postnom requis";
-    if (!formData.ecole_provenance) newErrors.ecole_provenance = "École de provenance requise";
-    if (!formData.percent) newErrors.percent = "Pourcentage requis";
+    const erreurPourcentage = getErreurPourcentageFacultatif(formData.percent);
+    if (erreurPourcentage) newErrors.percent = erreurPourcentage;
 
     if (!formData.classes_id) newErrors.classes_id = "Classe d'inscription requise";
 
-    if (!formData.date_naissance) newErrors.date_naissance = "Date de naissance requise";
-    if (!formData.lieu_de_naissance) newErrors.lieu_de_naissance = "Lieu de naissance requis";
+    const erreurDate = getAgeMinimumEleveError(formData.date_naissance, null);
+    if (erreurDate) newErrors.date_naissance = erreurDate;
     if (!formData.nationalite) newErrors.nationalite = "Nationalité requise";
 
     if (!formData.adresse) newErrors.adresse = "Adresse requise";
@@ -118,8 +124,16 @@ const InscriptionEleveSecondaire = () => {
     }
 
     try {
+      const payload = {
+        ...formData,
+        ecole_provenance: normaliserChampFacultatif(formData.ecole_provenance),
+        percent: normaliserPourcentageFacultatif(formData.percent),
+        date_naissance: normaliserChampFacultatif(formData.date_naissance),
+        lieu_de_naissance: normaliserChampFacultatif(formData.lieu_de_naissance),
+        code_parent: normaliserChampFacultatif(formData.code_parent),
+      };
       const response = await axios.post("https://api.ecolapp.cd/api/inscription/create",
-        formData,
+        payload,
         { headers: { 'Content-Type': 'application/json' } }
       );
 
@@ -215,13 +229,13 @@ const InscriptionEleveSecondaire = () => {
                         </select>
                       </div>
                       <div className="col-lg-6 col-12">
-                        <label htmlFor="date_naissance">Date de naissance</label>
-                        <input type="date" name="date_naissance" className="form-control" value={formData.date_naissance} onChange={handleInputChange} required />
+                        <label htmlFor="date_naissance">Date de naissance (facultatif)</label>
+                        <input type="date" name="date_naissance" className="form-control" value={formData.date_naissance} onChange={handleInputChange} />
                         {errors.date_naissance && <p className="text-danger">{errors.date_naissance}</p>}
                       </div>
                       <div className="col-lg-6 col-12">
-                        <label htmlFor="lieu_de_naissance">Lieu de naissance</label>
-                        <input type="text" name="lieu_de_naissance" className="form-control" value={formData.lieu_de_naissance} onChange={handleInputChange} required />
+                        <label htmlFor="lieu_de_naissance">Lieu de naissance (facultatif)</label>
+                        <input type="text" name="lieu_de_naissance" className="form-control" value={formData.lieu_de_naissance} onChange={handleInputChange} />
                         {errors.lieu_de_naissance && <p className="text-danger">{errors.lieu_de_naissance}</p>}
                       </div>
 
@@ -238,13 +252,13 @@ const InscriptionEleveSecondaire = () => {
                       </div>
 
                       <div className="col-12 col-lg-6">
-                        <label htmlFor="ecole_provenance">École de provenance</label>
-                        <input type="text" name="ecole_provenance" className="form-control" value={formData.ecole_provenance} onChange={handleInputChange} required />
+                        <label htmlFor="ecole_provenance">École de provenance (facultatif)</label>
+                        <input type="text" name="ecole_provenance" className="form-control" value={formData.ecole_provenance} onChange={handleInputChange} />
                         {errors.ecole_provenance && <p className="text-danger">{errors.ecole_provenance}</p>}
                       </div>
                       <div className="col-12 col-lg-6">
-                        <label htmlFor="percent">Pourcentage</label>
-                        <input type="number" max='2' name="percent" className="form-control" value={formData.percent} onChange={handleInputChange} required />
+                        <label htmlFor="percent">Pourcentage (facultatif)</label>
+                        <input type="text" inputMode="decimal" name="percent" className="form-control" value={formData.percent} onChange={handleInputChange} placeholder="Ex. 75,5" />
                         {errors.percent && <p className="text-danger">{errors.percent}</p>}
                       </div>
 

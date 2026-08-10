@@ -126,13 +126,13 @@ const LigneEleve = ({
         {err.sexe && <p className="text-danger">{err.sexe}</p>}
       </div>
       <div className="col-lg-4 col-12">
-        <label>Date de naissance</label>
-        <input type="date" name="date_naissance" className="form-control" value={eleve.date_naissance} onChange={(event) => majChamp(index, event)} required />
+        <label>Date de naissance (facultatif)</label>
+        <input type="date" name="date_naissance" className="form-control" value={eleve.date_naissance} onChange={(event) => majChamp(index, event)} />
         {err.date_naissance && <p className="text-danger">{err.date_naissance}</p>}
       </div>
       <div className="col-lg-4 col-12">
-        <label>Lieu de naissance</label>
-        <input type="text" name="lieu_de_naissance" className="form-control" value={eleve.lieu_de_naissance} onChange={(event) => majChamp(index, event)} required />
+        <label>Lieu de naissance (facultatif)</label>
+        <input type="text" name="lieu_de_naissance" className="form-control" value={eleve.lieu_de_naissance} onChange={(event) => majChamp(index, event)} />
         {err.lieu_de_naissance && <p className="text-danger">{err.lieu_de_naissance}</p>}
       </div>
       <div className="col-lg-6 col-12">

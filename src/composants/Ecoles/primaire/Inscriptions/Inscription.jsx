@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
 import { choisirOptionCompatibilite, obtenirConfigCycle } from "../../../../config/cyclesScolaires";
-import { getAgeMinimumEleveError } from "../../common/validationAgeEleve";
+import {
+  getAgeMinimumEleveError,
+  getErreurPourcentageFacultatif,
+  normaliserChampFacultatif,
+  normaliserPourcentageFacultatif,
+} from "../../common/validationAgeEleve";
 
 const URL_API = "https://api.ecolapp.cd/api";
 const configPrimaire = obtenirConfigCycle("primaire");
@@ -88,8 +93,6 @@ const InscriptionPrimaire = () => {
       name: "Nom requis",
       first_name: "Prénom requis",
       last_name: "Postnom requis",
-      date_naissance: "Date de naissance requise",
-      lieu_de_naissance: "Lieu de naissance requis",
       nationalite: "Nationalité requise",
       adresse: "Adresse requise",
       classes_id: "Classe primaire requise",
@@ -100,9 +103,8 @@ const InscriptionPrimaire = () => {
     if (estTransfert && !formulaire.ecole_provenance.trim()) {
       nouvelles.ecole_provenance = "École de provenance requise pour un transfert";
     }
-    if (estTransfert && !String(formulaire.percent || "").trim()) {
-      nouvelles.percent = "Dernier résultat requis pour un transfert";
-    }
+    const erreurPourcentage = getErreurPourcentageFacultatif(formulaire.percent);
+    if (erreurPourcentage) nouvelles.percent = erreurPourcentage;
     const erreurAge = getAgeMinimumEleveError(
       formulaire.date_naissance,
       configPrimaire.ageMinimum
@@ -133,7 +135,9 @@ const InscriptionPrimaire = () => {
           : formulaire.type_admission === "reinscription"
             ? "Réinscription"
             : "Première inscription",
-        percent: estTransfert ? formulaire.percent : "0",
+        percent: normaliserPourcentageFacultatif(formulaire.percent),
+        date_naissance: normaliserChampFacultatif(formulaire.date_naissance),
+        lieu_de_naissance: normaliserChampFacultatif(formulaire.lieu_de_naissance),
         code_parent: formulaire.code_parent.trim() || null,
       };
       const reponse = await axios.post(`${URL_API}/inscription/create`, payload, {
@@ -226,12 +230,12 @@ const InscriptionPrimaire = () => {
                         </select>
                       </div>
                       <div className="col-md-4">
-                        <label htmlFor="date_naissance">Date de naissance</label>
+                        <label htmlFor="date_naissance">Date de naissance (facultatif)</label>
                         <input id="date_naissance" type="date" name="date_naissance" className="form-control" value={formulaire.date_naissance} onChange={changerChamp} />
                         {erreurs.date_naissance && <p className="text-danger">{erreurs.date_naissance}</p>}
                       </div>
                       <div className="col-md-4">
-                        <label htmlFor="lieu_de_naissance">Lieu de naissance</label>
+                        <label htmlFor="lieu_de_naissance">Lieu de naissance (facultatif)</label>
                         <input id="lieu_de_naissance" name="lieu_de_naissance" className="form-control" value={formulaire.lieu_de_naissance} onChange={changerChamp} />
                         {erreurs.lieu_de_naissance && <p className="text-danger">{erreurs.lieu_de_naissance}</p>}
                       </div>
@@ -269,8 +273,8 @@ const InscriptionPrimaire = () => {
                             {erreurs.ecole_provenance && <p className="text-danger">{erreurs.ecole_provenance}</p>}
                           </div>
                           <div className="col-md-4">
-                            <label htmlFor="percent">Dernier résultat (%)</label>
-                            <input id="percent" type="number" min="0" max="100" name="percent" className="form-control" value={formulaire.percent} onChange={changerChamp} />
+                            <label htmlFor="percent">Dernier résultat (%) (facultatif)</label>
+                            <input id="percent" type="text" inputMode="decimal" name="percent" className="form-control" value={formulaire.percent} onChange={changerChamp} placeholder="Ex. 75,5" />
                             {erreurs.percent && <p className="text-danger">{erreurs.percent}</p>}
                           </div>
                         </>

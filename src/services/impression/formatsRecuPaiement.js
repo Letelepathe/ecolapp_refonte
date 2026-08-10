@@ -12,6 +12,28 @@ export const obtenirFormatRecu = (id) =>
   FORMATS_RECU_PAIEMENT.find((format) => format.id === id) ||
   FORMATS_RECU_PAIEMENT.find((format) => format.id === FORMAT_RECU_DEFAUT);
 
+export const adapterFormatRecuAuContenu = (format, element) => {
+  if (!format?.compact || !element || !Array.isArray(format.formatPdf)) {
+    return format;
+  }
+
+  const [largeurPage] = format.formatPdf;
+  const largeurElement = element.scrollWidth || element.offsetWidth;
+  const hauteurElement = element.scrollHeight || element.offsetHeight;
+  if (!largeurElement || !hauteurElement) return format;
+
+  const marge = Number(format.margeMm) || 0;
+  const largeurUtile = Math.max(1, largeurPage - marge * 2);
+  const hauteurContenu = largeurUtile * (hauteurElement / largeurElement);
+  const hauteurPage = Math.ceil(hauteurContenu + marge * 2 + 2);
+
+  return {
+    ...format,
+    formatPdf: [largeurPage, hauteurPage],
+    tailleCss: `${largeurPage}mm ${hauteurPage}mm`,
+  };
+};
+
 const clePreference = (ecoleId) =>
   `ecolapp:impression-recu:${String(ecoleId || "defaut")}`;
 

@@ -811,6 +811,61 @@ a:hover {
   min-height: 0;
   padding: 10px;
   font-family: Arial, Helvetica, sans-serif;
+  color: #101828;
+  line-height: 1.28;
+  background: #fff !important;
+  border: 1px solid #000 !important;
+  box-shadow: none !important;
+}
+
+.recu-financier--pos58 *,
+.recu-financier--pos80 * {
+  font-weight: 700;
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete {
+  border-bottom-color: #000 !important;
+}
+
+.recu-financier--pos58 .recu-financier__marque img,
+.recu-financier--pos80 .recu-financier__marque img {
+  filter: grayscale(1) contrast(1.35);
+}
+
+.recu-financier--pos58 .recu-financier__numero em,
+.recu-financier--pos80 .recu-financier__numero em {
+  background: #fff !important;
+  border: 1px solid #000;
+}
+
+.recu-financier--pos58 .recu-financier__identite,
+.recu-financier--pos80 .recu-financier__identite {
+  background: #fff !important;
+  border: 1px dashed #000;
+}
+
+.recu-financier--pos58 .recu-financier__details,
+.recu-financier--pos80 .recu-financier__details {
+  border-color: #000 !important;
+}
+
+.recu-financier--pos58 .recu-financier__ligne,
+.recu-financier--pos80 .recu-financier__ligne {
+  border-bottom-color: #000 !important;
+}
+
+.recu-financier--pos58 .recu-financier__total,
+.recu-financier--pos80 .recu-financier__total {
+  background: #fff !important;
+  border-top: 2px solid #000;
+}
+
+.recu-financier--pos58 .recu-financier__signature,
+.recu-financier--pos80 .recu-financier__signature {
+  border-bottom-color: #000 !important;
 }
 
 .recu-financier.recu-financier--pos58 { width: min(100%, 219px); }
@@ -834,6 +889,11 @@ a:hover {
   gap: 8px;
 }
 
+.recu-financier--pos58 .recu-financier__marque > div > span,
+.recu-financier--pos80 .recu-financier__marque > div > span {
+  display: none;
+}
+
 .recu-financier--pos58 .recu-financier__marque img,
 .recu-financier--pos80 .recu-financier__marque img {
   width: 32px;
@@ -842,6 +902,116 @@ a:hover {
 
 .recu-financier--pos58 .recu-financier__marque strong,
 .recu-financier--pos80 .recu-financier__marque strong {
+  font-size: 13px;
+}
+
+.recu-financier__adresse-ecole,
+.recu-financier__localisation-ecole {
+  display: block;
+  margin: 3px 0 0;
+  color: #52617a;
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier__localisation-ecole {
+  color: #1769ff;
+  text-decoration: underline;
+}
+
+.recu-financier--pos58 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos58 .recu-financier__localisation-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  display: block;
+  margin: 3px 0 0;
+  color: #101828;
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos58 .recu-financier__localisation-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  color: #000;
+  text-decoration: underline;
+}
+
+.recu-financier__qr-localisation {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.recu-financier__qr-localisation img {
+  width: 76px;
+  height: 76px;
+  image-rendering: pixelated;
+}
+
+.recu-financier__qr-localisation span {
+  max-width: 96px;
+  color: #52617a;
+  font-size: 9px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.recu-financier__qr-pos {
+  display: none;
+}
+
+.recu-financier--a6 .recu-financier__qr-localisation img {
+  width: 58px;
+  height: 58px;
+}
+
+.recu-financier--a6 .recu-financier__qr-localisation span {
+  max-width: 68px;
+  font-size: 8px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation,
+.recu-financier--pos80 .recu-financier__qr-localisation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 0;
+  border-top: 1px dashed #000;
+  border-bottom: 1px dashed #000;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation img,
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  filter: none;
+  image-rendering: pixelated;
+}
+
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  width: 60px;
+  height: 60px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation span,
+.recu-financier--pos80 .recu-financier__qr-localisation span {
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
   font-size: 11px;
 }
 
@@ -855,7 +1025,15 @@ a:hover {
 .recu-financier--pos80 .recu-financier__ligne span,
 .recu-financier--pos58 .recu-financier__pied span,
 .recu-financier--pos80 .recu-financier__pied span {
-  font-size: 8px;
+  font-size: 10px;
+}
+
+.recu-financier--pos80 .recu-financier__marque span,
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__ligne span,
+.recu-financier--pos80 .recu-financier__pied span {
+  font-size: 11px;
 }
 
 .recu-financier--pos58 .recu-financier__numero,
@@ -866,13 +1044,13 @@ a:hover {
 .recu-financier--pos58 .recu-financier__numero strong,
 .recu-financier--pos80 .recu-financier__numero strong {
   margin: 2px 0 4px;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .recu-financier--pos58 .recu-financier__numero em,
 .recu-financier--pos80 .recu-financier__numero em {
   padding: 2px 6px;
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .recu-financier--pos58 .recu-financier__identite,
@@ -881,7 +1059,11 @@ a:hover {
   gap: 7px;
   margin: 10px 0;
   padding: 8px;
-  font-size: 9px;
+  font-size: 11px;
+}
+
+.recu-financier--pos80 .recu-financier__identite {
+  font-size: 12px;
 }
 
 .recu-financier--pos58 .recu-financier__identite strong,
@@ -894,7 +1076,11 @@ a:hover {
   flex-direction: row;
   gap: 6px;
   padding: 6px;
-  font-size: 9px;
+  font-size: 11px;
+}
+
+.recu-financier--pos80 .recu-financier__ligne {
+  font-size: 12px;
 }
 
 .recu-financier--pos58 .recu-financier__ligne strong,
@@ -904,14 +1090,18 @@ a:hover {
 
 .recu-financier--pos58 .recu-financier__total strong,
 .recu-financier--pos80 .recu-financier__total strong {
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .recu-financier--pos58 .recu-financier__pied,
 .recu-financier--pos80 .recu-financier__pied {
   align-items: stretch;
   margin-top: 12px;
-  font-size: 9px;
+  font-size: 11px;
+}
+
+.recu-financier--pos80 .recu-financier__pied {
+  font-size: 12px;
 }
 
 .recu-financier--pos58 .recu-financier__signature,
@@ -923,8 +1113,341 @@ a:hover {
 
 .recu-financier--pos58 .recu-financier__note,
 .recu-financier--pos80 .recu-financier__note {
-  margin-top: 12px;
-  font-size: 7px;
+  display: none;
+}
+
+/* Mise en page dense pour rouleaux thermiques 58/80 mm. */
+.recu-financier.recu-financier--pos58,
+.recu-financier.recu-financier--pos80 {
+  padding: 7px;
+  font-size: 15px;
+}
+
+.recu-financier.recu-financier--pos80 {
+  padding: 9px;
+  font-size: 16px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-entete,
+.recu-financier--pos80 .recu-financier__qr-entete {
+  display: none;
+}
+
+.recu-financier--pos58 .recu-financier__qr-pos,
+.recu-financier--pos80 .recu-financier__qr-pos {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 4px 0 0;
+  padding: 4px 0 0;
+  border-top: 1px dashed #000;
+}
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete {
+  gap: 4px;
+  padding-bottom: 5px;
+}
+
+.recu-financier--pos58 .recu-financier__marque,
+.recu-financier--pos80 .recu-financier__marque {
+  gap: 6px;
+}
+
+.recu-financier--pos58 .recu-financier__marque strong {
+  font-size: 14px;
+}
+
+.recu-financier--pos80 .recu-financier__marque strong {
+  font-size: 15px;
+}
+
+.recu-financier--pos58 .recu-financier__adresse-ecole,
+.recu-financier--pos58 .recu-financier__localisation-ecole,
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  margin-top: 1px;
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation,
+.recu-financier--pos80 .recu-financier__qr-localisation {
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation img,
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  width: 112px;
+  height: 112px;
+}
+
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  width: 120px;
+  height: 120px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation span,
+.recu-financier--pos80 .recu-financier__qr-localisation span {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1.15;
+}
+
+.recu-financier--pos58 .recu-financier__numero,
+.recu-financier--pos80 .recu-financier__numero {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.recu-financier--pos58 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos58 .recu-financier__numero strong,
+.recu-financier--pos80 .recu-financier__numero strong {
+  margin: 0;
+  font-size: 15px;
+}
+
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__numero strong {
+  font-size: 16px;
+}
+
+.recu-financier--pos58 .recu-financier__numero em,
+.recu-financier--pos80 .recu-financier__numero em {
+  display: none;
+}
+
+.recu-financier--pos58 .recu-financier__identite,
+.recu-financier--pos80 .recu-financier__identite {
+  display: block;
+  margin: 5px 0;
+  padding: 4px 5px;
+}
+
+.recu-financier--pos58 .recu-financier__identite > div,
+.recu-financier--pos80 .recu-financier__identite > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 2px 0;
+}
+
+.recu-financier--pos58 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos58 .recu-financier__ligne span,
+.recu-financier--pos80 .recu-financier__ligne span {
+  flex: 0 0 auto;
+  font-size: 0;
+}
+
+.recu-financier--pos58 [data-pos-label]::before,
+.recu-financier--pos80 [data-pos-label]::before {
+  content: attr(data-pos-label);
+  font-size: 13px;
+}
+
+.recu-financier--pos58 .recu-financier__identite span::after,
+.recu-financier--pos80 .recu-financier__identite span::after,
+.recu-financier--pos58 .recu-financier__ligne span::after,
+.recu-financier--pos80 .recu-financier__ligne span::after {
+  content: " :";
+  font-size: 13px;
+}
+
+.recu-financier--pos58 .recu-financier__identite strong,
+.recu-financier--pos80 .recu-financier__identite strong {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.15;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__ligne span {
+  font-size: 0;
+}
+
+.recu-financier--pos80 .recu-financier__identite strong {
+  font-size: 16px;
+}
+
+.recu-financier--pos80 [data-pos-label]::before,
+.recu-financier--pos80 .recu-financier__identite span::after,
+.recu-financier--pos80 .recu-financier__ligne span::after {
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__ligne,
+.recu-financier--pos80 .recu-financier__ligne {
+  gap: 5px;
+  padding: 3px 5px;
+  line-height: 1.15;
+}
+
+.recu-financier--pos58 .recu-financier__ligne strong,
+.recu-financier--pos80 .recu-financier__ligne strong {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos80 .recu-financier__ligne strong {
+  font-size: 16px;
+}
+
+.recu-financier--pos58 .recu-financier__total strong {
+  font-size: 20px;
+}
+
+.recu-financier--pos80 .recu-financier__total strong {
+  font-size: 21px;
+}
+
+.recu-financier--pos58 .recu-financier__pied,
+.recu-financier--pos80 .recu-financier__pied {
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.recu-financier--pos58 .recu-financier__pied > div:first-child,
+.recu-financier--pos80 .recu-financier__pied > div:first-child {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 5px;
+  align-items: baseline;
+}
+
+.recu-financier--pos58 .recu-financier__pied > div:first-child span::after,
+.recu-financier--pos80 .recu-financier__pied > div:first-child span::after {
+  content: " :";
+}
+
+.recu-financier--pos58 .recu-financier__pied [data-pos-label],
+.recu-financier--pos80 .recu-financier__pied [data-pos-label],
+.recu-financier--pos58 .recu-financier__signature [data-pos-label],
+.recu-financier--pos80 .recu-financier__signature [data-pos-label] {
+  font-size: 0;
+}
+
+.recu-financier--pos58 .recu-financier__pied [data-pos-label]::before,
+.recu-financier--pos58 .recu-financier__signature [data-pos-label]::before {
+  content: attr(data-pos-label) " :";
+  font-size: 13px;
+}
+
+.recu-financier--pos80 .recu-financier__pied [data-pos-label]::before,
+.recu-financier--pos80 .recu-financier__signature [data-pos-label]::before {
+  content: attr(data-pos-label) " :";
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__pied [data-pos-label]::after,
+.recu-financier--pos80 .recu-financier__pied [data-pos-label]::after,
+.recu-financier--pos58 .recu-financier__signature [data-pos-label]::after,
+.recu-financier--pos80 .recu-financier__signature [data-pos-label]::after {
+  content: none;
+}
+
+.recu-financier--pos58 .recu-financier__pied strong,
+.recu-financier--pos58 .recu-financier__signature .recu-financier__agent {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.recu-financier--pos80 .recu-financier__pied strong,
+.recu-financier--pos80 .recu-financier__signature .recu-financier__agent {
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.recu-financier--pos58 .recu-financier__date-valeur,
+.recu-financier--pos80 .recu-financier__date-valeur {
+  white-space: nowrap;
+}
+
+.recu-financier--pos58 .recu-financier__pied strong,
+.recu-financier--pos80 .recu-financier__pied strong {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos58 .recu-financier__pied .recu-financier__libelle-imprimeur,
+.recu-financier--pos80 .recu-financier__pied .recu-financier__libelle-imprimeur {
+  margin-top: 0;
+}
+
+.recu-financier--pos58 .recu-financier__signature,
+.recu-financier--pos80 .recu-financier__signature {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 5px;
+  width: 100%;
+  min-height: 0;
+  padding: 3px 0;
+  text-align: left;
+  border-bottom: 0 !important;
+}
+
+.recu-financier--pos58 .recu-financier__signature > span:first-child::after,
+.recu-financier--pos80 .recu-financier__signature > span:first-child::after {
+  content: " :";
+}
+
+.recu-financier--pos58 .recu-financier__signature .recu-financier__agent,
+.recu-financier--pos80 .recu-financier__signature .recu-financier__agent {
+  margin: 0;
+  text-align: right;
+}
+
+.recu-financier--pos58 .recu-financier__signature > span:last-child,
+.recu-financier--pos80 .recu-financier__signature > span:last-child {
+  grid-column: 1 / -1;
+  padding-top: 2px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.recu-financier--pos58 .recu-financier__signature > span:last-child::after,
+.recu-financier--pos80 .recu-financier__signature > span:last-child::after {
+  content: " : __________________";
+}
+
+.recu-financier--pos80 .recu-financier__signature > span:last-child {
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__note,
+.recu-financier--pos80 .recu-financier__note {
+  display: block;
+  margin: 4px 0 0;
+  font-size: 0;
+  text-align: center;
+}
+
+.recu-financier--pos58 .recu-financier__note::after,
+.recu-financier--pos80 .recu-financier__note::after {
+  content: "Généré par ecolapp.cd";
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.recu-financier--pos80 .recu-financier__note::after {
+  font-size: 12px;
 }
 
 @media (max-width: 576px) {

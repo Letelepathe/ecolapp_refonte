@@ -41,3 +41,6 @@ secret*
 *.sln
 *.sw?
 *
+!documentation/
+!documentation/branch-gabriel/
+!documentation/branch-gabriel/champs-inscription-facultatifs.md

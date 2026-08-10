@@ -7,6 +7,7 @@ import {
 import RecuPaiement from "./RecuPaiement";
 import {
   FORMATS_RECU_PAIEMENT,
+  adapterFormatRecuAuContenu,
   lireFormatRecuPrefere,
   memoriserFormatRecu,
   obtenirFormatRecu,
@@ -85,13 +86,14 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
   if (!paiement) return null;
 
   const telecharger = async () => {
+    const formatEffectif = adapterFormatRecuAuContenu(format, recuRef.current);
     setTelechargement(true);
     await telechargerDocumentPdf(recuRef.current, {
       nomFichier: `recu-paiement-${paiement.id || "sans-numero"}.pdf`,
       orientation: "portrait",
-      format: format.formatPdf,
-      marge: format.margeMm,
-      centrerVerticalement: !format.compact,
+      format: formatEffectif.formatPdf,
+      marge: formatEffectif.margeMm,
+      centrerVerticalement: !formatEffectif.compact,
     });
     setTelechargement(false);
   };
@@ -154,7 +156,11 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
             type="button"
             className="btn"
             onClick={() =>
-              imprimerRecuPaiement(recuRef.current, paiement.id, format)
+              imprimerRecuPaiement(
+                recuRef.current,
+                paiement.id,
+                adapterFormatRecuAuContenu(format, recuRef.current)
+              )
             }
           >
             Imprimer

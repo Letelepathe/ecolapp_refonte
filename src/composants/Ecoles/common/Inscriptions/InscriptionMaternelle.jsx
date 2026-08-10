@@ -3,7 +3,11 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { choisirOptionCompatibilite, obtenirConfigCycle } from "../../../../config/cyclesScolaires";
-import { getAgeEleveError } from "../validationAgeEleve";
+import {
+  getAgeEleveError,
+  normaliserChampFacultatif,
+  normaliserPourcentageFacultatif,
+} from "../validationAgeEleve";
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
 
@@ -13,8 +17,8 @@ const creerFormulaire = (ecoleId, direction) => ({
   name: "",
   first_name: "",
   last_name: "",
-  ecole_provenance: "Première inscription",
-  percent: "0",
+  ecole_provenance: "",
+  percent: "",
   classes_id: "",
   options_id: "",
   sexe: "Homme",
@@ -33,7 +37,6 @@ const champsObligatoires = {
   first_name: "Prénom requis",
   last_name: "Postnom requis",
   classes_id: "Niveau maternel requis",
-  lieu_de_naissance: "Lieu de naissance requis",
   nationalite: "Nationalité requise",
   adresse: "Adresse requise",
 };
@@ -145,6 +148,10 @@ const InscriptionMaternelle = ({ routeSucces }) => {
     try {
       const payload = {
         ...formData,
+        ecole_provenance: normaliserChampFacultatif(formData.ecole_provenance),
+        percent: normaliserPourcentageFacultatif(formData.percent),
+        date_naissance: normaliserChampFacultatif(formData.date_naissance),
+        lieu_de_naissance: normaliserChampFacultatif(formData.lieu_de_naissance),
         code_parent: formData.code_parent.trim() || null,
       };
       const response = await axios.post(`${API}/inscription/create`, payload, {
@@ -209,7 +216,7 @@ const InscriptionMaternelle = ({ routeSucces }) => {
                         </select>
                       </div>
                       <Champ
-                        label="Date de naissance"
+                        label="Date de naissance (facultatif)"
                         name="date_naissance"
                         type="date"
                         min={dateMin}
@@ -218,7 +225,7 @@ const InscriptionMaternelle = ({ routeSucces }) => {
                         onChange={modifier}
                         error={errors.date_naissance}
                       />
-                      <Champ label="Lieu de naissance" name="lieu_de_naissance" value={formData.lieu_de_naissance} onChange={modifier} error={errors.lieu_de_naissance} />
+                      <Champ label="Lieu de naissance (facultatif)" name="lieu_de_naissance" value={formData.lieu_de_naissance} onChange={modifier} error={errors.lieu_de_naissance} />
                       <Champ label="Nationalité" name="nationalite" value={formData.nationalite} onChange={modifier} error={errors.nationalite} />
                       <Champ label="Adresse familiale" name="adresse" value={formData.adresse} onChange={modifier} error={errors.adresse} />
 

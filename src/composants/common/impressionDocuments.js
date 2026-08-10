@@ -199,15 +199,113 @@ export const imprimerDocument = async (
   }
 };
 
-export const imprimerRecuPaiement = (zone, numero, profil = {}) =>
-  imprimerDocument(zone, {
+const obtenirRessourcesStyles = () =>
+  Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+    .map((element) => element.outerHTML)
+    .join("\n");
+
+export const imprimerDocumentHtml = async (
+  zone,
+  {
+    titre = "Document",
+    taillePage = "80mm auto",
+    marge = "2mm",
+    classeDocument = "",
+  } = {}
+) => {
+  if (!zone) {
+    window.alert("Le document à imprimer n'est pas encore disponible.");
+    return false;
+  }
+
+  const fenetre = window.open("", "_blank", "width=700,height=800");
+  if (!fenetre) {
+    window.alert(
+      "La fenêtre d'impression a été bloquée. Autorisez les fenêtres contextuelles puis réessayez."
+    );
+    return false;
+  }
+
+  try {
+    fenetre.document.open();
+    fenetre.document.write(`<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="${echapperHtml(document.baseURI)}" />
+  <title>${echapperHtml(titre)}</title>
+  ${obtenirRessourcesStyles()}
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: #fff !important;
+    }
+    .document-impression-html {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .document-impression-html > .recu-financier {
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+    }
+    @page { size: ${taillePage}; margin: ${marge}; }
+  </style>
+</head>
+<body>
+  <main class="document-impression-html ${echapperHtml(classeDocument)}">
+    ${zone.outerHTML}
+  </main>
+</body>
+</html>`);
+    fenetre.document.close();
+    await attendreDocument(fenetre);
+    await attendreImages(fenetre.document);
+    await fenetre.document.fonts?.ready;
+    await attendreMiseEnPage(fenetre);
+    fenetre.focus();
+    fenetre.addEventListener("afterprint", () => fenetre.close(), {
+      once: true,
+    });
+    fenetre.print();
+    return true;
+  } catch (erreur) {
+    console.error("Préparation de l'impression HTML impossible", erreur);
+    fenetre.close();
+    window.alert(
+      "L'impression n'a pas pu être préparée. Rechargez la page puis réessayez."
+    );
+    return false;
+  }
+};
+
+export const imprimerRecuPaiement = (zone, numero, profil = {}) => {
+  const options = {
     titre: numero ? `Reçu de paiement ${numero}` : "Reçu de paiement",
-    orientation: "portrait",
-    format: profil.formatPdf || "A4",
     taillePage: profil.tailleCss || "A4",
     marge: `${profil.margeMm ?? 12}mm`,
     classeDocument: "document-recu-paiement",
+  };
+
+  if (profil.compact) {
+    return imprimerDocumentHtml(zone, options);
+  }
+
+  return imprimerDocument(zone, {
+    ...options,
+    orientation: "portrait",
+    format: profil.formatPdf || "A4",
   });
+};
 
 export const imprimerListeFinanciere = (zone, titre = "Liste financière") =>
   imprimerDocument(zone, {
