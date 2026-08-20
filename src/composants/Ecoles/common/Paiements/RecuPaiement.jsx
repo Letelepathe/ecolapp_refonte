@@ -62,6 +62,38 @@ const obtenirNomUtilisateur = (utilisateur, valeurParDefaut) => {
     .join(" ") || valeurParDefaut;
 };
 
+export const obtenirOptionPaiement = (paiement) =>
+  paiement?.eleve?.option ||
+  paiement?.option ||
+  paiement?.option_eleve ||
+  null;
+
+export const obtenirIdOptionPaiement = (paiement) =>
+  paiement?.eleve?.options_id ??
+  paiement?.eleve?.option_id ??
+  paiement?.options_id ??
+  paiement?.option_id ??
+  null;
+
+export const obtenirNomOptionPaiement = (paiement) => {
+  const option = obtenirOptionPaiement(paiement);
+  if (typeof option === "string") return option.trim() || null;
+
+  return option?.name || option?.nom || option?.libelle || null;
+};
+
+export const ajouterOptionAuPaiement = (paiement, option) => {
+  if (!paiement || !option) return paiement;
+
+  return {
+    ...paiement,
+    eleve: {
+      ...(paiement.eleve || {}),
+      option,
+    },
+  };
+};
+
 const obtenirAdresseEcole = (ecole) =>
   [...new Set([
     ecole?.adresse,
@@ -94,27 +126,33 @@ const construireContenuQr = ({
   nomAgentEncaissement,
   nomImprimeur,
   adresseEcole,
-}) => [
-  `ECOLAPP|R=${texte(paiement?.id)}`,
-  `E=${texte(ecole?.name, ecole?.nom)}`,
-  `A=${texte(adresseEcole)}`,
-  `EL=${[eleve?.name, eleve?.last_name, eleve?.first_name].filter(Boolean).join(" ") || "-"}`,
-  `MAT=${texte(eleve?.matricule)}`,
-  `CL=${texte(paiement?.classe?.name)}`,
-  `AN=${texte(paiement?.annee?.name)}`,
-  `MO=${texte(paiement?.motif?.name)}`,
-  `TR=${texte(paiement?.tranche?.name)}`,
-  `MP=${texte(paiement?.mode_paiement?.name)}`,
-  `MT=${formatMontant(paiement)}`,
-  `D=${formatDatePos(paiement?.created_at)}`,
-  `ENC=${nomAgentEncaissement}`,
-  `IMP=${nomImprimeur}`,
-].filter(Boolean).join("\n");
+}) => {
+  const nomOption = obtenirNomOptionPaiement(paiement);
+
+  return [
+    `ECOLAPP|R=${texte(paiement?.id)}`,
+    `E=${texte(ecole?.name, ecole?.nom)}`,
+    `A=${texte(adresseEcole)}`,
+    `EL=${[eleve?.name, eleve?.last_name, eleve?.first_name].filter(Boolean).join(" ") || "-"}`,
+    `MAT=${texte(eleve?.matricule)}`,
+    `CL=${texte(paiement?.classe?.name)}`,
+    nomOption ? `OP=${nomOption}` : null,
+    `AN=${texte(paiement?.annee?.name)}`,
+    `MO=${texte(paiement?.motif?.name)}`,
+    `TR=${texte(paiement?.tranche?.name)}`,
+    `MP=${texte(paiement?.mode_paiement?.name)}`,
+    `MT=${formatMontant(paiement)}`,
+    `D=${formatDatePos(paiement?.created_at)}`,
+    `ENC=${nomAgentEncaissement}`,
+    `IMP=${nomImprimeur}`,
+  ].filter(Boolean).join("\n");
+};
 
 const RecuPaiement = React.forwardRef(
   ({ paiement, imprimeur, formatId = "a4" }, ref) => {
   const estFormatPos = formatId === "pos58" || formatId === "pos80";
   const eleve = paiement?.eleve || {};
+  const nomOption = obtenirNomOptionPaiement(paiement);
   const ecole = obtenirEcolePaiement(paiement) || {};
   const logoEcole = useMemo(
     () => obtenirUrlLogoEcole(ecole, LogoEcoleApp),
@@ -236,8 +274,18 @@ const RecuPaiement = React.forwardRef(
         </div>
         <div>
           <span data-pos-label="Classe">Classe</span>
-          <strong>{texte(paiement?.classe?.name)}</strong>
+          <strong>
+            {estFormatPos && nomOption
+              ? `${texte(paiement?.classe?.name)} ${nomOption}`
+              : texte(paiement?.classe?.name)}
+          </strong>
         </div>
+        {!estFormatPos && (
+          <div>
+            <span data-pos-label="Option">Option</span>
+            <strong>{nomOption || "Non renseignée"}</strong>
+          </div>
+        )}
         <div>
           <span data-pos-label="Année">Année scolaire</span>
           <strong>{texte(paiement?.annee?.name)}</strong>

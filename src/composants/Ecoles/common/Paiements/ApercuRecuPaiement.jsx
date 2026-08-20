@@ -4,7 +4,11 @@ import {
   imprimerRecuPaiement,
   telechargerDocumentPdf,
 } from "../../../common/impressionDocuments";
-import RecuPaiement from "./RecuPaiement";
+import RecuPaiement, {
+  ajouterOptionAuPaiement,
+  obtenirIdOptionPaiement,
+  obtenirOptionPaiement,
+} from "./RecuPaiement";
 import {
   FORMATS_RECU_PAIEMENT,
   adapterFormatRecuAuContenu,
@@ -42,6 +46,33 @@ const ApercuRecuPaiement = ({ paiement, onFermer }) => {
       })
       .catch(() => {
         // Le reçu reste imprimable, sans attribuer l'encaissement à l'imprimeur.
+      });
+
+    return () => {
+      actif = false;
+    };
+  }, [paiement]);
+
+  useEffect(() => {
+    let actif = true;
+    const optionId = obtenirIdOptionPaiement(paiement);
+
+    if (!paiement || obtenirOptionPaiement(paiement) || !optionId) {
+      return () => {
+        actif = false;
+      };
+    }
+
+    api.get(`/option/${optionId}`)
+      .then(({ data }) => {
+        const option = data?.option || data?.id || data?.data;
+        if (!actif || !option) return;
+        setPaiementAvecAgent((courant) =>
+          ajouterOptionAuPaiement(courant || paiement, option)
+        );
+      })
+      .catch(() => {
+        // Le reçu reste disponible et indique que l'option n'est pas renseignée.
       });
 
     return () => {
