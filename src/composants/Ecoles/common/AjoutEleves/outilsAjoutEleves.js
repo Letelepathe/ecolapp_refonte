@@ -155,6 +155,44 @@ export const creerEleves = async ({ eleves, userId, ecoleId, direction }) => {
   });
 };
 
+const creerErreurReponseEleve = (response) => {
+  const erreur = new Error(
+    response.data?.message ||
+      response.data?.error_msg ||
+      "La modification de l'élève a été refusée par le serveur."
+  );
+
+  erreur.response = response;
+  return erreur;
+};
+
+export const modifierEleve = async ({
+  id,
+  eleve,
+  userId,
+  ecoleId,
+  direction,
+}) => {
+  const data = prepEleve({ eleve, userId, ecoleId, direction });
+  const response = await axios.put(`${URL_API}/eleve/edit/${id}`, data, {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
+  });
+  const statutMetier = Number(
+    response.data?.status_code ?? response.data?.status ?? response.status
+  );
+
+  if (
+    response.data?.success === false ||
+    response.data?.error === true ||
+    statutMetier >= 400
+  ) {
+    throw creerErreurReponseEleve(response);
+  }
+
+  return response.data?.eleve || null;
+};
+
 export const majEleve = (eleves, index, champ, valeur) =>
   eleves.map((eleve, rang) =>
     rang === index ? { ...eleve, [champ]: valeur } : eleve

@@ -7,6 +7,7 @@ import {
   chargerRefsEleves,
   creerEleveVide,
   majEleve,
+  modifierEleve,
   validerEleve,
 } from "./outilsAjoutEleves";
 import {
@@ -98,8 +99,12 @@ const ModifierEleveCycle = ({ cycle, SidebarLeft, NavbarTop }) => {
 
     setSoumission(true);
     try {
-      await axios.put(`${URL_API}/eleve/edit/${id}`, {
-        ...eleve, users_id: userId, ecole_id: ecoleId, direction,
+      await modifierEleve({
+        id,
+        eleve,
+        userId,
+        ecoleId,
+        direction,
       });
       if (eleve.type_eleve_id && eleve.annee_id) {
         await attribuerTypeEleve(creerContexteTypesEleves(), {

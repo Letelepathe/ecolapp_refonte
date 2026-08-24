@@ -7,6 +7,7 @@ import {
   chargerRefsEleves,
   creerEleveVide,
   majEleve,
+  modifierEleve,
   validerEleve,
 } from "../../common/AjoutEleves/outilsAjoutEleves";
 import {
@@ -143,15 +144,12 @@ const ModifierEleve = () => {
       // La page envoie uniquement les champs du formulaire élève.
       // Le champ code_parent bénéficie du même debounce que l'ajout d'élève
       // via LigneEleve, et aucune information des parents n'est modifiée ici.
-      const data = {
-        ...eleve,
-        users_id: userId,
-        ecole_id: ecoleId,
+      await modifierEleve({
+        id,
+        eleve,
+        userId,
+        ecoleId,
         direction,
-      };
-
-      await axios.put(`${URL_API}/eleve/edit/${id}`, data, {
-        headers: { "Content-Type": "application/json" },
       });
       if (eleve.type_eleve_id && eleve.annee_id) {
         await attribuerTypeEleve(creerContexteTypesEleves(), {
