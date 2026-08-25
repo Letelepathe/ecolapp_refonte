@@ -46,3 +46,11 @@ secret*
 !documentation/branch-gabriel/champs-inscription-facultatifs.md
 !documentation/branch-gabriel/option-recu-paiement.md
 !documentation/branch-gabriel/correction-modification-eleve.md
+!documentation/branch-gabriel/id-paiement-recu.md
+!src/
+!src/composants/
+!src/composants/Ecoles/
+!src/composants/Ecoles/common/
+!src/composants/Ecoles/common/Paiements/
+!src/composants/Ecoles/common/Paiements/paiementCree.js
+!src/composants/Ecoles/common/Paiements/numeroRecuPaiement.js

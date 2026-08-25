@@ -4,6 +4,8 @@ import SituationPaiementEleve from "../../common/TypesEleves/SituationPaiementEl
 import useTranchesParMotif from "../../common/Tranches/useTranchesParMotif";
 import DepassementTrancheModal from "../../common/Paiements/DepassementTrancheModal";
 import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
+import { obtenirPaiementCreePourRecu } from "../../common/Paiements/paiementCree";
+import { obtenirReferenceRecuPaiement } from "../../common/Paiements/numeroRecuPaiement";
 import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -160,15 +162,8 @@ const AjouterPaiement = () => {
       console.log("Paiement effectué avec succès, récupération du reçu...");
       setSuccessMessage("Paiement effectué avec succès, récupération du reçu...");
   
-      const receiptResponse = await axios.get(
-        `https://api.ecolapp.cd/api/paiement/${response.data.last_id}`
-      );
-  
-      if (receiptResponse.data.status === 200) {
-        setReceipt(receiptResponse.data.paiement); 
-      } else {
-        console.error("Échec lors de la récupération du reçu : ", receiptResponse.data.message);
-      }
+      const paiementCree = await obtenirPaiementCreePourRecu(response);
+      setReceipt(paiementCree);
   
       // Réinitialiser le formulaire
       const prochaineTranche = reportSuivant?.prochaineTranche;
@@ -404,7 +399,7 @@ const AjouterPaiement = () => {
                                 <h5>ecolapp</h5>
                                 <img src={LogoEcoleApp} alt="Logo de l'école" class="logo_paiement"/>
                             </div>
-                            <div class="receipt-header">Reçu de Paiement N° {receipt.id}</div>
+                            <div class="receipt-header">Reçu de Paiement {obtenirReferenceRecuPaiement(receipt)}</div>
  
                             <div class="receipt-section">
                                 <div>

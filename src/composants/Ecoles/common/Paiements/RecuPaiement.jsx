@@ -5,6 +5,10 @@ import {
   obtenirEcolePaiement,
   obtenirUrlLogoEcole,
 } from "../../../../services/ecoles/ecoleAssets";
+import {
+  formaterNumeroRecuPaiement,
+  obtenirReferenceRecuPaiement,
+} from "./numeroRecuPaiement";
 
 const texte = (...valeurs) =>
   valeurs.find(
@@ -128,9 +132,11 @@ const construireContenuQr = ({
   adresseEcole,
 }) => {
   const nomOption = obtenirNomOptionPaiement(paiement);
+  const numeroRecu = formaterNumeroRecuPaiement(paiement);
 
   return [
-    `ECOLAPP|R=${texte(paiement?.id)}`,
+    `ECOLAPP|NR=${texte(numeroRecu)}`,
+    `PID=${texte(paiement?.id)}`,
     `E=${texte(ecole?.name, ecole?.nom)}`,
     `A=${texte(adresseEcole)}`,
     `EL=${[eleve?.name, eleve?.last_name, eleve?.first_name].filter(Boolean).join(" ") || "-"}`,
@@ -153,6 +159,7 @@ const RecuPaiement = React.forwardRef(
   const estFormatPos = formatId === "pos58" || formatId === "pos80";
   const eleve = paiement?.eleve || {};
   const nomOption = obtenirNomOptionPaiement(paiement);
+  const referenceRecu = obtenirReferenceRecuPaiement(paiement);
   const ecole = obtenirEcolePaiement(paiement) || {};
   const logoEcole = useMemo(
     () => obtenirUrlLogoEcole(ecole, LogoEcoleApp),
@@ -250,7 +257,7 @@ const RecuPaiement = React.forwardRef(
         )}
         <div className="recu-financier__numero">
           <span>REÇU DE PAIEMENT</span>
-          <strong>N°{texte(paiement?.id)}</strong>
+          <strong>{referenceRecu}</strong>
           <em>PAYÉ</em>
         </div>
       </header>
