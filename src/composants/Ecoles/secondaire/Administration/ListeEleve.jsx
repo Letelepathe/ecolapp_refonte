@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import ConfirmModal from "./ConfirmModal";
+import {
+  obtenirNomTypeEleve,
+  useTypesEleves,
+} from "../../../../services/typesEleves/useTypesEleves";
 
 const ListeEleve = () => {
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
+  const navigate = useNavigate();
+  const typesEleves = useTypesEleves();
 
   const [eleves, setEleves] = useState([]);
   const [filteredEleves, setFilteredEleves] = useState([]);
@@ -123,6 +129,20 @@ const ListeEleve = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
+  const handleActionChange = (eleveId, event) => {
+    const action = event.target.value;
+    event.target.value = "";
+
+    if (action === "supprimer") {
+      handleDelete(eleveId);
+      return;
+    }
+
+    if (action === "modifier") {
+      navigate(`/secondaire/modifier_eleve/${eleveId}`);
+    }
+  };
+
   return (
     <div>
       <div className="container-fluid position-relative  d-flex p-0">
@@ -189,6 +209,7 @@ const ListeEleve = () => {
                           <th>Description</th>
                           <th>Classe</th>
                           <th>Option</th>
+                          <th>Type d'élève</th>
                           <th>Année Scolaire</th>
                           <th>Action</th>
                         </tr>
@@ -204,14 +225,20 @@ const ListeEleve = () => {
                             <td>{eleve.description}</td>
                             <td>{eleve.classe.name}</td>
                             <td>{eleve.option.name}</td>
+                            <td>{obtenirNomTypeEleve(eleve, typesEleves)}</td>
                             <td>{eleve.annee.name}</td>
                             <td>
-                              <button
-                                className="btn "
-                                onClick={() => handleDelete(eleve.id)}
+                              <select
+                                className="form-select form-select-sm"
+                                defaultValue=""
+                                onChange={(event) => handleActionChange(eleve.id, event)}
                               >
-                                Supprimer
-                              </button>
+                                <option value="" disabled>
+                                  Actions
+                                </option>
+                                <option value="modifier">Modifier</option>
+                                <option value="supprimer">Supprimer</option>
+                              </select>
                             </td>
                           </tr>
                         ))}

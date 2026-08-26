@@ -60,8 +60,8 @@ src/composants/api/api.js
 
 Elle expose :
 
-- `API_BASE_URL` : `http://localhost:8000/api` en local, sinon `https://api.ecolapp.cd/api`.
-- `PUBLIC_BASE_URL` : `http://localhost:8000` en local, sinon `https://api.ecolapp.cd`.
+- `API_BASE_URL` : `https://api.ecolapp.cd/api` en local, sinon `https://api.ecolapp.cd/api`.
+- `PUBLIC_BASE_URL` : `https://api.ecolapp.cd` en local, sinon `https://api.ecolapp.cd`.
 - `api` : instance Axios réutilisable.
 - `messageErreur()` : extraction de messages d'erreur lisibles.
 - `urlPublic()` : construction d'URLs publiques pour images/fichiers.

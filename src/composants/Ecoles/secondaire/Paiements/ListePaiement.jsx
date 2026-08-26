@@ -5,6 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import SidebarLeft from "../Administration/SidebarLeft";
 import NavbarTop from "../Administration/NavbarTop";
 import LogoEcoleApp from '../../../../static/images/logo_ecolapp.jpg';
+import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
+import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
+import EtatFinancierGlobal from "../../common/Paiements/EtatFinancierGlobal";
+import { obtenirReferenceRecuPaiement } from "../../common/Paiements/numeroRecuPaiement";
 
 const ListePaiement = () => {
   const ecole_id = localStorage.getItem('ecole_id'); 
@@ -150,22 +154,26 @@ const ListePaiement = () => {
   };
 
   const printReceipt = () => {
-    window.print();
+    imprimerRecuPaiement(receiptRef.current, selectedReceipt?.id);
   };
 
   return (
     <div className="container-fluid position-relative  d-flex p-0">
+      <ApercuRecuPaiement
+        paiement={selectedReceipt}
+        onFermer={() => setSelectedReceipt(null)}
+      />
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
         <section className="container mt-3   py-3">
-          <div className="justify-content-between align-items-center d-flex">
+          <div className="entete-liste-paiements justify-content-between align-items-center d-flex">
             <h2 className="text-primary text-center">Liste des paiements</h2>
             <Link to="/secondaire/ajouter_paiement" className="btn  mb-3">
               <i className="bi bi-plus"></i> Ajouter paiement
             </Link>
           </div>
-          <div className="justify-content-between align-items-center d-flex">
+          <div className="actions-paiements justify-content-between align-items-center d-flex">
             <button
               className="btn "
               onClick={() => {
@@ -184,14 +192,15 @@ const ListePaiement = () => {
             >
               Paiements avec dettes
             </button>
+            <EtatFinancierGlobal className="btn" />
           </div>
-          <div className="table-responsive hide-on-print">
+          <div className="filtres-paiements hide-on-print">
             
             {error && <p className="text-danger">{error}</p>}
 
             {/* Sélection de la classe */}
             <select
-              className="form-select mb-3"
+              className="form-select"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
@@ -204,7 +213,7 @@ const ListePaiement = () => {
             </select>
 
             <select
-                className="form-select mb-3"
+                className="form-select"
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
             >
@@ -219,17 +228,19 @@ const ListePaiement = () => {
             {/* Barre de recherche */}
             <input
               type="text"
-              className="form-control mb-3"
+              className="form-control recherche-paiements"
               placeholder="Rechercher par nom, postnom, prénom, matricule ou année..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
 
+          </div>
+          <div className="table-responsive hide-on-print">
             {filteredPaiements.length > 0 ? (
               <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
-                    <th>Id</th>
+                    <th>N° reçu</th>
                     <th>Nom</th>
                     <th>Postnom</th>
                     <th>Prénom</th>
@@ -247,9 +258,9 @@ const ListePaiement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredPaiements.map((paiement, index) => (
+                  {filteredPaiements.map((paiement) => (
                     <tr key={paiement.id}>
-                      <td>{index + 1}</td>
+                      <td>{obtenirReferenceRecuPaiement(paiement)}</td>
                       <td>{paiement.eleve.name}</td>
                       <td>{paiement.eleve.last_name}</td>
                       <td>{paiement.eleve.first_name}</td>
@@ -297,7 +308,7 @@ const ListePaiement = () => {
                   <h5>ecolapp</h5>
                   <img src={LogoEcoleApp} alt="Logo de l'école" className="logo_paiement" />
                 </div>
-                <div className="receipt-header">Reçu de Paiement N° {selectedReceipt.id}</div>
+                <div className="receipt-header">Reçu de Paiement {obtenirReferenceRecuPaiement(selectedReceipt)}</div>
 
                 <div className="receipt-section">
                   <div>

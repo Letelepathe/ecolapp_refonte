@@ -30,7 +30,7 @@ const AfficherBulletinSemestriel = () => {
     useEffect(() => {
         const fetchResultats = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/cotegenerale/eleve/resultat/semestre/${semestre_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`);
+                const response = await axios.get(`https://api.ecolapp.cd/api/cotegenerale/eleve/resultat/semestre/${semestre_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`);
                 console.log(response.data); // Debugging response structure
 
                 if (response.data) {

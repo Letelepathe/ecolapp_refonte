@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
+import { choisirOptionCompatibilite } from "../../../../config/cyclesScolaires";
 
 const AjouterCours = () => {
   const ecole_id = localStorage.getItem('ecole_id');
@@ -36,7 +37,13 @@ const AjouterCours = () => {
     const fetchOptions = async () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`);
-        setOptions(response.data.optionAll);
+        const optionsDisponibles = response.data.optionAll || [];
+        setOptions(optionsDisponibles);
+        setFormData((current) => ({
+          ...current,
+          options_id:
+            choisirOptionCompatibilite(optionsDisponibles, "maternelle") || "",
+        }));
       } catch (error) {
         console.error("Erreur lors de la récupération des options", error);
       }
@@ -59,7 +66,10 @@ const AjouterCours = () => {
     if (!formData.name) newErrors.name = "Intitulé requis";
     if (!formData.ponderation) newErrors.ponderation = "Pondération requise";
     if (!formData.classes_id) newErrors.classes_id = "Classe requise";
-    if (!formData.options_id) newErrors.options_id = "Option requise";
+    if (!formData.options_id) {
+      newErrors.form =
+        "Configuration maternelle incomplète : créez l'option technique « Sans option - Maternelle ».";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -80,13 +90,14 @@ const AjouterCours = () => {
       });
 
       if (response.data.status === 200) {
-        setSuccessMessage("Cours ajouté avec succès !");
+        setSuccessMessage("Activité d'éveil ajoutée avec succès !");
         setErrors({});
         setFormData({
           name: '',
           ponderation: '',
           classes_id: '',
-          options_id: '',
+          options_id:
+            choisirOptionCompatibilite(options, "maternelle") || "",
           ecole_id: ecole_id,
           direction: direction
         });
@@ -110,8 +121,8 @@ const AjouterCours = () => {
             <div className="col-lg-6 col-md-8">
               <div className="card mb-3">
                 <div className="card-body">
-                  <Link to='/maternelle/liste_cours' className='btn  mt-2 mb-2'>Liste cours</Link>
-                  <h3 className="text-center u-style-951c0e5f">Ajouter Cours</h3>
+                  <Link to='/maternelle/liste_cours' className='btn  mt-2 mb-2'>Activités d'éveil</Link>
+                  <h3 className="text-center u-style-951c0e5f">Ajouter une activité d'éveil</h3>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
 
                   <form onSubmit={handleSubmit} noValidate>
@@ -121,7 +132,7 @@ const AjouterCours = () => {
                       {errors.name && <p className="text-danger">{errors.name}</p>}
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="ponderation">Pondération</label>
+                      <label htmlFor="ponderation">Repère d'évaluation</label>
                       <input type="number" name="ponderation" className="form-control" value={formData.ponderation} onChange={handleInputChange} required />
                       {errors.ponderation && <p className="text-danger">{errors.ponderation}</p>}
                     </div>
@@ -135,16 +146,6 @@ const AjouterCours = () => {
                         )}
                       </select>
                       {errors.classes_id && <p className="text-danger">{errors.classes_id}</p>}
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="options_id">Option</label>
-                      <select name="options_id" className="form-control" value={formData.options_id} onChange={handleInputChange} required>
-                        <option value="">Sélectionner une option</option>
-                        {options.map((option) =>
-                        <option key={option.id} value={option.id}>{option.name}</option>
-                        )}
-                      </select>
-                      {errors.options_id && <p className="text-danger">{errors.options_id}</p>}
                     </div>
                     <div className="d-grid">
                       <button className="btn " disabled={isSubmitting} type="submit">

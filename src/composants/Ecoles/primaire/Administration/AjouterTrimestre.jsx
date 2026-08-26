@@ -28,7 +28,7 @@ const AjouterTrimestre = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.semestre = "Le semestre est requis";
+    if (!formData.name) newErrors.semestre = "Le trimestre est requis";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -50,7 +50,7 @@ const AjouterTrimestre = () => {
       });
 
       if (response.data.status === 200) {
-        setSuccessMessage("Semestre ajouté avec succès !");
+        setSuccessMessage("Trimestre ajouté avec succès !");
         setErrors({});
         setFormData({ name: '', ecole_id: ecole_id, direction: direction });
       } else {

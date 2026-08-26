@@ -163,8 +163,27 @@ const libelleAction = (controle, index) => {
   return controle.getAttribute("aria-label") || controle.getAttribute("title") || texte || `Action ${index + 1}`;
 };
 
+const doitConserverActionsEnLigne = (table) =>
+  table.dataset.ecolappActions === "inline" ||
+  Boolean(table.closest(".liste-reference-page, .liste-devise-page, .cycle-scolaire-page"));
+
+const restaurerActionsEnLigne = (cellule) => {
+  cellule
+    .querySelectorAll(".ecolapp-action-source-control")
+    .forEach((controle) => controle.classList.remove("ecolapp-action-source-control"));
+  cellule.querySelectorAll(".ecolapp-action-menu").forEach((menu) => menu.remove());
+  cellule.classList.remove("ecolapp-action-cell");
+  delete cellule.dataset.ecolappActionMenu;
+};
+
 const preparerMenuActions = (cellule) => {
   if (!estColonneAction(cellule)) return;
+
+  const table = cellule.closest("table");
+  if (table && doitConserverActionsEnLigne(table)) {
+    restaurerActionsEnLigne(cellule);
+    return;
+  }
 
   const controles = Array.from(cellule.querySelectorAll(CONTROLES_ACTION_SELECTOR)).filter(
     (controle) =>

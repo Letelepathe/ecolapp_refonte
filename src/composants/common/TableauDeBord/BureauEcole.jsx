@@ -152,7 +152,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
               <PanneauDroit
                 actions={[
                   { titre: "Ajouter des élèves", detail: "Inscription rapide et cartes" },
-                  { titre: "Suivre la présence", detail: "Classes, horaires et cotes" },
+                  { titre: "Liste de présence", detail: "Pointer les élèves du jour", to: `/${cycle}/liste_presence` },
                   { titre: "Encaisser les frais", detail: "Paiements et reçus" },
                 ]}
               />
