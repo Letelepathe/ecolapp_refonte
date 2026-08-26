@@ -27,7 +27,7 @@ const AfficherResultatPeriodique = () => {
   useEffect(() => {
     const fetchResultats = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/cotegenerale/eleve/resultat/periode/${periode_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`);
+        const response = await axios.get(`https://api.ecolapp.cd/api/cotegenerale/eleve/resultat/periode/${periode_id}/annee/${annee_id}/eleve/${eleve_id}/direction/3`);
         if (response.data) {
           const { eleve, classe, periode, annee_scolaire, cours_groupes } = response.data;
           setEleveInfo(eleve);
@@ -80,103 +80,103 @@ const AfficherResultatPeriodique = () => {
 
   return (
     <div>
-            <Helmet>
-                <title>ecolapp | Résultat primaire</title>
-            </Helmet>
-            <div className='bulletin-eleve'>
-                <div className="bloc-bulletin">
+      <Helmet>
+        <title>ecolapp | Résultat primaire</title>
+      </Helmet>
+      <div className='bulletin-eleve'>
+        <div className="bloc-bulletin">
 
-                    <div className="header-bulletin">
-                        <img src={ImgDrapeau} alt="Drapeau" />
-                        <div className="pays-titre">
-                            <h2>RÉPUBLIQUE DÉMOCRATIQUE DU CONGO</h2>
-                            <h2>MINISTÈRE DE L'ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE</h2>
-                        </div>
-                        <img src={ImgSymbole} alt="Symbole" />
-                    </div>
+          <div className="header-bulletin">
+            <img src={ImgDrapeau} alt="Drapeau" />
+            <div className="pays-titre">
+              <h2>RÉPUBLIQUE DÉMOCRATIQUE DU CONGO</h2>
+              <h2>MINISTÈRE DE L'ENSEIGNEMENT PRIMAIRE, SECONDAIRE ET TECHNIQUE</h2>
+            </div>
+            <img src={ImgSymbole} alt="Symbole" />
+          </div>
 
-                    <div className="bloc-responsive">
-                        <div className="table-info">
-                            <div>
-                                <strong>PROVINCE :</strong> Kinshasa <br /><br />
-                                <strong>VILLE :</strong> Kinshasa <br /><br />
-                                <strong>COMMUNE :</strong> Gombe <br /><br />
-                                <strong>ÉCOLE :</strong> Institut de l'Avenir <br /><br />
-                            </div>
-                            <div>
-                                <strong>ÉLÈVE :</strong> {eleveInfo.name || ''} {eleveInfo.last_name || ''} {eleveInfo.first_name || ''}  <br /><br />
-                                <strong>SEXE :</strong> {eleveInfo.sexe || ''} <br /><br />
-                                <strong>NE(E) A :</strong> Kinshasa, {eleveInfo.lieu_de_naissance || ''}  <br /><br />
-                                <strong>CLASSE :</strong> {classe.name || ''} <br /><br />
-                            </div>
-                        </div>
-                        <div className="bloc-2-bulletin">
-                            <span>Matricule :</span>  <span>{eleveInfo.matricule}</span>
-                        </div>
+          <div className="bloc-responsive">
+            <div className="table-info">
+              <div>
+                <strong>PROVINCE :</strong> Kinshasa <br /><br />
+                <strong>VILLE :</strong> Kinshasa <br /><br />
+                <strong>COMMUNE :</strong> Gombe <br /><br />
+                <strong>ÉCOLE :</strong> Institut de l'Avenir <br /><br />
+              </div>
+              <div>
+                <strong>ÉLÈVE :</strong> {eleveInfo.name || ''} {eleveInfo.last_name || ''} {eleveInfo.first_name || ''}  <br /><br />
+                <strong>SEXE :</strong> {eleveInfo.sexe || ''} <br /><br />
+                <strong>NE(E) A :</strong> Kinshasa, {eleveInfo.lieu_de_naissance || ''}  <br /><br />
+                <strong>CLASSE :</strong> {classe.name || ''} <br /><br />
+              </div>
+            </div>
+            <div className="bloc-2-bulletin">
+              <span>Matricule :</span>  <span>{eleveInfo.matricule}</span>
+            </div>
 
-                        <div className="bloc-2-bulletin">
-                            <span>Classe : {classe.name} </span>
-                            <span>Option: {eleveInfo.option.name}</span>
-                        </div>
+            <div className="bloc-2-bulletin">
+              <span>Classe : {classe.name} </span>
+              <span>Option: {eleveInfo.option.name}</span>
+            </div>
 
-                    </div>
+          </div>
 
-                    <div className="table-container">
-                        <table>
-                            <tr>
-                                <th rowspan="2">Branches</th>
-                                <th colspan="2">Semestre {periode.semestre_id}</th>
-                            </tr>
-                            <tr>
-                                <th>{periode.name}</th>
-                            </tr>
-                            {coursGroupes.map((groupe, index) =>
-              <React.Fragment key={index}>
-                                    <tr className='bg-secondary text-white'>
-                                        <td>Max</td>
-                                        <td>{groupe.max / 2}</td>
-                                    </tr>
-                                    {groupe.cours.map((cours) =>
-                <tr key={cours.id_cours}>
-                                            <td>{cours.nom_cours}</td>
-                                            <td>{cours.total_obtenu || 0}</td>
-                                        </tr>
-                )}
-                                </React.Fragment>
+          <div className="table-container">
+            <table>
+              <tr>
+                <th rowspan="2">Branches</th>
+                <th colspan="2">Semestre {periode.semestre_id}</th>
+              </tr>
+              <tr>
+                <th>{periode.name}</th>
+              </tr>
+              {coursGroupes.map((groupe, index) =>
+                <React.Fragment key={index}>
+                  <tr className='bg-secondary text-white'>
+                    <td>Max</td>
+                    <td>{groupe.max / 2}</td>
+                  </tr>
+                  {groupe.cours.map((cours) =>
+                    <tr key={cours.id_cours}>
+                      <td>{cours.nom_cours}</td>
+                      <td>{cours.total_obtenu || 0}</td>
+                    </tr>
+                  )}
+                </React.Fragment>
               )}
 
-                            <tr className="total-row">
-                                <td>Totaux généraux</td>
-                                <td>{totalGeneral}</td>
-                            </tr>
-                            <tr className="total-row">
-                                <td>Totaux obtenus</td>
-                                <td>{totalObtenu}</td>
-                            </tr>
-                            <tr className="total-row">
-                                <td>Pourcentage</td>
-                                <td>{pourcentage}%</td>
-                            </tr>
-                        </table>
-                    </div>
+              <tr className="total-row">
+                <td>Totaux généraux</td>
+                <td>{totalGeneral}</td>
+              </tr>
+              <tr className="total-row">
+                <td>Totaux obtenus</td>
+                <td>{totalObtenu}</td>
+              </tr>
+              <tr className="total-row">
+                <td>Pourcentage</td>
+                <td>{pourcentage}%</td>
+              </tr>
+            </table>
+          </div>
 
-                </div>
-            </div>
-            <div className="text-center py-2 mb-2 mt-2">
-                <button className="btn  hide-on-print" onClick={printBulletin}>
-                    Imprimer
-                </button>
-            </div>
-            <div className="hide-on-print text-center mb-2 mt-2 py-2">
-                    {authenticated ?
-        <Link className="btn  text-white  u-style-420aab4e" to="/primaire/profil_user">
-                            Retour
-                        </Link> :
+        </div>
+      </div>
+      <div className="text-center py-2 mb-2 mt-2">
+        <button className="btn  hide-on-print" onClick={printBulletin}>
+          Imprimer
+        </button>
+      </div>
+      <div className="hide-on-print text-center mb-2 mt-2 py-2">
+        {authenticated ?
+          <Link className="btn  text-white  u-style-420aab4e" to="/primaire/profil_user">
+            Retour
+          </Link> :
 
-        <Link className="btn  text-white  u-style-420aab4e" to="/primaire">Quitter</Link>
+          <Link className="btn  text-white  u-style-420aab4e" to="/primaire">Quitter</Link>
         }
-            </div>
-        </div>);
+      </div>
+    </div>);
 
 };
 

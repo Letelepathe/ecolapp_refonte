@@ -34,8 +34,8 @@ const ListeCours = () => {
         <div className="container-fluid pt-4 px-4">
           <div className=" text-center rounded p-4">
             <div className='d-flex justify-content-between align-items-center'>
-             <h6 className="mb-4">Liste des Cours</h6>
-             <Link to="/maternelle/ajouter_cours" className='btn  text-white'>Ajouter cours</Link>
+             <h6 className="mb-4">Activités d'éveil</h6>
+             <Link to="/maternelle/ajouter_cours" className='btn  text-white'>Ajouter une activité</Link>
             </div>
             <div className="table-responsive">
               {error ? (
@@ -45,10 +45,8 @@ const ListeCours = () => {
                   <thead>
                     <tr className="text-dark">
                       <th>Nom</th>
-                      <th>Pondération</th>
+                      <th>Repère d'évaluation</th>
                       <th>Classe</th>
-                      <th>Option</th>
-                      <th>Section</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -57,14 +55,12 @@ const ListeCours = () => {
                         <td>{cour.name || 'N/A'}</td>
                         <td>{cour.ponderation || 'N/A'}</td>
                         <td>{cour.classe?.name || 'Non spécifiée'}</td>
-                        <td>{cour.option?.name || 'Non spécifiée'}</td>
-                        <td>{cour.option?.section?.name || 'Non spécifiée'}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               ) : (
-                <p>Aucun cours trouvé.</p>
+                <p>Aucune activité trouvée.</p>
               )}
             </div>
           </div>

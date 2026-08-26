@@ -52,8 +52,8 @@ const ListeTitulaire = () => {
         <NavbarTop />
         <div className=" text-center rounded p-4">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h3 className="mb-0 text-primary text-center">Titulaires</h3>
-            <Link to='/maternelle/ajouter_titulaire' className='btn '>Ajouter titulaire</Link>
+            <h3 className="mb-0 text-primary text-center">Éducateurs titulaires</h3>
+            <Link to='/maternelle/ajouter_titulaire' className='btn '>Affecter un éducateur</Link>
           </div>
           <div className="table-responsive">
             {error && <p className="text-danger">{error}</p>}
@@ -68,7 +68,6 @@ const ListeTitulaire = () => {
                   <th>Prénom</th>
                   <th>Sexe</th>
                   <th>Classe</th>
-                  <th>Option</th>
                   <th>Année</th>
                   <th>Actions</th>
                 </tr>
@@ -90,7 +89,6 @@ const ListeTitulaire = () => {
                     <td>{titulaire.user.first_name}</td>
                     <td>{titulaire.user.sexe}</td>
                     <td>{titulaire.classe.name}</td>
-                    <td>{titulaire.option.name}</td>
                     <td>{titulaire.annee.name}</td>
                     <td>
                       <button

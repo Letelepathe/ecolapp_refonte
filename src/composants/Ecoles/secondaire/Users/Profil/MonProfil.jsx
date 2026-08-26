@@ -13,6 +13,7 @@ import FooterUser from "./Footer";
 
 
 import UserInfo from "./UserInfo";
+import ChangerMotDePasse from "../../../common/Utilisateurs/ChangerMotDePasse";
 
 const MonProfil = () => {
   const { userId } = useParams(); 
@@ -38,6 +39,7 @@ const MonProfil = () => {
             
 
             <UserInfo />
+            <ChangerMotDePasse />
 
           </div>
           <FooterUser />

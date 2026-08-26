@@ -1,309 +1,308 @@
-import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import ImgDrapeau from "../../../../static/images/drapeau.png";
 import ImgSymbole from "../../../../static/images/symb.png";
-import EcranChargement from "../../../common/EcranChargement";
+import { choisirOptionCompatibilite, obtenirConfigCycle } from "../../../../config/cyclesScolaires";
+import {
+  getAgeMinimumEleveError,
+  getErreurPourcentageFacultatif,
+  normaliserChampFacultatif,
+  normaliserPourcentageFacultatif,
+} from "../../common/validationAgeEleve";
 
-const Inscriptionprimaire = () => {
-  const [ecole, setEcole] = useState(null);
-  const [requetesInitiales, setRequetesInitiales] = useState(3);
-  const [erreurInitiale, setErreurInitiale] = useState("");
-  const requeteInitialeTerminee = () => setRequetesInitiales((nombre) => Math.max(0, nombre - 1));
-  const ecole_id = localStorage.getItem('ecole_id');
-  const direction = localStorage.getItem('direction');
+const URL_API = "https://api.ecolapp.cd/api";
+const configPrimaire = obtenirConfigCycle("primaire");
 
-  useEffect(() => {
-    const fetchInfoEcole = async () => {
-      try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/ecole/ecole_id/${ecole_id}`, { timeout: 15000 });
-        setEcole(response.data.ecole);
-      } catch (error) {
-        setErreurInitiale("Les informations de l’école sont momentanément indisponibles.");
-      } finally {
-        requeteInitialeTerminee();
-      }
-    };
+const creerFormulaire = (ecoleId, direction) => ({
+  type_admission: "premiere_inscription",
+  name: "",
+  first_name: "",
+  last_name: "",
+  ecole_provenance: "",
+  percent: "",
+  classes_id: "",
+  options_id: "",
+  sexe: "Homme",
+  date_naissance: "",
+  lieu_de_naissance: "",
+  nationalite: "Congolaise",
+  adresse: "",
+  code_parent: "",
+  terms: false,
+  ecole_id: ecoleId,
+  direction,
+});
 
-    fetchInfoEcole();
-  }, [ecole_id]);
-
-
-
+const InscriptionPrimaire = () => {
+  const ecoleId = localStorage.getItem("ecole_id");
+  const direction = localStorage.getItem("direction");
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    first_name: '',
-    last_name: '',
-    ecole_provenance: '',
-    percent: '',
-    classes_id: '',
-    options_id: '',
-    sexe: 'Homme',
-    date_naissance: '',
-    lieu_de_naissance: '',
-    nationalite: '',
-    adresse: '',
-    code_parent: '',
-    terms: false,
-    ecole_id: ecole_id,
-    direction: direction
-  });
-
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
-  const [options, setOptions] = useState([]);
+  const [ecole, setEcole] = useState(null);
   const [classes, setClasses] = useState([]);
+  const [options, setOptions] = useState([]);
+  const [formulaire, setFormulaire] = useState(() =>
+    creerFormulaire(ecoleId, direction)
+  );
+  const [erreurs, setErreurs] = useState({});
+  const [chargement, setChargement] = useState(false);
 
   useEffect(() => {
-    const fetchOptions = async () => {
+    const charger = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`, { timeout: 15000 });
-        setOptions(response.data.optionAll);
-        console.log(response.data);
-      } catch (error) {
-        setErreurInitiale("Les options d’inscription n’ont pas pu être chargées.");
-      } finally {
-        requeteInitialeTerminee();
+        const [reponseEcole, reponseClasses, reponseOptions] = await Promise.all([
+          axios.get(`${URL_API}/ecole/ecole_id/${ecoleId}`),
+          axios.get(`${URL_API}/classe/ecole/${ecoleId}/direction/${direction}`),
+          axios.get(`${URL_API}/option/ecole/${ecoleId}/direction/${direction}`),
+        ]);
+        const options = reponseOptions.data.optionAll || [];
+        setEcole(reponseEcole.data.ecole);
+        setClasses(reponseClasses.data.classesAll || []);
+        setOptions(options);
+        setFormulaire((courant) => ({
+          ...courant,
+          options_id: String(
+            choisirOptionCompatibilite(options, "primaire") || ""
+          ),
+        }));
+      } catch {
+        setErreurs({ form: "Impossible de charger les informations de l'école." });
       }
     };
+    charger();
+  }, [direction, ecoleId]);
 
-    const fetchClasses = async () => {
-      try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`, { timeout: 15000 });
-        setClasses(response.data.classesAll);
-        console.log(response.data);
-      } catch (error) {
-        setErreurInitiale("Les classes d’inscription n’ont pas pu être chargées.");
-      } finally {
-        requeteInitialeTerminee();
-      }
+  const estTransfert = formulaire.type_admission === "transfert";
+
+  const changerChamp = (event) => {
+    const { name, value, type, checked } = event.target;
+    setFormulaire((courant) => ({
+      ...courant,
+      [name]: type === "checkbox" ? checked : value,
+      ...(name === "type_admission" && value !== "transfert"
+        ? { ecole_provenance: "", percent: "" }
+        : {}),
+    }));
+    setErreurs((courant) => ({ ...courant, [name]: "", form: "" }));
+  };
+
+  const valider = () => {
+    const nouvelles = {};
+    const obligatoires = {
+      name: "Nom requis",
+      first_name: "Prénom requis",
+      last_name: "Postnom requis",
+      nationalite: "Nationalité requise",
+      adresse: "Adresse requise",
+      classes_id: "Classe primaire requise",
     };
-
-    fetchOptions();
-    fetchClasses();
-  }, [ecole_id, direction]);
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
+    Object.entries(obligatoires).forEach(([champ, message]) => {
+      if (!String(formulaire[champ] || "").trim()) nouvelles[champ] = message;
     });
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = "Nom requis";
-    if (!formData.first_name) newErrors.first_name = "Prénom requis";
-    if (!formData.last_name) newErrors.last_name = "Postnom requis";
-    if (!formData.ecole_provenance) newErrors.ecole_provenance = "École de provenance requise";
-    if (!formData.percent) newErrors.percent = "Pourcentage requis";
-
-    if (!formData.classes_id) newErrors.classes_id = "Classe d'inscription requise";
-
-    if (!formData.date_naissance) newErrors.date_naissance = "Date de naissance requise";
-    if (!formData.lieu_de_naissance) newErrors.lieu_de_naissance = "Lieu de naissance requis";
-    if (!formData.nationalite) newErrors.nationalite = "Nationalité requise";
-
-    if (!formData.adresse) newErrors.adresse = "Adresse requise";
-    if (!formData.code_parent) newErrors.code_parent = "Code requis";
-
-    if (!formData.terms) newErrors.terms = "Vous devez accepter les conditions et règlements";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSuccessMessage('');
-    setIsLoading(true);
-
-    if (!validateForm()) {
-      setIsLoading(false);
-      return;
+    if (estTransfert && !formulaire.ecole_provenance.trim()) {
+      nouvelles.ecole_provenance = "École de provenance requise pour un transfert";
     }
+    const erreurPourcentage = getErreurPourcentageFacultatif(formulaire.percent);
+    if (erreurPourcentage) nouvelles.percent = erreurPourcentage;
+    const erreurAge = getAgeMinimumEleveError(
+      formulaire.date_naissance,
+      configPrimaire.ageMinimum
+    );
+    if (erreurAge) nouvelles.date_naissance = erreurAge;
+    if (!formulaire.options_id) {
+      nouvelles.form =
+        "L'école doit d'abord configurer une option pour le primaire. Contactez l'administration.";
+    }
+    if (!formulaire.terms) {
+      nouvelles.terms = "Vous devez certifier les informations fournies";
+    }
+    setErreurs(nouvelles);
+    return Object.keys(nouvelles).length === 0;
+  };
 
+  const envoyer = async (event) => {
+    event.preventDefault();
+    setErreurs({});
+    if (!valider()) return;
+
+    setChargement(true);
     try {
-      const response = await axios.post("https://api.ecolapp.cd/api/inscription/create",
-      formData,
-      { headers: { 'Content-Type': 'application/json' } }
-      );
-
-      if (response.data.status === 200) {
-        setSuccessMessage("Inscription réussie !");
-        setErrors({});
-
-        setFormData({
-          name: '',
-          first_name: '',
-          last_name: '',
-          ecole_provenance: '',
-          percent: '',
-          classes_id: '',
-          options_id: '',
-          sexe: 'Homme',
-          date_naissance: '',
-          lieu_de_naissance: '',
-          nationalite: '',
-          adresse: '',
-          code_parent: '',
-          terms: false,
-          ecole_id: ecole_id,
-          direction: direction
+      const payload = {
+        ...formulaire,
+        ecole_provenance: estTransfert
+          ? formulaire.ecole_provenance.trim()
+          : formulaire.type_admission === "reinscription"
+            ? "Réinscription"
+            : "Première inscription",
+        percent: normaliserPourcentageFacultatif(formulaire.percent),
+        date_naissance: normaliserChampFacultatif(formulaire.date_naissance),
+        lieu_de_naissance: normaliserChampFacultatif(formulaire.lieu_de_naissance),
+        code_parent: formulaire.code_parent.trim() || null,
+      };
+      const reponse = await axios.post(`${URL_API}/inscription/create`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+      if (Number(reponse.data.status) !== 200) {
+        setErreurs({
+          form:
+            reponse.data.error_msg ||
+            reponse.data.status_msg ||
+            "L'inscription n'a pas été enregistrée.",
         });
-
-        navigate(`/primaire/accueil_inscription_primaire/${response.data.last_id}`);
-      } else {
-        setErrors({ form: response.data.errorList || "Une erreur est survenue lors de l'inscription." });
-        console.log(response.data.error_msg);
+        return;
       }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        setErrors({ form: error.response.data.errorList || "Erreur lors de la soumission du formulaire." });
-      } else {
-        setErrors({ form: "Erreur de connexion au serveur" });
-      }
+      navigate(`/primaire/accueil_inscription_primaire/${reponse.data.last_id}`);
+    } catch (erreur) {
+      setErreurs({
+        form:
+          erreur.response?.data?.error_msg ||
+          "Erreur de connexion pendant l'inscription.",
+      });
     } finally {
-      setIsLoading(false);
+      setChargement(false);
     }
   };
 
-  if (requetesInitiales > 0) return <EcranChargement titre="Préparation du formulaire d’inscription" message="Nous chargeons l’école, les classes et les options disponibles." />;
-  if (erreurInitiale || !ecole) return <EcranChargement erreur={erreurInitiale || "Le formulaire d’inscription est indisponible."} onReessayer={() => window.location.reload()} />;
+  if (!ecole && !erreurs.form) return <div className="spinner" />;
 
   return (
     <div>
       <Helmet>
-        <title>{ecole.name} | inscription</title>
+        <title>{ecole?.name || "École primaire"} | Inscription primaire</title>
       </Helmet>
-      <main className=''>
+      <main>
         <div className="container">
           <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-            <div className="col-lg-8 col-md-12 d-flex flex-column align-items-center justify-content-center">
+            <div className="col-xl-9 col-lg-10 col-12">
               <div className="card mb-3">
                 <div className="card-body">
-                  <div className="justify-content-between d-flex">
-                    <img src={ImgDrapeau} alt="logo" className="u-style-4335d984" />
+                  <div className="d-flex justify-content-between align-items-start gap-3">
+                    <img src={ImgDrapeau} alt="Drapeau" className="u-style-4335d984" />
                     <div className="text-center">
-                      <h3 className="text-center u-style-951c0e5f">ecolapp</h3>
-                      <h4 className="text-center u-style-4789709b">{ecole.name}</h4>
-                      <h6 className="text-center u-style-4789709b">Bulletin de demande d'inscription</h6><hr />
-                    </div>                
-                    <img src={ImgSymbole} alt="logo" className="u-style-4335d984" />
+                      <h1 className="h4 mb-1">{ecole?.name || "École primaire"}</h1>
+                      <p className="mb-0">Demande d'inscription au primaire</p>
+                    </div>
+                    <img src={ImgSymbole} alt="Emblème" className="u-style-4335d984" />
                   </div>
-                  <p className="text-center">Veuillez remplir le formulaire ci-dessous attentivement.</p>
+                  <hr />
+                  <p className="text-muted text-center">
+                    Renseignez l'enfant et la classe primaire demandée. L'école vérifiera
+                    la demande avant confirmation.
+                  </p>
 
-                  <form className="needs-validation inscription" onSubmit={handleSubmit} noValidate>
-                    <div className="row">
-                      <div className="col-12 col-lg-6">
-                        <label htmlFor="name">Nom</label>
-                        <input type="text" name="name" className="form-control" value={formData.name} onChange={handleInputChange} required />
-                        {errors.name && <p className="text-danger">{errors.name}</p>}
-                      </div>
-                      <div className="col-12 col-lg-6">
-                        <label htmlFor="last_name">Postnom</label>
-                        <input type="text" name="last_name" className="form-control" value={formData.last_name} onChange={handleInputChange} required />
-                        {errors.last_name && <p className="text-danger">{errors.last_name}</p>}
-                      </div>
+                  <form onSubmit={envoyer} noValidate>
+                    <div className="row g-3">
                       <div className="col-12">
-                        <label htmlFor="first_name">Prénom</label>
-                        <input type="text" name="first_name" className="form-control" value={formData.first_name} onChange={handleInputChange} required />
-                        {errors.first_name && <p className="text-danger">{errors.first_name}</p>}
-                      </div>
-                      <div className="col-12">
-                          <label htmlFor="sexe">Genre</label>
-                          <select name="sexe" className="form-control" onChange={handleInputChange} value={formData.sexe}>
-                            <option value="Homme">Homme</option>
-                            <option value="Femme">Femme</option>
-                          </select>
-                      </div>
-                      <div className="col-lg-6 col-12">
-                          <label htmlFor="date_naissance">Date de naissance</label>
-                          <input type="date" name="date_naissance" className="form-control" value={formData.date_naissance} onChange={handleInputChange} required />
-                          {errors.date_naissance && <p className="text-danger">{errors.date_naissance}</p>}
-                        </div>
-                      <div className="col-lg-6 col-12">
-                          <label htmlFor="lieu_de_naissance">Lieu de naissance</label>
-                          <input type="text" name="lieu_de_naissance" className="form-control" value={formData.lieu_de_naissance} onChange={handleInputChange} required />
-                          {errors.lieu_de_naissance && <p className="text-danger">{errors.lieu_de_naissance}</p>}
-                      </div>
-
-                      <div className="col-12">
-                          <label htmlFor="nationalite">Nationalité</label>
-                          <input type="text" name="nationalite" className="form-control" value={formData.nationalite} onChange={handleInputChange} required />
-                          {errors.nationalite && <p className="text-danger">{errors.nationalite}</p>}
-                      </div>
-
-                      <div className="col-12">
-                          <label htmlFor="adresse">Adresse</label>
-                          <input type="text" name="adresse" className="form-control" value={formData.adresse} onChange={handleInputChange} required />
-                          {errors.adresse && <p className="text-danger">{errors.adresse}</p>}
-                      </div>
-                      
-                      <div className="col-12 col-lg-6">
-                        <label htmlFor="ecole_provenance">École de provenance</label>
-                        <input type="text" name="ecole_provenance" className="form-control" value={formData.ecole_provenance} onChange={handleInputChange} required />
-                        {errors.ecole_provenance && <p className="text-danger">{errors.ecole_provenance}</p>}
-                      </div>
-                      <div className="col-12 col-lg-6">
-                        <label htmlFor="percent">Pourcentage</label>
-                        <input type="number" max='2' name="percent" className="form-control" value={formData.percent} onChange={handleInputChange} required />
-                        {errors.percent && <p className="text-danger">{errors.percent}</p>}
-                      </div>
-                      
-                      <div className="col-12">
-                        <label htmlFor="classes_id">Classe d'inscription</label>
-                        <select name="classes_id" className="form-control" onChange={handleInputChange} value={formData.classes_id} required>
-                          <option value="">Sélectionner une classe</option>
-                          {classes.map((classe) =>
-                          <option key={classe.id} value={classe.id}>{classe.name}</option>
-                          )}
+                        <label htmlFor="type_admission">Situation de l'enfant</label>
+                        <select
+                          id="type_admission"
+                          name="type_admission"
+                          className="form-control"
+                          value={formulaire.type_admission}
+                          onChange={changerChamp}
+                        >
+                          <option value="premiere_inscription">Première inscription au primaire</option>
+                          <option value="transfert">Transfert depuis une autre école</option>
+                          <option value="reinscription">Réinscription dans l'école</option>
                         </select>
-                        {errors.classes_id && <p className="text-danger">{errors.classes_id}</p>}
                       </div>
-                      
-                    
-                      <fieldset>
+                      <div className="col-md-4">
+                        <label htmlFor="name">Nom</label>
+                        <input id="name" name="name" className="form-control" value={formulaire.name} onChange={changerChamp} />
+                        {erreurs.name && <p className="text-danger">{erreurs.name}</p>}
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="last_name">Postnom</label>
+                        <input id="last_name" name="last_name" className="form-control" value={formulaire.last_name} onChange={changerChamp} />
+                        {erreurs.last_name && <p className="text-danger">{erreurs.last_name}</p>}
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="first_name">Prénom</label>
+                        <input id="first_name" name="first_name" className="form-control" value={formulaire.first_name} onChange={changerChamp} />
+                        {erreurs.first_name && <p className="text-danger">{erreurs.first_name}</p>}
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="sexe">Sexe</label>
+                        <select id="sexe" name="sexe" className="form-control" value={formulaire.sexe} onChange={changerChamp}>
+                          <option value="Homme">Garçon</option>
+                          <option value="Femme">Fille</option>
+                        </select>
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="date_naissance">Date de naissance (facultatif)</label>
+                        <input id="date_naissance" type="date" name="date_naissance" className="form-control" value={formulaire.date_naissance} onChange={changerChamp} />
+                        {erreurs.date_naissance && <p className="text-danger">{erreurs.date_naissance}</p>}
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="lieu_de_naissance">Lieu de naissance (facultatif)</label>
+                        <input id="lieu_de_naissance" name="lieu_de_naissance" className="form-control" value={formulaire.lieu_de_naissance} onChange={changerChamp} />
+                        {erreurs.lieu_de_naissance && <p className="text-danger">{erreurs.lieu_de_naissance}</p>}
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="nationalite">Nationalité</label>
+                        <input id="nationalite" name="nationalite" className="form-control" value={formulaire.nationalite} onChange={changerChamp} />
+                        {erreurs.nationalite && <p className="text-danger">{erreurs.nationalite}</p>}
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="adresse">Adresse</label>
+                        <input id="adresse" name="adresse" className="form-control" value={formulaire.adresse} onChange={changerChamp} />
+                        {erreurs.adresse && <p className="text-danger">{erreurs.adresse}</p>}
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="classes_id">Classe primaire demandée</label>
+                        <select id="classes_id" name="classes_id" className="form-control" value={formulaire.classes_id} onChange={changerChamp}>
+                          <option value="">Sélectionner une classe</option>
+                          {classes.map((classe) => (
+                            <option key={classe.id} value={classe.id}>{classe.name}</option>
+                          ))}
+                        </select>
+                        {erreurs.classes_id && <p className="text-danger">{erreurs.classes_id}</p>}
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="code_parent">Code parent ou tuteur (facultatif)</label>
+                        <input id="code_parent" name="code_parent" className="form-control" value={formulaire.code_parent} onChange={changerChamp} />
+                        <small className="text-muted">L'école pourra relier le parent plus tard.</small>
+                      </div>
 
-                        <div className="row">
-
-                          <div className="col-12">
-                            <label htmlFor="code_parent">Code parent</label>
-                            <input type="text" name="code_parent" className="form-control" value={formData.code_parent} onChange={handleInputChange} required />
-                            {errors.code_parent && <p className="text-danger">{errors.code_parent}</p>}
+                      {estTransfert && (
+                        <>
+                          <div className="col-md-8">
+                            <label htmlFor="ecole_provenance">École de provenance</label>
+                            <input id="ecole_provenance" name="ecole_provenance" className="form-control" value={formulaire.ecole_provenance} onChange={changerChamp} />
+                            {erreurs.ecole_provenance && <p className="text-danger">{erreurs.ecole_provenance}</p>}
                           </div>
-
-                        </div>
-                      </fieldset>
+                          <div className="col-md-4">
+                            <label htmlFor="percent">Dernier résultat (%) (facultatif)</label>
+                            <input id="percent" type="text" inputMode="decimal" name="percent" className="form-control" value={formulaire.percent} onChange={changerChamp} placeholder="Ex. 75,5" />
+                            {erreurs.percent && <p className="text-danger">{erreurs.percent}</p>}
+                          </div>
+                        </>
+                      )}
 
                       <div className="col-12">
                         <div className="form-check">
-                          <input className="form-check-input" name="terms" type="checkbox" checked={formData.terms} onChange={handleInputChange} />
-                          <label className="form-check-label">
-                            Je certifie sur mon honneur que tous les renseignements fournis ci-haut sont exacts <br />
-                            et que je m'engage à respecter les règlements et statuts du Collège.
+                          <input id="terms" className="form-check-input" name="terms" type="checkbox" checked={formulaire.terms} onChange={changerChamp} />
+                          <label className="form-check-label" htmlFor="terms">
+                            Je certifie que les informations fournies sont exactes.
                           </label>
-                          {errors.terms && <p className="text-danger">{errors.terms}</p>}
                         </div>
+                        {erreurs.terms && <p className="text-danger">{erreurs.terms}</p>}
                       </div>
                     </div>
-                    <div className="col-12 mt-4">
-                      <button
-                        className={`${`btn btn-white w-100 ${isLoading ? "loading" : ""}`} style-fr-44b00424`}
 
-                        type="submit"
-                        disabled={isLoading}>
-                        
-                        
-                        {isLoading ? "Inscription en cours..." : "Soumettre ma demande"}
-                      </button>
+                    {erreurs.form && <div className="alert alert-danger mt-3">{erreurs.form}</div>}
+                    <div className="mt-3">
+                      <label htmlFor="options_id">Option / programme</label>
+                      <select id="options_id" className="form-control" value={formulaire.options_id} disabled>
+                        {!options.length && <option value="">Aucune option configurée</option>}
+                        {options.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
+                      </select>
+                      <small className="text-muted">Définie par l'administration pour ce cycle.</small>
                     </div>
-                    {successMessage && <p className="text-success text-center mt-2">{successMessage}</p>}
-                    {errors.form && <p className="text-danger text-center mt-2">{errors.form}</p>}
+                    <button type="submit" className="btn w-100 mt-4" disabled={chargement || !formulaire.options_id}>
+                      {chargement ? "Envoi en cours…" : "Soumettre la demande"}
+                    </button>
                   </form>
                 </div>
               </div>
@@ -311,8 +310,8 @@ const Inscriptionprimaire = () => {
           </section>
         </div>
       </main>
-    </div>);
-
+    </div>
+  );
 };
 
-export default Inscriptionprimaire;
+export default InscriptionPrimaire;

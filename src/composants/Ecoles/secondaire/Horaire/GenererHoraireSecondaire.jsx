@@ -205,15 +205,17 @@ const GenererHoraireSecondaire = () => {
   }
 
   return (
-    <div className="container mt-4">
-      <div className="no-print style-fr-4cfb5508">
+    <div className="container mt-4 page-generer-horaire">
+      <div className="no-print horaire-actions">
         <button
-
-          onClick={() => navigate(-1)} className="u-style-ce53d055">
-          
-          <ArrowLeft size={34} color="#0d66ff" />
+          type="button"
+          onClick={() => navigate(-1)}
+          className="horaire-retour"
+          aria-label="Retour à la page précédente"
+        >
+          <ArrowLeft size={18} aria-hidden="true" />
+          <span>Retour</span>
         </button>
-        <div></div>
       </div>
       <h2 className="text-center mb-4 d-flex align-items-center justify-content-center gap-2 no-print">
         <BookOpen /> Générateur d'horaires scolaires

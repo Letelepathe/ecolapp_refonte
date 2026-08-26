@@ -42,7 +42,7 @@ Dans les menus école :
 
 ```text
 Cartes élèves QR       /:cycle/cartes_eleves
-Présences du jour & scan QR   /presence-qr
+Scanner présences QR   /presence-qr
 Cartes personnel QR    /:cycle/cartes_personnel
 ```
 

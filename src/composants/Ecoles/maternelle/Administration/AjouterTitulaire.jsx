@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
+import { choisirOptionCompatibilite } from "../../../../config/cyclesScolaires";
 
 const AjouterTitulaire = () => {
   const ecole_id = localStorage.getItem('ecole_id');
@@ -50,8 +51,13 @@ const AjouterTitulaire = () => {
     const fetchOptions = async () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`);
-        setOptions(response.data.optionAll);
-        console.log(response.data);
+        const optionsDisponibles = response.data.optionAll || [];
+        setOptions(optionsDisponibles);
+        setFormData((current) => ({
+          ...current,
+          id_option:
+            choisirOptionCompatibilite(optionsDisponibles, "maternelle") || "",
+        }));
       } catch (error) {
         console.error("Erreur lors de la récupération des options:", error);
       }
@@ -74,7 +80,10 @@ const AjouterTitulaire = () => {
     const newErrors = {};
     if (!formData.id_us) newErrors.id_us = "Veuillez sélectionner un enseignant.";
     if (!formData.id_classe) newErrors.id_classe = "Veuillez sélectionner une classe.";
-    if (!formData.id_option) newErrors.id_option = "Veuillez sélectionner une option.";
+    if (!formData.id_option) {
+      newErrors.form =
+        "Configuration maternelle incomplète : créez l'option technique « Sans option - Maternelle ».";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -97,7 +106,14 @@ const AjouterTitulaire = () => {
 
       if (response.data.status === 200) {
         setSuccessMessage(response.data.status_msg || "Titulaire ajouté avec succès !");
-        setFormData({ id_us: '', id_classe: '', id_option: '', ecole_id: ecole_id, direction: direction });
+        setFormData({
+          id_us: "",
+          id_classe: "",
+          id_option:
+            choisirOptionCompatibilite(options, "maternelle") || "",
+          ecole_id,
+          direction,
+        });
 
       } else {
         setErrors({ form: response.data.error_msg || "Erreur inconnue." });
@@ -122,7 +138,7 @@ const AjouterTitulaire = () => {
                 <div className="card-body">
                   <div className='d-flex align-items-center justify-content-between'>
                    <Link to='/maternelle/liste_titulaire' className='btn  mt-2 mb-2'>Liste titulaires</Link>
-                   <h6 className="text-center u-style-951c0e5f">Ajouter Titulaire</h6>
+                   <h6 className="text-center u-style-951c0e5f">Affecter un éducateur titulaire</h6>
                   </div>
                   <p className="text-center">Veuillez remplir les informations ci-dessous.</p>
 
@@ -155,18 +171,6 @@ const AjouterTitulaire = () => {
                       </select>
                       {errors.id_classe && <p className="text-danger">{errors.id_classe}</p>}
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="id_option">Option</label>
-                        <select name="id_option" className="form-control"
-                      value={formData.id_option} onChange={handleInputChange} required>
-                          <option value="">Sélectionner une option</option>
-                          {options.map((option) =>
-                        <option key={option.id} value={option.id}>{option.name}</option>
-                        )}
-                        </select>
-                        {errors.id_option && <p className="text-danger">{errors.id_option}</p>}
-                      </div>
-
                     <div className="d-grid">
                       <button className={`${`btn  w-100 ${isLoading ? "loading" : ""}`} style-fr-e5e80b65`} type="submit"
                       disabled={isLoading}>

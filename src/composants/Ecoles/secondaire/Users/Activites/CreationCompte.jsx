@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import ChampMotDePasse from '../../../../common/ChampMotDePasse';
+import PhotoProfilOptionnelle from '../../../../common/PhotoProfilOptionnelle';
 
 const CreationCompte = () => {
   const ecole_id = parseInt(localStorage.getItem('ecole_id') || 0, 10);
@@ -92,7 +94,7 @@ const CreationCompte = () => {
 
     const form = new FormData();
     for (const key in formData) {
-      form.append(key, formData[key]);
+      if (formData[key] !== null && formData[key] !== '') form.append(key, formData[key]);
     }
 
     try {
@@ -288,8 +290,7 @@ const CreationCompte = () => {
                     </div>
 
                     <div className="col-6">
-                      <input
-                        type="password"
+                      <ChampMotDePasse
                         name="password"
                         className="form-control"
                         placeholder="Mot de passe"
@@ -299,8 +300,7 @@ const CreationCompte = () => {
                       {errors.password && <p className="text-danger">{errors.password}</p>}
                     </div>
                     <div className="col-6">
-                      <input
-                        type="password"
+                      <ChampMotDePasse
                         name="password_confirmation"
                         className="form-control"
                         placeholder="Confirmez Mot de passe"
@@ -313,12 +313,13 @@ const CreationCompte = () => {
                     </div>
 
                     <div className="col-12">
-                      <input
-                        type="file"
+                      <PhotoProfilOptionnelle
                         name="file"
-                        className="form-control"
-                        onChange={handleFileChange} />
-                      
+                        fichier={formData.file}
+                        sexe={formData.sexe}
+                        label="Photo de l’enseignant"
+                        onChange={handleFileChange}
+                      />
                     </div>
 
                     <div className="col-12">

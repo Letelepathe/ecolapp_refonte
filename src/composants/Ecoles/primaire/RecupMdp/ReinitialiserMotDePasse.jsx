@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ChampMotDePasse from "../../../common/ChampMotDePasse";
 
 const ReinitialiserMotDePasse = () => {
   const [password, setPassword] = useState("");
@@ -47,8 +48,7 @@ const ReinitialiserMotDePasse = () => {
           <form onSubmit={handleReset}>
             <div className="mb-3">
               <label className="form-label">Nouveau mot de passe</label>
-              <input
-                type="password"
+              <ChampMotDePasse
                 className="form-control"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -57,8 +57,7 @@ const ReinitialiserMotDePasse = () => {
             </div>
             <div className="mb-3">
               <label className="form-label">Confirmez le mot de passe</label>
-              <input
-                type="password"
+              <ChampMotDePasse
                 className="form-control"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
+
 import { API_BASE_URL, messageErreur } from "../api/api";
 import SidebarEcole from "./TableauDeBord/SidebarEcole";
 import EcranChargement from "./EcranChargement";
@@ -9,10 +9,11 @@ import EcranChargement from "./EcranChargement";
 const nomComplet = (eleve) =>
   [eleve.name, eleve.last_name, eleve.first_name].filter(Boolean).join(" ") || eleve.matricule || "Élève";
 
-const ListePresence = () => {
-  const { cycle } = useParams();
+const directionsParCycle = Object.freeze({ maternelle: "1", primaire: "2", secondaire: "3" });
+
+const ListePresence = ({ cycle }) => {
   const ecoleId = localStorage.getItem("ecole_id");
-  const direction = localStorage.getItem("direction");
+  const direction = directionsParCycle[cycle];
   const [eleves, setEleves] = useState([]);
   const [motifs, setMotifs] = useState([]);
   const [presences, setPresences] = useState({});

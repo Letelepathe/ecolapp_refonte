@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import ChampMotDePasse from '../common/ChampMotDePasse';
 
 
 
@@ -269,8 +270,7 @@ const CreerSuperAdminGeneral = () => {
                     </div>
 
                     <div className="col-6">
-                      <input
-                        type="password"
+                      <ChampMotDePasse
                         name="password"
                         className="form-control"
                         placeholder="Mot de passe"
@@ -280,8 +280,7 @@ const CreerSuperAdminGeneral = () => {
                       {errors.password && <p className="text-danger">{errors.password}</p>}
                     </div>
                     <div className="col-6">
-                      <input
-                        type="password"
+                      <ChampMotDePasse
                         name="password_confirmation"
                         className="form-control"
                         placeholder="Confirmez Mot de passe"

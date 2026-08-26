@@ -5,8 +5,8 @@ const estLocal = () => {
   return ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
 };
 
-export const API_BASE_URL = estLocal() ? "http://localhost:8000/api" : "https://api.ecolapp.cd/api";
-export const PUBLIC_BASE_URL = estLocal() ? "http://localhost:8000" : "https://api.ecolapp.cd";
+export const API_BASE_URL = !estLocal() ? "http://localhost:8000/api" : "https://api.ecolapp.cd/api";
+export const PUBLIC_BASE_URL = !estLocal() ? "http://localhost:8000" : "https://api.ecolapp.cd";
 
 export const messageErreur = (erreur, fallback = "Une erreur est survenue. Veuillez réessayer.") => {
   const data = erreur?.response?.data;

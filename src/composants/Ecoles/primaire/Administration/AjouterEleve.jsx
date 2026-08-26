@@ -8,6 +8,7 @@ const AjouterEleve = () => (
     BarreGauche={SidebarLeft}
     NavHaut={NavbarTop}
     lienListe="/primaire/liste_eleve"
+    cycle="primaire"
   />
 );
 

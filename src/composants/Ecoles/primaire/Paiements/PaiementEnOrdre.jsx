@@ -5,6 +5,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import SidebarLeft from "../Administration/SidebarLeft";
 import NavbarTop from "../Administration/NavbarTop";
 import LogoEcoleApp from '../../../../static/images/logo_ecolapp.jpg';
+import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
+import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
+import ImpressionListePaiements from "../../common/Paiements/ImpressionListePaiements";
 
 
 const PaiementEnOrdre = () => {
@@ -18,8 +21,6 @@ const PaiementEnOrdre = () => {
   const [selectedClass, setSelectedClass] = useState(""); // Classe sélectionnée
   const [classes, setClasses] = useState([]); // Liste des classes
   const [selectedReceipt, setSelectedReceipt] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(""); 
-  const [options, setOptions] = useState([]); 
 
   const receiptRef = useRef(null);
 
@@ -70,19 +71,6 @@ const PaiementEnOrdre = () => {
     fetchClasses();
   }, [ecole_id, direction]);
 
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`);
-        setOptions(response.data.optionAll);
-      } catch (error) {
-        setError("Erreur lors de la récupération des options");
-      }
-    };
-
-    fetchOptions();
-  }, [ecole_id, direction]);
-
   // Fetch des paiements
   useEffect(() => {
     const fetchPaiements = async () => {
@@ -108,13 +96,11 @@ const PaiementEnOrdre = () => {
       const name_annee = paiement.annee.name?.toLowerCase() || "";
 
       // Vérifier si l'élève appartient à l'option sélectionnée
-      const matchesOption = selectedOption ? paiement.eleve.options_id === Number(selectedOption) : true;
       // Vérifier si l'élève appartient à la classe sélectionnée
       const matchesClass = selectedClass ? paiement.classe.name === selectedClass : true;
 
       return (
         matchesClass &&
-        matchesOption &&
         (name.includes(searchTerm.toLowerCase()) ||
           last_name.includes(searchTerm.toLowerCase()) ||
           first_name.includes(searchTerm.toLowerCase()) ||
@@ -124,7 +110,7 @@ const PaiementEnOrdre = () => {
     });
 
     setFilteredPaiements(results);
-  }, [searchTerm, selectedClass, selectedOption, paiements]);
+  }, [searchTerm, selectedClass, paiements]);
 
 
   const generateProof = async (paiementId) => {
@@ -145,11 +131,15 @@ const PaiementEnOrdre = () => {
   };
 
   const printReceipt = () => {
-    window.print();
+    imprimerRecuPaiement(receiptRef.current, selectedReceipt?.id);
   };
 
   return (
     <div className="container-fluid position-relative  d-flex p-0">
+      <ApercuRecuPaiement
+        paiement={selectedReceipt}
+        onFermer={() => setSelectedReceipt(null)}
+      />
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -159,6 +149,10 @@ const PaiementEnOrdre = () => {
             <Link to="/primaire/ajouter_paiement" className="btn  mb-3">
               <i className="bi bi-plus"></i> Ajouter paiement
             </Link>
+            <ImpressionListePaiements
+              paiements={paiements}
+              titre="Paiements en ordre"
+            />
           </div>
           <div className="justify-content-between align-items-center d-flex">
             
@@ -188,19 +182,6 @@ const PaiementEnOrdre = () => {
                   {classe.name}
                 </option>
               ))}
-            </select>
-
-            <select
-                className="form-select mb-3"
-                value={selectedOption}
-                onChange={(e) => setSelectedOption(e.target.value)}
-            >
-                <option value="">Toutes les options</option>
-                {options.map((option) => (
-                <option key={option.id} value={option.id}>
-                    {option.name}
-                </option>
-                ))}
             </select>
 
             {/* Barre de recherche */}
@@ -375,4 +356,3 @@ const PaiementEnOrdre = () => {
 };
 
 export default PaiementEnOrdre;
- 
