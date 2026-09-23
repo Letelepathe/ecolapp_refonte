@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+
 import { Helmet } from "react-helmet";
 
-import { API_BASE_URL, messageErreur } from "../api/api";
+import { api, messageErreur } from "../api/api";
 import SidebarEcole from "./TableauDeBord/SidebarEcole";
 import EcranChargement from "./EcranChargement";
 
@@ -10,6 +10,10 @@ const nomComplet = (eleve) =>
   [eleve.name, eleve.last_name, eleve.first_name].filter(Boolean).join(" ") || eleve.matricule || "Élève";
 
 const directionsParCycle = Object.freeze({ maternelle: "1", primaire: "2", secondaire: "3" });
+
+const configurationAuthentifiee = () => ({
+  headers: { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` },
+});
 
 const ListePresence = ({ cycle }) => {
   const ecoleId = localStorage.getItem("ecole_id");
@@ -31,13 +35,13 @@ const ListePresence = ({ cycle }) => {
         let dernierePage = 1;
         const resultat = [];
         do {
-          const reponse = await axios.get(`${API_BASE_URL}/eleve/ecole/${ecoleId}/direction/${direction}?page=${page}`);
+          const reponse = await api.get(`/eleve/ecole/${ecoleId}/direction/${direction}?page=${page}`, configurationAuthentifiee());
           const pagination = reponse.data?.eleve || {};
           resultat.push(...(Array.isArray(pagination.data) ? pagination.data : []));
           dernierePage = Number(pagination.last_page || 1);
           page += 1;
         } while (page <= dernierePage);
-        const reponseMotifs = await axios.get(`${API_BASE_URL}/motif_absence/ecole/${ecoleId}/direction/${direction}`);
+        const reponseMotifs = await api.get(`/motif_absence/ecole/${ecoleId}/direction/${direction}`, configurationAuthentifiee());
         setEleves(resultat);
         setMotifs(reponseMotifs.data?.motifAll || []);
       } catch (error) {
@@ -68,14 +72,14 @@ const ListePresence = ({ cycle }) => {
     setEnregistrementParEleve((etat) => ({ ...etat, [eleve.id]: true }));
     setErreur(""); setMessage("");
     try {
-      const reponse = await axios.post(`${API_BASE_URL}/presences/create`, { presences: [{
+      const reponse = await api.post(`/presences/create`, { presences: [{
         ecole_id: ecoleId,
         direction,
         eleve_id: eleve.id,
         date_presence: new Date().toISOString().slice(0, 10),
         present: present ? 1 : 0,
         motif_absence: motifAbsence || null,
-      }] });
+      }] }, configurationAuthentifiee());
       if (Number(reponse.data?.status) !== 200) throw new Error(reponse.data?.message || "Enregistrement refusé");
       setSynchronises((etat) => ({ ...etat, [eleve.id]: true }));
       setMessage(`${nomComplet(eleve)} a été marqué ${present ? "présent" : "absent"}.`);
