@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { api } from "../../api/api";
 import LogoEcolapp from "../../../static/images/logo_ecolapp.jpg";
 import BarreLaterale from "./BarreLaterale";
 import { menusEcole } from "./menusTableauBord";
@@ -30,7 +30,8 @@ const SidebarEcole = ({ cycle, titreCycle }) => {
   useEffect(() => {
     const chargerUser = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
+        const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
+        const response = await api.get(`/user/${id}`, { headers });
 
         if (response.data.status === 200) {
           const userApi = response.data.user;
