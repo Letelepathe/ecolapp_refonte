@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { api } from "../../api/api";
 import { Helmet } from "react-helmet";
 import { FiBookOpen, FiCreditCard, FiMessageSquare, FiUserPlus, FiUsers } from "react-icons/fi";
 import BandeauDashboard from "./BandeauDashboard";
@@ -32,6 +32,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
   const [erreurChargement, setErreurChargement] = useState("");
   const [tentative, setTentative] = useState(0);
   const id = localStorage.getItem("userId");
+  const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
   const [counts, setCounts] = useState({
     nombre_utilisateurs: 0,
     nombre_enseignants: 0,
@@ -42,7 +43,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
   useEffect(() => {
     const chargerUser = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
+        const response = await api.get(`/user/${id}`, { headers });
 
         if (response.data.status === 200) {
           const userApi = response.data.user;
@@ -70,8 +71,9 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
   useEffect(() => {
     const chargerStats = async () => {
       try {
-        const response = await axios.get(
-          `https://api.ecolapp.cd/api/user/countAdmin/ecole/${ecoleId}/direction/${direction}`
+        const response = await api.get(
+          `/user/countAdmin/ecole/${ecoleId}/direction/${direction}`,
+          { headers }
         );
         setCounts(response.data);
       } catch (erreur) {
