@@ -19,7 +19,7 @@ src/composants/common/PresenceQr.jsx
 - Un QR code contient un payload JSON avec `type`, `id`, `matricule`, `nom`, `ecole_id` et `direction`.
 - Élèves : le premier scan signale la présence du jour, dans le même journal que le pointage manuel.
 - Élèves : un second scan affiche un message indiquant que la présence est déjà signalée, sans doublon ni départ.
-- Personnel : le premier scan enregistre l’arrivée et le second le départ.
+- Personnel : le premier scan signale immédiatement la présence ; les scans suivants signalent un pointage déjà effectué.
 - Les données sont conservées localement pendant la journée.
 - Une copie de secours est écrite dans un cookie.
 - Une synchronisation manuelle est disponible.
@@ -82,4 +82,4 @@ Payload :
 
 - La caméra directe utilise `html5-qrcode` et conserve `BarcodeDetector` en solution de secours.
 - Le bouton `Caméra téléphone` ouvre la caméra système lorsque la caméra web est limitée.
-- La route `/presences/create` existante enregistre les présences des élèves. Les arrivées/départs du personnel restent locaux tant qu'aucune route Laravel correspondante n'est présente dans le projet front.
+- La route `/presences/create` existante enregistre les présences des élèves. Les pointages du personnel sont immédiatement visibles et restent locaux tant qu'aucune route Laravel correspondante n'est présente dans le projet front.

@@ -1,11 +1,11 @@
+import useProfilDashboard, { ProfilDashboardContext } from "../../../../common/useProfilDashboard";
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
 import EcranChargement from '../../../../common/EcranChargement';
 import { estRoleAdministration, estRoleEnseignant } from '../../../../common/permissionsRoles';
-import { API_BASE_URL, messageErreur } from '../../../../api/api';
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import FooterUser from "./Footer";
@@ -332,22 +332,7 @@ const TravauxEnseignant = ({ userId }) => {
 
 const ProfilUser = () => {
   const id = localStorage.getItem("userId");
-  const [eleveInfo, setEleveInfo] = useState(null);
-  const [isLoadingEleveInfo, setIsLoadingEleveInfo] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const [user, setUser] = useState(null);
-  const [counts, setCounts] = useState({
-    travaux_enseignant: 0,
-    travaux_eleve: 0,
-    cours_enseignant: 0,
-    cours_fichier_enseignant: 0,
-    cours_classe_eleve: 0,
-    paiements: 0,
-    communiques: 0
-  });
-
-  const navigate = useNavigate();
+  const { user, counts, eleveInfo, isLoading, isLoadingEleveInfo, erreurChargement, reessayer } = useProfilDashboard(id);
 
   const [error, setError] = useState('');
   const userId = localStorage.getItem("userId");
@@ -356,6 +341,7 @@ const ProfilUser = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    if (!user || ![user.fonction?.name, user.role?.name, user.role].some(role => typeof role === "string" && role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === "eleve")) return;
     const fetchTravauxEleve = async () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/travailEffectue/user/eleve/${userId}`);
@@ -371,7 +357,7 @@ const ProfilUser = () => {
     };
 
     fetchTravauxEleve();
-  }, [userId]);
+  }, [userId, user]);
 
   const renderFileEleve = (file) => {
     if (!file) return <div>Aucun fichier trouvé</div>;
@@ -418,83 +404,14 @@ const ProfilUser = () => {
 
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch user info
-        let userData = null;
-        const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
-
-        if (id) {
-          try {
-            const userResponse = await axios.get(`${API_BASE_URL}/user/${id}`, { headers });
-            userData = userResponse.data?.user || userResponse.data;
-          } catch {
-            userData = null;
-          }
-        }
-
-        if (!userData?.id) {
-          const userResponse = await axios.get(`${API_BASE_URL}/user`, { headers });
-          userData = userResponse.data?.user || userResponse.data;
-        }
-
-        if (!userData?.id) throw new Error("Profil utilisateur introuvable.");
-        setUser(userData);
-
-        // If user is 'Elève', fetch additional info
-        if (userData.fonction?.name === "Elève" || userData.role === "Elève") {
-          setIsLoadingEleveInfo(true);
-          try {
-            const eleveResponse = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${id}`);
-            setEleveInfo(eleveResponse.data.eleve_info);
-          } catch {
-            setError("");
-          } finally {
-            setIsLoadingEleveInfo(false);
-          }
-        }
-
-      } catch (erreurChargement) {
-        console.error("Impossible de rafraîchir le profil utilisateur", erreurChargement);
-        setUser({
-          id: id || userId,
-          first_name: "Utilisateur",
-          role: "Administrateur",
-          fonction: { name: "Administrateur" },
-        });
-        setError("");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const fetchCounts = async () => {
-      try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/user/count/${id}`);
-        setCounts(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
-      }
-    };
-
-    fetchData();
-    fetchCounts();
-  }, [id, navigate]);
-
-  if (isLoading) return <EcranChargement titre="Chargement de votre profil" />;
-  const utilisateurAffiche = user || {
-    id: id || userId,
-    first_name: "Utilisateur",
-    role: "Administrateur",
-    fonction: { name: "Administrateur" },
-  };
-  const peutVoirAdministration = true;
+  if (isLoading) return <EcranChargement titre="Chargement de votre tableau de bord" />;
+  if (erreurChargement || !user) return <EcranChargement erreur={erreurChargement || "Votre profil est indisponible."} onReessayer={reessayer} />;
+  const utilisateurAffiche = user;
+  const peutVoirAdministration = estRoleAdministration(user);
   const peutVoirEnseignement = estRoleEnseignant(utilisateurAffiche) || estRoleAdministration(utilisateurAffiche);
 
   return (
+    <ProfilDashboardContext.Provider value={{ user, eleveInfo }}>
     <div className="profil-user-page refonte-shell">
             <Helmet>
                 <title>primaire | Profil utilisateur</title>
@@ -674,7 +591,7 @@ const ProfilUser = () => {
                     <FooterUser />
                 </div>
             </div>
-        </div>);
+        </div></ProfilDashboardContext.Provider>);
 
 };
 

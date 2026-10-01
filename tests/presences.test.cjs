@@ -113,3 +113,22 @@ test('deux lectures QR simultanées partagent une seule vérification et un seul
   await Promise.all([a.pointerEleveQr({id:3,ecole_id:'1',direction:'2'}),a.pointerEleveQr({id:3,ecole_id:'1',direction:'2'})]);
   assert.equal(gets,1);assert.equal(a.signalementsEcole('1').length,1);
 });
+
+test('le personnel est présent dès le premier scan et ne passe pas en départ au second', async () => {
+  const a=await setup();a.localStorage.setItem('ecole_id','1');
+  const identite={type:'enseignant',id:8,ecole_id:'1',direction:'2',nom:'Enseignant'};
+  const premier=a.pointerPersonnelQr(identite);
+  assert.equal(premier.dejaPointe,false);assert.equal(premier.pointage.present,1);
+  assert.equal(premier.pointage.depart,undefined);
+  const second=a.pointerPersonnelQr(identite);
+  assert.equal(second.dejaPointe,true);
+  const rows=JSON.parse(a.localStorage.getItem('ecolapp_presences_'+a.dateLocale()));
+  assert.equal(rows.length,1);assert.equal(rows[0].depart,undefined);
+});
+test('le personnel reste distinct des élèves et ne part pas vers leur API', async () => {
+  let posts=0;const a=await setup(async()=>{posts++;});a.localStorage.setItem('ecole_id','1');
+  a.pointerPersonnelQr({type:'personnel',id:3,ecole_id:'1',direction:'2'});
+  await a.synchroniserPointages('1','2');assert.equal(posts,0);
+  assert.throws(()=>a.pointerPersonnelQr({type:'personnel',id:3,ecole_id:'2'}));
+  assert.throws(()=>a.pointerPersonnelQr({type:'inconnu',id:'texte',ecole_id:'1'}));
+});

@@ -1,45 +1,27 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+﻿import React, { useContext, useEffect, useState } from "react";
+import { api, messageErreur } from "../../api/api";
+import { ProfilDashboardContext } from "../useProfilDashboard";
+import EcranChargement from "../EcranChargement";
 import NavHautDashboard from "./NavHautDashboard";
 
 const NavHautUtilisateurEcole = ({ cycle }) => {
+  const contexte = useContext(ProfilDashboardContext);
   const [user, setUser] = useState(null);
-
+  const [erreur, setErreur] = useState("");
+  const [tentative, setTentative] = useState(0);
   useEffect(() => {
-    const chargerUser = async () => {
-      try {
-        const response = await axios.get("https://api.ecolapp.cd/api/user", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-          },
-        });
-
-        if (response.status === 200) setUser(response.data);
-      } catch {
-        console.log("Erreur lors de la récupération des informations.");
-      }
-    };
-
-    chargerUser();
-  }, []);
-
-  if (!user) {
-    return (
-      <div className="dashboard-full-loader">
-        <p className="spinner"></p>
-      </div>
-    );
-  }
-
-  return (
-    <NavHautDashboard
-      user={user}
-      accueil={`/${cycle}/profil_user`}
-      profil={`/${cycle}/mon_profil/${user.id || ""}`}
-      deconnexion={`/${cycle}/deconnexion`}
-      titreCourt="Ecolapp"
-    />
-  );
+    if (contexte?.user) return;
+    const controller = new AbortController();
+    setErreur("");
+    api.get("/user", {signal:controller.signal,timeout:15000}).then(({data}) => {
+      const profil = data?.user || data;
+      if (!profil?.id) throw new Error("Profil utilisateur indisponible.");
+      if (!controller.signal.aborted) setUser(profil);
+    }).catch(err => { if (!controller.signal.aborted) setErreur(messageErreur(err)); });
+    return () => controller.abort();
+  }, [contexte?.user, tentative]);
+  const profil = contexte?.user || user;
+  if (!profil) return <EcranChargement titre="Chargement du menu utilisateur" erreur={erreur} onReessayer={() => { setErreur(""); setTentative(t=>t+1); }} />;
+  return <NavHautDashboard user={profil} accueil={`/${cycle}/profil_user`} profil={`/${cycle}/mon_profil/${profil.id}`} deconnexion={`/${cycle}/deconnexion`} titreCourt="Ecolapp" />;
 };
-
 export default NavHautUtilisateurEcole;
