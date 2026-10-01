@@ -123,16 +123,32 @@ const installerRateLimiter = (client) => {
   );
 };
 
+const authentifierRequeteApi = (config, url = config.url) => {
+  const token = typeof window === "undefined" ? "" : localStorage.getItem("auth_token");
+  const estRequeteApi = !/^https?:\/\//i.test(url || "") || url.startsWith(API_BASE_URL);
+
+  if (!token || !estRequeteApi) return config;
+
+  const headers = config.headers || {};
+  if (headers.Authorization || headers.authorization || headers.get?.("Authorization")) return config;
+
+  return {
+    ...config,
+    headers: { ...headers, Authorization: `Bearer ${token}` },
+  };
+};
+
 let configurationInstallee = false;
 
 export const installerConfigurationApi = () => {
   if (configurationInstallee) return;
   configurationInstallee = true;
   axios.defaults.baseURL = API_BASE_URL;
-  axios.interceptors.request.use((config) => ({
-    ...config,
-    url: normaliserUrlApi(config.url),
-  }));
+  axios.interceptors.request.use((config) => {
+    const url = normaliserUrlApi(config.url);
+    return authentifierRequeteApi({ ...config, url }, url);
+  });
+  api.interceptors.request.use((config) => authentifierRequeteApi(config));
   axios.interceptors.response.use(
     (response) => response,
     (error) => Promise.reject({ ...error, friendlyMessage: messageErreur(error) })

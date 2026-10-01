@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import { api } from "../../api/api";
 import {
   FiAward,
   FiBookOpen,
@@ -174,7 +174,8 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
       setChargement(true);
 
       try {
-        const reponseUtilisateur = await axios.get(`https://api.ecolapp.cd/api/user/${idUtilisateur}`);
+        const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
+        const reponseUtilisateur = await api.get(`/user/${idUtilisateur}`, { headers });
         const donneesUtilisateur = reponseUtilisateur.data.user;
         const rolesUtilisateur = obtenirRoles(donneesUtilisateur);
 
@@ -182,7 +183,7 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
 
         if (correspondAUnRole(rolesUtilisateur, ["eleve"])) {
           try {
-            const reponseEleve = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${idUtilisateur}`);
+            const reponseEleve = await api.get(`/user/eleve/${idUtilisateur}`, { headers });
             setInfoEleve(reponseEleve.data.eleve_info);
           } catch {
             setInfoEleve(null);
@@ -191,7 +192,7 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
 
         if (correspondAUnRole(rolesUtilisateur, ["enseignant", "enseignante", "administrateur", "administratrice", "admin"])) {
           try {
-            const reponseClasse = await axios.get(`https://api.ecolapp.cd/api/titulaire/classe/${idUtilisateur}`);
+            const reponseClasse = await api.get(`/titulaire/classe/${idUtilisateur}`, { headers });
             setInfoClasseUser(reponseClasse.data?.classe || []);
           } catch {
             setInfoClasseUser([]);
