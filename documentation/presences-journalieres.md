@@ -1,10 +1,14 @@
 ﻿# Présences journalières et pointage manuel
 
-Dans Dashboard > Présences, les trois cycles proposent « Présence journalière », « Pointage manuel » et le scanner QR. Le menu personnel donne également accès aux deux listes aux enseignants et administrateurs.
+Dans Dashboard > Présences, les trois cycles proposent « Présence journalière », « Pointage manuel » et le scanner QR. Ces deux interfaces utilisent le bureau administrateur ; elles ne figurent pas dans le menu du profil utilisateur.
 
 La vue journalière lit les routes existantes d’historique par classe (filtre mensuel, puis sélection du jour). Elle fusionne les résultats avec les pointages de cet appareil. Les pointages non confirmés portent le statut « En attente ». Un échec de lecture serveur est signalé : une liste locale seule n’est pas présentée comme exhaustive. Les arrivées et départs QR ne sont pas envoyés au backend, dont le contrat existant ne stocke que la présence quotidienne.
 
-Le pointage manuel met en cache la liste des élèves et les motifs après un premier chargement connecté. Les saisies restent disponibles après rechargement et sont isolées par école et cycle. Le bouton Synchroniser reprend aussi les jours précédents. Un retour de connexion déclenche une tentative lorsque l’interface est ouverte. L’absence exige un motif. Le cache du navigateur doit rester disponible jusqu’à la confirmation serveur.
+Le tableau propose deux colonnes de cases à cocher, Présent et Absent. Cocher Présent envoie immédiatement la présence. Choisir un motif coche Absent et conserve la saisie jusqu’au clic sur Synchroniser. Le pointage reste coché pour la date concernée, y compris après rechargement.
+
+Le scanner élève reconnaît une présence déjà enregistrée manuellement ou par QR et affiche un message sans créer de départ ni de second pointage. Son journal affiche également les pointages synchronisés et les signalements manuels. Les arrivées et départs du personnel sont conservés.
+
+Le pointage manuel met en cache la liste des élèves et les motifs après un premier chargement connecté. Les saisies restent disponibles après rechargement et sont isolées par école et cycle. Le bouton Synchroniser reprend aussi les jours précédents. Un retour de connexion déclenche une tentative pour les présences lorsque la liste manuelle est ouverte ; les absences attendent le bouton Synchroniser. L’absence exige un motif. Le cache du navigateur doit rester disponible jusqu’à la confirmation serveur.
 
 ## Diagnostic HTTP 405
 

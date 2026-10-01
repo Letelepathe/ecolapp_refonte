@@ -17,8 +17,9 @@ src/composants/common/PresenceQr.jsx
 ## Fonctionnement
 
 - Un QR code contient un payload JSON avec `type`, `id`, `matricule`, `nom`, `ecole_id` et `direction`.
-- Le premier scan d'une personne dans la journée crée un pointage d'arrivée.
-- Le second scan du même QR dans la journée complète le pointage avec l'heure de départ.
+- Élèves : le premier scan signale la présence du jour, dans le même journal que le pointage manuel.
+- Élèves : un second scan affiche un message indiquant que la présence est déjà signalée, sans doublon ni départ.
+- Personnel : le premier scan enregistre l’arrivée et le second le départ.
 - Les données sont conservées localement pendant la journée.
 - Une copie de secours est écrite dans un cookie.
 - Une synchronisation manuelle est disponible.

@@ -32,8 +32,8 @@ export const envoyerPresences = async (presences) => {
   return reponse;
 };
 const synchronisations = new Map();
-const synchroniser = async (e,d) => {
-  const attente = lirePointages(e,d).filter(p => !p.synchronise);
+const synchroniser = async (e,d, presentsSeulement) => {
+  const attente = lirePointages(e,d).filter(p => !p.synchronise && (!presentsSeulement || Number(p.present) === 1));
   if (!attente.length) return;
   await envoyerPresences(attente);
   attente.forEach(p => {
@@ -68,10 +68,58 @@ export const chargerJour = async (e,d,eleves,date) => {
   return lignes;
 };
 
-export const synchroniserPointages = (e,d) => {
+export const synchroniserPointages = (e,d, presentsSeulement = false) => {
   const key=cle(e,d);
   if(synchronisations.has(key)) return synchronisations.get(key);
-  const operation=synchroniser(e,d).finally(()=>synchronisations.delete(key));
+  const operation=synchroniser(e,d,presentsSeulement).finally(()=>synchronisations.delete(key));
   synchronisations.set(key,operation);
+  return operation;
+};
+
+// Les trois écrans partagent le même journal, indexé par école, cycle, élève et jour.
+export const memoriserPresencesServeur = (ecole, direction, lignes) => {
+  lignes.forEach(p => {
+    const local = lirePointages(ecole, direction).find(a => String(a.eleve_id) === String(p.eleve_id) && a.date_presence === p.date_presence);
+    if (local && !local.synchronise) return;
+    sauverPointage({ ...local, ...p, ecole_id: ecole, direction, source: local?.source || "Serveur", synchronise: true });
+  });
+};
+export const signalementsEcole = (ecole, date = dateLocale()) => Object.values(directionsParCycle)
+  .flatMap(direction => lirePointages(ecole, direction).map(p => ({...p, direction, type: "eleve", id: p.eleve_id,
+    cle: `${ecole}-${direction}-${p.eleve_id}-${p.date_presence}`,
+    nom: p.nom || [p.eleve?.name, p.eleve?.last_name, p.eleve?.first_name].filter(Boolean).join(" ") || p.eleve?.matricule || p.matricule || `Élève ${p.eleve_id}` })))
+  .filter(p => p.date_presence === date || !p.synchronise);
+
+const scansEnCours = new Map();
+export const pointerEleveQr = (identite, enLigne = true) => {
+  const ecole = identite.ecole_id || localStorage.getItem("ecole_id");
+  const direction = String(identite.direction || localStorage.getItem("direction") || "");
+  const id = identite.eleve_id || identite.id;
+  const date = dateLocale();
+  if (!ecole || !Object.values(directionsParCycle).includes(direction) || !id) return Promise.reject(new Error("École, cycle ou identifiant élève manquant dans la carte QR."));
+  if (String(ecole) !== localStorage.getItem("ecole_id")) return Promise.reject(new Error("Cette carte appartient à une autre école."));
+  const key = `${ecole}/${direction}/${id}/${date}`;
+  if (scansEnCours.has(key)) return scansEnCours.get(key);
+  const operation = (async () => {
+    const trouver = () => lirePointages(ecole, direction).find(p => String(p.eleve_id) === String(id) && p.date_presence === date);
+    let existant = trouver();
+    if (existant && Number(existant.present) === 1) return { dejaPointe: true, pointage: existant };
+    let verificationDifferee = false;
+    if (enLigne && !existant) {
+      try {
+        const {data} = await api.get(`/presences/ecole/${ecole}/direction/${direction}/eleve/${id}`, {params:{filter:JSON.stringify({type:"mois",value:date.slice(0,7)})}});
+        if (Number(data?.status) !== 200 || !data.historique || typeof data.historique !== "object") throw new Error("Historique indisponible.");
+        const lignes = Object.values(data.historique).flat().filter(p => String(p.date_presence).slice(0,10) === date);
+        memoriserPresencesServeur(ecole, direction, lignes.map(p => ({...p,eleve_id:id,date_presence:date,nom:identite.nom,matricule:identite.matricule})));
+      } catch { verificationDifferee = true; }
+    }
+    existant = trouver();
+    if (existant && Number(existant.present) === 1) return { dejaPointe:true,pointage:existant };
+    const pointage = {...identite, ecole_id:ecole,direction,eleve_id:id,date_presence:date,present:1,motif_absence:null,
+      source:"QR",arrivee:new Date().toISOString(),revision:Date.now(),synchronise:false};
+    sauverPointage(pointage);
+    return {dejaPointe:false,pointage,verificationDifferee};
+  })().finally(() => scansEnCours.delete(key));
+  scansEnCours.set(key, operation);
   return operation;
 };

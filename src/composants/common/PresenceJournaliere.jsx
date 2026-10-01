@@ -1,9 +1,9 @@
 ﻿import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import SidebarUtilisateurEcole from "./TableauDeBord/SidebarUtilisateurEcole";
+import SidebarEcole from "./TableauDeBord/SidebarEcole";
 import { api, messageErreur } from "../api/api";
-import { chargerEleves, chargerJour, dateLocale, directionsParCycle, lirePointages, sauverPointage, synchroniserPointages } from "../api/presences";
+import { chargerEleves, chargerJour, dateLocale, directionsParCycle, lirePointages, sauverPointage, synchroniserPointages, memoriserPresencesServeur } from "../api/presences";
 
 const nom = e => [e.name, e.last_name, e.first_name].filter(Boolean).join(" ") || e.matricule || "Élève";
 export default function PresenceJournaliere({ cycle, manuel = false }) {
@@ -12,7 +12,6 @@ export default function PresenceJournaliere({ cycle, manuel = false }) {
   const [date, setDate] = useState(dateLocale());
   const [eleves, setEleves] = useState([]);
   const [motifs, setMotifs] = useState([]);
-  const [motifsChoisis, setMotifsChoisis] = useState({});
   const [serveur, setServeur] = useState([]);
   const [locaux, setLocaux] = useState([]);
   const [recherche, setRecherche] = useState("");
@@ -31,7 +30,7 @@ export default function PresenceJournaliere({ cycle, manuel = false }) {
 
   const charger = useCallback(async () => {
     const version = ++generation.current;
-    setChargement(true); setErreur(""); setServeur([]); setEleves([]);
+    setChargement(true); setErreur(""); setServeur([]); setEleves([]); rafraichirLocaux();
     if (!ecole || !direction) { setErreur("École ou cycle absent de la session."); setChargement(false); return; }
     const cache = `ecolapp_eleves_presence_${ecole}_${direction}`;
     let liste = [];
@@ -43,13 +42,19 @@ export default function PresenceJournaliere({ cycle, manuel = false }) {
       setEleves(liste);
       localStorage.setItem(cache, JSON.stringify(liste));
       const lignes = await chargerJour(ecole, direction, liste, date);
-      if (version === generation.current) setServeur(lignes);
+      if (version === generation.current) { memoriserPresencesServeur(ecole, direction, lignes); setServeur(lignes); }
     } catch (err) {
       if (version === generation.current) setErreur(`${messageErreur(err)} Les données locales restent disponibles ; la liste serveur peut être incomplète.`);
     } finally {
       if (version === generation.current) { setChargement(false); rafraichirLocaux(); }
     }
   }, [ecole, direction, date, rafraichirLocaux]);
+
+  useEffect(() => {
+    if (!manuel) return;
+    const timer = setInterval(() => setDate(dateLocale()), 30000);
+    return () => clearInterval(timer);
+  }, [manuel]);
 
   useEffect(() => { charger(); return () => { generation.current++; }; }, [charger]);
   useEffect(() => {
@@ -61,19 +66,20 @@ export default function PresenceJournaliere({ cycle, manuel = false }) {
     };
   }, [rafraichirLocaux]);
 
-  const synchroniser = useCallback(async () => {
+  const synchroniser = useCallback(async (presentsSeulement = false) => {
     if (verrou.current) return;
     verrou.current = true; setSync(true); setErreur("");
     try {
-      await synchroniserPointages(ecole, direction);
-      setMessage("Les pointages en attente ont été synchronisés.");
+      await synchroniserPointages(ecole, direction, presentsSeulement);
+      setMessage(presentsSeulement ? "Les présences ont été synchronisées. Les absences en attente restent à valider avec Synchroniser." : "Les pointages en attente ont été synchronisés.");
     } catch (err) {
       setErreur(`${messageErreur(err)} Les pointages restent enregistrés sur cet appareil.`);
     } finally { verrou.current = false; setSync(false); rafraichirLocaux(); }
   }, [ecole, direction, rafraichirLocaux]);
   useEffect(() => {
-    window.addEventListener("online", synchroniser);
-    return () => window.removeEventListener("online", synchroniser);
+    const reprendre = () => synchroniser(true);
+    window.addEventListener("online", reprendre);
+    return () => window.removeEventListener("online", reprendre);
   }, [synchroniser]);
 
   useEffect(() => {
@@ -87,26 +93,24 @@ export default function PresenceJournaliere({ cycle, manuel = false }) {
     return () => { actif = false; };
   }, [ecole, direction, manuel]);
 
-  const pointer = async (eleve, present) => {
-    if (verrou.current) return;
+  const pointer = async (eleve, present, motif = null) => {
+    if (verrou.current || (date !== dateLocale()) || (!present && !motif)) return;
+    const deja = lirePointages(ecole, direction).find(p => String(p.eleve_id) === String(eleve.id) && p.date_presence === date);
+    if (present && Number(deja?.present) === 1) { setMessage(`${nom(eleve)} : la présence a déjà été signalée aujourd’hui.`); return; }
     setMessage(""); setErreur("");
     try {
       sauverPointage({ ecole_id: ecole, direction, eleve_id: eleve.id, eleve,
-        date_presence: dateLocale(), present: present ? 1 : 0, motif_absence: present ? null : motifsChoisis[eleve.id] || null,
+        date_presence: dateLocale(), present: present ? 1 : 0, motif_absence: present ? null : motif,
         source: "Manuel", arrivee: new Date().toISOString(), revision: Date.now(), synchronise: false });
       setServeur(lignes => lignes.filter(p => String(p.eleve_id) !== String(eleve.id)));
       rafraichirLocaux();
       setMessage(`${nom(eleve)} : pointage conservé sur cet appareil.`);
-      if (navigator.onLine) await synchroniser();
+      if (present && navigator.onLine) await synchroniser(true);
     } catch (err) { setErreur(messageErreur(err, "Impossible de conserver ce pointage.")); }
   };
 
   const parId = new Map(serveur.map(p => [String(p.eleve_id), p]));
-  locaux.filter(p => p.date_presence === date).forEach(p => {
-    const distant = parId.get(String(p.eleve_id));
-    if (!p.synchronise || !distant) parId.set(String(p.eleve_id), p);
-    else if (Number(distant.present) === Number(p.present)) parId.set(String(p.eleve_id), { ...p, ...distant, source: p.source });
-  });
+  locaux.filter(p => p.date_presence === date).forEach(p => parId.set(String(p.eleve_id), p));
   const catalogue = new Map(eleves.map(e => [String(e.id), e]));
   parId.forEach(p => { if (!catalogue.has(String(p.eleve_id))) catalogue.set(String(p.eleve_id), p.eleve || {id:p.eleve_id,name:p.nom,matricule:p.matricule}); });
   const lignes = [...catalogue.values()].filter(e => {
@@ -117,11 +121,11 @@ export default function PresenceJournaliere({ cycle, manuel = false }) {
   const attente = locaux.filter(p=>!p.synchronise).length;
   return <div className="container-fluid position-relative d-flex p-0 refonte-shell">
     <Helmet><title>Ecolapp | {titre}</title></Helmet>
-    <SidebarUtilisateurEcole cycle={cycle} titreCycle={cycle} />
+    <SidebarEcole cycle={cycle} titreCycle={cycle} />
     <main className="content refonte-content dashboard-page p-4">
       <div className="dashboard-hero"><div><h1>{titre}</h1><p>{cycle} — {manuel ? "Pointez les élèves, même sans connexion après un premier chargement de la liste." : "Élèves ayant pointé leur présence dans la journée, par QR ou manuellement."}</p></div></div>
       <nav className="d-flex flex-wrap gap-2 my-3" aria-label="Cycles scolaires">{Object.keys(directionsParCycle).map(c=><Link key={c} className={`btn ${c===cycle ? "btn-primary" : "btn-outline-primary"}`} to={`/${c}/${manuel ? "liste_presence" : "presence_journaliere"}`}>{c}</Link>)}</nav>
-      <div className="d-flex flex-wrap gap-2 mb-3"><Link className="btn btn-outline-primary" to={`/${cycle}/${manuel ? "presence_journaliere" : "liste_presence"}`}>{manuel ? "Voir la présence journalière" : "Pointer manuellement"}</Link><button className="btn btn-primary" onClick={synchroniser} disabled={sync || !attente}>{sync ? "Synchronisation…" : `Synchroniser (${attente})`}</button><button className="btn btn-outline-secondary" onClick={charger} disabled={chargement || sync}>Actualiser</button></div>
+      <div className="d-flex flex-wrap gap-2 mb-3"><Link className="btn btn-outline-primary" to={`/${cycle}/${manuel ? "presence_journaliere" : "liste_presence"}`}>{manuel ? "Voir la présence journalière" : "Pointer manuellement"}</Link><button className="btn btn-primary" onClick={() => synchroniser()} disabled={sync || !attente}>{sync ? "Synchronisation…" : `Synchroniser (${attente})`}</button><button className="btn btn-outline-secondary" onClick={charger} disabled={chargement || sync}>Actualiser</button></div>
       {erreur && <div role="alert" className="alert alert-warning">{erreur}</div>}
       {message && <div role="status" className="alert alert-info">{message}</div>}
       <section className="card p-3">
@@ -132,9 +136,26 @@ export default function PresenceJournaliere({ cycle, manuel = false }) {
         </div>
         {chargement && <p role="status">Chargement des présences…</p>}
         <p>{lignes.length} élève(s) affiché(s). {attente} pointage(s) en attente sur cet appareil.</p>
-        <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Élève</th><th>Matricule</th><th>Classe / option</th><th>Présence</th><th>Source</th><th>Synchronisation</th>{manuel && <th>Pointer</th>}</tr></thead><tbody>
-          {lignes.map(e=>{const p=parId.get(String(e.id)); return <tr key={e.id}><td>{nom(e)}</td><td>{e.matricule || "—"}</td><td>{e.classe?.name || "—"} {e.option?.name || ""}</td><td>{p ? Number(p.present)===1 ? "Présent" : "Absent" : "Non pointé"}</td><td>{p?.source || "—"}</td><td>{p ? p.synchronise ? "Synchronisée" : "En attente" : "—"}</td>{manuel && <td><button className="btn btn-success mr-2" disabled={sync || date !== dateLocale()} onClick={()=>pointer(e,true)} aria-label={`Marquer ${nom(e)} présent`}>Présent</button><select className="form-control my-2" aria-label={`Motif d’absence de ${nom(e)}`} value={motifsChoisis[e.id] || ""} onChange={event=>setMotifsChoisis(a=>({...a,[e.id]:event.target.value}))}><option value="">Motif d’absence</option>{motifs.map(m=><option key={m.id} value={m.id}>{m.name}</option>)}</select><button className="btn btn-outline-danger" disabled={sync || date !== dateLocale() || !motifsChoisis[e.id]} onClick={()=>pointer(e,false)} aria-label={`Marquer ${nom(e)} absent`}>Absent</button></td>}</tr>;})}
-          {!lignes.length && !chargement && <tr><td colSpan={manuel ? 7 : 6}>Aucun élève correspondant à ces critères.</td></tr>}
+        <div className="table-responsive"><table className="table align-middle"><thead><tr>
+          <th>Élève</th><th>Matricule</th><th>Classe / option</th><th>Présent</th><th>Absent</th>{manuel && <th>Motif d’absence</th>}<th>Source</th><th>Synchronisation</th>
+        </tr></thead><tbody>
+          {lignes.map(e => {
+            const p = parId.get(String(e.id));
+            const present = !!p && Number(p.present) === 1;
+            const absent = !!p && Number(p.present) === 0;
+            const motif = absent ? (p.motif_absence?.id ?? p.motif_absence ?? "") : "";
+            const bloque = !manuel || sync || date !== dateLocale();
+            return <tr key={e.id}>
+              <td>{nom(e)}</td><td>{e.matricule || "—"}</td><td>{e.classe?.name || "—"} {e.option?.name || ""}</td>
+              <td><input type="checkbox" aria-label={`Présent : ${nom(e)}`} checked={present} disabled={bloque || present} onChange={() => pointer(e, true)} /></td>
+              <td><input type="checkbox" aria-label={`Absent : ${nom(e)}`} checked={absent} disabled={bloque || !motif || absent} onChange={() => pointer(e, false, motif)} /></td>
+              {manuel && <td><select className="form-control" aria-label={`Motif d’absence : ${nom(e)}`} value={motif} disabled={bloque || present} onChange={event => { if (event.target.value) pointer(e, false, event.target.value); }}>
+                <option value="">Choisir un motif</option>{motifs.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+              </select></td>}
+              <td>{p?.source || "—"}</td><td>{p ? p.synchronise ? "Synchronisée" : "En attente" : "Non pointé"}</td>
+            </tr>;
+          })}
+          {!lignes.length && !chargement && <tr><td colSpan={manuel ? 8 : 7}>Aucun élève correspondant à ces critères.</td></tr>}
         </tbody></table></div>
       </section>
     </main>

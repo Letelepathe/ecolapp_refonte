@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { dateLocale, synchroniserPointages, sauverPointage, lirePointages } from "../api/presences";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { dateLocale, synchroniserPointages, signalementsEcole, pointerEleveQr, chargerEleves, chargerJour, memoriserPresencesServeur, directionsParCycle } from "../api/presences";
 import { Helmet } from "react-helmet";
 import { messageErreur } from "../api/api";
 
@@ -11,10 +11,10 @@ const lire = () => {
     if(!/^ecolapp_presences_\d{4}-\d{2}-\d{2}$/.test(key)) continue;
     try {
       const rows=JSON.parse(localStorage.getItem(key)||"[]");
-      if(Array.isArray(rows)) liste.push(...rows.filter(p=>String(p.ecole_id)===String(ecole) && (!p.synchronise || p.date_presence===dateLocale())));
+      if(Array.isArray(rows)) liste.push(...rows.filter(p=>p.type !== "eleve" && String(p.ecole_id)===String(ecole) && (!p.synchronise || p.date_presence===dateLocale())));
     } catch { /* Un ancien cache illisible ne bloque pas le scanner. */ }
   }
-  return liste;
+  return [...liste, ...signalementsEcole(ecole)];
 };
 const sauver = (valeur) => {
   const groupes=new Map();
@@ -69,25 +69,62 @@ const PresenceQr = () => {
   const [cameraMode, setCameraMode] = useState("environment");
   const [scanImage, setScanImage] = useState(false);
 
-  const stats = useMemo(() => ({ total: presences.filter(p => p.date_presence === dateLocale()).length, ouverts: presences.filter((p) => p.date_presence === dateLocale() && !p.depart).length }), [presences]);
-  const presencesEnAttente = useMemo(() => presences.filter((presence) => !presence.synchronise), [presences]);
+  const stats = useMemo(() => ({ total: presences.filter(p => p.date_presence === dateLocale()).length, ouverts: presences.filter((p) => p.date_presence === dateLocale() && !p.depart && (p.type !== "eleve" || Number(p.present) === 1)).length }), [presences]);
+  const signalements = useMemo(() => presences.filter(p => p.date_presence === dateLocale() || !p.synchronise), [presences]);
 
-  const enregistrerElevesApi = async (identites) => {
+  const enregistrerElevesApi = async (identites, presentsSeulement = false) => {
     const scopes = new Map();
     identites.forEach(p => {
       const ecole=p.ecole_id || localStorage.getItem("ecole_id");
       const direction=p.direction || localStorage.getItem("direction");
       scopes.set(ecole+"/"+direction, {ecole,direction});
     });
-    for (const {ecole,direction} of scopes.values()) await synchroniserPointages(ecole,direction);
+    for (const {ecole,direction} of scopes.values()) await synchroniserPointages(ecole,direction,presentsSeulement);
     return {data:{status:200}};
   };
 
+  const rafraichir = useCallback(() => {
+    try { const rows = lire(); presencesRef.current = rows; setPresences(rows); }
+    catch { setErreur("Impossible de lire le journal local des présences."); }
+  }, []);
+  const [chargementJournal, setChargementJournal] = useState(false);
+  useEffect(() => {
+    rafraichir();
+    window.addEventListener("storage", rafraichir);
+    window.addEventListener("ecolapp-presences", rafraichir);
+    const timer = setInterval(rafraichir, 30000);
+    return () => { window.removeEventListener("storage", rafraichir); window.removeEventListener("ecolapp-presences", rafraichir); clearInterval(timer); };
+  }, [rafraichir]);
+  useEffect(() => {
+    let actif = true;
+    const charger = async () => {
+      const ecole = localStorage.getItem("ecole_id");
+      if (!ecole || !navigator.onLine) return;
+      setChargementJournal(true);
+      const echecs = [];
+      for (const [cycle, direction] of Object.entries(directionsParCycle)) {
+        if (!actif) return;
+        try {
+          const eleves = await chargerEleves(ecole, direction);
+          if (!actif) return;
+          const rows = await chargerJour(ecole, direction, eleves, dateLocale());
+          if (!actif) return;
+          memoriserPresencesServeur(ecole, direction, rows);
+        } catch { echecs.push(cycle); }
+      }
+      if (actif) {
+        rafraichir(); setChargementJournal(false);
+        if (echecs.length) setErreur("Journal serveur incomplet pour : " + echecs.join(", ") + ". Les pointages locaux restent disponibles.");
+      }
+    };
+    charger();
+    return () => { actif = false; };
+  }, [rafraichir]);
+
   const mettreAJourPresences = (valeur) => {
-    presencesRef.current = valeur;
-    sauver(valeur);
-    valeur.filter(p => p.type === "eleve").forEach(p => sauverPointage({ ...p, eleve_id: p.eleve_id || p.id, present: 1, motif_absence: null, source: "QR", revision: p.arrivee }));
-    setPresences(valeur);
+    // Le journal élève partagé est écrit uniquement par le service de présence.
+    sauver(valeur.filter(p => p.type !== "eleve"));
+    rafraichir();
   };
 
   const pointer = async (payloadTexte) => {
@@ -96,27 +133,33 @@ const PresenceQr = () => {
     if (!identite || typeof identite !== "object") { setErreur("QR code invalide."); return; }
     if (!identite.id && !identite.eleve_id && !identite.matricule) { setErreur("QR code invalide ou incomplet."); return; }
     if (identite.ecole_id && String(identite.ecole_id) !== localStorage.getItem("ecole_id")) { setErreur("Cette carte appartient à une autre école."); return; }
+    if (identite.type === "eleve") {
+      try {
+        const resultat = await pointerEleveQr(identite, navigator.onLine);
+        rafraichir();
+        if (resultat.dejaPointe) {
+          setMessage((identite.nom || resultat.pointage.nom || "Cet élève") + " : la présence a déjà été signalée aujourd’hui. Le pointage figure dans la liste ci-dessous.");
+          return;
+        }
+        setMessage((identite.nom || identite.matricule || "Élève") + " : présence enregistrée.");
+        if (navigator.onLine) await synchroniserPointages(resultat.pointage.ecole_id, resultat.pointage.direction, true);
+        if (resultat.verificationDifferee) setErreur("La vérification des pointages serveur était indisponible. Le pointage figure dans le journal local.");
+        rafraichir();
+      } catch (err) { setErreur(messageErreur(err, "Le pointage reste en attente si son enregistrement local a réussi.")); }
+      return;
+    }
     const maintenant = new Date().toISOString();
     const cle = `${identite.ecole_id || localStorage.getItem("ecole_id")}-${identite.type || "personnel"}-${identite.id || identite.eleve_id || identite.matricule}`;
     let action = "arrivee";
     const suivant = [...presencesRef.current];
     const index = suivant.findIndex((p) => String(p.id || p.eleve_id || p.matricule) === String(identite.id || identite.eleve_id || identite.matricule) && p.type === identite.type && String(p.ecole_id) === String(identite.ecole_id || localStorage.getItem("ecole_id")) && p.date_presence === dateLocale());
-    if (index >= 0 && suivant[index].depart) { setMessage("Cet élève a déjà pointé son arrivée et son départ aujourd’hui."); return; }
+    if (index >= 0 && suivant[index].depart) { setMessage("Cette personne a déjà pointé son arrivée et son départ aujourd’hui."); return; }
     if (index >= 0) { suivant[index] = { ...suivant[index], depart: maintenant }; action = "depart"; }
     else { suivant.push({ cle, ...identite, arrivee: maintenant, depart: null, date_presence: dateLocale(new Date(maintenant)), ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"), direction: identite.direction || localStorage.getItem("direction"), synchronise: false }); }
     try { mettreAJourPresences(suivant); } catch { setErreur("Impossible de conserver le pointage. Vérifiez le stockage du navigateur."); return; }
     setMessage(`${identite.nom || identite.matricule || "Utilisateur"} : ${action === "arrivee" ? "arrivée enregistrée" : "départ enregistré"}.`);
 
-    if (action === "arrivee" && identite.type === "eleve") {
-      try {
-        const reponse = await enregistrerElevesApi([{ ...identite, date_presence: dateLocale(new Date(maintenant)) }]);
-        if (Number(reponse.data?.status) === 200) {
-          mettreAJourPresences(presencesRef.current.map((presence) => presence.cle === cle ? { ...presence, synchronise: true } : presence));
-        }
-      } catch (err) {
-        setErreur(messageErreur(err, "La présence est conservée localement et sera renvoyée avec le bouton Synchroniser."));
-      }
-    }
+
   };
 
   const pointerDepuisCamera = (payloadTexte) => {
@@ -175,18 +218,17 @@ const PresenceQr = () => {
     cameraSystemeRef.current?.click();
   };
 
-  const synchroniser = async () => {
-    const presencesEleves = presencesRef.current.filter((presence) => presence.type === "eleve" && !presence.synchronise);
+  const synchroniser = async (presentsSeulement = false) => {
+    const presencesEleves = presencesRef.current.filter((presence) => presence.type === "eleve" && !presence.synchronise && (!presentsSeulement || Number(presence.present) === 1));
     if (!presencesEleves.length) {
       setMessage("Toutes les présences élèves sont déjà synchronisées. Les pointages du personnel restent conservés localement car aucune route Laravel personnel n'existe dans ce front.");
       return;
     }
     setSync(true); setErreur(""); setMessage("");
     try {
-      const reponse = await enregistrerElevesApi(presencesEleves);
+      const reponse = await enregistrerElevesApi(presencesEleves, presentsSeulement);
       if (Number(reponse.data?.status) !== 200) throw new Error(reponse.data?.message || "Synchronisation refusée");
-      const cles = new Set(presencesEleves.map((presence) => presence.cle));
-      mettreAJourPresences(presencesRef.current.map((presence) => cles.has(presence.cle) ? { ...presence, synchronise: true } : presence));
+      rafraichir();
       setMessage("Présences élèves synchronisées avec succès.");
     } catch (err) {
       setErreur(messageErreur(err, "La synchronisation automatique a échoué. Les données restent conservées localement."));
@@ -196,7 +238,7 @@ const PresenceQr = () => {
   useEffect(() => {
     const maintenant = new Date();
     const finJournee = new Date(); finJournee.setHours(23, 59, 0, 0);
-    const timer = setTimeout(synchroniser, Math.max(1000, finJournee - maintenant));
+    const timer = setTimeout(() => synchroniser(true), Math.max(1000, finJournee - maintenant));
     return () => clearTimeout(timer);
   }, [presences]);
 
@@ -319,19 +361,26 @@ const PresenceQr = () => {
     <Helmet><title>ecolapp | Présence QR</title></Helmet>
     <section className="presence-hero rounded p-4 mb-4">
       <h2>Espace présence par carte QR</h2>
-      <p>Scannez la carte élève ou personnel : le premier scan enregistre l'arrivée, le second le départ.</p>
+      <p>Élèves : un seul signalement de présence par jour, partagé avec le pointage manuel. Personnel : arrivée puis départ.</p>
       <div className="d-flex gap-2 flex-wrap"><span className="badge bg-primary">{stats.total} pointage(s)</span><span className="badge bg-warning text-dark">{stats.ouverts} encore présent(s)</span></div>
     </section>
     {message && <div className="alert alert-success">{message}</div>}{erreur && <div className="alert alert-danger">{erreur}</div>}
     <div className="row g-3">
       <div className="col-lg-5"><div className="card p-3 h-100"><h5>Scanner</h5><div className="d-flex gap-2 flex-wrap mb-3"><button className="btn" onClick={ouvrirCameraSysteme} disabled={scanImage}>{scanImage ? "Lecture..." : "Caméra téléphone"}</button><input ref={cameraSystemeRef} type="file" accept="image/*" capture="environment" className="d-none" onChange={(event) => { decoderImageQr(event.target.files?.[0]); event.target.value = ""; }} /><button className="btn btn-light border" onClick={() => { setCameraActive(false); setCamera((v) => !v); }}>{camera ? "Arrêter la caméra web" : "Scanner en direct"}</button><button className="btn btn-light border" onClick={() => setCameraMode((mode) => mode === "environment" ? "user" : "environment")} disabled={camera}>{cameraMode === "environment" ? "Caméra arrière" : "Caméra avant"}</button></div><div id="lecteur-qr-camera" ref={lecteurRef} className="cadre-camera-mobile" />{camera && !scannerHtml5Ref.current && <video ref={videoRef} autoPlay muted playsInline webkit-playsinline="true" className="w-100 rounded bg-dark cadre-camera-mobile" />}{camera && <small className="text-muted mt-2">{cameraActive ? "Caméra active" : "Initialisation de la caméra..."}</small>}<small className="text-muted d-block mt-2">Sur téléphone, utilisez d'abord Caméra téléphone : cela ouvre l'application caméra native puis lit le QR de la photo. Le scan en direct reste disponible en HTTPS sur les navigateurs compatibles.</small></div></div>
-      <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur externe</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={synchroniser}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
+      <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur externe</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={() => synchroniser()}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <section className="card p-3 mt-4">
-      <h5>Présences en attente de synchronisation</h5>
-      <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Type</th><th>Nom/Matricule</th><th>Arrivée</th><th>Départ</th><th>Synchronisation</th></tr></thead><tbody>
-        {presencesEnAttente.map((presence) => <tr key={`${presence.cle}-${presence.arrivee}`}><td>{presence.type}</td><td>{presence.nom || presence.matricule}</td><td>{new Date(presence.arrivee).toLocaleTimeString("fr-FR")}</td><td>{presence.depart ? new Date(presence.depart).toLocaleTimeString("fr-FR") : "En cours"}</td><td>En attente</td></tr>)}
-        {!presencesEnAttente.length && <tr><td colSpan="5" className="text-center text-muted">Aucune présence en attente.</td></tr>}
+      <h5>Signalements des présences — aujourd’hui</h5>
+      {chargementJournal && <p role="status">Chargement du journal serveur…</p>}
+      <p>Les pointages des jours précédents encore en attente restent visibles.</p>
+      <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Type / cycle</th><th>Nom / matricule</th><th>Date</th><th>Présence</th><th>Source</th><th>Synchronisation</th></tr></thead><tbody>
+        {signalements.map(p => <tr key={p.cle || p.arrivee}>
+          <td>{p.type} {Object.keys(directionsParCycle).find(c => directionsParCycle[c] === String(p.direction)) || ""}</td>
+          <td>{p.nom || p.matricule}</td><td>{p.date_presence}</td>
+          <td>{p.type === "eleve" ? Number(p.present) === 1 ? "Présent" : "Absent" : p.depart ? "Départ enregistré" : "Arrivée enregistrée"}</td>
+          <td>{p.source || "QR"}</td><td>{p.type !== "eleve" ? "Conservé localement" : p.synchronise ? "Synchronisée" : "En attente"}</td>
+        </tr>)}
+        {!signalements.length && <tr><td colSpan="6" className="text-center text-muted">Aucun signalement aujourd’hui.</td></tr>}
       </tbody></table></div>
     </section>
   </main>;
