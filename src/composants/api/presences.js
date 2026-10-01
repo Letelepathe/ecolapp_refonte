@@ -123,3 +123,21 @@ export const pointerEleveQr = (identite, enLigne = true) => {
   scansEnCours.set(key, operation);
   return operation;
 };
+
+export const pointerPersonnelQr = (identite) => {
+  if (!["personnel", "enseignant"].includes(identite.type)) throw new Error("Cette carte QR n’est pas une carte de personnel reconnue.");
+  const ecole = identite.ecole_id || localStorage.getItem("ecole_id");
+  const id = identite.user_id || identite.id;
+  if (!id || !ecole || String(ecole) !== localStorage.getItem("ecole_id")) throw new Error("Carte de personnel invalide ou appartenant à une autre école.");
+  const date = dateLocale();
+  const key = `ecolapp_presences_${date}`;
+  const lignes = JSON.parse(localStorage.getItem(key) || "[]");
+  if (!Array.isArray(lignes)) throw new Error("Journal local illisible.");
+  const existant = lignes.find(p => p.type !== "eleve" && String(p.user_id || p.id) === String(id) && String(p.ecole_id) === String(ecole));
+  if (existant) return { dejaPointe: true, pointage: existant };
+  const pointage = {...identite,id,ecole_id:ecole,direction:identite.direction || localStorage.getItem("direction"),
+    cle:`${ecole}-personnel-${id}-${date}`,date_presence:date,arrivee:new Date().toISOString(),present:1,source:"QR",synchronise:false};
+  localStorage.setItem(key, JSON.stringify([...lignes,pointage]));
+  window.dispatchEvent(new Event("ecolapp-presences"));
+  return {dejaPointe:false,pointage};
+};

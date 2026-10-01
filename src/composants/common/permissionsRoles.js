@@ -1,5 +1,4 @@
-const normaliserRole = (valeur = "") => valeur
-  .toString()
+const normaliserRole = (valeur = "") => String(valeur?.name ?? valeur ?? "")
   .toLowerCase()
   .normalize("NFD")
   .replace(/[\u0300-\u036f]/g, "")

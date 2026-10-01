@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { ProfilDashboardContext } from "../useProfilDashboard";
+import EcranChargement from "../EcranChargement";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { api } from "../../api/api";
 import {
   FiAward,
@@ -154,6 +156,8 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
 };
 
 const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
+  const contexte = useContext(ProfilDashboardContext);
+  const [tentative, setTentative] = useState(0);
   const [utilisateur, setUtilisateur] = useState(null);
   const [infoEleve, setInfoEleve] = useState(null);
   const [infoClasseUser, setInfoClasseUser] = useState([]);
@@ -163,6 +167,7 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
   const idUtilisateur = localStorage.getItem("userId");
 
   useEffect(() => {
+    let actif = true;
     const chargerDonnees = async () => {
       if (!idUtilisateur) {
         setErreur("Aucun utilisateur connecté.");
@@ -170,20 +175,22 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
         return;
       }
 
-      setChargement(true);
+      setChargement(true); setErreur("");
 
       try {
         const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
-        const reponseUtilisateur = await api.get(`/user/${idUtilisateur}`, { headers });
-        const donneesUtilisateur = reponseUtilisateur.data.user;
+        const donneesUtilisateur = contexte?.user || (await api.get(`/user/${idUtilisateur}`, { headers, timeout: 15000 })).data.user;
+        if (!actif) return;
+        if (!donneesUtilisateur?.id) throw new Error("Profil indisponible.");
         const rolesUtilisateur = obtenirRoles(donneesUtilisateur);
 
         setUtilisateur(donneesUtilisateur);
+        setChargement(false);
 
         if (correspondAUnRole(rolesUtilisateur, ["eleve"])) {
           try {
-            const reponseEleve = await api.get(`/user/eleve/${idUtilisateur}`, { headers });
-            setInfoEleve(reponseEleve.data.eleve_info);
+            const info = contexte?.eleveInfo || (await api.get(`/user/eleve/${idUtilisateur}`, { headers, timeout: 15000 })).data.eleve_info;
+            if (actif) setInfoEleve(info);
           } catch {
             setInfoEleve(null);
           }
@@ -191,21 +198,22 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
 
         if (correspondAUnRole(rolesUtilisateur, ["enseignant", "enseignante", "administrateur", "administratrice", "admin"])) {
           try {
-            const reponseClasse = await api.get(`/titulaire/classe/${idUtilisateur}`, { headers });
-            setInfoClasseUser(reponseClasse.data?.classe || []);
+            const reponseClasse = await api.get(`/titulaire/classe/${idUtilisateur}`, { headers, timeout: 15000 });
+            if (actif) setInfoClasseUser(reponseClasse.data?.classe || []);
           } catch {
             setInfoClasseUser([]);
           }
         }
       } catch {
-        setErreur("Impossible de charger le menu utilisateur.");
+        if (actif) setErreur("Impossible de charger le menu utilisateur.");
       } finally {
-        setChargement(false);
+        if (actif) setChargement(false);
       }
     };
 
     chargerDonnees();
-  }, [idUtilisateur]);
+    return () => { actif = false; };
+  }, [idUtilisateur, contexte?.user, contexte?.eleveInfo, tentative]);
 
   const rolesUtilisateur = obtenirRoles(utilisateur);
   const estAdmin = correspondAUnRole(rolesUtilisateur, ["administrateur", "administratrice", "admin", "superadmin", "super admin", "super_admin"]);
@@ -229,11 +237,11 @@ const SidebarUtilisateurEcole = ({ cycle, titreCycle }) => {
   );
 
   if (chargement) {
-    return <div className="sidebar refonte-sidebar dashboard-full-loader">Chargement...</div>;
+    return <EcranChargement titre="Chargement du menu utilisateur" />;
   }
 
   if (erreur || !utilisateur) {
-    return <div className="sidebar refonte-sidebar dashboard-full-loader text-danger">{erreur}</div>;
+    return <EcranChargement erreur={erreur || "Profil indisponible."} onReessayer={() => { setErreur(""); setChargement(true); setTentative(t => t + 1); }} />;
   }
 
   return (

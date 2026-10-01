@@ -6,7 +6,7 @@ La vue journalière lit les routes existantes d’historique par classe (filtre 
 
 Le tableau propose deux colonnes de cases à cocher, Présent et Absent. Cocher Présent envoie immédiatement la présence. Choisir un motif coche Absent et conserve la saisie jusqu’au clic sur Synchroniser. Le pointage reste coché pour la date concernée, y compris après rechargement.
 
-Le scanner élève reconnaît une présence déjà enregistrée manuellement ou par QR et affiche un message sans créer de départ ni de second pointage. Son journal affiche également les pointages synchronisés et les signalements manuels. Les arrivées et départs du personnel sont conservés.
+Le scanner élève reconnaît une présence déjà enregistrée manuellement ou par QR et affiche un message sans créer de départ ni de second pointage. Son tableau affiche les élèves présents par QR, y compris les pointages synchronisés, ainsi que le personnel. Les signalements manuels restent reconnus lors d’un scan mais ne sont pas affichés dans ce tableau filtré. Le personnel est présent dès le premier scan, sans départ à attendre. Un second scan ne crée pas de nouveau pointage. Les pointages du personnel sont conservés sur cet appareil, car aucune route serveur personnel n’est disponible dans ce projet.
 
 Le pointage manuel met en cache la liste des élèves et les motifs après un premier chargement connecté. Les saisies restent disponibles après rechargement et sont isolées par école et cycle. Le bouton Synchroniser reprend aussi les jours précédents. Un retour de connexion déclenche une tentative pour les présences lorsque la liste manuelle est ouverte ; les absences attendent le bouton Synchroniser. L’absence exige un motif. Le cache du navigateur doit rester disponible jusqu’à la confirmation serveur.
 

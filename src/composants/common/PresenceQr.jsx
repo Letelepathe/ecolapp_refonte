@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { dateLocale, synchroniserPointages, signalementsEcole, pointerEleveQr, chargerEleves, chargerJour, memoriserPresencesServeur, directionsParCycle } from "../api/presences";
+import { dateLocale, synchroniserPointages, signalementsEcole, pointerEleveQr, pointerPersonnelQr, chargerEleves, chargerJour, memoriserPresencesServeur, directionsParCycle } from "../api/presences";
 import { Helmet } from "react-helmet";
 import { messageErreur } from "../api/api";
 
@@ -11,20 +11,10 @@ const lire = () => {
     if(!/^ecolapp_presences_\d{4}-\d{2}-\d{2}$/.test(key)) continue;
     try {
       const rows=JSON.parse(localStorage.getItem(key)||"[]");
-      if(Array.isArray(rows)) liste.push(...rows.filter(p=>p.type !== "eleve" && String(p.ecole_id)===String(ecole) && (!p.synchronise || p.date_presence===dateLocale())));
+      if(Array.isArray(rows)) liste.push(...rows.filter(p=>p.type !== "eleve" && String(p.ecole_id)===String(ecole) && p.date_presence===dateLocale()));
     } catch { /* Un ancien cache illisible ne bloque pas le scanner. */ }
   }
   return [...liste, ...signalementsEcole(ecole)];
-};
-const sauver = (valeur) => {
-  const groupes=new Map();
-  valeur.forEach(p=>{ const date=p.date_presence || dateLocale(new Date(p.arrivee)); groupes.set(date,[...(groupes.get(date)||[]),p]); });
-  groupes.forEach((rows,date)=>{
-    const key="ecolapp_presences_"+date;
-    const precedentes=JSON.parse(localStorage.getItem(key)||"[]");
-    const autres=precedentes.filter(p=>!rows.some(a=>a.cle===p.cle && a.arrivee===p.arrivee));
-    localStorage.setItem(key,JSON.stringify([...autres,...rows]));
-  });
 };
 const parsePayload = (texte) => {
   try { return JSON.parse(texte); } catch { return { type: "inconnu", id: texte, matricule: texte, nom: texte }; }
@@ -70,7 +60,7 @@ const PresenceQr = () => {
   const [scanImage, setScanImage] = useState(false);
 
   const stats = useMemo(() => ({ total: presences.filter(p => p.date_presence === dateLocale()).length, ouverts: presences.filter((p) => p.date_presence === dateLocale() && !p.depart && (p.type !== "eleve" || Number(p.present) === 1)).length }), [presences]);
-  const signalements = useMemo(() => presences.filter(p => p.date_presence === dateLocale() || !p.synchronise), [presences]);
+  const signalements = useMemo(() => presences.filter(p => (p.type === "eleve" ? p.source === "QR" && Number(p.present) === 1 && (p.date_presence === dateLocale() || !p.synchronise) : ["personnel", "enseignant"].includes(p.type) && p.date_presence === dateLocale())), [presences]);
 
   const enregistrerElevesApi = async (identites, presentsSeulement = false) => {
     const scopes = new Map();
@@ -121,12 +111,6 @@ const PresenceQr = () => {
     return () => { actif = false; };
   }, [rafraichir]);
 
-  const mettreAJourPresences = (valeur) => {
-    // Le journal élève partagé est écrit uniquement par le service de présence.
-    sauver(valeur.filter(p => p.type !== "eleve"));
-    rafraichir();
-  };
-
   const pointer = async (payloadTexte) => {
     setErreur("");
     const identite = parsePayload(payloadTexte.trim());
@@ -148,17 +132,11 @@ const PresenceQr = () => {
       } catch (err) { setErreur(messageErreur(err, "Le pointage reste en attente si son enregistrement local a réussi.")); }
       return;
     }
-    const maintenant = new Date().toISOString();
-    const cle = `${identite.ecole_id || localStorage.getItem("ecole_id")}-${identite.type || "personnel"}-${identite.id || identite.eleve_id || identite.matricule}`;
-    let action = "arrivee";
-    const suivant = [...presencesRef.current];
-    const index = suivant.findIndex((p) => String(p.id || p.eleve_id || p.matricule) === String(identite.id || identite.eleve_id || identite.matricule) && p.type === identite.type && String(p.ecole_id) === String(identite.ecole_id || localStorage.getItem("ecole_id")) && p.date_presence === dateLocale());
-    if (index >= 0 && suivant[index].depart) { setMessage("Cette personne a déjà pointé son arrivée et son départ aujourd’hui."); return; }
-    if (index >= 0) { suivant[index] = { ...suivant[index], depart: maintenant }; action = "depart"; }
-    else { suivant.push({ cle, ...identite, arrivee: maintenant, depart: null, date_presence: dateLocale(new Date(maintenant)), ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"), direction: identite.direction || localStorage.getItem("direction"), synchronise: false }); }
-    try { mettreAJourPresences(suivant); } catch { setErreur("Impossible de conserver le pointage. Vérifiez le stockage du navigateur."); return; }
-    setMessage(`${identite.nom || identite.matricule || "Utilisateur"} : ${action === "arrivee" ? "arrivée enregistrée" : "départ enregistré"}.`);
-
+    try {
+      const resultat = pointerPersonnelQr(identite);
+      rafraichir();
+      setMessage((identite.nom || "Personnel") + (resultat.dejaPointe ? " : présence déjà signalée aujourd’hui." : " : présence enregistrée immédiatement sur cet appareil."));
+    } catch (err) { setErreur(messageErreur(err)); }
 
   };
 
@@ -361,7 +339,7 @@ const PresenceQr = () => {
     <Helmet><title>ecolapp | Présence QR</title></Helmet>
     <section className="presence-hero rounded p-4 mb-4">
       <h2>Espace présence par carte QR</h2>
-      <p>Élèves : un seul signalement de présence par jour, partagé avec le pointage manuel. Personnel : arrivée puis départ.</p>
+      <p>Élèves : un seul signalement de présence par jour, partagé avec le pointage manuel. Personnel : présence enregistrée dès le premier scan.</p>
       <div className="d-flex gap-2 flex-wrap"><span className="badge bg-primary">{stats.total} pointage(s)</span><span className="badge bg-warning text-dark">{stats.ouverts} encore présent(s)</span></div>
     </section>
     {message && <div className="alert alert-success">{message}</div>}{erreur && <div className="alert alert-danger">{erreur}</div>}
@@ -370,17 +348,17 @@ const PresenceQr = () => {
       <div className="col-lg-7"><div className="card p-3 h-100"><h5>Saisie manuelle / lecteur externe</h5><input className="form-control mb-2" value={scanManuel} onChange={(e) => setScanManuel(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { pointer(scanManuel); setScanManuel(""); } }} placeholder="Coller ou scanner le contenu du QR code" /><button className="btn" onClick={() => { pointer(scanManuel); setScanManuel(""); }}>Pointer</button><button className="btn mt-2" disabled={sync || !presences.length} onClick={() => synchroniser()}>{sync ? "Synchronisation..." : "Synchroniser maintenant"}</button></div></div>
     </div>
     <section className="card p-3 mt-4">
-      <h5>Signalements des présences — aujourd’hui</h5>
+      <h5>Élèves et personnel pointés présents par QR</h5>
       {chargementJournal && <p role="status">Chargement du journal serveur…</p>}
-      <p>Les pointages des jours précédents encore en attente restent visibles.</p>
+      <p>Présences enregistrées par QR. Les pointages QR des jours précédents encore en attente restent visibles.</p>
       <div className="table-responsive"><table className="table align-middle"><thead><tr><th>Type / cycle</th><th>Nom / matricule</th><th>Date</th><th>Présence</th><th>Source</th><th>Synchronisation</th></tr></thead><tbody>
         {signalements.map(p => <tr key={p.cle || p.arrivee}>
           <td>{p.type} {Object.keys(directionsParCycle).find(c => directionsParCycle[c] === String(p.direction)) || ""}</td>
           <td>{p.nom || p.matricule}</td><td>{p.date_presence}</td>
-          <td>{p.type === "eleve" ? Number(p.present) === 1 ? "Présent" : "Absent" : p.depart ? "Départ enregistré" : "Arrivée enregistrée"}</td>
-          <td>{p.source || "QR"}</td><td>{p.type !== "eleve" ? "Conservé localement" : p.synchronise ? "Synchronisée" : "En attente"}</td>
+          <td>{p.type === "eleve" ? Number(p.present) === 1 ? "Présent" : "Absent" : "Présent"}</td>
+          <td>{p.source || "QR"}</td><td>{p.type !== "eleve" ? "Enregistrée sur cet appareil" : p.synchronise ? "Synchronisée" : "En attente"}</td>
         </tr>)}
-        {!signalements.length && <tr><td colSpan="6" className="text-center text-muted">Aucun signalement aujourd’hui.</td></tr>}
+        {!signalements.length && <tr><td colSpan="6" className="text-center text-muted">Aucun pointage de présence par QR.</td></tr>}
       </tbody></table></div>
     </section>
   </main>;
