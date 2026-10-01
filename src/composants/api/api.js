@@ -10,7 +10,10 @@ export const PUBLIC_BASE_URL = estLocal() ? "http://localhost:8000" : "https://a
 
 export const messageErreur = (erreur, fallback = "Une erreur est survenue. Veuillez réessayer.") => {
   const data = erreur?.response?.data;
-  if (typeof data === "string") return data;
+  if (typeof data === "string") {
+    if (/<(?:!doctype|html|head|body)\b/i.test(data)) return erreur?.response?.status === 405 ? "Le serveur refuse cet envoi (HTTP 405). Les pointages locaux sont conservés. Vérifiez le routage de l’API puis réessayez." : fallback;
+    return data;
+  }
   return data?.message || data?.error_msg || data?.error || erreur?.message || fallback;
 };
 

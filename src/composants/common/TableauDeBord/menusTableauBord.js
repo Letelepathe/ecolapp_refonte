@@ -104,7 +104,8 @@ export const menusEcole = (cycle) => [
     titre: "Présences",
     icone: FiCheckSquare,
     liens: [
-      lien(`/${cycle}/liste_presence`, "Liste présence", FiList),
+      lien(`/${cycle}/presence_journaliere`, "Présence journalière", FiCalendar),
+      lien(`/${cycle}/liste_presence`, "Pointage manuel", FiList),
       lien(`/presence-qr`, "Scanner les cartes QR", FiCheckSquare),
     ],
   },

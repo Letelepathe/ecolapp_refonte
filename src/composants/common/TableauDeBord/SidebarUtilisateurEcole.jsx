@@ -58,6 +58,8 @@ const creerMenusUtilisateur = ({ cycle, infoClasseUser, infoEleve, estAdmin, est
   //   });
   // }
 
+  if (estAdmin || estEnseignant) menus.push({ id: "presences", titre: "Présences", icone: FiCheckSquare, liens: [lien(`/${cycle}/presence_journaliere`, "Présence journalière", FiCheckSquare), lien(`/${cycle}/liste_presence`, "Pointage manuel", FiCheckSquare)] });
+
   if (estAdmin) {
     menus.push({
       id: "administration",

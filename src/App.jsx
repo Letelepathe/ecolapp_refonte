@@ -670,6 +670,7 @@ import Horaire from './composants/Test/Horaire';
 
 // Horaires
 import GenererHoraireSecondaire from './composants/Ecoles/secondaire/Horaire/GenererHoraireSecondaire';
+import PresenceJournaliere from "./composants/common/PresenceJournaliere";
 import ListePresence from './composants/common/ListePresence';
 const App = () => {
 
@@ -682,6 +683,7 @@ const App = () => {
           <Route path="/secondaire/liste_presence" element={<ListePresence cycle="secondaire" />} />
           <Route path="/primaire/liste_presence" element={<ListePresence cycle="primaire" />} />
           <Route path="/maternelle/liste_presence" element={<ListePresence cycle="maternelle" />} />
+          {["maternelle", "primaire", "secondaire"].map(cycle => <Route key={cycle} path={`/${cycle}/presence_journaliere`} element={<PresenceJournaliere key={cycle} cycle={cycle} />} />)}
           <Route path="/presence-qr" element={<PresenceQr />} />
            <Route path="/" element={<Index/>} />
           <Route path="*" element={<NotFound/>} />

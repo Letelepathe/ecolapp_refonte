@@ -1,16 +1,31 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import axios from "axios";
+import { dateLocale, synchroniserPointages, sauverPointage, lirePointages } from "../api/presences";
 import { Helmet } from "react-helmet";
-import { API_BASE_URL, messageErreur } from "../api/api";
+import { messageErreur } from "../api/api";
 
-const cleDuJour = () => `ecolapp_presences_${new Date().toISOString().slice(0, 10)}`;
 const lire = () => {
-  try { return JSON.parse(localStorage.getItem(cleDuJour()) || "[]"); } catch { return []; }
+  const liste=[];
+  const ecole=localStorage.getItem("ecole_id");
+  for(let i=0;i<localStorage.length;i++) {
+    const key=localStorage.key(i);
+    if(!/^ecolapp_presences_\d{4}-\d{2}-\d{2}$/.test(key)) continue;
+    try {
+      const rows=JSON.parse(localStorage.getItem(key)||"[]");
+      if(Array.isArray(rows)) liste.push(...rows.filter(p=>String(p.ecole_id)===String(ecole) && (!p.synchronise || p.date_presence===dateLocale())));
+    } catch { /* Un ancien cache illisible ne bloque pas le scanner. */ }
+  }
+  return liste;
 };
-const ecrireCookie = (valeur) => {
-  document.cookie = `${cleDuJour()}=${encodeURIComponent(JSON.stringify(valeur))}; path=/; max-age=172800; SameSite=Lax`;
+const sauver = (valeur) => {
+  const groupes=new Map();
+  valeur.forEach(p=>{ const date=p.date_presence || dateLocale(new Date(p.arrivee)); groupes.set(date,[...(groupes.get(date)||[]),p]); });
+  groupes.forEach((rows,date)=>{
+    const key="ecolapp_presences_"+date;
+    const precedentes=JSON.parse(localStorage.getItem(key)||"[]");
+    const autres=precedentes.filter(p=>!rows.some(a=>a.cle===p.cle && a.arrivee===p.arrivee));
+    localStorage.setItem(key,JSON.stringify([...autres,...rows]));
+  });
 };
-const sauver = (valeur) => { localStorage.setItem(cleDuJour(), JSON.stringify(valeur)); ecrireCookie(valeur); };
 const parsePayload = (texte) => {
   try { return JSON.parse(texte); } catch { return { type: "inconnu", id: texte, matricule: texte, nom: texte }; }
 };
@@ -54,45 +69,47 @@ const PresenceQr = () => {
   const [cameraMode, setCameraMode] = useState("environment");
   const [scanImage, setScanImage] = useState(false);
 
-  const stats = useMemo(() => ({ total: presences.length, ouverts: presences.filter((p) => !p.depart).length }), [presences]);
+  const stats = useMemo(() => ({ total: presences.filter(p => p.date_presence === dateLocale()).length, ouverts: presences.filter((p) => p.date_presence === dateLocale() && !p.depart).length }), [presences]);
   const presencesEnAttente = useMemo(() => presences.filter((presence) => !presence.synchronise), [presences]);
 
   const enregistrerElevesApi = async (identites) => {
-    const donnees = identites.map((identite) => ({
-      ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"),
-      direction: identite.direction || localStorage.getItem("direction"),
-      eleve_id: identite.id || identite.eleve_id,
-      date_presence: identite.date_presence || new Date().toISOString().slice(0, 10),
-      present: 1,
-      motif_absence: null,
-    }));
-
-    return axios.post(`${API_BASE_URL}/presences/create`, { presences: donnees });
+    const scopes = new Map();
+    identites.forEach(p => {
+      const ecole=p.ecole_id || localStorage.getItem("ecole_id");
+      const direction=p.direction || localStorage.getItem("direction");
+      scopes.set(ecole+"/"+direction, {ecole,direction});
+    });
+    for (const {ecole,direction} of scopes.values()) await synchroniserPointages(ecole,direction);
+    return {data:{status:200}};
   };
 
   const mettreAJourPresences = (valeur) => {
     presencesRef.current = valeur;
     sauver(valeur);
+    valeur.filter(p => p.type === "eleve").forEach(p => sauverPointage({ ...p, eleve_id: p.eleve_id || p.id, present: 1, motif_absence: null, source: "QR", revision: p.arrivee }));
     setPresences(valeur);
   };
 
   const pointer = async (payloadTexte) => {
     setErreur("");
     const identite = parsePayload(payloadTexte.trim());
-    if (!identite.id && !identite.matricule) { setErreur("QR code invalide ou incomplet."); return; }
+    if (!identite || typeof identite !== "object") { setErreur("QR code invalide."); return; }
+    if (!identite.id && !identite.eleve_id && !identite.matricule) { setErreur("QR code invalide ou incomplet."); return; }
+    if (identite.ecole_id && String(identite.ecole_id) !== localStorage.getItem("ecole_id")) { setErreur("Cette carte appartient à une autre école."); return; }
     const maintenant = new Date().toISOString();
-    const cle = `${identite.type || "personnel"}-${identite.id || identite.matricule}`;
+    const cle = `${identite.ecole_id || localStorage.getItem("ecole_id")}-${identite.type || "personnel"}-${identite.id || identite.eleve_id || identite.matricule}`;
     let action = "arrivee";
     const suivant = [...presencesRef.current];
-    const index = suivant.findIndex((p) => p.cle === cle && !p.depart);
+    const index = suivant.findIndex((p) => String(p.id || p.eleve_id || p.matricule) === String(identite.id || identite.eleve_id || identite.matricule) && p.type === identite.type && String(p.ecole_id) === String(identite.ecole_id || localStorage.getItem("ecole_id")) && p.date_presence === dateLocale());
+    if (index >= 0 && suivant[index].depart) { setMessage("Cet élève a déjà pointé son arrivée et son départ aujourd’hui."); return; }
     if (index >= 0) { suivant[index] = { ...suivant[index], depart: maintenant }; action = "depart"; }
-    else { suivant.push({ cle, ...identite, arrivee: maintenant, depart: null, date_presence: maintenant.slice(0, 10), ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"), direction: identite.direction || localStorage.getItem("direction"), synchronise: false }); }
-    mettreAJourPresences(suivant);
+    else { suivant.push({ cle, ...identite, arrivee: maintenant, depart: null, date_presence: dateLocale(new Date(maintenant)), ecole_id: identite.ecole_id || localStorage.getItem("ecole_id"), direction: identite.direction || localStorage.getItem("direction"), synchronise: false }); }
+    try { mettreAJourPresences(suivant); } catch { setErreur("Impossible de conserver le pointage. Vérifiez le stockage du navigateur."); return; }
     setMessage(`${identite.nom || identite.matricule || "Utilisateur"} : ${action === "arrivee" ? "arrivée enregistrée" : "départ enregistré"}.`);
 
     if (action === "arrivee" && identite.type === "eleve") {
       try {
-        const reponse = await enregistrerElevesApi([{ ...identite, date_presence: maintenant.slice(0, 10) }]);
+        const reponse = await enregistrerElevesApi([{ ...identite, date_presence: dateLocale(new Date(maintenant)) }]);
         if (Number(reponse.data?.status) === 200) {
           mettreAJourPresences(presencesRef.current.map((presence) => presence.cle === cle ? { ...presence, synchronise: true } : presence));
         }
