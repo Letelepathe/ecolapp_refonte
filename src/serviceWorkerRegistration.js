@@ -22,6 +22,7 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl, { type: 'module' })
     .then((registration) => {
+      registration.update();
       // console.log('[SW] Registered:', registration);
 
       if (registration.waiting && config?.onUpdate) {

@@ -1,6 +1,8 @@
+import useProfilDashboard, { ProfilDashboardContext } from "../../../../common/useProfilDashboard";
+import EcranChargement from "../../../../common/EcranChargement";
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
 import SidebarLeft from "./SidebarLeft";
@@ -92,8 +94,8 @@ const CoursFichiers = ({ userId }) => {
   };
 
   return (
-    <div className="container mt-4">
-      <div className="d-flex align-items-center justify-content-between">
+    <div className="container-fluid mt-4 espace-utilisateur-section">
+      <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <h5 className="text-center mb-4 text-primary">Vos cours</h5>
         <Link className="btn " to='/secondaire/ajouter_cours_by_enseignant'> <i className="bi bi-plus"></i> Ajouter cours</Link>
       </div>
@@ -101,7 +103,7 @@ const CoursFichiers = ({ userId }) => {
       <p>{successMessage}</p>
       }
       {error && <p className="text-danger text-center">{error}</p>}
-      <div className="table-responsive">
+      <div className="table-responsive espace-utilisateur-table">
         <table className="table  ">
           <thead className="bg-primary text-white">
             <tr>
@@ -156,7 +158,7 @@ const CoursFichiers = ({ userId }) => {
           </tbody>
 
         </table>
-        <div className="d-flex justify-content-between align-items-center mt-3">
+        <div className="espace-utilisateur-pagination mt-3">
           <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
             Précédent
           </button>
@@ -247,8 +249,8 @@ const TravauxEnseignant = ({ userId }) => {
 
   return (
     <div>
-       <div className="container mt-4">
-          <div className="justify-content-between align-items-center d-flex">
+       <div className="container-fluid mt-4 espace-utilisateur-section">
+          <div className="justify-content-between align-items-center d-flex flex-wrap gap-2">
             <h5 className="text-center mb-4 text-primary">Vos Travaux</h5>
             <Link className="btn " to='/secondaire/ajouter_travail_by_enseignant'> <i className="bi bi-plus"></i> Ajouter travail</Link>
           </div>
@@ -256,7 +258,7 @@ const TravauxEnseignant = ({ userId }) => {
         <p>{successMessage}</p>
         }
           {error && <p className="text-danger text-center">{error}</p>}
-          <div className="table-responsive">
+          <div className="table-responsive espace-utilisateur-table">
             <table className="table  ">
               <thead className="bg-primary text-white">
                 <tr>
@@ -310,7 +312,7 @@ const TravauxEnseignant = ({ userId }) => {
               }
               </tbody>
             </table>
-            <div className="d-flex justify-content-between align-items-center mt-3">
+            <div className="espace-utilisateur-pagination mt-3">
               <button className="btn " onClick={prevPage} disabled={currentPage === 1}>
                 Précédent
               </button>
@@ -327,22 +329,7 @@ const TravauxEnseignant = ({ userId }) => {
 
 const ProfilUser = () => {
   const id = localStorage.getItem("userId");
-  const [eleveInfo, setEleveInfo] = useState(null);
-  const [isLoadingEleveInfo, setIsLoadingEleveInfo] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const [user, setUser] = useState(null);
-  const [counts, setCounts] = useState({
-    travaux_enseignant: 0,
-    travaux_eleve: 0,
-    cours_enseignant: 0,
-    cours_fichier_enseignant: 0,
-    cours_classe_eleve: 0,
-    paiements: 0,
-    communiques: 0
-  });
-
-  const navigate = useNavigate();
+  const { user, counts, eleveInfo, isLoading, isLoadingEleveInfo, erreurChargement, reessayer } = useProfilDashboard(id);
 
   const [error, setError] = useState('');
   const userId = localStorage.getItem("userId");
@@ -351,6 +338,7 @@ const ProfilUser = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    if (!user || ![user.fonction?.name, user.role?.name, user.role].some(role => typeof role === "string" && role.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === "eleve")) return;
     const fetchTravauxEleve = async () => {
       try {
         const response = await axios.get(`https://api.ecolapp.cd/api/travailEffectue/user/eleve/${userId}`);
@@ -366,7 +354,7 @@ const ProfilUser = () => {
     };
 
     fetchTravauxEleve();
-  }, [userId]);
+  }, [userId, user]);
 
   const renderFileEleve = (file) => {
     const fileExtension = file.split('.').pop().toLowerCase();
@@ -412,52 +400,17 @@ const ProfilUser = () => {
 
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch user info
-        const userResponse = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
-        const userData = userResponse.data.user;
-        setUser(userData);
+  if (isLoading) return <EcranChargement titre="Chargement de votre tableau de bord" />;
+  if (erreurChargement || !user) return <EcranChargement erreur={erreurChargement || "Votre profil est indisponible."} onReessayer={reessayer} />;
 
-        // If user is 'Elève', fetch additional info
-        if (userData.fonction.name === "Elève") {
-          setIsLoadingEleveInfo(true);
-          try {
-            const eleveResponse = await axios.get(`https://api.ecolapp.cd/api/user/eleve/${id}`);
-            setEleveInfo(eleveResponse.data.eleve_info);
-          } catch {
-            setError("");
-          } finally {
-            setIsLoadingEleveInfo(false);
-          }
-        }
-
-      } catch {
-        setError("");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const fetchCounts = async () => {
-      try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/user/count/${id}`);
-        setCounts(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
-      }
-    };
-
-    fetchData();
-    fetchCounts();
-  }, [id, navigate]);
-
-  if (isLoading) return <div className='spinner'></div>;
+  const normaliserRole = (valeur = "") => valeur.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  const rolesAdministration = ["administrateur", "administratrice", "super administrateur", "super administratrice", "admin", "superadmin", "super admin", "super_admin", "superdmin"];
+  const nomFonction = normaliserRole(user?.fonction?.name);
+  const nomRole = normaliserRole(user?.role);
+  const peutVoirAdministration = Boolean(user && (rolesAdministration.includes(nomFonction) || rolesAdministration.includes(nomRole)));
 
   return (
+    <ProfilDashboardContext.Provider value={{ user, eleveInfo }}>
     <div className="profil-user-page refonte-shell">
             <Helmet>
                 <title>Secondaire | Profil utilisateur</title>
@@ -478,9 +431,21 @@ const ProfilUser = () => {
                     </main>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
+                            <div className="col-sm-6 col-md-6 col-xl-3">
+                              <Link to="/secondaire/bureau_admin">
+                                <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                              </Link>
+                            </div>
                             {/* Bloc pour les enseignants */}
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirAdministration &&
               <>
+                                    {peutVoirAdministration && (
+                                      <div className="col-sm-6 col-md-6 col-xl-3">
+                                        <Link to="/secondaire/bureau_admin">
+                                          <DashboardCard title="Administration" count="Bureau admin" icon="bi-speedometer2" />
+                                        </Link>
+                                      </div>
+                                    )}
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/secondaire/liste_travail_by_enseignant">
                                         <DashboardCard title="Mes travaux" count={counts.travaux_enseignant} icon="bi-pencil-square" />
@@ -499,7 +464,7 @@ const ProfilUser = () => {
                                 </>
               }
                             {/* Bloc pour les élèves */}
-                            {user && user.fonction.name === "Elève" &&
+                            {user && user.fonction?.name === "Elève" &&
               <>
                                     <div className="col-sm-6 col-md-6 col-xl-3">
                                         <Link to="/secondaire/liste_travail_by_eleve">
@@ -524,12 +489,12 @@ const ProfilUser = () => {
                     </div>
                     <div className="container-fluid pt-4 px-4 profil-dashboard-section">
                         <div className="row g-4">
-                          {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                          {peutVoirAdministration &&
               <div className='col-12'>
                               <StatEnseignant id={user.id} />
                             </div>
               }
-                          {user && (user.fonction.name === "Elève" || user.role === "Elève") &&
+                          {user && (user.fonction?.name === "Elève" || user.role === "Elève") &&
               <div className='col-12'>
                               {!isLoadingEleveInfo && eleveInfo &&
                 <StatEleve id={`${eleveInfo.id}`} />
@@ -538,7 +503,7 @@ const ProfilUser = () => {
               }
                           <div className="col-lg-12 col-12">
 
-                            {user && (["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.fonction.name) || ["Administrateur", "Administratrice", "Super Administrateur", "Super Administratrice"].includes(user.role)) &&
+                            {peutVoirAdministration &&
                 <>
                                   <div className="col-12 mb-1 mt-1 mb-2">
                                     <div className=" rounded align-items-center justify-content-center p-4">
@@ -552,7 +517,7 @@ const ProfilUser = () => {
                                   </div>
                               </>
                 }
-                            {user && (user.fonction.name === "Elève" || user.role === "Elève") &&
+                            {user && (user.fonction?.name === "Elève" || user.role === "Elève") &&
                 <>
                                 
                                 <div className="col-12 mb-1 mt-1">
@@ -624,7 +589,7 @@ const ProfilUser = () => {
                     <FooterUser />
                 </div>
             </div>
-        </div>);
+        </div></ProfilDashboardContext.Provider>);
 
 };
 

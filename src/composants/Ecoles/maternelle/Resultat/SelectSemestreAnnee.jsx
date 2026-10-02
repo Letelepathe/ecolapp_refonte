@@ -45,7 +45,7 @@ const SelectSemestreAnnee = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedAnnee || !selectedSemestre) {
-      setErrors("Veuillez sélectionner une année et un semestre !");
+      setErrors("Veuillez sélectionner une année et un trimestre !");
       return;
     }
     setErrors('');
@@ -64,7 +64,7 @@ const SelectSemestreAnnee = () => {
             <div className="card mb-3">
               <div className="card-body">
                 <p className="text-center u-style-951c0e5f">
-                  Sélectionnez une année et un semestre
+                  Sélectionnez une année et un trimestre
                 </p>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
@@ -82,14 +82,14 @@ const SelectSemestreAnnee = () => {
                     </select>
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="semestre">Semestre</label>
+                    <label htmlFor="semestre">Trimestre</label>
                     <select
                       id="semestre"
                       className="form-control"
                       value={selectedSemestre}
                       onChange={(e) => setSelectedSemestre(e.target.value)}>
                       
-                      <option value="">-- Sélectionner un semestre --</option>
+                      <option value="">-- Sélectionner un trimestre --</option>
                       {semestres.map((p) =>
                       <option key={p.id} value={p.id}>{p.name}</option>
                       )}

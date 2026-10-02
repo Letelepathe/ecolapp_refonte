@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAgeMinimumEleveError } from "../validationAgeEleve";
+import { getAgeEleveError } from "../validationAgeEleve";
 
 export const URL_API = "https://api.ecolapp.cd/api";
 
@@ -8,10 +8,7 @@ export const champsReq = [
   "first_name",
   "last_name",
   "sexe",
-  "date_naissance",
-  "lieu_de_naissance",
   "adresse",
-  "code_parent",
   "annee_id",
   "classes_id",
   "options_id",
@@ -51,6 +48,8 @@ const enIntSiNum = (valeur) => {
 const prepEleve = ({ eleve, userId, ecoleId, direction }) => {
   const data = {
     ...eleve,
+    date_naissance: eleve.date_naissance || null,
+    lieu_de_naissance: eleve.lieu_de_naissance?.trim() || null,
     users_id: userId,
     ecole_id: ecoleId,
     direction,
@@ -77,11 +76,12 @@ export const creerEleveVide = (ecoleId, direction) => ({
   options_id: "",
   users_id: "",
   annee_id: "",
+  type_eleve_id: "",
   ecole_id: ecoleId,
   direction,
 });
 
-export const validerEleve = (eleve, ageMinimumEleve) => {
+export const validerEleve = (eleve, ageMinimumEleve, ageMaximumEleve) => {
   const err = {};
 
   champsReq.forEach((champ) => {
@@ -90,9 +90,15 @@ export const validerEleve = (eleve, ageMinimumEleve) => {
     }
   });
 
-  const erreurAge = getAgeMinimumEleveError(eleve.date_naissance, ageMinimumEleve);
-  if (erreurAge) {
-    err.date_naissance = erreurAge;
+  if (eleve.date_naissance) {
+    const erreurAge = getAgeEleveError(
+      eleve.date_naissance,
+      ageMinimumEleve,
+      ageMaximumEleve
+    );
+    if (erreurAge) {
+      err.date_naissance = erreurAge;
+    }
   }
 
   return err;
@@ -115,8 +121,9 @@ export const chargerRefsEleves = async (ecoleId, direction) => {
 export const creerEleves = async ({ eleves, userId, ecoleId, direction }) => {
   const reqs = eleves.map((eleve) => {
     const data = prepEleve({ eleve, userId, ecoleId, direction });
-  console.log('ajouter eleve prepat',data)
+    // console.log('ajouter eleve prepat', data)
     return axios.post(`https://api.ecolapp.cd/api/eleve/create`, data, {
+
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     });
@@ -129,6 +136,11 @@ export const creerEleves = async ({ eleves, userId, ecoleId, direction }) => {
       return {
         ok: true,
         index,
+        eleveId:
+          resultat.value.data.eleve?.id ||
+          resultat.value.data.eleve_id ||
+          resultat.value.data.last_id ||
+          null,
         msg: resultat.value.data.status_msg || "Élève ajouté avec succès.",
       };
     }
@@ -137,9 +149,48 @@ export const creerEleves = async ({ eleves, userId, ecoleId, direction }) => {
       resultat.status === "fulfilled"
         ? resultat.value.data.status_msg || resultat.value.data.error_msg || "Ajout refusé par le serveur."
         : "Erreur de connexion au serveur.";
+    console.log(resultats, "resultat from backend laravel to reccord students", msg)
 
     return { ok: false, index, msg };
   });
+};
+
+const creerErreurReponseEleve = (response) => {
+  const erreur = new Error(
+    response.data?.message ||
+      response.data?.error_msg ||
+      "La modification de l'élève a été refusée par le serveur."
+  );
+
+  erreur.response = response;
+  return erreur;
+};
+
+export const modifierEleve = async ({
+  id,
+  eleve,
+  userId,
+  ecoleId,
+  direction,
+}) => {
+  const data = prepEleve({ eleve, userId, ecoleId, direction });
+  const response = await axios.put(`${URL_API}/eleve/edit/${id}`, data, {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true,
+  });
+  const statutMetier = Number(
+    response.data?.status_code ?? response.data?.status ?? response.status
+  );
+
+  if (
+    response.data?.success === false ||
+    response.data?.error === true ||
+    statutMetier >= 400
+  ) {
+    throw creerErreurReponseEleve(response);
+  }
+
+  return response.data?.eleve || null;
 };
 
 export const majEleve = (eleves, index, champ, valeur) =>

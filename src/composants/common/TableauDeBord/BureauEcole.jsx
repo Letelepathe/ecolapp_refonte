@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { api } from "../../api/api";
 import { Helmet } from "react-helmet";
-import { FiBookOpen, FiMessageSquare, FiUserPlus, FiUsers } from "react-icons/fi";
+import { FiBookOpen, FiCreditCard, FiMessageSquare, FiUserPlus, FiUsers } from "react-icons/fi";
 import BandeauDashboard from "./BandeauDashboard";
 import CarteStat from "./CarteStat";
 import PanneauDroit from "./PanneauDroit";
+import EcranChargement from "../EcranChargement";
 
 const rolesAdmin = [
   "Administrateur",
   "Administratrice",
   "Super Administrateur",
   "Super Administratrice",
+  "Secrétaire",
+  "Secretaire",
+  "Secrétariat",
+  "Secretariat",
+  "secrétaire",
+  "secretaire",
+  "secretariat",
 ];
 
 const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admins, ListeAbonne, Statistique }) => {
@@ -19,7 +27,12 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
   const direction = localStorage.getItem("direction");
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [chargementUser, setChargementUser] = useState(true);
+  const [chargementStats, setChargementStats] = useState(true);
+  const [erreurChargement, setErreurChargement] = useState("");
+  const [tentative, setTentative] = useState(0);
   const id = localStorage.getItem("userId");
+  const headers = { Authorization: `Bearer ${localStorage.getItem("auth_token") || ""}` };
   const [counts, setCounts] = useState({
     nombre_utilisateurs: 0,
     nombre_enseignants: 0,
@@ -30,7 +43,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
   useEffect(() => {
     const chargerUser = async () => {
       try {
-        const response = await axios.get(`https://api.ecolapp.cd/api/user/${id}`);
+        const response = await api.get(`/user/${id}`, { headers });
 
         if (response.data.status === 200) {
           const userApi = response.data.user;
@@ -41,7 +54,9 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
           }
         }
       } catch (erreur) {
-        console.error("Erreur lors de la récupération des informations utilisateur :", erreur);
+        setErreurChargement("Les informations de votre compte ne répondent pas pour le moment.");
+      } finally {
+        setChargementUser(false);
       }
     };
 
@@ -51,24 +66,28 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
     }
 
     chargerUser();
-  }, [cycle, id, navigate]);
+  }, [cycle, id, navigate, tentative]);
 
   useEffect(() => {
     const chargerStats = async () => {
       try {
-        const response = await axios.get(
-          `https://api.ecolapp.cd/api/user/countAdmin/ecole/${ecoleId}/direction/${direction}`
+        const response = await api.get(
+          `/user/countAdmin/ecole/${ecoleId}/direction/${direction}`,
+          { headers }
         );
         setCounts(response.data);
       } catch (erreur) {
-        console.error("Erreur lors de la récupération des données :", erreur);
+        setErreurChargement("Les données du tableau de bord n’ont pas pu être chargées.");
+      } finally {
+        setChargementStats(false);
       }
     };
 
     chargerStats();
-  }, [ecoleId, direction]);
+  }, [ecoleId, direction, tentative]);
 
-  if (!user) return <div className="spinner"></div>;
+  if (chargementUser || chargementStats) return <EcranChargement />;
+  if (erreurChargement || !user) return <EcranChargement erreur={erreurChargement || "Votre session utilisateur est introuvable."} onReessayer={() => { setErreurChargement(""); setChargementUser(true); setChargementStats(true); setTentative((valeur) => valeur + 1); }} />;
 
   return (
     <div className="refonte-shell">
@@ -109,6 +128,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
                   <CarteStat titre="Enseignants" valeur={counts.nombre_enseignants} lien={`/${cycle}/liste_enseignant`} icone={FiUserPlus} ton="bleu" />
                   <CarteStat titre="Élèves" valeur={counts.nombre_eleves} lien={`/${cycle}/liste_eleve`} icone={FiBookOpen} ton="jaune" />
                   <CarteStat titre="Communiqués" valeur={counts.nombre_communiques} lien={`/${cycle}/liste_communique`} icone={FiMessageSquare} ton="rouge" />
+                  <CarteStat titre="Cartes personnel" valeur="QR" lien={`/${cycle}/cartes_personnel`} icone={FiCreditCard} ton="bleu" detail="Aperçu et impression" />
                 </div>
 
                 <section className="dashboard-card">
@@ -134,7 +154,7 @@ const BureauEcole = ({ cycle, titre, SidebarLeft, NavbarTop, Footer, Infos, Admi
               <PanneauDroit
                 actions={[
                   { titre: "Ajouter des élèves", detail: "Inscription rapide et cartes" },
-                  { titre: "Suivre la présence", detail: "Classes, horaires et cotes" },
+                  { titre: "Liste de présence", detail: "Pointer les élèves du jour", to: `/${cycle}/liste_presence` },
                   { titre: "Encaisser les frais", detail: "Paiements et reçus" },
                 ]}
               />

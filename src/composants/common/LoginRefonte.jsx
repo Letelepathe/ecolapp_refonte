@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiKey, FiLock, FiMail, FiPhone } from "react-icons/fi";
 import imageLogin from "../../static/images/image_ecole.webp";
+import ChampMotDePasse from "./ChampMotDePasse";
 
 const iconesChamps = {
   identifier: FiMail,
@@ -56,15 +57,28 @@ const LoginRefonte = ({
                   <label htmlFor={champ.name}>{champ.label}</label>
                   <div className="login-refonte-input">
                     <Icone />
-                    <input
-                      id={champ.name}
-                      type={champ.type}
-                      name={champ.name}
-                      placeholder={champ.placeholder}
-                      value={valeurs[champ.name]}
-                      onChange={onChange}
-                      autoComplete={champ.autoComplete}
-                    />
+                    {champ.type === "password" ? (
+                      <ChampMotDePasse
+                        sansConteneur
+                        boutonClassName="login-refonte-afficher"
+                        id={champ.name}
+                        name={champ.name}
+                        placeholder={champ.placeholder}
+                        value={valeurs[champ.name]}
+                        onChange={onChange}
+                        autoComplete={champ.autoComplete}
+                      />
+                    ) : (
+                      <input
+                        id={champ.name}
+                        type={champ.type}
+                        name={champ.name}
+                        placeholder={champ.placeholder}
+                        value={valeurs[champ.name]}
+                        onChange={onChange}
+                        autoComplete={champ.autoComplete}
+                      />
+                    )}
                   </div>
                   {erreurs[champ.name] && <p className="login-refonte-erreur">{erreurs[champ.name]}</p>}
                 </div>

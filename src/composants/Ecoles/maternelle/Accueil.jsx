@@ -40,7 +40,7 @@ const Accueil = () => {
       );
     }
 
-    localStorage.setItem('direction', 2);
+    localStorage.setItem('direction', 1);
 
   return (
     <div>

@@ -17,8 +17,9 @@ src/composants/common/PresenceQr.jsx
 ## Fonctionnement
 
 - Un QR code contient un payload JSON avec `type`, `id`, `matricule`, `nom`, `ecole_id` et `direction`.
-- Le premier scan d'une personne dans la journée crée un pointage d'arrivée.
-- Le second scan du même QR dans la journée complète le pointage avec l'heure de départ.
+- Élèves : le premier scan signale la présence du jour, dans le même journal que le pointage manuel.
+- Élèves : un second scan affiche un message indiquant que la présence est déjà signalée, sans doublon ni départ.
+- Personnel : le premier scan signale immédiatement la présence ; les scans suivants signalent un pointage déjà effectué.
 - Les données sont conservées localement pendant la journée.
 - Une copie de secours est écrite dans un cookie.
 - Une synchronisation manuelle est disponible.
@@ -40,10 +41,10 @@ ecolapp_presences_YYYY-MM-DD
 
 ## Endpoint de synchronisation
 
-Le composant envoie les données vers :
+Le composant réutilise la route Laravel déjà appelée par les tableaux de présence avec cases à cocher :
 
 ```text
-POST /presences/qr/synchroniser
+POST /presences/create
 ```
 
 Payload :
@@ -52,15 +53,12 @@ Payload :
 {
   "presences": [
     {
-      "type": "eleve",
-      "id": 1,
-      "matricule": "MAT-001",
-      "nom": "Nom complet",
-      "arrivee": "2026-07-12T07:30:00.000Z",
-      "depart": "2026-07-12T15:30:00.000Z",
+      "eleve_id": 1,
       "date_presence": "2026-07-12",
       "ecole_id": 1,
-      "direction": 2
+      "direction": 2,
+      "present": 1,
+      "motif_absence": null
     }
   ]
 }
@@ -69,7 +67,7 @@ Payload :
 ## Utilisation avec caméra
 
 1. Aller sur `/presence-qr`.
-2. Cliquer sur `Démarrer la caméra`.
+2. Cliquer sur `Caméra téléphone` ou `Scanner en direct`.
 3. Présenter le QR code devant la caméra.
 4. Vérifier le message de confirmation.
 
@@ -82,6 +80,6 @@ Payload :
 
 ## Limites connues
 
-- La détection caméra dépend de `BarcodeDetector`, qui n'est pas supporté par tous les navigateurs.
-- En cas d'absence de caméra compatible, utiliser la saisie manuelle ou un lecteur QR USB.
-- L'endpoint `/presences/qr/synchroniser` doit exister côté backend pour persister en base.
+- La caméra directe utilise `html5-qrcode` et conserve `BarcodeDetector` en solution de secours.
+- Le bouton `Caméra téléphone` ouvre la caméra système lorsque la caméra web est limitée.
+- La route `/presences/create` existante enregistre les présences des élèves. Les pointages du personnel sont immédiatement visibles et restent locaux tant qu'aucune route Laravel correspondante n'est présente dans le projet front.

@@ -68,6 +68,20 @@ vers la bonne URL selon l'environnement.
 
 ## Bonnes pratiques
 
+### Limitation globale des appels
+
+`installerConfigurationApi()` installe aussi un rate limiter sur Axios et sur l'instance `api`.
+Il conserve toutes les routes existantes et agit uniquement dans le navigateur :
+
+- six requêtes au maximum peuvent être actives simultanément ;
+- les départs sont espacés de 120 ms afin d'absorber les rafales ;
+- les requêtes supplémentaires attendent dans une file FIFO ;
+- après 30 secondes d'attente, une erreur lisible demande à l'utilisateur de réessayer ;
+- une requête annulée avec `AbortController` est retirée avant son envoi.
+
+Les valeurs sont exposées par `CONFIGURATION_RATE_LIMITER` dans `api.js`. Une requête non-API
+exceptionnelle peut ignorer la file avec l'option Axios `{ ecolappRateLimiter: false }`.
+
 - Pour tout nouveau composant, utiliser `api.get`, `api.post`, `api.put`, `api.delete`.
 - Pour les erreurs, utiliser `messageErreur()`.
 - Pour les images et fichiers publics, utiliser `urlPublic()`.

@@ -47,7 +47,7 @@ const ListeSemestre = () => {
   return (
     <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
-      <div className="content">
+      <div className="content cycle-scolaire-page liste-reference-page">
         <NavbarTop/>
         <div className="container">
           <div className="table-responsive">

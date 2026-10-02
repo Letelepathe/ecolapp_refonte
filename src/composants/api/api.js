@@ -10,7 +10,10 @@ export const PUBLIC_BASE_URL = estLocal() ? "http://localhost:8000" : "https://a
 
 export const messageErreur = (erreur, fallback = "Une erreur est survenue. Veuillez réessayer.") => {
   const data = erreur?.response?.data;
-  if (typeof data === "string") return data;
+  if (typeof data === "string") {
+    if (/<(?:!doctype|html|head|body)\b/i.test(data)) return erreur?.response?.status === 405 ? "Le serveur refuse cet envoi (HTTP 405). Les pointages locaux sont conservés. Vérifiez le routage de l’API puis réessayez." : fallback;
+    return data;
+  }
   return data?.message || data?.error_msg || data?.error || erreur?.message || fallback;
 };
 
@@ -30,14 +33,126 @@ export const urlPublic = (chemin = "") => {
 
 export const api = axios.create({ baseURL: API_BASE_URL });
 
-export const installerConfigurationApi = () => {
-  axios.defaults.baseURL = API_BASE_URL;
-  axios.interceptors.request.use((config) => ({
+// Limite côté navigateur : elle lisse les rafales sans modifier les routes Laravel.
+// Les requêtes déjà parties restent plafonnées et les suivantes attendent dans une file FIFO.
+export const CONFIGURATION_RATE_LIMITER = Object.freeze({
+  requetesSimultanees: 6,
+  intervalleEntreDepartsMs: 120,
+  attenteMaximaleMs: 30000,
+});
+
+let requetesActives = 0;
+let dernierDepart = 0;
+let minuteurFile = null;
+const fileRequetes = [];
+
+const programmerFile = (delai = 0) => {
+  if (minuteurFile !== null) return;
+  minuteurFile = setTimeout(() => {
+    minuteurFile = null;
+    traiterFile();
+  }, delai);
+};
+
+const traiterFile = () => {
+  while (fileRequetes.length && fileRequetes[0].signal?.aborted) {
+    const annulee = fileRequetes.shift();
+    clearTimeout(annulee.expiration);
+    annulee.reject(new axios.CanceledError("Requête annulée avant son envoi."));
+  }
+
+  if (!fileRequetes.length || requetesActives >= CONFIGURATION_RATE_LIMITER.requetesSimultanees) return;
+
+  const attente = Math.max(
+    0,
+    CONFIGURATION_RATE_LIMITER.intervalleEntreDepartsMs - (Date.now() - dernierDepart)
+  );
+  if (attente > 0) {
+    programmerFile(attente);
+    return;
+  }
+
+  const suivante = fileRequetes.shift();
+  clearTimeout(suivante.expiration);
+  requetesActives += 1;
+  dernierDepart = Date.now();
+  suivante.resolve();
+  programmerFile(CONFIGURATION_RATE_LIMITER.intervalleEntreDepartsMs);
+};
+
+const attendreAutorisation = (signal) => new Promise((resolve, reject) => {
+  if (signal?.aborted) {
+    reject(new axios.CanceledError("Requête annulée avant son envoi."));
+    return;
+  }
+
+  const entree = { resolve, reject, signal, expiration: null };
+  entree.expiration = setTimeout(() => {
+    const index = fileRequetes.indexOf(entree);
+    if (index >= 0) fileRequetes.splice(index, 1);
+    reject(new Error("Trop de requêtes sont en attente. Veuillez réessayer dans quelques instants."));
+  }, CONFIGURATION_RATE_LIMITER.attenteMaximaleMs);
+  fileRequetes.push(entree);
+  traiterFile();
+});
+
+const libererRequete = (config) => {
+  if (!config?.ecolappRateLimiterAcquis) return;
+  config.ecolappRateLimiterAcquis = false;
+  requetesActives = Math.max(0, requetesActives - 1);
+  traiterFile();
+};
+
+const installerRateLimiter = (client) => {
+  client.interceptors.request.use(async (config) => {
+    // Permet ponctuellement d'exclure une requête non-API avec { ecolappRateLimiter: false }.
+    if (config.ecolappRateLimiter === false) return config;
+    await attendreAutorisation(config.signal);
+    config.ecolappRateLimiterAcquis = true;
+    return config;
+  });
+  client.interceptors.response.use(
+    (response) => {
+      libererRequete(response.config);
+      return response;
+    },
+    (error) => {
+      libererRequete(error?.config);
+      return Promise.reject(error);
+    }
+  );
+};
+
+const authentifierRequeteApi = (config, url = config.url) => {
+  const token = typeof window === "undefined" ? "" : localStorage.getItem("auth_token");
+  const estRequeteApi = !/^https?:\/\//i.test(url || "") || url.startsWith(API_BASE_URL);
+
+  if (!token || !estRequeteApi) return config;
+
+  const headers = config.headers || {};
+  if (headers.Authorization || headers.authorization || headers.get?.("Authorization")) return config;
+
+  return {
     ...config,
-    url: normaliserUrlApi(config.url),
-  }));
+    headers: { ...headers, Authorization: `Bearer ${token}` },
+  };
+};
+
+let configurationInstallee = false;
+
+export const installerConfigurationApi = () => {
+  if (configurationInstallee) return;
+  configurationInstallee = true;
+  axios.defaults.baseURL = API_BASE_URL;
+  axios.interceptors.request.use((config) => {
+    const url = normaliserUrlApi(config.url);
+    return authentifierRequeteApi({ ...config, url }, url);
+  });
+  api.interceptors.request.use((config) => authentifierRequeteApi(config));
   axios.interceptors.response.use(
     (response) => response,
     (error) => Promise.reject({ ...error, friendlyMessage: messageErreur(error) })
   );
+  installerRateLimiter(axios);
+  installerRateLimiter(api);
 };

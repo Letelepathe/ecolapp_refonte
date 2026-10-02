@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 
 const Table = ({ title, data, error }) =>
-<div>
+<div className="dashboard-members">
     <div className="  text-center rounded p-4">
-      <div className="d-flex align-items-center justify-content-between mb-4">
+      <div className="dashboard-members__entete d-flex align-items-center justify-content-between mb-4">
         <h6 className="mb-0">{title}</h6>
           <Link className="text-center btn " to='/maternelle/creationcompte'><i className="bi bi-plus"></i> Créer un utilisateur</Link>
       </div>
@@ -16,7 +16,7 @@ const Table = ({ title, data, error }) =>
 
       <div>
             {data && data.length > 0 ?
-        <table className="table text-start align-middle   mb-0">
+        <table className="table dashboard-members__table text-start align-middle mb-0">
                 <thead>
                   <tr className="text-dark">
                     <th>Id</th>
@@ -80,7 +80,7 @@ const Infos = () => {
   }, [ecole_id, direction]);
 
   return (
-    <div>
+    <div className="dashboard-members-section">
       <div className="container-fluid pt-4 px-4">
         <div className="row g-4 justify-content-between align-items-center">
           

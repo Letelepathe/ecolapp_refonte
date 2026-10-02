@@ -5,17 +5,20 @@ import { Link } from "react-router-dom";
 import SidebarLeft from "./SidebarLeft";
 import NavbarTop from "./NavbarTop";
 import ConfirmModal from "./ConfirmModal";
+import {
+  obtenirNomTypeEleve,
+  useTypesEleves,
+} from "../../../../services/typesEleves/useTypesEleves";
 
 const ListeEleve = () => {
+  const typesEleves = useTypesEleves();
   const ecole_id = localStorage.getItem('ecole_id');
   const direction = localStorage.getItem('direction');
 
   const [eleves, setEleves] = useState([]);
   const [filteredEleves, setFilteredEleves] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [options, setOptions] = useState([]);
   const [selectedClasse, setSelectedClasse] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -40,41 +43,33 @@ const ListeEleve = () => {
     }
   };
 
-  const fetchClassesAndOptions = async () => {
+  const fetchClasses = async () => {
     try {
-      const [classesResponse, optionsResponse] = await Promise.all([
-        axios.get(`https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`),
-        axios.get(`https://api.ecolapp.cd/api/option/ecole/${ecole_id}/direction/${direction}`),
-      ]);
-
+      const classesResponse = await axios.get(
+        `https://api.ecolapp.cd/api/classe/ecole/${ecole_id}/direction/${direction}`
+      );
       setClasses(classesResponse.data.classesAll);
-      setOptions(optionsResponse.data.optionAll);
     } catch (error) {
-      setError("Erreur lors de la récupération des classes ou options.");
+      setError("Erreur lors de la récupération des classes.");
     }
   };
 
   useEffect(() => {
     fetchEleves(currentPage);
-    fetchClassesAndOptions();
+    fetchClasses();
   }, [currentPage, ecole_id, direction]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-    filterEleves(e.target.value, selectedClasse, selectedOption);
+    filterEleves(e.target.value, selectedClasse);
   };
 
   const handleClasseChange = (e) => {
     setSelectedClasse(e.target.value);
-    filterEleves(searchQuery, e.target.value, selectedOption);
+    filterEleves(searchQuery, e.target.value);
   };
 
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-    filterEleves(searchQuery, selectedClasse, e.target.value);
-  };
-
-  const filterEleves = (query, classe, option) => {
+  const filterEleves = (query, classe) => {
     const filtered = eleves.filter((eleve) => {
       const matchesQuery =
         query === "" ||
@@ -83,9 +78,7 @@ const ListeEleve = () => {
         (eleve.last_name && eleve.last_name.toLowerCase().includes(query.toLowerCase()));
 
       const matchesClasse = classe === "" || eleve.classe?.id === parseInt(classe);
-      const matchesOption = option === "" || eleve.option?.id === parseInt(option);
-
-      return matchesQuery && matchesClasse && matchesOption;
+      return matchesQuery && matchesClasse;
     });
 
     setFilteredEleves(filtered);
@@ -156,18 +149,6 @@ const ListeEleve = () => {
                       </option>
                     ))}
                   </select>
-                  <select
-                    className="form-select"
-                    value={selectedOption}
-                    onChange={handleOptionChange}
-                  >
-                    <option value="">Toutes les options</option>
-                    {options.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
                 </div>
               </div>
 
@@ -188,7 +169,7 @@ const ListeEleve = () => {
                           <th>Prénom</th>
                           <th>Description</th>
                           <th>Classe</th>
-                          <th>Option</th>
+                          <th>Type d'élève</th>
                           <th>Année Scolaire</th>
                           <th>Action</th>
                         </tr>
@@ -203,9 +184,12 @@ const ListeEleve = () => {
                             <td>{eleve.first_name}</td>
                             <td>{eleve.description}</td>
                             <td>{eleve.classe.name}</td>
-                            <td>{eleve.option.name}</td>
+                            <td>{obtenirNomTypeEleve(eleve, typesEleves)}</td>
                             <td>{eleve.annee.name}</td>
                             <td>
+                              <Link className="btn me-2" to={`/primaire/modifier_eleve/${eleve.id}`}>
+                                Modifier
+                              </Link>
                               <button
                                 className="btn "
                                 onClick={() => handleDelete(eleve.id)}

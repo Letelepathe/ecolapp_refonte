@@ -30,6 +30,13 @@ const RightSidebar = ({ isRightSidebarOpen, setIsRightSidebarOpen }) => {
     { path: "/primaire/liste_cours", label: "Tous les cours", icon: "bi-list-check" }]
 
   }
+  ,{
+    title: "Programmes / Options", icon: "bi-diagram-3-fill",
+    links: [
+      { path: "/primaire/ajouter_option", label: "Ajouter une option", icon: "bi-plus-circle-fill" },
+      { path: "/primaire/liste_option", label: "Liste des options", icon: "bi-list-check" }
+    ]
+  }
   // Ajoute d'autres sections ici selon les besoins
   ];
 

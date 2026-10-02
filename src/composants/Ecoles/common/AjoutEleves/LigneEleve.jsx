@@ -1,16 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import SelectTypeEleve from "../TypesEleves/SelectTypeEleve";
 
-const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutRetirer, majChamp, retirer }) =>
-<div className="border rounded p-3 mb-3 bg-light">
+const API_RECHERCHE_PARENTS = "https://api.ecolapp.cd/api/parents/search";
+
+const configurationAvecToken = () => {
+  const token = localStorage.getItem("auth_token");
+
+  return token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : {};
+};
+
+const LigneEleve = ({
+  eleve,
+  index,
+  classes,
+  options,
+  annees,
+  typesEleves = [],
+  afficherOption = true,
+  err = {},
+  peutRetirer,
+  majChamp,
+  retirer,
+  rechercheParentActive = false,
+}) => {
+  const [parentsTrouves, setParentsTrouves] = useState([]);
+  const [chargementParents, setChargementParents] = useState(false);
+  const [erreurParents, setErreurParents] = useState("");
+
+  useEffect(() => {
+    if (!rechercheParentActive) return undefined;
+
+    const keyword = String(eleve.code_parent || "").trim();
+
+    if (keyword.length < 3) {
+      setParentsTrouves([]);
+      setErreurParents("");
+      setChargementParents(false);
+      return undefined;
+    }
+
+    setChargementParents(true);
+    setErreurParents("");
+
+    // Recherche parent avec debounce: l'appel API ne part qu'après une pause
+    // de saisie et seulement à partir de 3 caractères, comme demandé.
+    const timer = setTimeout(async () => {
+      try {
+        const response = await axios.get(API_RECHERCHE_PARENTS, {
+          ...configurationAvecToken(),
+          params: { keyword },
+        });
+
+        if (response.data?.status === 200) {
+          setParentsTrouves(response.data.parents || []);
+        } else {
+          setParentsTrouves([]);
+          setErreurParents(response.data?.message || "Aucun parent trouvé.");
+        }
+      } catch (error) {
+        setParentsTrouves([]);
+        setErreurParents(error.response?.data?.message || "Erreur lors de la recherche du parent.");
+      } finally {
+        setChargementParents(false);
+      }
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [eleve.code_parent, rechercheParentActive]);
+
+  const choisirParent = (parent) => {
+    majChamp(index, {
+      target: {
+        name: "code_parent",
+        value: parent.code || "",
+      },
+    });
+    setParentsTrouves([]);
+    setErreurParents("");
+  };
+
+  return (
+  <div className="border rounded p-3 mb-3 bg-light">
     <div className="d-flex justify-content-between align-items-center mb-2">
       <h6 className="mb-0 u-style-04aba780">
         Élève {index + 1}
       </h6>
       {peutRetirer &&
-    <button type="button" className="btn  " onClick={() => retirer(index)}>
+        <button type="button" className="btn  " onClick={() => retirer(index)}>
           Retirer
         </button>
-    }
+      }
     </div>
 
     {err.form && <div className="alert alert-danger py-2 mb-3">{err.form}</div>}
@@ -40,13 +126,13 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         {err.sexe && <p className="text-danger">{err.sexe}</p>}
       </div>
       <div className="col-lg-4 col-12">
-        <label>Date de naissance</label>
-        <input type="date" name="date_naissance" className="form-control" value={eleve.date_naissance} onChange={(event) => majChamp(index, event)} required />
+        <label>Date de naissance (facultatif)</label>
+        <input type="date" name="date_naissance" className="form-control" value={eleve.date_naissance} onChange={(event) => majChamp(index, event)} />
         {err.date_naissance && <p className="text-danger">{err.date_naissance}</p>}
       </div>
       <div className="col-lg-4 col-12">
-        <label>Lieu de naissance</label>
-        <input type="text" name="lieu_de_naissance" className="form-control" value={eleve.lieu_de_naissance} onChange={(event) => majChamp(index, event)} required />
+        <label>Lieu de naissance (facultatif)</label>
+        <input type="text" name="lieu_de_naissance" className="form-control" value={eleve.lieu_de_naissance} onChange={(event) => majChamp(index, event)} />
         {err.lieu_de_naissance && <p className="text-danger">{err.lieu_de_naissance}</p>}
       </div>
       <div className="col-lg-6 col-12">
@@ -56,16 +142,36 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
       </div>
       <div className="col-lg-6 col-12">
         <label>Code parent</label>
-        <input type="text" name="code_parent" className="form-control" value={eleve.code_parent} onChange={(event) => majChamp(index, event)} required />
+        <input type="text" name="code_parent" className="form-control" value={eleve.code_parent} onChange={(event) => majChamp(index, event)} autoComplete="off" />
         {err.code_parent && <p className="text-danger">{err.code_parent}</p>}
+        {rechercheParentActive && chargementParents && <small className="text-muted">Recherche...</small>}
+        {rechercheParentActive && erreurParents && !chargementParents && <small className="text-danger">{erreurParents}</small>}
+        {rechercheParentActive && parentsTrouves.length > 0 && (
+          <div className="list-group mt-1">
+            {parentsTrouves.map((parent) => (
+              <button
+                key={parent.id}
+                type="button"
+                className="list-group-item list-group-item-action"
+                onClick={() => choisirParent(parent)}
+              >
+                <span className="fw-semibold">{parent.code}</span>
+                <span className="ms-2">
+                  {parent.nom} {parent.postnom} {parent.prenom}
+                </span>
+                <small className="text-muted ms-2">{parent.telephone}</small>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <div className="col-lg-4 col-12">
         <label>Année scolaire</label>
         <select name="annee_id" className="form-control" value={eleve.annee_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une année</option>
           {annees.map((annee) =>
-        <option key={annee.id} value={annee.id}>{annee.name}</option>
-        )}
+            <option key={annee.id} value={annee.id}>{annee.name}</option>
+          )}
         </select>
         {err.annee_id && <p className="text-danger">{err.annee_id}</p>}
       </div>
@@ -74,27 +180,41 @@ const LigneEleve = ({ eleve, index, classes, options, annees, err = {}, peutReti
         <select name="classes_id" className="form-control" value={eleve.classes_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une classe</option>
           {classes.map((classe) =>
-        <option key={classe.id} value={classe.id}>{classe.name}</option>
-        )}
+            <option key={classe.id} value={classe.id}>{classe.name}</option>
+          )}
         </select>
         {err.classes_id && <p className="text-danger">{err.classes_id}</p>}
       </div>
-      <div className="col-lg-4 col-12">
+      {afficherOption && <div className="col-lg-4 col-12">
         <label>Option</label>
         <select name="options_id" className="form-control" value={eleve.options_id} onChange={(event) => majChamp(index, event)} required>
           <option value="">Sélectionner une option</option>
           {options.map((option) =>
-        <option key={option.id} value={option.id}>{option.name}</option>
-        )}
+            <option key={option.id} value={option.id}>{option.name}</option>
+          )}
         </select>
         {err.options_id && <p className="text-danger">{err.options_id}</p>}
+      </div>}
+      <div className="col-12">
+        <SelectTypeEleve
+          types={typesEleves}
+          value={eleve.type_eleve_id}
+          name={`type-eleve-${index}`}
+          onChange={(event) =>
+            majChamp(index, {
+              target: { name: "type_eleve_id", value: event.target.value },
+            })
+          }
+        />
       </div>
       <div className="col-12">
         <label>Description</label>
         <textarea name="description" className="form-control" value={eleve.description} onChange={(event) => majChamp(index, event)} />
       </div>
     </div>
-  </div>;
+  </div>
+  );
+};
 
 
 export default LigneEleve;

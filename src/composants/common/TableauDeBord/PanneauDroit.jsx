@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const jours = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
@@ -46,15 +47,15 @@ const PanneauDroit = ({ actions = [] }) => {
           { titre: "Suivre les inscriptions", detail: "Élèves et dossiers récents" },
           { titre: "Contrôler les paiements", detail: "Frais et reçus du jour" },
           { titre: "Préparer les rapports", detail: "Statistiques et listes" },
-        ]).map((action, index) => (
-          <div className="dashboard-action mb-2" key={action.titre}>
+        ]).map((action, index) => {
+          const contenu = <>
             <span className="dashboard-action-icon">{index + 1}</span>
-            <span>
-              <strong>{action.titre}</strong>
-              <span>{action.detail}</span>
-            </span>
-          </div>
-        ))}
+            <span><strong>{action.titre}</strong><span>{action.detail}</span></span>
+          </>;
+          return action.to
+            ? <Link className="dashboard-action dashboard-action-link mb-2" to={action.to} key={action.titre}>{contenu}</Link>
+            : <div className="dashboard-action mb-2" key={action.titre}>{contenu}</div>;
+        })}
       </section>
     </aside>
   );

@@ -47,7 +47,7 @@ const ListeTrimestre = () => {
   return (
     <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
-      <div className="content">
+      <div className="content cycle-scolaire-page">
         <NavbarTop/>
         <div className="container">
           <div className="table-responsive">
@@ -64,7 +64,7 @@ const ListeTrimestre = () => {
               <table className="table text-start align-middle   mb-0">
                 <thead>
                   <tr className="text-dark">
-                    <th>Semestre</th>
+                    <th>Trimestre</th>
                     <th>Action</th>
                   </tr>
                 </thead>

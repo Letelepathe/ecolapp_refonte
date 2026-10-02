@@ -421,6 +421,1086 @@ a:hover {
   }
 }
 
+.changer-mot-de-passe { width: min(100% - 2rem, 980px); margin: 0 auto 2rem; }
+.changer-mot-de-passe__ouvrir { display: inline-flex; width: auto !important; align-items: center; gap: .45rem; }
+.changer-mot-de-passe__modal { overflow-y: auto; background: rgba(15, 23, 42, .58); }
+.changer-mot-de-passe__modal .modal-footer .btn { width: auto !important; }
+
+.gestion-utilisateurs { min-width: 0; }
+.gestion-utilisateurs__filtres { display: flex; flex-wrap: wrap; gap: .75rem; }
+.gestion-utilisateurs__filtres .form-control { width: auto; min-width: 210px; flex: 1 1 260px; }
+.gestion-utilisateurs__table { min-width: 920px; }
+.gestion-utilisateurs__table td small { display: block; color: #667085; }
+.gestion-utilisateurs__avatar { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; overflow: hidden; color: #1769ff; background: #eaf2ff; border-radius: 50%; }
+.gestion-utilisateurs__avatar.femme { color: #b53c85; background: #fff0f8; }
+.gestion-utilisateurs__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.gestion-utilisateurs__actions { display: flex; flex-wrap: wrap; gap: .4rem; }
+.gestion-utilisateurs__actions .btn { display: inline-flex; width: auto !important; align-items: center; gap: .3rem; margin: 0; white-space: nowrap; }
+.gestion-utilisateurs__modal { overflow-y: auto; background: rgba(15, 23, 42, .58); }
+.gestion-utilisateurs__modal .modal-content { max-height: calc(100vh - 2rem); overflow-y: auto; }
+.gestion-utilisateurs__modal .modal-footer .btn { width: auto !important; }
+
+/* Mon espace et champs de profil partagés. */
+.espace-utilisateur-section {
+  width: 100%;
+  min-width: 0;
+  padding-inline: clamp(.5rem, 2vw, 1.5rem);
+}
+
+.espace-utilisateur-table {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.espace-utilisateur-table > .table {
+  width: 100%;
+  min-width: 920px;
+  margin-bottom: 0;
+}
+
+.espace-utilisateur-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .65rem 1rem;
+}
+
+.espace-utilisateur-pagination .btn {
+  width: auto !important;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.champ-mot-de-passe {
+  position: relative;
+  width: 100%;
+}
+
+.champ-mot-de-passe > input {
+  width: 100%;
+  padding-right: 2.8rem !important;
+}
+
+.champ-mot-de-passe__bouton {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: .45rem;
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  color: #1769ff;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.champ-mot-de-passe__bouton:hover,
+.champ-mot-de-passe__bouton:focus-visible {
+  color: #0b4dcc;
+  background: rgba(23, 105, 255, .09);
+}
+
+.photo-profil-optionnelle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.photo-profil-optionnelle__avatar {
+  display: grid;
+  flex: 0 0 4.25rem;
+  width: 4.25rem;
+  height: 4.25rem;
+  place-items: center;
+  overflow: hidden;
+  color: #1769ff;
+  background: #eaf2ff;
+  border: 2px solid #c8dcff;
+  border-radius: 50%;
+}
+
+.photo-profil-optionnelle__avatar--femme {
+  color: #b53c85;
+  background: #fff0f8;
+  border-color: #f3c5df;
+}
+
+.photo-profil-optionnelle__avatar svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.photo-profil-optionnelle__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-profil-optionnelle__champ {
+  min-width: 0;
+  flex: 1;
+}
+
+.photo-profil-optionnelle__champ label {
+  display: block;
+  margin-bottom: .35rem;
+  font-weight: 600;
+}
+
+.photo-profil-optionnelle__champ label span,
+.photo-profil-optionnelle__champ small {
+  color: #667085;
+  font-weight: 400;
+}
+
+@media (max-width: 575.98px) {
+  .espace-utilisateur-pagination > span {
+    width: 100%;
+    text-align: center;
+    order: -1;
+  }
+}
+
+/* Ajustements responsifs communs sans modifier l'identité visuelle. */
+.content,
+.content .container,
+.content .container-fluid,
+.content .section,
+.content .card,
+.content .card-body,
+.modal-content,
+.custom-modal > .modal-content {
+  min-width: 0;
+}
+
+.content img,
+.modal img,
+.custom-modal img {
+  max-width: 100%;
+}
+
+.content .d-flex.justify-content-between,
+.actions-paiements,
+.modal-footer,
+.custom-modal .modal-footer {
+  flex-wrap: wrap;
+}
+
+.actions-paiements {
+  gap: 10px;
+}
+
+.actions-paiements > .btn {
+  flex: 1 1 180px;
+  margin: 0 !important;
+  white-space: normal;
+}
+
+.modal .modal-content,
+.custom-modal > .modal-content {
+  max-height: calc(100dvh - 36px);
+}
+
+.modal-body,
+.custom-modal > .modal-content {
+  overscroll-behavior: contain;
+}
+
+.modal-body {
+  overflow-y: auto;
+}
+
+.custom-modal > .modal-content {
+  overflow-y: auto;
+}
+
+.modal-footer > .btn,
+.custom-modal .modal-footer > .btn {
+  white-space: normal;
+}
+
+.document-financier,
+.document-financier * {
+  min-width: 0;
+}
+
+.document-financier__entete > *,
+.recu-financier__entete > *,
+.recu-financier__ligne > * {
+  overflow-wrap: anywhere;
+}
+
+.pied-document-financier__contenu,
+.pied-document-financier__signatures {
+  flex-wrap: wrap;
+}
+
+.pied-document-financier__signature {
+  flex: 1 1 150px;
+  max-width: 210px;
+}
+
+@media (max-width: 768px) {
+  .modal.fade.show,
+  .modal.show.d-block,
+  .custom-modal {
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .modal-dialog {
+    margin: auto;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer,
+  .custom-modal > .modal-content > .modal-title,
+  .custom-modal > .modal-content > :not(.modal-title):not(.modal-footer):not(button),
+  .custom-modal .modal-footer {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .document-financier__entete {
+    flex-direction: column;
+  }
+
+  .document-financier__entete .text-end {
+    width: 100%;
+    text-align: left !important;
+  }
+
+  .pied-document-financier__contenu,
+  .pied-document-financier__signatures {
+    width: 100%;
+  }
+
+  .pied-document-financier__signatures {
+    justify-content: flex-start !important;
+    gap: 18px !important;
+  }
+
+  .apercu-recu-financier .modal-content {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 20px);
+  }
+}
+
+@media (max-width: 576px) {
+  .content form .row > [class*="col-"],
+  .modal form .row > [class*="col-"],
+  .custom-modal form .row > [class*="col-"] {
+    width: 100%;
+  }
+
+  .content .input-group {
+    flex-wrap: nowrap;
+  }
+
+  .content .input-group > .form-control {
+    min-width: 0;
+  }
+
+  .actions-paiements > .btn,
+  .modal-footer > .btn,
+  .custom-modal .modal-footer > .btn {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .recu-financier {
+    padding: 18px;
+  }
+
+  .recu-financier__marque,
+  .recu-financier__ligne {
+    align-items: flex-start;
+  }
+
+  .recu-financier__marque {
+    flex-direction: column;
+  }
+
+  .recu-financier__ligne {
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+  }
+
+  .recu-financier__signature {
+    width: min(210px, 100%);
+  }
+
+  .pied-document-financier__signature {
+    max-width: none;
+  }
+}
+
+/* Formats de reçu sélectionnés dans l'aperçu de paiement. */
+.format-recu-paiement {
+  flex: 1 1 210px;
+  max-width: 280px;
+}
+
+.format-recu-paiement label,
+.format-recu-paiement small {
+  display: block;
+}
+
+.format-recu-paiement small {
+  margin-top: 5px;
+  line-height: 1.35;
+}
+
+.recu-financier.recu-financier--a5 {
+  width: min(100%, 560px);
+  min-height: 790px;
+  padding: 32px;
+}
+
+.recu-financier.recu-financier--a6 {
+  width: min(100%, 397px);
+  min-height: 560px;
+  padding: 20px;
+}
+
+.recu-financier--a6 .recu-financier__entete {
+  gap: 12px;
+  padding-bottom: 16px;
+}
+
+.recu-financier--a6 .recu-financier__marque img {
+  width: 42px;
+  height: 42px;
+}
+
+.recu-financier--a6 .recu-financier__marque strong {
+  font-size: 15px;
+}
+
+.recu-financier--a6 .recu-financier__identite {
+  gap: 12px;
+  margin: 18px 0;
+  padding: 14px;
+}
+
+.recu-financier--a6 .recu-financier__ligne {
+  padding: 11px 13px;
+}
+
+.recu-financier--a6 .recu-financier__pied {
+  margin-top: 24px;
+}
+
+.recu-financier--a6 .recu-financier__note {
+  margin-top: 20px;
+}
+
+.recu-financier.recu-financier--pos58,
+.recu-financier.recu-financier--pos80 {
+  min-height: 0;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #101828;
+  line-height: 1.28;
+  background: #fff !important;
+  border: 1px solid #000 !important;
+  box-shadow: none !important;
+}
+
+.recu-financier--pos58 *,
+.recu-financier--pos80 * {
+  font-weight: 700;
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete {
+  border-bottom-color: #000 !important;
+}
+
+.recu-financier--pos58 .recu-financier__marque img,
+.recu-financier--pos80 .recu-financier__marque img {
+  filter: grayscale(1) contrast(1.35);
+}
+
+.recu-financier--pos58 .recu-financier__numero em,
+.recu-financier--pos80 .recu-financier__numero em {
+  background: #fff !important;
+  border: 1px solid #000;
+}
+
+.recu-financier--pos58 .recu-financier__identite,
+.recu-financier--pos80 .recu-financier__identite {
+  background: #fff !important;
+  border: 1px dashed #000;
+}
+
+.recu-financier--pos58 .recu-financier__details,
+.recu-financier--pos80 .recu-financier__details {
+  border-color: #000 !important;
+}
+
+.recu-financier--pos58 .recu-financier__ligne,
+.recu-financier--pos80 .recu-financier__ligne {
+  border-bottom-color: #000 !important;
+}
+
+.recu-financier--pos58 .recu-financier__total,
+.recu-financier--pos80 .recu-financier__total {
+  background: #fff !important;
+  border-top: 2px solid #000;
+}
+
+.recu-financier--pos58 .recu-financier__signature,
+.recu-financier--pos80 .recu-financier__signature {
+  border-bottom-color: #000 !important;
+}
+
+.recu-financier.recu-financier--pos58 { width: min(100%, 219px); }
+.recu-financier.recu-financier--pos80 { width: min(100%, 302px); padding: 13px; }
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete,
+.recu-financier--pos58 .recu-financier__pied,
+.recu-financier--pos80 .recu-financier__pied {
+  flex-direction: column;
+  gap: 9px;
+}
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete {
+  padding-bottom: 10px;
+}
+
+.recu-financier--pos58 .recu-financier__marque,
+.recu-financier--pos80 .recu-financier__marque {
+  gap: 8px;
+}
+
+.recu-financier--pos58 .recu-financier__marque > div > span,
+.recu-financier--pos80 .recu-financier__marque > div > span {
+  display: none;
+}
+
+.recu-financier--pos58 .recu-financier__marque img,
+.recu-financier--pos80 .recu-financier__marque img {
+  width: 32px;
+  height: 32px;
+}
+
+.recu-financier--pos58 .recu-financier__marque strong,
+.recu-financier--pos80 .recu-financier__marque strong {
+  font-size: 13px;
+}
+
+.recu-financier__adresse-ecole,
+.recu-financier__localisation-ecole {
+  display: block;
+  margin: 3px 0 0;
+  color: #52617a;
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier__localisation-ecole {
+  color: #1769ff;
+  text-decoration: underline;
+}
+
+.recu-financier--pos58 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos58 .recu-financier__localisation-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  display: block;
+  margin: 3px 0 0;
+  color: #101828;
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos58 .recu-financier__localisation-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  color: #000;
+  text-decoration: underline;
+}
+
+.recu-financier__qr-localisation {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.recu-financier__qr-localisation img {
+  width: 76px;
+  height: 76px;
+  image-rendering: pixelated;
+}
+
+.recu-financier__qr-localisation span {
+  max-width: 96px;
+  color: #52617a;
+  font-size: 9px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.recu-financier__qr-pos {
+  display: none;
+}
+
+.recu-financier--a6 .recu-financier__qr-localisation img {
+  width: 58px;
+  height: 58px;
+}
+
+.recu-financier--a6 .recu-financier__qr-localisation span {
+  max-width: 68px;
+  font-size: 8px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation,
+.recu-financier--pos80 .recu-financier__qr-localisation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 0;
+  border-top: 1px dashed #000;
+  border-bottom: 1px dashed #000;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation img,
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  filter: none;
+  image-rendering: pixelated;
+}
+
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  width: 60px;
+  height: 60px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation span,
+.recu-financier--pos80 .recu-financier__qr-localisation span {
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  font-size: 11px;
+}
+
+.recu-financier--pos58 .recu-financier__marque span,
+.recu-financier--pos80 .recu-financier__marque span,
+.recu-financier--pos58 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos58 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos58 .recu-financier__ligne span,
+.recu-financier--pos80 .recu-financier__ligne span,
+.recu-financier--pos58 .recu-financier__pied span,
+.recu-financier--pos80 .recu-financier__pied span {
+  font-size: 10px;
+}
+
+.recu-financier--pos80 .recu-financier__marque span,
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__ligne span,
+.recu-financier--pos80 .recu-financier__pied span {
+  font-size: 11px;
+}
+
+.recu-financier--pos58 .recu-financier__numero,
+.recu-financier--pos80 .recu-financier__numero {
+  text-align: left;
+}
+
+.recu-financier--pos58 .recu-financier__numero strong,
+.recu-financier--pos80 .recu-financier__numero strong {
+  margin: 2px 0 4px;
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__numero em,
+.recu-financier--pos80 .recu-financier__numero em {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.recu-financier--pos58 .recu-financier__identite,
+.recu-financier--pos80 .recu-financier__identite {
+  grid-template-columns: 1fr;
+  gap: 7px;
+  margin: 10px 0;
+  padding: 8px;
+  font-size: 11px;
+}
+
+.recu-financier--pos80 .recu-financier__identite {
+  font-size: 12px;
+}
+
+.recu-financier--pos58 .recu-financier__identite strong,
+.recu-financier--pos80 .recu-financier__identite strong {
+  margin-top: 1px;
+}
+
+.recu-financier--pos58 .recu-financier__ligne,
+.recu-financier--pos80 .recu-financier__ligne {
+  flex-direction: row;
+  gap: 6px;
+  padding: 6px;
+  font-size: 11px;
+}
+
+.recu-financier--pos80 .recu-financier__ligne {
+  font-size: 12px;
+}
+
+.recu-financier--pos58 .recu-financier__ligne strong,
+.recu-financier--pos80 .recu-financier__ligne strong {
+  text-align: right;
+}
+
+.recu-financier--pos58 .recu-financier__total strong,
+.recu-financier--pos80 .recu-financier__total strong {
+  font-size: 15px;
+}
+
+.recu-financier--pos58 .recu-financier__pied,
+.recu-financier--pos80 .recu-financier__pied {
+  align-items: stretch;
+  margin-top: 12px;
+  font-size: 11px;
+}
+
+.recu-financier--pos80 .recu-financier__pied {
+  font-size: 12px;
+}
+
+.recu-financier--pos58 .recu-financier__signature,
+.recu-financier--pos80 .recu-financier__signature {
+  width: 100%;
+  min-height: 52px;
+  padding-top: 8px;
+}
+
+.recu-financier--pos58 .recu-financier__note,
+.recu-financier--pos80 .recu-financier__note {
+  display: none;
+}
+
+/* Mise en page dense pour rouleaux thermiques 58/80 mm. */
+.recu-financier.recu-financier--pos58,
+.recu-financier.recu-financier--pos80 {
+  padding: 7px;
+  font-size: 15px;
+}
+
+.recu-financier.recu-financier--pos80 {
+  padding: 9px;
+  font-size: 16px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-entete,
+.recu-financier--pos80 .recu-financier__qr-entete {
+  display: none;
+}
+
+.recu-financier--pos58 .recu-financier__qr-pos,
+.recu-financier--pos80 .recu-financier__qr-pos {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 4px 0 0;
+  padding: 4px 0 0;
+  border-top: 1px dashed #000;
+}
+
+.recu-financier--pos58 .recu-financier__entete,
+.recu-financier--pos80 .recu-financier__entete {
+  gap: 4px;
+  padding-bottom: 5px;
+}
+
+.recu-financier--pos58 .recu-financier__marque,
+.recu-financier--pos80 .recu-financier__marque {
+  gap: 6px;
+}
+
+.recu-financier--pos58 .recu-financier__marque strong {
+  font-size: 14px;
+}
+
+.recu-financier--pos80 .recu-financier__marque strong {
+  font-size: 15px;
+}
+
+.recu-financier--pos58 .recu-financier__adresse-ecole,
+.recu-financier--pos58 .recu-financier__localisation-ecole,
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  margin-top: 1px;
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.recu-financier--pos80 .recu-financier__adresse-ecole,
+.recu-financier--pos80 .recu-financier__localisation-ecole {
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation,
+.recu-financier--pos80 .recu-financier__qr-localisation {
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation img,
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  width: 112px;
+  height: 112px;
+}
+
+.recu-financier--pos80 .recu-financier__qr-localisation img {
+  width: 120px;
+  height: 120px;
+}
+
+.recu-financier--pos58 .recu-financier__qr-localisation span,
+.recu-financier--pos80 .recu-financier__qr-localisation span {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1.15;
+}
+
+.recu-financier--pos58 .recu-financier__numero,
+.recu-financier--pos80 .recu-financier__numero {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.recu-financier--pos58 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos58 .recu-financier__numero strong,
+.recu-financier--pos80 .recu-financier__numero strong {
+  margin: 0;
+  font-size: 15px;
+}
+
+.recu-financier--pos80 .recu-financier__numero span,
+.recu-financier--pos80 .recu-financier__numero strong {
+  font-size: 16px;
+}
+
+.recu-financier--pos58 .recu-financier__numero em,
+.recu-financier--pos80 .recu-financier__numero em {
+  display: none;
+}
+
+.recu-financier--pos58 .recu-financier__identite,
+.recu-financier--pos80 .recu-financier__identite {
+  display: block;
+  margin: 5px 0;
+  padding: 4px 5px;
+}
+
+.recu-financier--pos58 .recu-financier__identite > div,
+.recu-financier--pos80 .recu-financier__identite > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 2px 0;
+}
+
+.recu-financier--pos58 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos58 .recu-financier__ligne span,
+.recu-financier--pos80 .recu-financier__ligne span {
+  flex: 0 0 auto;
+  font-size: 0;
+}
+
+.recu-financier--pos58 [data-pos-label]::before,
+.recu-financier--pos80 [data-pos-label]::before {
+  content: attr(data-pos-label);
+  font-size: 13px;
+}
+
+.recu-financier--pos58 .recu-financier__identite span::after,
+.recu-financier--pos80 .recu-financier__identite span::after,
+.recu-financier--pos58 .recu-financier__ligne span::after,
+.recu-financier--pos80 .recu-financier__ligne span::after {
+  content: " :";
+  font-size: 13px;
+}
+
+.recu-financier--pos58 .recu-financier__identite strong,
+.recu-financier--pos80 .recu-financier__identite strong {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.15;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos80 .recu-financier__identite span,
+.recu-financier--pos80 .recu-financier__ligne span {
+  font-size: 0;
+}
+
+.recu-financier--pos80 .recu-financier__identite strong {
+  font-size: 16px;
+}
+
+.recu-financier--pos80 [data-pos-label]::before,
+.recu-financier--pos80 .recu-financier__identite span::after,
+.recu-financier--pos80 .recu-financier__ligne span::after {
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__ligne,
+.recu-financier--pos80 .recu-financier__ligne {
+  gap: 5px;
+  padding: 3px 5px;
+  line-height: 1.15;
+}
+
+.recu-financier--pos58 .recu-financier__ligne strong,
+.recu-financier--pos80 .recu-financier__ligne strong {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos80 .recu-financier__ligne strong {
+  font-size: 16px;
+}
+
+.recu-financier--pos58 .recu-financier__total strong {
+  font-size: 20px;
+}
+
+.recu-financier--pos80 .recu-financier__total strong {
+  font-size: 21px;
+}
+
+.recu-financier--pos58 .recu-financier__pied,
+.recu-financier--pos80 .recu-financier__pied {
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.recu-financier--pos58 .recu-financier__pied > div:first-child,
+.recu-financier--pos80 .recu-financier__pied > div:first-child {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 5px;
+  align-items: baseline;
+}
+
+.recu-financier--pos58 .recu-financier__pied > div:first-child span::after,
+.recu-financier--pos80 .recu-financier__pied > div:first-child span::after {
+  content: " :";
+}
+
+.recu-financier--pos58 .recu-financier__pied [data-pos-label],
+.recu-financier--pos80 .recu-financier__pied [data-pos-label],
+.recu-financier--pos58 .recu-financier__signature [data-pos-label],
+.recu-financier--pos80 .recu-financier__signature [data-pos-label] {
+  font-size: 0;
+}
+
+.recu-financier--pos58 .recu-financier__pied [data-pos-label]::before,
+.recu-financier--pos58 .recu-financier__signature [data-pos-label]::before {
+  content: attr(data-pos-label) " :";
+  font-size: 13px;
+}
+
+.recu-financier--pos80 .recu-financier__pied [data-pos-label]::before,
+.recu-financier--pos80 .recu-financier__signature [data-pos-label]::before {
+  content: attr(data-pos-label) " :";
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__pied [data-pos-label]::after,
+.recu-financier--pos80 .recu-financier__pied [data-pos-label]::after,
+.recu-financier--pos58 .recu-financier__signature [data-pos-label]::after,
+.recu-financier--pos80 .recu-financier__signature [data-pos-label]::after {
+  content: none;
+}
+
+.recu-financier--pos58 .recu-financier__pied strong,
+.recu-financier--pos58 .recu-financier__signature .recu-financier__agent {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.recu-financier--pos80 .recu-financier__pied strong,
+.recu-financier--pos80 .recu-financier__signature .recu-financier__agent {
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.recu-financier--pos58 .recu-financier__date-valeur,
+.recu-financier--pos80 .recu-financier__date-valeur {
+  white-space: nowrap;
+}
+
+.recu-financier--pos58 .recu-financier__pied strong,
+.recu-financier--pos80 .recu-financier__pied strong {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier--pos58 .recu-financier__pied .recu-financier__libelle-imprimeur,
+.recu-financier--pos80 .recu-financier__pied .recu-financier__libelle-imprimeur {
+  margin-top: 0;
+}
+
+.recu-financier--pos58 .recu-financier__signature,
+.recu-financier--pos80 .recu-financier__signature {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 5px;
+  width: 100%;
+  min-height: 0;
+  padding: 3px 0;
+  text-align: left;
+  border-bottom: 0 !important;
+}
+
+.recu-financier--pos58 .recu-financier__signature > span:first-child::after,
+.recu-financier--pos80 .recu-financier__signature > span:first-child::after {
+  content: " :";
+}
+
+.recu-financier--pos58 .recu-financier__signature .recu-financier__agent,
+.recu-financier--pos80 .recu-financier__signature .recu-financier__agent {
+  margin: 0;
+  text-align: right;
+}
+
+.recu-financier--pos58 .recu-financier__signature > span:last-child,
+.recu-financier--pos80 .recu-financier__signature > span:last-child {
+  grid-column: 1 / -1;
+  padding-top: 2px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.recu-financier--pos58 .recu-financier__signature > span:last-child::after,
+.recu-financier--pos80 .recu-financier__signature > span:last-child::after {
+  content: " : __________________";
+}
+
+.recu-financier--pos80 .recu-financier__signature > span:last-child {
+  font-size: 14px;
+}
+
+.recu-financier--pos58 .recu-financier__note,
+.recu-financier--pos80 .recu-financier__note {
+  display: block;
+  margin: 4px 0 0;
+  font-size: 0;
+  text-align: center;
+}
+
+.recu-financier--pos58 .recu-financier__note::after,
+.recu-financier--pos80 .recu-financier__note::after {
+  content: "Généré par ecolapp.cd";
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.recu-financier--pos80 .recu-financier__note::after {
+  font-size: 12px;
+}
+
+@media (max-width: 576px) {
+  .format-recu-paiement { max-width: none; }
+  .actions-modal-cartes > div:last-child { width: 100%; }
+  .actions-modal-cartes > div:last-child .btn { flex: 1 1 auto; }
+}
+
+/* Confirmation d'inscription : corps défilable, actions toujours visibles. */
+.custom-modal.confirmation-inscription-modal {
+  padding: 18px;
+  overflow-y: auto;
+}
+
+.confirmation-inscription-modal > .modal-content {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 680px);
+  max-height: calc(100dvh - 36px);
+  overflow: hidden;
+}
+
+.confirmation-inscription-modal > .modal-content > .modal-header,
+.confirmation-inscription-modal > .modal-content > .modal-footer {
+  flex: 0 0 auto;
+}
+
+.confirmation-inscription-modal > .modal-content > .modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 576px), (max-height: 620px) {
+  .custom-modal.confirmation-inscription-modal {
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .confirmation-inscription-modal > .modal-content {
+    max-height: calc(100dvh - 20px);
+  }
+
+  .confirmation-inscription-modal > .modal-content > .modal-footer {
+    flex-wrap: wrap;
+  }
+
+  .confirmation-inscription-modal > .modal-content > .modal-footer .btn {
+    flex: 1 1 160px;
+  }
+}
+
 /* src/composants/Ecoles/Ecoles.css */
 .bloc-ecole-3{
   margin-top: 0;
@@ -7610,6 +8690,24 @@ textarea.form-control:focus {
   color: #94a3b8;
 }
 
+.login-refonte-afficher {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--ecolapp-bleu);
+  cursor: pointer;
+}
+
+.login-refonte-afficher:focus-visible {
+  outline: 2px solid var(--ecolapp-bleu);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
 .login-refonte-erreur {
   margin: 7px 0 0;
   color: #dc2626;
@@ -12381,4 +13479,1128 @@ button[class="refonte-menu-btn"]{
 @media print {
   .modele-carte-scolaire { width: 740px; gap: 18px; }
   .modele-carte-scolaire .carte-identite-pro { box-shadow: none; border: 1px solid #e2e8f0; }
+}
+
+/* Correctifs impression et aperçu cartes QR. */
+.apercu-cartes-personnel-inline .zone-cartes {
+  justify-content: center;
+}
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  .modal-cartes,
+  .dialog-cartes,
+  .corps-modal-cartes,
+  .zone-cartes,
+  .zone-cartes * {
+    visibility: visible !important;
+  }
+  .modal-cartes {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  .dialog-cartes {
+    width: auto !important;
+    height: auto !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+  .entete-modal-cartes,
+  .actions-modal-cartes,
+  .cmd-cartes,
+  .apercu-cartes-personnel-inline:empty,
+  .sidebar,
+  .navbar,
+  .refonte-sidebar-backdrop {
+    display: none !important;
+  }
+  .corps-modal-cartes {
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  .zone-cartes {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    gap: 12px !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+}
+
+/* Aperçus mobiles et caméra téléphone. */
+.cadre-camera-mobile {
+  width: 100%;
+  min-height: 280px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f172a;
+}
+.cadre-camera-mobile video {
+  display: block;
+  width: 100%;
+  min-height: 280px;
+  object-fit: cover;
+}
+.carte-identite-infos div:has(span:nth-child(1)) strong {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 820px) {
+  .dialog-cartes {
+    width: 98vw;
+    height: 94vh;
+    border-radius: 16px;
+  }
+  .corps-modal-cartes {
+    padding: 12px;
+  }
+  .modele-carte-scolaire {
+    width: min(94vw, 390px);
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .modele-carte-scolaire .carte-identite-pro {
+    min-height: 500px;
+    padding: 0 22px 26px;
+  }
+  .carte-identite-entete h2 {
+    font-size: 19px;
+  }
+  .carte-identite-photo-rond {
+    width: 126px;
+    height: 126px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .carte-identite-infos {
+    font-size: 12px;
+  }
+  .carte-identite-infos div {
+    grid-template-columns: 96px 1fr;
+  }
+  .carte-identite-contact {
+    font-size: 12px;
+  }
+  .qr-identite-grand img {
+    width: 86px;
+    height: 86px;
+  }
+  .qr-identite-personnel img {
+    width: 112px;
+    height: 112px;
+  }
+  .zone-cartes {
+    gap: 18px;
+    justify-content: center;
+  }
+}
+/* Reçu financier commun : aperçu, impression et téléchargement PDF. */
+.apercu-recu-financier .modal-content {
+  width: min(940px, calc(100vw - 28px));
+  max-height: calc(100vh - 28px);
+  overflow: auto;
+}
+
+.apercu-recu-financier__zone {
+  padding: 22px;
+  border-radius: 12px;
+  background: #eef2f7;
+}
+
+.recu-financier {
+  width: min(100%, 760px);
+  min-height: 920px;
+  margin: 0 auto;
+  padding: 42px;
+  color: #172033;
+  background: #fff;
+  border: 1px solid #dce3ec;
+  border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 12px 34px rgba(23, 32, 51, 0.12);
+}
+
+.recu-financier__entete,
+.recu-financier__pied {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.recu-financier__entete {
+  padding-bottom: 26px;
+  border-bottom: 3px solid #2166f3;
+}
+
+.recu-financier__marque {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.recu-financier__marque img {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.recu-financier__marque strong,
+.recu-financier__marque span,
+.recu-financier__numero span,
+.recu-financier__numero strong {
+  display: block;
+}
+
+.recu-financier__marque strong {
+  color: #164ec0;
+  font-size: 20px;
+}
+
+.recu-financier__marque span,
+.recu-financier__identite span,
+.recu-financier__ligne span,
+.recu-financier__pied span {
+  color: #657089;
+  font-size: 13px;
+}
+
+.recu-financier__numero {
+  text-align: right;
+}
+
+.recu-financier__numero span {
+  color: #164ec0;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.recu-financier__numero strong {
+  margin: 5px 0 8px;
+  font-size: 18px;
+}
+
+.recu-financier__numero em {
+  display: inline-block;
+  padding: 5px 12px;
+  color: #14743e;
+  background: #dff6e8;
+  border-radius: 999px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.recu-financier__identite {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 28px;
+  margin: 30px 0;
+  padding: 24px;
+  background: #f6f8fc;
+  border-radius: 10px;
+}
+
+.recu-financier__identite strong {
+  display: block;
+  margin-top: 5px;
+}
+
+.recu-financier__details {
+  overflow: hidden;
+  border: 1px solid #dce3ec;
+  border-radius: 10px;
+}
+
+.recu-financier__ligne {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e7ebf1;
+}
+
+.recu-financier__ligne:last-child {
+  border-bottom: 0;
+}
+
+.recu-financier__total {
+  color: #fff;
+  background: #2166f3;
+}
+
+.recu-financier__total span {
+  color: #dfe9ff;
+}
+
+.recu-financier__total strong {
+  font-size: 22px;
+}
+
+.recu-financier__pied {
+  align-items: flex-end;
+  margin-top: 48px;
+}
+
+.recu-financier__pied strong {
+  display: block;
+  margin-top: 6px;
+}
+
+.recu-financier__pied .recu-financier__libelle-imprimeur {
+  display: block;
+  margin-top: 14px;
+}
+
+.recu-financier__signature {
+  width: 210px;
+  min-height: 82px;
+  padding-top: 12px;
+  text-align: center;
+  border-bottom: 1px solid #172033;
+}
+
+.recu-financier__signature span,
+.recu-financier__signature strong {
+  display: block;
+}
+
+.recu-financier__signature .recu-financier__agent {
+  margin: 5px 0 12px;
+  overflow-wrap: anywhere;
+}
+
+.recu-financier__note {
+  margin: 42px 0 0;
+  color: #7a8498;
+  font-size: 11px;
+  text-align: center;
+}
+
+@media (max-width: 680px) {
+  .apercu-recu-financier__zone { padding: 8px; }
+  .recu-financier { min-height: 0; padding: 22px; }
+  .recu-financier__entete,
+  .recu-financier__pied { flex-direction: column; }
+  .recu-financier__numero { text-align: left; }
+  .recu-financier__identite { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .recu-financier {
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* Bureau d'administration : cartes fluides sans débordement. */
+.dashboard-page,
+.dashboard-main-grid,
+.dashboard-main-grid > *,
+.dashboard-card,
+.dashboard-stat-link,
+.dashboard-stat {
+  min-width: 0;
+}
+
+.dashboard-page .dashboard-stat-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+}
+
+.dashboard-page .dashboard-stat-link,
+.dashboard-page .dashboard-stat {
+  width: 100%;
+  max-width: 100%;
+}
+
+.dashboard-page .dashboard-stat-heading,
+.dashboard-page .dashboard-stat h3,
+.dashboard-page .dashboard-stat p,
+.dashboard-page .dashboard-action > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-page .dashboard-section-heading {
+  flex-wrap: wrap;
+}
+
+.dashboard-page .chart-wrapper,
+.dashboard-page .chart-wrapper-2,
+.dashboard-page .chart-container,
+.dashboard-page canvas,
+.dashboard-page svg {
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .dashboard-page .dashboard-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-page .dashboard-stat {
+    height: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  .dashboard-page .dashboard-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pages du cycle scolaire : petits tableaux réellement adaptatifs. */
+.cycle-scolaire-page > .container,
+.cycle-scolaire-page > .section {
+  width: 100%;
+}
+
+.cycle-scolaire-page .section > [class*="col-"] {
+  width: min(100%, 860px);
+  max-width: 860px;
+  padding-right: 14px;
+  padding-left: 14px;
+}
+
+.cycle-scolaire-page .table-responsive {
+  width: 100%;
+}
+
+.cycle-scolaire-page table.table {
+  width: 100%;
+  min-width: 0;
+  table-layout: auto;
+}
+
+.cycle-scolaire-page table.table th,
+.cycle-scolaire-page table.table td {
+  overflow-wrap: anywhere;
+}
+
+.cycle-scolaire-page table.table td:last-child {
+  width: 1%;
+  min-width: 110px;
+  white-space: nowrap;
+}
+
+/* Générateur d'horaires : navigation compacte et contenu contenu dans l'écran. */
+.page-generer-horaire {
+  width: 100%;
+  max-width: 1480px;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.horaire-actions {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.horaire-retour {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: auto;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #dce6f4;
+  border-radius: 8px;
+  color: #1769ff;
+  background: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 5px 14px rgba(23, 105, 255, 0.08);
+}
+
+.horaire-retour:hover {
+  color: #0b57d0;
+  border-color: #b8cff5;
+  background: #f6f9ff;
+}
+
+.page-generer-horaire .table-responsive {
+  width: 100%;
+}
+
+.page-generer-horaire h2 {
+  flex-wrap: wrap;
+  font-size: clamp(1.05rem, 3vw, 1.5rem);
+}
+
+@media (max-width: 576px) {
+  .cycle-scolaire-page table.table td:last-child {
+    min-width: 90px;
+  }
+
+  .cycle-scolaire-page table.table .btn {
+    width: auto !important;
+    white-space: normal;
+  }
+
+  .page-generer-horaire {
+    margin-top: 14px !important;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+/* Liste des devises : l'action reste dans sa colonne visible. */
+.liste-devise-page > .container {
+  width: 100%;
+  max-width: 860px;
+}
+
+.liste-devise-page table.table {
+  width: 100%;
+  min-width: 0;
+  table-layout: auto;
+}
+
+.liste-devise-page table.table th:last-child,
+.liste-devise-page table.table td:last-child {
+  width: 1%;
+  min-width: 110px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Liste des paiements : actions et filtres compacts avant le tableau. */
+.entete-liste-paiements,
+.actions-paiements {
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.entete-liste-paiements {
+  flex-wrap: wrap;
+}
+
+.entete-liste-paiements .btn {
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.actions-paiements {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.actions-paiements > .btn {
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+}
+
+.filtres-paiements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid #e5ebf3;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.filtres-paiements > .alert,
+.filtres-paiements > .text-danger {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.filtres-paiements .recherche-paiements {
+  order: -1;
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .actions-paiements {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .actions-paiements > .btn:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .filtres-paiements .recherche-paiements {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .entete-liste-paiements {
+    align-items: stretch !important;
+  }
+
+  .entete-liste-paiements .btn,
+  .actions-paiements > .btn {
+    width: 100% !important;
+  }
+
+  .actions-paiements,
+  .filtres-paiements {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-paiements > .btn:last-child {
+    grid-column: auto;
+  }
+
+  .filtres-paiements .recherche-paiements {
+    grid-column: auto;
+  }
+}
+
+/* Petites listes de référence : colonnes stables et action toujours alignée. */
+.liste-reference-page > .container {
+  width: 100%;
+  max-width: 960px;
+}
+
+.liste-reference-page .table-responsive {
+  width: 100%;
+}
+
+.liste-reference-page table.table {
+  display: table;
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+.liste-reference-page table.table thead {
+  display: table-header-group;
+}
+
+.liste-reference-page table.table tbody {
+  display: table-row-group;
+}
+
+.liste-reference-page table.table tr {
+  display: table-row;
+}
+
+.liste-reference-page table.table th,
+.liste-reference-page table.table td {
+  display: table-cell;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  vertical-align: middle;
+}
+
+.liste-reference-page table.table th:last-child,
+.liste-reference-page table.table td:last-child {
+  width: 125px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.liste-classe-page table.table th:first-child,
+.liste-classe-page table.table td:first-child {
+  width: 72px;
+}
+
+.liste-reference-page table.table td:last-child .btn {
+  width: auto !important;
+  max-width: 100%;
+  white-space: normal;
+}
+
+@media (max-width: 480px) {
+  .liste-reference-page table.table th:last-child,
+  .liste-reference-page table.table td:last-child {
+    width: 98px;
+  }
+
+  .liste-classe-page table.table th:first-child,
+  .liste-classe-page table.table td:first-child {
+    width: 48px;
+  }
+
+  .liste-reference-page table.table th,
+  .liste-reference-page table.table td {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+}
+
+/* Tableau Membres du dashboard : contenu utile visible sur petit écran. */
+.dashboard-members,
+.dashboard-members > div,
+.dashboard-members .table-responsive {
+  width: 100%;
+  min-width: 0;
+}
+
+.dashboard-members__table {
+  width: 100%;
+}
+
+.dashboard-members__table td:nth-child(4) a {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .dashboard-members > .text-center.rounded.p-4 {
+    padding: 12px !important;
+  }
+
+  .dashboard-members__entete {
+    gap: 10px;
+    margin-bottom: 12px !important;
+  }
+
+  .dashboard-members__entete .btn {
+    width: auto !important;
+    flex: 0 0 auto;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+  }
+
+  table.dashboard-members__table {
+    display: table;
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .dashboard-members__table thead {
+    display: table-header-group;
+  }
+
+  .dashboard-members__table tbody {
+    display: table-row-group;
+  }
+
+  .dashboard-members__table tr {
+    display: table-row;
+  }
+
+  .dashboard-members__table th,
+  .dashboard-members__table td {
+    display: table-cell;
+    min-width: 0 !important;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+
+  .dashboard-members__table th:nth-child(1),
+  .dashboard-members__table td:nth-child(1),
+  .dashboard-members__table th:nth-child(5),
+  .dashboard-members__table td:nth-child(5),
+  .dashboard-members__table th:nth-child(6),
+  .dashboard-members__table td:nth-child(6) {
+    display: none;
+  }
+
+  .dashboard-members__table th:nth-child(2),
+  .dashboard-members__table td:nth-child(2) {
+    width: 54px;
+    padding-right: 6px !important;
+    padding-left: 8px !important;
+  }
+
+  .dashboard-members__table th:nth-child(3),
+  .dashboard-members__table td:nth-child(3) {
+    width: 42%;
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboard-members__entete {
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+
+  .dashboard-members__entete .btn {
+    align-self: stretch;
+  }
+}
+
+/* La carte Membres suit la même largeur que les cartes Admins du dashboard. */
+@media (max-width: 1200px) {
+  .dashboard-members-section,
+  .dashboard-members-section > .container-fluid,
+  .dashboard-members-section .row,
+  .dashboard-members-section .row > [class*="col-"] {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .dashboard-members-section > .container-fluid {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .dashboard-members-section .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .dashboard-members-section .row > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .dashboard-members > .text-center.rounded.p-4 {
+    padding: 14px !important;
+  }
+}
+
+/* Liste des parents et consultation progressive de leurs enfants. */
+.parents-table .parent-eleves-resume {
+  display: grid;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.parents-table .parent-eleves-resume > span {
+  display: block;
+  max-width: 240px;
+  overflow: hidden;
+  color: #334057;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.parents-table .parent-eleves-resume .btn {
+  width: fit-content;
+  margin: 0 !important;
+}
+
+.parent-eleves-lien {
+  width: fit-content;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #1769ff;
+  background: transparent;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.parent-eleves-lien:hover {
+  color: #0b57d0;
+  text-decoration: underline;
+}
+
+.parent-eleves-lien:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid #1769ff;
+  outline-offset: 3px;
+}
+
+/* Aperçus des rapports financiers, distincts des reçus individuels. */
+.apercu-rapport-financier .modal-dialog.modal-xl {
+  width: min(1180px, calc(100vw - 32px));
+  max-width: 1180px;
+}
+
+.apercu-rapport-financier .modal-content {
+  display: flex;
+  max-height: calc(100dvh - 32px);
+  flex-direction: column;
+}
+
+.apercu-rapport-financier .modal-header {
+  order: 1;
+  flex: 0 0 auto;
+}
+
+.apercu-rapport-financier .modal-header p {
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.apercu-rapport-financier .modal-footer {
+  order: 2;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  border-top: 0 !important;
+  border-bottom: 1px solid #e9eef5;
+}
+
+.apercu-rapport-financier .modal-body {
+  order: 3;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px;
+  background: #eef2f7;
+}
+
+.configuration-rapport-financier {
+  margin: 0 0 16px !important;
+  padding: 14px;
+  border: 1px solid #e1e7f0;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.apercu-rapport-financier__document {
+  width: 100%;
+  min-height: 520px;
+  margin: 0 auto;
+  border: 1px solid #dce3ec;
+  border-radius: 8px;
+  box-shadow: 0 12px 34px rgba(23, 32, 51, 0.09);
+}
+
+.apercu-rapport-financier__document > .table-responsive,
+.apercu-rapport-financier__document section > .table-responsive {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .apercu-rapport-financier .modal-dialog.modal-xl {
+    width: calc(100vw - 20px);
+    margin: 0 auto;
+  }
+
+  .apercu-rapport-financier .modal-content {
+    max-height: calc(100dvh - 20px);
+  }
+
+  .apercu-rapport-financier .modal-body {
+    padding: 10px;
+  }
+
+  .configuration-rapport-financier {
+    padding: 12px;
+  }
+
+  .apercu-rapport-financier__document {
+    min-height: 0;
+    padding: 14px !important;
+  }
+}
+
+.pagination-eleves-parent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pagination-eleves-parent span {
+  color: #657089;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.modal-eleves-parent table.table {
+  min-width: 560px;
+}
+
+@media (max-width: 576px) {
+  .modal-eleves-parent .modal-dialog {
+    width: 100%;
+  }
+
+  .pagination-eleves-parent {
+    justify-content: space-between;
+  }
+
+  .pagination-eleves-parent .btn {
+    width: auto !important;
+  }
+}
+
+.dashboard-action-link { color: inherit; text-decoration: none; }
+.dashboard-action-link:hover { color: inherit; text-decoration: none; transform: translateY(-1px); }
+.limite-erreur { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at top, #dbeafe 0, #f8fafc 46%, #eef2f7 100%); }
+.limite-erreur-carte { width: min(100%, 520px); padding: clamp(28px, 6vw, 48px); text-align: center; border: 1px solid rgba(148,163,184,.25); border-radius: 28px; background: rgba(255,255,255,.96); box-shadow: 0 24px 70px rgba(15,23,42,.14); }
+.limite-erreur-icone { width: 72px; height: 72px; display: grid; place-items: center; margin: 0 auto 18px; border-radius: 22px; color: #fff; font-size: 34px; background: linear-gradient(135deg,#f59e0b,#dc2626); box-shadow: 0 14px 28px rgba(220,38,38,.22); }
+.limite-erreur-surtitre { color: #2563eb; font-size: .76rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+.limite-erreur-carte h2 { margin: 10px 0; color: #0f172a; font-weight: 850; }
+.limite-erreur-carte p { margin: 0 auto 24px; color: #64748b; line-height: 1.65; }
+.limite-erreur-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.limite-erreur-actions .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 12px; font-weight: 700; }
+.limite-erreur-reessayer { color: #fff !important; background: #2563eb !important; }
+.limite-erreur-accueil { color: #334155 !important; background: #eef2f7 !important; }
+.limite-erreur-carte small { display: block; margin-top: 22px; color: #94a3b8; }
+/* Écran commun de chargement et de récupération d’erreur */
+.ecran-chargement {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(20px, 5vw, 48px);
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(37, 99, 235, .17), transparent 34%),
+    radial-gradient(circle at 85% 85%, rgba(14, 165, 233, .13), transparent 32%),
+    linear-gradient(145deg, #f8fbff 0%, #eef4ff 48%, #f8fafc 100%);
+}
+.ecran-chargement::before,
+.ecran-chargement::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(37, 99, 235, .12);
+  border-radius: 50%;
+}
+.ecran-chargement::before { top: -150px; right: -80px; }
+.ecran-chargement::after { bottom: -170px; left: -90px; width: 340px; height: 340px; }
+.ecran-chargement-carte {
+  position: relative;
+  width: min(100%, 500px);
+  padding: clamp(32px, 7vw, 52px) clamp(22px, 6vw, 46px);
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, .22);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 28px 80px rgba(30, 64, 175, .13), 0 4px 16px rgba(15, 23, 42, .05);
+  text-align: center;
+  backdrop-filter: blur(16px);
+}
+.ecran-chargement-marque {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #0f172a);
+  font-size: .82rem;
+  font-weight: 900;
+  box-shadow: 0 7px 18px rgba(37, 99, 235, .22);
+}
+.ecran-chargement-spinner,
+.ecran-chargement-alerte {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  margin: 2px auto 22px;
+  border-radius: 24px;
+}
+.ecran-chargement-spinner {
+  position: relative;
+  background: #eff6ff;
+  box-shadow: inset 0 0 0 1px #dbeafe;
+}
+.ecran-chargement-spinner::before,
+.ecran-chargement-spinner::after,
+.ecran-chargement-spinner > span {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+.ecran-chargement-spinner::before {
+  inset: 15px;
+  border: 4px solid #bfdbfe;
+  border-top-color: #2563eb;
+  animation: ecran-chargement-tourne .85s linear infinite;
+}
+.ecran-chargement-spinner::after {
+  inset: 27px;
+  background: #2563eb;
+  box-shadow: 0 0 18px rgba(37, 99, 235, .45);
+}
+.ecran-chargement-alerte {
+  color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #dc2626);
+  font-size: 34px;
+  box-shadow: 0 16px 32px rgba(220, 38, 38, .22);
+}
+.ecran-chargement-surtitre {
+  display: block;
+  margin-bottom: 8px;
+  color: #2563eb;
+  font-size: .7rem;
+  font-weight: 850;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.ecran-chargement-erreur .ecran-chargement-surtitre { color: #dc2626; }
+.ecran-chargement-carte h2 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: clamp(1.45rem, 4vw, 2rem);
+  font-weight: 850;
+  letter-spacing: -.025em;
+}
+.ecran-chargement-carte p {
+  max-width: 390px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: .95rem;
+  line-height: 1.65;
+}
+.ecran-chargement-points {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 22px;
+}
+.ecran-chargement-points i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2563eb;
+  animation: ecran-chargement-pulse 1.2s ease-in-out infinite;
+}
+.ecran-chargement-points i:nth-child(2) { animation-delay: .15s; }
+.ecran-chargement-points i:nth-child(3) { animation-delay: .3s; }
+.ecran-chargement-reessayer {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  margin-top: 24px;
+  padding: 10px 22px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  font-weight: 750 !important;
+  box-shadow: 0 12px 26px rgba(37, 99, 235, .24);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.ecran-chargement-reessayer:hover { transform: translateY(-2px); box-shadow: 0 16px 32px rgba(37, 99, 235, .3); }
+.ecran-chargement-carte small { display: block; max-width: 350px; margin: 18px auto 0; color: #94a3b8; font-size: .76rem; line-height: 1.5; }
+@keyframes ecran-chargement-tourne { to { transform: rotate(360deg); } }
+@keyframes ecran-chargement-pulse { 0%, 70%, 100% { opacity: .28; transform: translateY(0); } 35% { opacity: 1; transform: translateY(-4px); } }
+@media (max-width: 480px) {
+  .ecran-chargement { padding: 14px; }
+  .ecran-chargement-carte { padding: 38px 20px 32px; border-radius: 22px; }
+  .ecran-chargement-marque { top: 14px; left: 14px; }
+  .ecran-chargement-spinner, .ecran-chargement-alerte { width: 68px; height: 68px; border-radius: 21px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ecran-chargement-spinner::before,
+  .ecran-chargement-points i { animation-duration: 2.5s; }
+  .ecran-chargement-reessayer { transition: none; }
 }

@@ -66,6 +66,7 @@ import EditionProfilSecondaire from './composants/Ecoles/secondaire/Users/Profil
 // Administration secondaire
 import CodeAdminSecondaire from './composants/Ecoles/secondaire/Administration/CodeAdmin';
 import BureauAdminSecondaire from './composants/Ecoles/secondaire/Administration/BureauAdmin';
+import ParentsSecondaire from './composants/Ecoles/secondaire/Administration/Parents';
 import CreerAdminSecondaire from './composants/Ecoles/secondaire/Administration/CreerAdmin';
 import CreerSuperAdminSecondaire from './composants/Ecoles/secondaire/Administration/CreerSuperAdmin';
 import SuspendreAdminSecondaire from './composants/Ecoles/secondaire/Administration/SuspendreAdmin';
@@ -102,6 +103,8 @@ import AjouterMembreEffectifSecondaire from './composants/Ecoles/secondaire/Admi
 import ListeMembreEffectifSecondaire from './composants/Ecoles/secondaire/Administration/ListeMembreEffectif';
 // Eleves du secondaire
 import AjouterEleveSecondaire from './composants/Ecoles/secondaire/Administration/AjouterEleve';
+import ModifierEleveSecondaire from './composants/Ecoles/secondaire/Administration/ModifierEleve';
+import TypesElevesSecondaire from './composants/Ecoles/secondaire/Administration/TypesEleves';
 import ListeEleveSecondaire from './composants/Ecoles/secondaire/Administration/ListeEleve';
 import CartesElevesSecondaire from './composants/Ecoles/secondaire/Administration/CartesEleves';
 import CartesPersonnelSecondaire from './composants/Ecoles/secondaire/Administration/CartesPersonnel';
@@ -291,6 +294,8 @@ import AjouterMembreEffectifprimaire from './composants/Ecoles/primaire/Administ
 import ListeMembreEffectifprimaire from './composants/Ecoles/primaire/Administration/ListeMembreEffectif';
 // Eleves du primaire
 import AjouterEleveprimaire from './composants/Ecoles/primaire/Administration/AjouterEleve';
+import ModifierEleveprimaire from './composants/Ecoles/primaire/Administration/ModifierEleve';
+import TypesElevesPrimaire from './composants/Ecoles/primaire/Administration/TypesEleves';
 import ListeEleveprimaire from './composants/Ecoles/primaire/Administration/ListeEleve';
 import CartesElevesprimaire from './composants/Ecoles/primaire/Administration/CartesEleves';
 import CartesPersonnelprimaire from './composants/Ecoles/primaire/Administration/CartesPersonnel';
@@ -476,6 +481,8 @@ import AjouterMembreEffectifmaternelle from './composants/Ecoles/maternelle/Admi
 import ListeMembreEffectifmaternelle from './composants/Ecoles/maternelle/Administration/ListeMembreEffectif';
 // Eleves du maternelle
 import AjouterElevematernelle from './composants/Ecoles/maternelle/Administration/AjouterEleve';
+import ModifierElevematernelle from './composants/Ecoles/maternelle/Administration/ModifierEleve';
+import TypesElevesMaternelle from './composants/Ecoles/maternelle/Administration/TypesEleves';
 import ListeElevematernelle from './composants/Ecoles/maternelle/Administration/ListeEleve';
 import CartesElevesmaternelle from './composants/Ecoles/maternelle/Administration/CartesEleves';
 import CartesPersonnelmaternelle from './composants/Ecoles/maternelle/Administration/CartesPersonnel';
@@ -663,6 +670,8 @@ import Horaire from './composants/Test/Horaire';
 
 // Horaires
 import GenererHoraireSecondaire from './composants/Ecoles/secondaire/Horaire/GenererHoraireSecondaire';
+import PresenceJournaliere from "./composants/common/PresenceJournaliere";
+import ListePresence from './composants/common/ListePresence';
 const App = () => {
 
   return (
@@ -671,6 +680,10 @@ const App = () => {
       <Routes>
          {/* Index */}
           <Route path="/h" element={<Horaire/>} />
+          <Route path="/secondaire/liste_presence" element={<ListePresence cycle="secondaire" />} />
+          <Route path="/primaire/liste_presence" element={<ListePresence cycle="primaire" />} />
+          <Route path="/maternelle/liste_presence" element={<ListePresence cycle="maternelle" />} />
+          {["maternelle", "primaire", "secondaire"].map(cycle => <Route key={cycle} path={`/${cycle}/presence_journaliere`} element={<PresenceJournaliere key={cycle} cycle={cycle} />} />)}
           <Route path="/presence-qr" element={<PresenceQr />} />
            <Route path="/" element={<Index/>} />
           <Route path="*" element={<NotFound/>} />
@@ -794,6 +807,7 @@ const App = () => {
                 {/* Administration secondaire */}
                 <Route path="/secondaire/code_admin" element={<CodeAdminSecondaire />} />
                 <Route path="/secondaire/bureau_admin" element={<BureauAdminSecondaire/>} />
+                <Route path="/secondaire/parents" element={<ParentsSecondaire />} />
                 <Route path="/secondaire/creer_admin" element={<CreerAdminSecondaire />} />
                 <Route path="/secondaire/creer_super_admin" element={<CreerSuperAdminSecondaire />} />
                 <Route path="/secondaire/suspendre_admin" element={<SuspendreAdminSecondaire />} />
@@ -825,9 +839,12 @@ const App = () => {
                 <Route path="/secondaire/liste_membre_effectif" element={<ListeMembreEffectifSecondaire />} />
                 {/* Eleves du secondaire */}
                 <Route path="/secondaire/ajouter_eleve" element={<AjouterEleveSecondaire />} />
+                <Route path="/secondaire/modifier_eleve/:id" element={<ModifierEleveSecondaire />} />
+                <Route path="/secondaire/types_eleves" element={<TypesElevesSecondaire />} />
                 <Route path="/secondaire/liste_eleve" element={<ListeEleveSecondaire />} />
                 <Route path="/secondaire/cartes_eleves" element={<CartesElevesSecondaire />} />
                 <Route path="/secondaire/cartes_personnel" element={<CartesPersonnelSecondaire />} />
+                <Route path="/secondaire/carte_personnelle" element={<CartesPersonnelSecondaire />} />
                 {/* Paiement */}
                 <Route path="/secondaire/ajouter_motif" element={<AjouterMotifSecondaire />} />
                 <Route path="/secondaire/liste_motif" element={<ListeMotifSecondaire />} />
@@ -1002,9 +1019,12 @@ const App = () => {
                       <Route path="/primaire/liste_membre_effectif" element={<ListeMembreEffectifprimaire />} />
                       {/* Eleves du primaire */}
                       <Route path="/primaire/ajouter_eleve" element={<AjouterEleveprimaire />} />
+                      <Route path="/primaire/modifier_eleve/:id" element={<ModifierEleveprimaire />} />
+                      <Route path="/primaire/types_eleves" element={<TypesElevesPrimaire />} />
                       <Route path="/primaire/liste_eleve" element={<ListeEleveprimaire />} />
                       <Route path="/primaire/cartes_eleves" element={<CartesElevesprimaire />} />
                       <Route path="/primaire/cartes_personnel" element={<CartesPersonnelprimaire />} />
+                      <Route path="/primaire/carte_personnelle" element={<CartesPersonnelprimaire />} />
                       {/* Paiement */}
                       <Route path="/primaire/ajouter_motif" element={<AjouterMotifPrimaire />} />
                       <Route path="/primaire/liste_motif" element={<ListeMotifPrimaire />} />
@@ -1182,9 +1202,12 @@ const App = () => {
                       <Route path="/maternelle/liste_membre_effectif" element={<ListeMembreEffectifmaternelle />} />
                       {/* Eleves du maternelle */}
                       <Route path="/maternelle/ajouter_eleve" element={<AjouterElevematernelle />} />
+                      <Route path="/maternelle/modifier_eleve/:id" element={<ModifierElevematernelle />} />
+                      <Route path="/maternelle/types_eleves" element={<TypesElevesMaternelle />} />
                       <Route path="/maternelle/liste_eleve" element={<ListeElevematernelle />} />
                       <Route path="/maternelle/cartes_eleves" element={<CartesElevesmaternelle />} />
                       <Route path="/maternelle/cartes_personnel" element={<CartesPersonnelmaternelle />} />
+                      <Route path="/maternelle/carte_personnelle" element={<CartesPersonnelmaternelle />} />
                       {/* Paiement */}
                       <Route path="/maternelle/ajouter_motif" element={<AjouterMotifMaternelle />} />
                       <Route path="/maternelle/liste_motif" element={<ListeMotifMaternelle />} />

@@ -5,6 +5,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import SidebarLeft from "../Administration/SidebarLeft";
 import NavbarTop from "../Administration/NavbarTop";
 import LogoEcoleApp from '../../../../static/images/logo_ecolapp.jpg';
+import { imprimerRecuPaiement } from "../../../common/impressionDocuments";
+import ApercuRecuPaiement from "../../common/Paiements/ApercuRecuPaiement";
+import ImpressionListePaiements from "../../common/Paiements/ImpressionListePaiements";
 
 
 const PaiementEnOrdre = () => {
@@ -145,11 +148,15 @@ const PaiementEnOrdre = () => {
   };
 
   const printReceipt = () => {
-    window.print();
+    imprimerRecuPaiement(receiptRef.current, selectedReceipt?.id);
   };
 
   return (
     <div className="container-fluid position-relative  d-flex p-0">
+      <ApercuRecuPaiement
+        paiement={selectedReceipt}
+        onFermer={() => setSelectedReceipt(null)}
+      />
       <SidebarLeft />
       <div className="content">
         <NavbarTop />
@@ -159,6 +166,10 @@ const PaiementEnOrdre = () => {
             <Link to="/secondaire/ajouter_paiement" className="btn  mb-3">
               <i className="bi bi-plus"></i> Ajouter paiement
             </Link>
+            <ImpressionListePaiements
+              paiements={paiements}
+              titre="Paiements en ordre"
+            />
           </div>
           <div className="justify-content-between align-items-center d-flex">
             
@@ -172,13 +183,13 @@ const PaiementEnOrdre = () => {
               Paiements avec dettes
             </button>
           </div>
-          <div className="table-responsive hide-on-print">
+          <div className="filtres-paiements hide-on-print">
             
             {error && <p className="text-danger">{error}</p>}
 
             {/* Sélection de la classe */}
             <select
-              className="form-select mb-3"
+              className="form-select"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
@@ -191,7 +202,7 @@ const PaiementEnOrdre = () => {
             </select>
 
             <select
-                className="form-select mb-3"
+                className="form-select"
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
             >
@@ -206,12 +217,14 @@ const PaiementEnOrdre = () => {
             {/* Barre de recherche */}
             <input
               type="text"
-              className="form-control mb-3"
+              className="form-control recherche-paiements"
               placeholder="Rechercher par nom, postnom, prénom, matricule ou année..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
 
+          </div>
+          <div className="table-responsive hide-on-print">
             {filteredPaiements.length > 0 ? (
               <table className="table text-start align-middle   mb-0">
                 <thead>
@@ -375,4 +388,3 @@ const PaiementEnOrdre = () => {
 };
 
 export default PaiementEnOrdre;
- 

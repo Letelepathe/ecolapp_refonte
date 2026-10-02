@@ -45,7 +45,7 @@ const ListeModePaiement = () => {
   return (
     <div className="container-fluid position-relative  d-flex p-0">
       <SidebarLeft/>
-      <div className="content">
+      <div className="content liste-reference-page">
         <NavbarTop/>
           <div className="section d-flex flex-column align-items-center justify-content-center py-4">
             <div className="col-lg-6 col-md-8 col-12">
@@ -53,11 +53,10 @@ const ListeModePaiement = () => {
                 <div className="card-body">
                   <div className="justify-content-between align-items-center d-flex">
                     <h6>Liste mode paiement</h6>
-                    <Link to='/maternelle/ajouter_mode_paiement' className='btn  mb-2 mt-2'>Ajouter</Link>
+                    <Link to='/maternelle/ajouter_mode_paiement' className='btn mb-2 mt-2'>Ajouter un mode</Link>
                   </div>
                 </div>
                 <div className="table-responsive">
-                    <Link to='/maternelle/ajouter_mode_paiement' className="btn  mb-2 mt-2">Ajouter mode</Link>
                     {successMessage && ( 
                         <p> {successMessage} </p>
                     )}

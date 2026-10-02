@@ -23,12 +23,19 @@ const RightSidebar = ({ isRightSidebarOpen, setIsRightSidebarOpen }) => {
 
   },
   {
-    title: "Cours",
+    title: "Activités d'éveil",
     icon: "bi-book",
     links: [
-    { path: "/maternelle/ajouter_cours", label: "Ajouter un cours", icon: "bi-plus-circle-fill" },
-    { path: "/maternelle/liste_cours", label: "Tous les cours", icon: "bi-list-check" }]
+    { path: "/maternelle/ajouter_cours", label: "Ajouter une activité", icon: "bi-plus-circle-fill" },
+    { path: "/maternelle/liste_cours", label: "Toutes les activités", icon: "bi-list-check" }]
 
+  }
+  ,{
+    title: "Programmes pédagogiques", icon: "bi-diagram-3-fill",
+    links: [
+      { path: "/maternelle/ajouter_option", label: "Ajouter une option", icon: "bi-plus-circle-fill" },
+      { path: "/maternelle/liste_option", label: "Liste des options", icon: "bi-list-check" }
+    ]
   }
   // Ajoute d'autres sections ici selon les besoins
   ];
